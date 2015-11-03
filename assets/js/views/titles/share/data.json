@@ -1,0 +1,175 @@
+{
+   "NewTitle": {
+      "BasicInfo": {
+         "Title": "G8",
+         "Subtitle": "Lolcats",
+         "Publisher": "h.f.ullmann2",
+         "Imprint": "Author Solutions",
+         "ContentLanguage": "English",
+         "Series": "",
+         "SeriesName": "Star Wards",
+         "NumberinSeries": "3",
+         "MainDescription": "",
+         "ShortDescription": "",
+         "Errors": ""
+      },
+      "Contributors": {
+         "Contributors": [
+            {
+               "FirstName": "Sue",
+               "MiddleName": "Cats",
+               "LastName": "Bray",
+               "Prefix": "Mrs",
+               "Suffix": "3rd",
+               "Hometown": "Ashland",
+               "Role": "Authro",
+               "Biography": "Lol this bio tho",
+               "IsRolePrimary": false,
+               "IsTitlePrimary": false,
+               "AdditionalTitles": [
+                  {
+                     "ISBN": "fdgdfgdfg",
+                     "Title": "dfgfdgdfg"
+                  },
+                  {
+                     "ISBN": "312123",
+                     "Title": "dfgf3213dgdfg"
+                  }
+               ]
+            },
+            {
+               "FirstName": "Lelarino",
+               "MiddleName": "Lol",
+               "LastName": "Inorino",
+               "Prefix": "Mr",
+               "Suffix": "4th",
+               "Hometown": "Mansfield",
+               "Role": "CatsMcGhee",
+               "Biography": "Lelcatssssadasdasd",
+               "IsRolePrimary": false,
+               "IsTitlePrimary": false,
+               "AdditionalTitles": ""
+            }
+         ]
+      },
+         "Demographics": {
+            "Bisacs": [
+               {
+                  "BisacGroup": 4,
+                  "Code": 225
+               }
+            ]
+         }
+   }
+   ,
+   "IncompleteTitles": [
+      {
+         "BasicInfo": {
+            "Title": "G8",
+            "Subtitle": "Lolcats",
+            "Publisher": "h.f.ullmann2",
+            "Imprint": "Author Solutions",
+            "ContentLanguage": "English",
+            "Series": "",
+            "SeriesName": "Star Wards",
+            "NumberinSeries": "3",
+            "MainDescription": "",
+            "ShortDescription": "",
+            "Errors": ""
+         },
+         "Contributors": {
+            "Contributors": [
+               {
+                  "FirstName": "Sue",
+                  "MiddleName": "Cats",
+                  "LastName": "Bray",
+                  "Prefix": "Mrs",
+                  "Suffix": "3rd",
+                  "Hometown": "Ashland",
+                  "Role": "Authro",
+                  "Biography": "Lol this bio tho",
+                  "IsRolePrimary": false,
+                  "IsTitlePrimary": false,
+                  "AdditionalTitles": [
+                     {
+                        "ISBN": "fdgdfgdfg",
+                        "Title": "dfgfdgdfg"
+                     },
+                     {
+                        "ISBN": "312123",
+                        "Title": "dfgf3213dgdfg"
+                     }
+                  ]
+               },
+               {
+                  "FirstName": "Lelarino",
+                  "MiddleName": "Lol",
+                  "LastName": "Inorino",
+                  "Prefix": "Mr",
+                  "Suffix": "4th",
+                  "Hometown": "Mansfield",
+                  "Role": "CatsMcGhee",
+                  "Biography": "Lelcatssssadasdasd",
+                  "IsRolePrimary": false,
+                  "IsTitlePrimary": false,
+                  "AdditionalTitles": ""
+               }
+            ]
+         }
+      },
+      {
+         "BasicInfo": {
+            "Title": "Comic Book People 2 ",
+            "Subtitle": "Photographs from the 1990s",
+            "Publisher": "h.f.ullmann2",
+            "Imprint": "Estrada INC",
+            "ContentLanguage": "English",
+            "Series": "",
+            "SeriesName": "Star Wards",
+            "NumberinSeries": "3",
+            "MainDescription": "",
+            "ShortDescription": "",
+            "Errors": ""
+         },
+         "Contributors": {
+            "Contributors": [
+               {
+                  "FirstName": "Sue",
+                  "MiddleName": "Cats",
+                  "LastName": "Bray",
+                  "Prefix": "Mrs",
+                  "Suffix": "3rd",
+                  "Hometown": "Ashland",
+                  "Role": "Authro",
+                  "Biography": "Lol this bio tho",
+                  "IsRolePrimary": false,
+                  "IsTitlePrimary": false,
+                  "AdditionalTitles": [
+                     {
+                        "ISBN": "fdgdfgdfg",
+                        "Title": "dfgfdgdfg"
+                     },
+                     {
+                        "ISBN": "312123",
+                        "Title": "dfgf3213dgdfg"
+                     }
+                  ]
+               },
+               {
+                  "FirstName": "Lelarino",
+                  "MiddleName": "Lol",
+                  "LastName": "Inorino",
+                  "Prefix": "Mr",
+                  "Suffix": "4th",
+                  "Hometown": "Mansfield",
+                  "Role": "CatsMcGhee",
+                  "Biography": "Lelcatssssadasdasd",
+                  "IsRolePrimary": false,
+                  "IsTitlePrimary": false,
+                  "AdditionalTitles": ""
+               }
+            ]
+         }
+      }
+   ]
+}

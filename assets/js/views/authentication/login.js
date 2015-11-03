@@ -13,6 +13,7 @@ var login = function (parent) {
                  parent.vm.error = undefined;
                  parent.$timeout(function () {
                     parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
+//                    window.location = './';
                  }, 2000);
               },
               function (err) { //error

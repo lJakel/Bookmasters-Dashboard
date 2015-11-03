@@ -161,8 +161,12 @@ Helpers.prototype = {
 
 app.helpers = new Helpers();
 
-appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', function ($scope, $localStorage, AuthFactory, $q) {
+appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', function ($scope, $localStorage, AuthFactory, $q, $http) {
+      var self = this;
 
+      self.Feedback = new Feedback({'$http': $http, 'AuthFactory': AuthFactory});
+
+      //fix below for self
       $scope.app = app;
       $scope.logout = AuthFactory.logout;
 
@@ -178,13 +182,44 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
       })
    }]);
 
-appControllers.controller('FeedbackController', [function () {
-      var self = this;
+var Feedback = function (dep) {
+   var self = this;
+
+   self.FeedbackModalVisible = false;
+
+   self.username = '';
+   self.email = '';
+   self.url = '';
+   self.useragent = '';
+   self.platform = '';
+   self.contact = false;
+   self.description = '';
+
+   self.submitBtn = 'Submit';
+   self.success = false;
+
+   self.showFeedbackModal = function () {
+      self.description = '';
+      self.submitBtn = 'Submit';
+      self.success = false;
 
       self.url = window.location.href;
       self.useragent = navigator.userAgent;
       self.platform = navigator.platform;
-      self.description = '';
+      dep.AuthFactory.getInfo().then(function (response) {
+         self.username = response.credentials.username;
+         self.email = response.credentials.email;
+      });
+      self.FeedbackModalVisible = !self.FeedbackModalVisible;
+   }
 
-
-   }]);
+   self.submitFeedback = function () {
+      self.submitBtn = 'Submitting...';
+      dep.$http.post('feedback/APISubmit').then(function (success) {
+         self.submitBtn = 'Success!';
+         self.success = true;
+      }, function (fail) {
+         self.submitBtn = 'Failed';
+      });
+   };
+};

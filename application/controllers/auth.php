@@ -30,11 +30,11 @@ class Auth extends CI_Controller {
       $success = true;
       if ($success) {
          $this->output->set_header('Content-Type: application/json');
-         http_response_code(200);
+         $this->output->set_status_header('200');
          echo json_encode(['success' => 'Logged out successfully.']);
       } else {
          $this->output->set_header('Content-Type: application/json');
-         http_response_code(200);
+         $this->output->set_status_header('200');
          echo json_encode(['error' => 'Something went wrong with logging you out.']);
       }
    }
@@ -43,7 +43,7 @@ class Auth extends CI_Controller {
 
       $result = $this->user_m->getUser();
       if (isset($result['message']['error'])) {
-         http_response_code(401);
+         $this->output->set_status_header('401');
       }
       $this->output->set_header('Content-Type: application/json');
       echo json_encode($result);
@@ -53,7 +53,7 @@ class Auth extends CI_Controller {
       $result = $this->user_m->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));
 
       if (isset($result['message']['error'])) {
-         http_response_code(400);
+         $this->output->set_status_header('400');
       }
 
       $this->output->set_header('Content-Type: application/json');

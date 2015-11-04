@@ -84,10 +84,10 @@
                   </div>
                </div>
                <br>
-               <div class="alert alert-danger " ng-show="L.error" role="alert">
+               <div class="alert alert-danger" ng-show="L.error" role="alert">
                   <strong>Error!</strong> {{L.error}}
                </div>
-               <div class="alert alert-success " ng-show="L.success" role="alert">
+               <div class="alert alert-success" ng-show="L.success" role="alert">
                   <strong>Success!</strong> {{L.success}}
                </div>
             </div>

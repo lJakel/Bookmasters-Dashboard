@@ -24,17 +24,17 @@
             <div class="row">
                <div class="col-md-4">
                   <label for="">Username</label>
-                  <p>{{BMA.Feedback.username}}</p>
+                  <p>{{BMA.Feedback.feedback.username}}</p>
 
                </div>
                <div class="col-md-4">
                   <label for="">Email Address</label>
-                  <p>{{BMA.Feedback.email}}</p>
+                  <p>{{BMA.Feedback.feedback.email}}</p>
 
                </div>
                <div class="col-md-4">
                   <div class="checkbox checkbox-primary">
-                     <input id="FeedbackContact" type="checkbox" ng-model="BMA.Feedback.contact" class="ng-pristine ng-untouched ng-valid">
+                     <input id="FeedbackContact" type="checkbox" ng-model="BMA.Feedback.feedback.contact" class="ng-pristine ng-untouched ng-valid">
                      <label for="FeedbackContact"> May we contact you? </label>
                   </div>
                </div>
@@ -42,21 +42,21 @@
             <div class="row">
                <div class="col-md-4 form-group">
                   <label for="">URL</label>
-                  <p style="word-wrap: break-word; ">{{BMA.Feedback.url}}</p>
+                  <p style="word-wrap: break-word; ">{{BMA.Feedback.feedback.url}}</p>
                </div>
                <div class="col-md-4 form-group">
                   <label for="">User Agent</label>
-                  <p>{{BMA.Feedback.useragent}}</p>
+                  <p>{{BMA.Feedback.feedback.useragent}}</p>
                </div>
                <div class="col-md-4 form-group">
                   <label for="">Platform</label>
-                  <p>{{BMA.Feedback.platform}}</p>
+                  <p>{{BMA.Feedback.feedback.platform}}</p>
                </div>
             </div>
             <div class="row">
                <div class="col-md-12">
                   <label for="">Description</label>
-                  <textarea name="" ng-required="true" placeholder="Please describe the situation as thoroughly as possible." id="" cols="30" rows="10" class="form-control" ng-model="BMA.Feedback.description"></textarea>
+                  <textarea name="" ng-required="true" placeholder="Please describe the situation as thoroughly as possible." id="" cols="30" rows="10" class="form-control" ng-model="BMA.Feedback.feedback.message"></textarea>
                </div>
             </div>
 

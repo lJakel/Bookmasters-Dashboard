@@ -187,35 +187,38 @@ var Feedback = function (dep) {
 
    self.FeedbackModalVisible = false;
 
-   self.username = '';
-   self.email = '';
-   self.url = '';
-   self.useragent = '';
-   self.platform = '';
-   self.contact = false;
-   self.description = '';
+   self.feedback = {
+      username: '',
+      email: '',
+      url: '',
+      useragent: '',
+      platform: '',
+      contact: '',
+      message: ''
+   };
+
 
    self.submitBtn = 'Submit';
    self.success = false;
 
    self.showFeedbackModal = function () {
-      self.description = '';
+      self.feedback.message = '';
       self.submitBtn = 'Submit';
       self.success = false;
 
-      self.url = window.location.href;
-      self.useragent = navigator.userAgent;
-      self.platform = navigator.platform;
+      self.feedback.url = window.location.href;
+      self.feedback.useragent = navigator.userAgent;
+      self.feedback.platform = navigator.platform;
       dep.AuthFactory.getInfo().then(function (response) {
-         self.username = response.credentials.username;
-         self.email = response.credentials.email;
+         self.feedback.username = response.credentials.username;
+         self.feedback.email = response.credentials.email;
       });
       self.FeedbackModalVisible = !self.FeedbackModalVisible;
-   }
+   };
 
    self.submitFeedback = function () {
       self.submitBtn = 'Submitting...';
-      dep.$http.post('feedback/APISubmit').then(function (success) {
+      dep.$http.post('feedback/apisubmit', self.feedback).then(function (success) {
          self.submitBtn = 'Success!';
          self.success = true;
       }, function (fail) {

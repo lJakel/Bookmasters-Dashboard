@@ -45,7 +45,7 @@
                   <p style="word-wrap: break-word; ">{{BMA.Feedback.feedback.url}}</p>
                </div>
                <div class="col-md-4 form-group">
-                  <label for="">User Agent</label>
+                  <label for="">Browser</label>
                   <p>{{BMA.Feedback.feedback.useragent}}</p>
                </div>
                <div class="col-md-4 form-group">

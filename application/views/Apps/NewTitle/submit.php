@@ -39,7 +39,7 @@
                         <!--basic-->
                         <div role="tabpanel" class="tab-pane active" id="basic" ng-form="BasicInfoPanel">
                            <div class="row">
-                              <div class="col-md-9">
+                              <div class="col-md-12">
                                  <div class="form-group" ng-class="{'required':NTF.form}" data-show-errors>
                                     <label for="title" class="control-label">Title</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="The unique name for your book. The subtitle (if applicable) should be given separately.">?</a>
@@ -77,11 +77,7 @@
                                     </div>
                                  </div>
                               </div>
-                              <div class="col-md-3">
-
-                                 <label for="">Cover Upload</label>
-                                 <form ui-jq="dropzone" ui-options="{url: '/file/post', autoProcessQueue: false, uploadMultiple: false, parallelUploads: 1, maxFiles: 1}" action="/file-upload" class="dropzone" id="coverUpload"></form>
-                              </div>
+                             
                            </div>
                         </div>
                         <!--end basic-->

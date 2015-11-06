@@ -9,8 +9,7 @@ var BMApp = angular.module('BMApp', [
    'ui.router.util',
    'ui.jq',
    'ui.event',
-   'ui.bootstrap',
-// page-specific and demo. may be removed
+   // page-specific and demo. may be removed
 
 // application libs
    'app.controllers',
@@ -128,9 +127,9 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
    $stateProvider.state('bm.app.page', {
       url: '/:page/:child',
       params: {
-         app: {},
-         page: {},
-         child: {value: null},
+         app: '',
+         page: '',
+         child: null,
          id: {value: null}
       },
       resolve: {

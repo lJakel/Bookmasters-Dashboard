@@ -5,13 +5,12 @@
       <div data-bm-sidebar-scroll style="height: 100%;">
          <div id="innersidebar" style="position: relative;">
             <span class="listheader">Main</span>
-
             <ul class="">
-               <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })"><span class="fa fa-dashboard"></span>Dashboard</a></li>
+               <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })"><span class="fa fa-dashboard fa-fw"></span>Dashboard</a></li>
             </ul>
             <ul>
                <li>
-                  <a class="submenu collapsed" data-target="#sidebar-apps" data-toggle="collapse" href="#"><span class="fa fa-cubes"></span>Apps<span class="fa fa-plus-circle plusmin"></span></a>
+                  <a class="submenu collapsed" data-target="#sidebar-apps" data-toggle="collapse" href="#"><span class="fa fa-cubes fa-fw"></span>Apps<span class="fa fa-plus-circle plusmin"></span></a>
                   <ul id="sidebar-apps" class="collapse">
                      <!--Admin-->
                      <!--CSR-->
@@ -29,7 +28,7 @@
                ?>
                <ul>
                   <li>
-                     <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
+                     <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle fa-fw"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
                      <ul id="sidebar-devapps" class="collapse">
                         <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
                         <li><a data-ui-sref="bm.app.page({ 'app': 'usermanagement','page': 'home', child: null })">User Management</a></li>

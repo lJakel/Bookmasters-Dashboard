@@ -18,14 +18,13 @@ var BMApp = angular.module('BMApp', [
 
 BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider) {
 
-   BMApp.register =
-           {
-              controller: $controllerProvider.register,
-              directive: $compileProvider.directive,
-              filter: $filterProvider.register,
-              factory: $provide.factory,
-              service: $provide.service
-           };
+   BMApp.register = {
+      controller: $controllerProvider.register,
+      directive: $compileProvider.directive,
+      filter: $filterProvider.register,
+      factory: $provide.factory,
+      service: $provide.service
+   };
 
    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
@@ -95,17 +94,15 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
          url = $stateParams.app + '/' + $stateParams.page;
       }
 
-      return $http.get(url)
-              .then(function (response) {
-                 return scriptLoader.loadScriptTagsFromData(response.data);
-              })
-              .then(function (responseData) {
-                 return responseData;
-              });
+      return $http.get(url).then(function (response) {
+         return scriptLoader.loadScriptTagsFromData(response.data);
+      }).then(function (responseData) {
+         return responseData;
+      });
    }
 
    $urlRouterProvider.otherwise("/bm/main/index/");
-   $stateProvider.state('bm', {url: '/bm', abstract: true, templateUrl: 'Shared/appBootstrap', });
+   $stateProvider.state('bm', {url: '/bm', abstract: true, templateUrl: 'Shared/appBootstrap'});
    $stateProvider.state('bm.app', {
       abstract: true,
       url: '/:app',
@@ -152,8 +149,13 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
    })
            .state('error', {
               url: '/error',
+              params: {
+                 code: '',
+                 message: ''
+              },
               templateUrl: 'Shared/error'
            })
+
            .state('404', {
               url: '/404',
               templateUrl: 'Shared/notFound'
@@ -161,19 +163,32 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
 });
 
 BMApp.run(function ($rootScope, $state, $log, AuthFactory) {
+   $rootScope.previousState;
+   $rootScope.previousStateParams;
+   $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+
+      $rootScope.previousState = from.name;
+      $rootScope.previousStateParams = fromParams;
+   });
+
    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+
       switch (error.status) {
          case 200:
          default:
             break;
+
+         case 400:
+            $state.go('error', {code: '400'});
          case 401:
          case 403:
             AuthFactory.logout();
             break;
          case 404:
-            $state.go('404');
+            $state.go('error', {code: '404', message: 'Part of/or the page requested was not found.'});
          case 500:
-            $state.go('error');
+            $state.go('error', {code: '500', message: 'An internal server error has occured.'});
+
             break;
       }
    });

@@ -10,11 +10,10 @@ var appServices = angular.module('app.services', []);
  */
 appServices.factory('$exceptionHandler', function ($log) {
    return function (exception, cause) {
-      var errors = JSON.parse(localStorage.getItem('sing-angular-errors')) || {};
+      var errors = JSON.parse(localStorage.getItem('bm-angular-errors')) || {};
       errors[new Date().getTime()] = arguments;
-      localStorage.setItem('sing-angular-errors', JSON.stringify(errors));
+      localStorage.setItem('bm-angular-errors', JSON.stringify(errors));
       app.debug && $log.error.apply($log, arguments);
-      app.debug && alert('check errors');
    };
 });
 

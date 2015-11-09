@@ -166,7 +166,6 @@ BMApp.run(function ($rootScope, $state, $log, AuthFactory) {
    $rootScope.previousState;
    $rootScope.previousStateParams;
    $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-
       $rootScope.previousState = from.name;
       $rootScope.previousStateParams = fromParams;
    });

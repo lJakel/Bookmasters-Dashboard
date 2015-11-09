@@ -23,7 +23,7 @@
                            <strong>Error!</strong> 
                            {{EC.message}}
                            <br>
-                           Code: {{EC.code}}
+                           plebCode: {{EC.code}}
                         </div>
                      </div>
                   </div>

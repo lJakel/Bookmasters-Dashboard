@@ -11,15 +11,27 @@ class Feedback_Model extends CI_Model {
    }
 
    function submitFeedback($username, $url, $useragent, $message, $maycallyou) {
-    
+
       $feedbackquery = $this->Feedbackdb->query('exec SendSiteFeedback ?, ?, ?, ?, ?', [$username, $url, $useragent, $message, $maycallyou]);
-    
+
       if ($feedbackquery && $feedbackquery->num_rows() && $feedbackresult = $feedbackquery->row_object()) {
          return true;
-      }else{
+      } else {
          return false;
       }
+   }
 
+   function viewFeedback() {
+
+
+
+      $feedbackquery = $this->Feedbackdb->get('dbo.SiteFeedback'); //,10, 0);
+
+      if ($feedbackquery && $feedbackquery->num_rows() && $feedbackresult = $feedbackquery->result()) {
+         return $feedbackresult;
+      } else {
+         return false;
+      }
    }
 
 }

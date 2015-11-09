@@ -13,15 +13,15 @@ var appDirectives = angular.module('app.directives', []);
  * Prevent default links behaviour so it won't cause unwanted url changes for angular
  */
 appDirectives.directive('body', function () {
-    return {
-        restrict: 'E',
-        link: function (scope, $element) {
-            // prevent unwanted navigation
-            $element.on('click', 'a[href=#]', function (e) {
-                e.preventDefault();
-            })
-        }
-    }
+   return {
+      restrict: 'E',
+      link: function (scope, $element) {
+         // prevent unwanted navigation
+         $element.on('click', 'a[href=#]', function (e) {
+            e.preventDefault();
+         })
+      }
+   }
 });
 /* ========================================================================
  * Sing App actions. Shortcuts available via data-sn-action attribute
@@ -29,29 +29,29 @@ appDirectives.directive('body', function () {
  */
 
 appDirectives.directive('bmAction', function ($rootScope) {
-    var bmActions = {
-        'toggle-left-sidebar': function (e, scope) {
-            scope.app.state['sidebar-left'] = !scope.app.state['sidebar-left'];
-        }
-    }
+   var bmActions = {
+      'toggle-left-sidebar': function (e, scope) {
+         scope.app.state['sidebar-left'] = !scope.app.state['sidebar-left'];
+      }
+   }
 
-    return {
-        restrict: 'A',
-        link: function (scope, $el, attrs) {
-            if (angular.isDefined(attrs.bmAction) && attrs.bmAction != '') {
-                $el.on('click', function (e) {
-                    scope.$apply(function () {
-                        bmActions[attrs.bmAction].call($el[0], e, scope);
-                    });
-                    e.preventDefault();
-                });
-            }
+   return {
+      restrict: 'A',
+      link: function (scope, $el, attrs) {
+         if (angular.isDefined(attrs.bmAction) && attrs.bmAction != '') {
+            $el.on('click', function (e) {
+               scope.$apply(function () {
+                  bmActions[attrs.bmAction].call($el[0], e, scope);
+               });
+               e.preventDefault();
+            });
+         }
 
-            if (angular.isDefined(attrs.tooltip) && attrs.bmAction != '') {
-                $el.tooltip();
-            }
-        }
-    }
+         if (angular.isDefined(attrs.tooltip) && attrs.bmAction != '') {
+            $el.tooltip();
+         }
+      }
+   }
 });
 /* ========================================================================
  * Sing App Navigation (Sidebar)
@@ -62,138 +62,138 @@ appDirectives.directive('bmAction', function ($rootScope) {
 
 
 appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoader) {
-    return function (scope, element, attrs) {
-        function render() {
+      return function (scope, element, attrs) {
+         function render() {
             $(element).niceScroll({
-                cursorcolor: "#6181a2",
-                cursorborder: "0px solid #fff",
-                cursorborderradius: "0px",
-                cursorwidth: "5px"
+               cursorcolor: "#6181a2",
+               cursorborder: "0px solid #fff",
+               cursorborderradius: "0px",
+               cursorwidth: "5px"
             });
             $(element).getNiceScroll().resize();
             if ($('.sidebar-left').hasClass('hide-left-bar')) {
-                $(element).getNiceScroll().hide();
+               $(element).getNiceScroll().hide();
             }
             $(element).getNiceScroll().show();
-        }
+         }
 
-        scriptLoader.loadScripts(['http://www.bookmasters.com/CDN/js/nicescroll/dist/jquery.nicescroll.min.js'], 'sidebar').then(render);
-    };
-}]);
+         scriptLoader.loadScripts(['http://www.bookmasters.com/CDN/js/nicescroll/dist/jquery.nicescroll.min.js'], 'sidebar').then(render);
+      };
+   }]);
 appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) {
-    var BmNavigationDirective = function ($el, scope) {
-        this.$el = $el;
-        this.scope = scope;
-        this.helpers = scope.app.helpers;
-        $rootScope.changeNavigationItem = $.proxy(this.changeNavigationItem, this);
-    };
-    BmNavigationDirective.prototype = {
-        collapseLeftSidebar: function () {
-            $(this.$el).addClass('hide-left-bar');
-            $("#main-content").addClass('merge-left');
-            this.scope.app.state['sidebar-left'] = false;
-        },
-        expandLeftSidebar: function () {
-            $(this.$el).addClass('hide-left-bar');
-            $("#main-content").addClass('merge-left');
-            this.scope.app.state['sidebar-left'] = true;
-        },
-        toggleLeftSidebar: function () {
+   var BmNavigationDirective = function ($el, scope) {
+      this.$el = $el;
+      this.scope = scope;
+      this.helpers = scope.app.helpers;
+      $rootScope.changeNavigationItem = $.proxy(this.changeNavigationItem, this);
+   };
+   BmNavigationDirective.prototype = {
+      collapseLeftSidebar: function () {
+         $(this.$el).addClass('hide-left-bar');
+         $("#main-content").addClass('merge-left');
+         this.scope.app.state['sidebar-left'] = false;
+      },
+      expandLeftSidebar: function () {
+         $(this.$el).addClass('hide-left-bar');
+         $("#main-content").addClass('merge-left');
+         this.scope.app.state['sidebar-left'] = true;
+      },
+      toggleLeftSidebar: function () {
 
-            $(this.$el).toggleClass('hide-left-bar');
-            if ($(this.$el).hasClass('hide-left-bar')) {
-                //            $("#innersidebar").getNiceScroll().hide();
+         $(this.$el).toggleClass('hide-left-bar');
+         if ($(this.$el).hasClass('hide-left-bar')) {
+            //            $("#innersidebar").getNiceScroll().hide();
+         }
+         //         $("#innersidebar").getNiceScroll().show();
+         $('#main-content').toggleClass('merge-left');
+         if ($('#container').hasClass('open-right-panel')) {
+            $('#container').removeClass('open-right-panel')
+         }
+         if ($('.sidebar-right').hasClass('open-right-bar')) {
+            $('.sidebar-right').removeClass('open-right-bar')
+         }
+
+         if ($('.header').hasClass('merge-header')) {
+            $('.header').removeClass('merge-header')
+         }
+
+      },
+      checkLeftSidebarState: function () {
+         return this.scope.app.state['sidebar-left'];
+      },
+      checkRightSidebarState: function () {
+         return this.scope.app.state['sidebar-right'];
+      },
+      changeNavigationItem: function (event, toState, toParams) {
+
+         var $newActiveLink = this.$el.find('a[href="' + $state.href(toState, toParams) + '"]');
+
+         // collapse .collapse only if new and old active links belong to different .collapse
+         if (!$newActiveLink.is('.active > .collapse > li > a')) {
+            this.$el.find('.active .active').closest('.collapse').collapse('hide');
+         }
+         this.$el.find('#innersidebar .active').removeClass('active');
+         //
+         $newActiveLink.closest('li').addClass('active').parents('li').addClass('active').addClass('open');
+
+         // uncollapse parent
+         $newActiveLink.closest('.collapse').addClass('in').siblings('a[data-toggle=collapse]').removeClass('collapsed');
+      },
+   };
+   return {
+      link: function (scope, $el) {
+         var BmNav = new BmNavigationDirective($el, scope);
+         $timeout(function () {
+            // set active navigation item
+
+            BmNav.changeNavigationItem({}, $state.$current, $state.params);
+            $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
+            $el.find('.collapse').on('show.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget)
+                  return;
+               var $triggerLink = $(this).prev('[data-toggle=collapse]');
+               $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
+            })
+                    /* adding additional classes to navigation link li-parent for several purposes. see navigation styles */
+                    .on('show.bs.collapse', function (e) {
+
+                       // execute only if we're actually the .collapse element initiated event
+                       // return for bubbled events
+                       if (e.target != e.currentTarget)
+                          return;
+                       $(this).closest('li').addClass('open');
+                    }).on('hide.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget)
+                  return;
+               $(this).closest('li').removeClass('open');
+            });
+         });
+         scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
+            if (newVal == oldVal) {
+               return;
             }
-            //         $("#innersidebar").getNiceScroll().show();
-            $('#main-content').toggleClass('merge-left');
+            BmNav.toggleLeftSidebar();
+         });
+         $('.header,#main-content,.sidebar-left').click(function () {
             if ($('#container').hasClass('open-right-panel')) {
-                $('#container').removeClass('open-right-panel')
+               $('#container').removeClass('open-right-panel')
             }
             if ($('.sidebar-right').hasClass('open-right-bar')) {
-                $('.sidebar-right').removeClass('open-right-bar')
+               $('.sidebar-right').removeClass('open-right-bar')
             }
 
             if ($('.header').hasClass('merge-header')) {
-                $('.header').removeClass('merge-header')
+               $('.header').removeClass('merge-header')
             }
 
-        },
-        checkLeftSidebarState: function () {
-            return this.scope.app.state['sidebar-left'];
-        },
-        checkRightSidebarState: function () {
-            return this.scope.app.state['sidebar-right'];
-        },
-        changeNavigationItem: function (event, toState, toParams) {
 
-            var $newActiveLink = this.$el.find('a[href="' + $state.href(toState, toParams) + '"]');
-
-            // collapse .collapse only if new and old active links belong to different .collapse
-            if (!$newActiveLink.is('.active > .collapse > li > a')) {
-                this.$el.find('.active .active').closest('.collapse').collapse('hide');
-            }
-            this.$el.find('#innersidebar .active').removeClass('active');
-            //
-            $newActiveLink.closest('li').addClass('active').parents('li').addClass('active').addClass('open');
-
-            // uncollapse parent
-            $newActiveLink.closest('.collapse').addClass('in').siblings('a[data-toggle=collapse]').removeClass('collapsed');
-        },
-    };
-    return {
-        link: function (scope, $el) {
-            var BmNav = new BmNavigationDirective($el, scope);
-            $timeout(function () {
-                // set active navigation item
-
-                BmNav.changeNavigationItem({}, $state.$current, $state.params);
-                $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
-                $el.find('.collapse').on('show.bs.collapse', function (e) {
-                    // execute only if we're actually the .collapse element initiated event
-                    // return for bubbled events
-                    if (e.target != e.currentTarget)
-                        return;
-                    var $triggerLink = $(this).prev('[data-toggle=collapse]');
-                    $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
-                })
-                /* adding additional classes to navigation link li-parent for several purposes. see navigation styles */
-                      .on('show.bs.collapse', function (e) {
-
-                          // execute only if we're actually the .collapse element initiated event
-                          // return for bubbled events
-                          if (e.target != e.currentTarget)
-                              return;
-                          $(this).closest('li').addClass('open');
-                      }).on('hide.bs.collapse', function (e) {
-                          // execute only if we're actually the .collapse element initiated event
-                          // return for bubbled events
-                          if (e.target != e.currentTarget)
-                              return;
-                          $(this).closest('li').removeClass('open');
-                      });
-            });
-            scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
-                if (newVal == oldVal) {
-                    return;
-                }
-                BmNav.toggleLeftSidebar();
-            });
-            $('.header,#main-content,.sidebar-left').click(function () {
-                if ($('#container').hasClass('open-right-panel')) {
-                    $('#container').removeClass('open-right-panel')
-                }
-                if ($('.sidebar-right').hasClass('open-right-bar')) {
-                    $('.sidebar-right').removeClass('open-right-bar')
-                }
-
-                if ($('.header').hasClass('merge-header')) {
-                    $('.header').removeClass('merge-header')
-                }
-
-
-            });
-        }
-    }
+         });
+      }
+   }
 
 });
 /*
@@ -203,279 +203,291 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
 
 appDirectives.directive('ngWebsiteUrl', function () {
 
-    return {
-        restrict: 'A',
-        require: 'ngModel',
+   return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function ($scope, $element, $attrs, ngModel) {
 
-        link: function ($scope, $element, $attrs, ngModel) {
-
-            $scope.$watch($attrs.ngModel, function (value) {
+         $scope.$watch($attrs.ngModel, function (value) {
 
 
-                var val = value.replace(/^\s+|\s+$/, '');
-                var isValid = (val.match(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i));
-                if (isValid === null) {
-                    ngModel.$setValidity($attrs.ngModel, false);
+            var val = value.replace(/^\s+|\s+$/, '');
+            var isValid = (val.match(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i));
+            if (isValid === null) {
+               ngModel.$setValidity($attrs.ngModel, false);
 
-                } else {
-                    ngModel.$setValidity($attrs.ngModel, true);
-                }
-            });
-        }
-    }
+            } else {
+               ngModel.$setValidity($attrs.ngModel, true);
+            }
+         });
+      }
+   }
 });
 
 
 appDirectives.directive('showErrors', [
-      '$timeout', 'showErrorsConfig', '$interpolate', function ($timeout, showErrorsConfig, $interpolate) {
-          var getShowSuccess, getTrigger, linkFn;
-          getTrigger = function (options) {
-              var trigger;
-              trigger = showErrorsConfig.trigger;
-              if (options && (options.trigger != null)) {
-                  trigger = options.trigger;
-              }
-              return trigger;
-          };
-          getShowSuccess = function (options) {
-              var showSuccess;
-              showSuccess = showErrorsConfig.showSuccess;
-              if (options && (options.showSuccess != null)) {
-                  showSuccess = options.showSuccess;
-              }
-              return showSuccess;
-          };
-          linkFn = function (scope, el, attrs, formCtrl) {
-              var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, trigger;
-              //console.log(el)
-              blurred = false;
-              options = scope.$eval(attrs.showErrors);
-              showSuccess = getShowSuccess(options);
-              trigger = getTrigger(options);
-              inputEl = el[0].querySelector('.form-control[name]');
-              inputNgEl = angular.element(inputEl);
-              inputName = $interpolate(inputNgEl.attr('name') || '')(scope);
-              if (!inputName) {
-                  throw "show-errors element has no child input elements with a 'name' attribute and a 'form-control' class";
-              }
-              inputNgEl.bind(trigger, function () {
-                  blurred = true;
-                  return toggleClasses(formCtrl[inputName].$invalid);
-              });
-              scope.$watch(function () {
+   '$timeout', 'showErrorsConfig', '$interpolate', function ($timeout, showErrorsConfig, $interpolate) {
+      var getShowSuccess, getTrigger, linkFn;
+      getTrigger = function (options) {
+         var trigger;
+         trigger = showErrorsConfig.trigger;
+         if (options && (options.trigger != null)) {
+            trigger = options.trigger;
+         }
+         return trigger;
+      };
+      getShowSuccess = function (options) {
+         var showSuccess;
+         showSuccess = showErrorsConfig.showSuccess;
+         if (options && (options.showSuccess != null)) {
+            showSuccess = options.showSuccess;
+         }
+         return showSuccess;
+      };
+      linkFn = function (scope, el, attrs, formCtrl) {
+         var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, trigger;
+         //console.log(el)
+         blurred = false;
+         options = scope.$eval(attrs.showErrors);
+         showSuccess = getShowSuccess(options);
+         trigger = getTrigger(options);
+         inputEl = el[0].querySelector('.form-control[name]');
+         inputNgEl = angular.element(inputEl);
+         inputName = $interpolate(inputNgEl.attr('name') || '')(scope);
+         if (!inputName) {
+            throw "show-errors element has no child input elements with a 'name' attribute and a 'form-control' class";
+         }
+         inputNgEl.bind(trigger, function () {
+            blurred = true;
+            return toggleClasses(formCtrl[inputName].$invalid);
+         });
+         scope.$watch(function () {
 
-                  return formCtrl[inputName] && formCtrl[inputName].$invalid;
-              }, function (invalid) {
+            return formCtrl[inputName] && formCtrl[inputName].$invalid;
+         }, function (invalid) {
 
-                  if (!blurred) {
-                      return;
-                  }
-                  return toggleClasses(invalid);
-              });
-              scope.$on('show-errors-check-validity', function () {
-                  return toggleClasses(formCtrl[inputName].$invalid);
-              });
-              scope.$on('show-errors-reset', function () {
-                  return $timeout(function () {
-                      el.removeClass('has-error');
-                      el.removeClass('has-success');
-                      return blurred = false;
-                  }, 0, false);
-              });
-              return toggleClasses = function (invalid) {
-                  el.toggleClass('has-error', invalid);
-                  //el.append('<span class="help-block">Error</span>')
-                  console.log(formCtrl[inputName])
+            if (!blurred) {
+               return;
+            }
+            return toggleClasses(invalid);
+         });
+         scope.$on('show-errors-check-validity', function () {
+            return toggleClasses(formCtrl[inputName].$invalid);
+         });
+         scope.$on('show-errors-reset', function () {
+            return $timeout(function () {
+               el.removeClass('has-error');
+               el.removeClass('has-success');
+               return blurred = false;
+            }, 0, false);
+         });
+         return toggleClasses = function (invalid) {
+            el.toggleClass('has-error', invalid);
+            //el.append('<span class="help-block">Error</span>')
+            console.log(formCtrl[inputName])
 
-                  if (showSuccess) {
-                      return el.toggleClass('has-success', !invalid);
-                  }
-              };
-          };
-          return {
-              restrict: 'A',
-              require: '^form',
-              compile: function (elem, attrs) {
-                  if (attrs['showErrors'].indexOf('skipFormGroupCheck') === -1) {
-                      if (!(elem.hasClass('form-group') || elem.hasClass('input-group'))) {
-                          throw "show-errors element does not have the 'form-group' or 'input-group' class";
-                      }
-                  }
-                  return linkFn;
-              }
-          };
-      }
+            if (showSuccess) {
+               return el.toggleClass('has-success', !invalid);
+            }
+         };
+      };
+      return {
+         restrict: 'A',
+         require: '^form',
+         compile: function (elem, attrs) {
+            if (attrs['showErrors'].indexOf('skipFormGroupCheck') === -1) {
+               if (!(elem.hasClass('form-group') || elem.hasClass('input-group'))) {
+                  throw "show-errors element does not have the 'form-group' or 'input-group' class";
+               }
+            }
+            return linkFn;
+         }
+      };
+   }
 ]).provider('showErrorsConfig', function () {
-    var _showSuccess, _trigger;
-    _showSuccess = false;
-    _trigger = 'blur';
-    this.showSuccess = function (showSuccess) {
-        return _showSuccess = showSuccess;
-    };
-    this.trigger = function (trigger) {
-        return _trigger = trigger;
-    };
-    this.$get = function () {
-        return {
-            showSuccess: _showSuccess,
-            trigger: _trigger
-        };
-    };
+   var _showSuccess, _trigger;
+   _showSuccess = false;
+   _trigger = 'blur';
+   this.showSuccess = function (showSuccess) {
+      return _showSuccess = showSuccess;
+   };
+   this.trigger = function (trigger) {
+      return _trigger = trigger;
+   };
+   this.$get = function () {
+      return {
+         showSuccess: _showSuccess,
+         trigger: _trigger
+      };
+   };
 });
 
 
 
 
 appDirectives.directive("bscheck", function () {
-    return {
-        restrict: "C",
-        link: function (scope, element, attrs) {
-            $(element).selectpicker();
-        }
-    }
+   return {
+      restrict: "C",
+      link: function (scope, element, attrs) {
+         $(element).selectpicker();
+      }
+   }
 });
 appDirectives.directive("bsradio", function () {
 
-    return {
-        restrict: 'A',
-        transclude: true,
-        replace: false,
-        require: 'ngModel',
-        link: function ($scope, $element, $attr, require) {
+   return {
+      restrict: 'A',
+      transclude: true,
+      replace: false,
+      require: 'ngModel',
+      link: function ($scope, $element, $attr, require) {
 
 
-            var ngModel = require;
+         var ngModel = require;
 
-            $element.on('change', function () {
-                updateModelFromElement();
-            });
-            var updateModelFromElement = function () {
-                // If modified
-                var checked = $element.prop('checked');
-                if (checked != ngModel.$viewValue) {
-                    // Update ngModel
-                    $element.prop('checked', checked)
+         $element.on('change', function () {
+            updateModelFromElement();
+         });
+         var updateModelFromElement = function () {
+            // If modified
+            var checked = $element.prop('checked');
+            if (checked != ngModel.$viewValue) {
+               // Update ngModel
+               $element.prop('checked', checked)
 
-                    ngModel.$setViewValue(checked);
-                }
+               ngModel.$setViewValue(checked);
             }
+         }
 
-            // Update input from Model
-            var updateElementFromModel = function () {
-                // Update button state to match model
-                $element.trigger('change');
-            };
-            //         // Observe: Element changes affect Model
-            //       
-            //         // Observe: ngModel for changes
-            $scope.$watch(function () {
-                return ngModel.$viewValue;
-            }, function () {
-                updateElementFromModel();
-            });
-        }
-    }
+         // Update input from Model
+         var updateElementFromModel = function () {
+            // Update button state to match model
+            $element.trigger('change');
+         };
+         //         // Observe: Element changes affect Model
+         //       
+         //         // Observe: ngModel for changes
+         $scope.$watch(function () {
+            return ngModel.$viewValue;
+         }, function () {
+            updateElementFromModel();
+         });
+      }
+   }
 });
 appDirectives.directive('selectpicker', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        require: '?ngModel',
-        priority: 10,
-        compile: function (tElement, tAttrs, transclude) {
+      return {
+         restrict: 'A',
+         require: '?ngModel',
+         priority: 10,
+         compile: function (tElement, tAttrs, transclude) {
             tElement.selectpicker($parse(tAttrs.selectpicker)());
             tElement.selectpicker('refresh');
             return function (scope, element, attrs, ngModel) {
-                if (!ngModel) return;
+               if (!ngModel)
+                  return;
 
-                scope.$watch(attrs.ngModel, function (newVal, oldVal) {
-                    scope.$evalAsync(function () {
-                        if (!attrs.ngOptions || /track by/.test(attrs.ngOptions)) element.val(newVal);
-                        element.selectpicker('refresh');
-                    });
-                });
+               scope.$watch(attrs.ngModel, function (newVal, oldVal) {
+                  scope.$evalAsync(function () {
+                     if (!attrs.ngOptions || /track by/.test(attrs.ngOptions))
+                        element.val(newVal);
+                     element.selectpicker('refresh');
+                  });
+               });
 
-                ngModel.$render = function () {
-                    scope.$evalAsync(function () {
-                        element.selectpicker('refresh');
-                    });
-                }
+               ngModel.$render = function () {
+                  scope.$evalAsync(function () {
+                     element.selectpicker('refresh');
+                  });
+               }
             };
-        }
+         }
 
-    };
-}]);
+      };
+   }]);
 
-appDirectives.directive('summernote', function () {
-    //simple summernote directive
-    return {
-        restrict: 'A',
-        require: '?ngModel',
-        priority: 10,
+appDirectives.directive('summernote', function (scriptLoader) {
+   //simple summernote directive
 
 
-        link: function (scope, element, attrs, ngModel) {
-            if (!ngModel) return;
+
+
+   return {
+      restrict: 'A',
+      require: '?ngModel',
+      priority: 10,
+      link: function (scope, element, attrs, ngModel) {
+
+         scriptLoader.loadScripts([
+            'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
+         ], 'partial').then(summernoteInit);
+
+         function summernoteInit() {
+            if (!ngModel)
+               return;
 
             var options = {
-                toolbar: [
-                   ['style', ['bold', 'italic', 'underline', 'clear']],
-                   ['para', ['ul', 'ol']]
-                ],
-                height: 150,
-                styleWithSpan: false,
-
-                onBlur: function (event) {
-                    ngModel.$setViewValue($summernote.code())
-                    return;
-                },
+               toolbar: [
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['para', ['ul', 'ol']]
+               ],
+               height: 150,
+               styleWithSpan: false,
+               onBlur: function (event) {
+                  ngModel.$setViewValue($summernote.code())
+                  return;
+               },
             };
 
             var $summernote = $(element).summernote(options);
             scope.$watch(attrs.ngModel, function (newVal, oldVal) {
-                $summernote.code(newVal);
+               $summernote.code(newVal);
             });
+         }
 
 
-        }
-    }
+
+      }
+
+   }
 });
 
 appDirectives.directive("modalShow", function () {
-    return {
-        restrict: "A",
-        scope: {
-            modalVisible: "="
-        },
-        link: function (scope, element, attrs) {
+   return {
+      restrict: "A",
+      scope: {
+         modalVisible: "="
+      },
+      link: function (scope, element, attrs) {
 
-            //Hide or show the modal
-            scope.showModal = function (visible) {
-                if (visible) {
-                    element.modal("show");
-                } else {
-                    element.modal("hide");
-                }
-            }
-
-            //Check to see if the modal-visible attribute exists
-            if (!attrs.modalVisible) {
-                //The attribute isn't defined, show the modal by default
-                scope.showModal(true);
+         //Hide or show the modal
+         scope.showModal = function (visible) {
+            if (visible) {
+               element.modal("show");
             } else {
-                //Watch for changes to the modal-visible attribute
-                scope.$watch("modalVisible", function (newValue, oldValue) {
-                    scope.showModal(newValue);
-                });
-                //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
-                element.bind("hide.bs.modal", function () {
-                    scope.modalVisible = false;
-                    if (!scope.$$phase && !scope.$root.$$phase) {
-                        scope.$apply();
-                    }
-                });
+               element.modal("hide");
             }
-        }
-    };
+         }
+
+         //Check to see if the modal-visible attribute exists
+         if (!attrs.modalVisible) {
+            //The attribute isn't defined, show the modal by default
+            scope.showModal(true);
+         } else {
+            //Watch for changes to the modal-visible attribute
+            scope.$watch("modalVisible", function (newValue, oldValue) {
+               scope.showModal(newValue);
+            });
+            //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
+            element.bind("hide.bs.modal", function () {
+               scope.modalVisible = false;
+               if (!scope.$$phase && !scope.$root.$$phase) {
+                  scope.$apply();
+               }
+            });
+         }
+      }
+   };
 });
 /**
  * Flatlogic comment:
@@ -505,69 +517,69 @@ appDirectives.directive("modalShow", function () {
  * @example <input ui-jq="datepicker" ui-options="{showOn:'click'},secondParameter,thirdParameter" ui-refresh="iChange">
  */
 angular.module('ui.jq', []).
-      value('uiJqConfig', {}).
-      value('uiJqDependencies', {}).
-      directive('uiJq', ['uiJqConfig', '$timeout', 'uiJqDependencies', 'scriptLoader',
-            function uiJqInjectingFunction(uiJqConfig, $timeout, uiJqDependencies, scriptLoader) {
+        value('uiJqConfig', {}).
+        value('uiJqDependencies', {}).
+        directive('uiJq', ['uiJqConfig', '$timeout', 'uiJqDependencies', 'scriptLoader',
+           function uiJqInjectingFunction(uiJqConfig, $timeout, uiJqDependencies, scriptLoader) {
 
-                return {
-                    restrict: 'A',
-                    compile: function uiJqCompilingFunction(telem, tAttrs) {
+              return {
+                 restrict: 'A',
+                 compile: function uiJqCompilingFunction(telem, tAttrs) {
 
-                        if (!(angular.isFunction(telem[tAttrs.uiJq]) || angular.isArray(uiJqDependencies[tAttrs.uiJq]))) {
-                            throw new Error('ui-jq: The "' + tAttrs.uiJq + '" function does not exist');
-                        }
-                        var options = uiJqConfig && uiJqConfig[tAttrs.uiJq];
-                        return function uiJqLinkingFunction(scope, elem, attrs) {
-
-                            // If change compatibility is enabled, the form input's "change" event will trigger an "input" event
-                            if (attrs.ngModel && elem.is('select,input,textarea')) {
-                                elem.bind('change', function () {
-                                    elem.trigger('input');
-                                });
-                            }
-
-                            // Call jQuery method and pass relevant options
-                            function callPlugin() {
-                                $timeout(function () {
-                                    var linkOptions = [];
-                                    // If ui-options are passed, merge (or override) them onto global defaults and pass to the jQuery method
-                                    if (attrs.uiOptions) {
-                                        linkOptions = scope.$eval('[' + attrs.uiOptions + ']');
-                                        if (angular.isObject(options) && angular.isObject(linkOptions[0])) {
-                                            linkOptions[0] = angular.extend({}, options, linkOptions[0]);
-                                        }
-                                    } else if (options) {
-                                        linkOptions = [options];
-                                    }
-                                    elem[attrs.uiJq].apply(elem, linkOptions);
-                                }, 0, false);
-                            }
-
-                            // If ui-refresh is used, re-fire the the method upon every change
-                            if (attrs.uiRefresh) {
-                                scope.$watch(attrs.uiRefresh, function () {
-                                    callPlugin();
-                                });
-                            }
-
-                            // Sing addition. If there jQuery functions is defined, then just calling plugin
-                            // if there is no jQuery function, then loading it first from uiJqDependencies object
-                            // defined in app.js
-                            var scriptsFromOptions = scope.$eval(tAttrs.uiPreload) || [];
-                            if (angular.isFunction(telem[tAttrs.uiJq])) {
-                                if (scriptsFromOptions.length > 0) {
-                                    scriptLoader.loadScripts(scriptsFromOptions)
-                                          .then(callPlugin);
-                                } else {
-                                    callPlugin();
-                                }
-                            } else {
-                                var scriptsToLoad = uiJqDependencies[tAttrs.uiJq].concat(scriptsFromOptions);
-                                scriptLoader.loadScripts(scriptsToLoad)
-                                      .then(callPlugin);
-                            }
-                        };
+                    if (!(angular.isFunction(telem[tAttrs.uiJq]) || angular.isArray(uiJqDependencies[tAttrs.uiJq]))) {
+                       throw new Error('ui-jq: The "' + tAttrs.uiJq + '" function does not exist');
                     }
-                };
-            }]);
+                    var options = uiJqConfig && uiJqConfig[tAttrs.uiJq];
+                    return function uiJqLinkingFunction(scope, elem, attrs) {
+
+                       // If change compatibility is enabled, the form input's "change" event will trigger an "input" event
+                       if (attrs.ngModel && elem.is('select,input,textarea')) {
+                          elem.bind('change', function () {
+                             elem.trigger('input');
+                          });
+                       }
+
+                       // Call jQuery method and pass relevant options
+                       function callPlugin() {
+                          $timeout(function () {
+                             var linkOptions = [];
+                             // If ui-options are passed, merge (or override) them onto global defaults and pass to the jQuery method
+                             if (attrs.uiOptions) {
+                                linkOptions = scope.$eval('[' + attrs.uiOptions + ']');
+                                if (angular.isObject(options) && angular.isObject(linkOptions[0])) {
+                                   linkOptions[0] = angular.extend({}, options, linkOptions[0]);
+                                }
+                             } else if (options) {
+                                linkOptions = [options];
+                             }
+                             elem[attrs.uiJq].apply(elem, linkOptions);
+                          }, 0, false);
+                       }
+
+                       // If ui-refresh is used, re-fire the the method upon every change
+                       if (attrs.uiRefresh) {
+                          scope.$watch(attrs.uiRefresh, function () {
+                             callPlugin();
+                          });
+                       }
+
+                       // Sing addition. If there jQuery functions is defined, then just calling plugin
+                       // if there is no jQuery function, then loading it first from uiJqDependencies object
+                       // defined in app.js
+                       var scriptsFromOptions = scope.$eval(tAttrs.uiPreload) || [];
+                       if (angular.isFunction(telem[tAttrs.uiJq])) {
+                          if (scriptsFromOptions.length > 0) {
+                             scriptLoader.loadScripts(scriptsFromOptions)
+                                     .then(callPlugin);
+                          } else {
+                             callPlugin();
+                          }
+                       } else {
+                          var scriptsToLoad = uiJqDependencies[tAttrs.uiJq].concat(scriptsFromOptions);
+                          scriptLoader.loadScripts(scriptsToLoad)
+                                  .then(callPlugin);
+                       }
+                    };
+                 }
+              };
+           }]);

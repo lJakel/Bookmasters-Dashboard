@@ -41,7 +41,7 @@
    </head>
    <!-- sn-demo directive enables all functions which are used for demo. e.g. animating notifications count, chat unread messages.
         to be removed in real app-->
-   <body data-ng-controller="BMAppController" data-ng-class="{'login-page': loginPage, 'error-page': errorPage}">
+   <body data-ng-controller="BMAppController" data-ng-class="{'login - page': loginPage, 'error - page': errorPage}">
       <!--App Bootstrap-->
       <div data-ui-view>
 
@@ -51,21 +51,19 @@
       <!-- include jquery BEFORE angular so $(el).html() may resolve scripts. see http://stackoverflow.com/a/12200540/1298418 -->
       <script src="http://www.bookmasters.com/CDN/js/jquery/dist/jquery.min.js"></script>
 
-      <script src="<?php echo site_url('assets/vendor/angular/angular.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/angular-ui-router/release/angular-ui-router.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/ngstorage/ngStorage.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/angular-resource/angular-resource.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/angular-ui-utils/event.min.js'); ?>"></script>
+      <script src="http://www.bookmasters.com/CDN/js/angular/angular.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/angular-ui-router/release/angular-ui-router.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/ngstorage/ngStorage.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/angular-1.4.7/angular-resource.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/angular-ui-event/dist/event.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/angular-1.4.7/angular-animate.min.js"></script>
 
-      <script src="<?php echo site_url('assets/vendor/angular-animate/angular-animate.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js'); ?>"></script>
-      <script src="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js"></script>
-      <script src="<?php echo site_url('assets/js/ui-bootstrap-tpls-0.13.3.min.js'); ?>"></script>
+      <script src="http://www.bookmasters.com/CDN/js/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
-      <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
-      <script src="<?php echo site_url('assets/vendor/pace.js/pace.min.js'); ?>" data-pace-options='{ "target": "#main-content", "ghostTime": 1000 }'></script>
+      
+      <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js');?>"></script>
+      <script src="http://www.bookmasters.com/CDN/js/pace/pace.min.js" data-pace-options='{ "target": "#main-content", "ghostTime": 1000 }'></script>
 
       <!-- common app js -->
       <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>

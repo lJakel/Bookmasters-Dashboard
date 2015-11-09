@@ -8,17 +8,13 @@ var login = function (parent) {
          password: self.password
       }, undefined, //redirect url
               function (res) { //success
-
-                 parent.vm.success = res.message.success;
-                 parent.vm.error = undefined;
+                 parent.vm.handleAlert(1, res.message.success);
                  parent.$timeout(function () {
                     parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
-//                    window.location = './';
                  }, 2000);
               },
               function (err) { //error
-                 parent.vm.success = undefined;
-                 parent.vm.error = err.message.error;
+                 parent.vm.handleAlert(0, err.message.error);
               });
    };
 };
@@ -35,18 +31,22 @@ var register = function (parent) {
          username: self.username,
          password: self.password
       }, function (successResponse) {
-         parent.vm.error = undefined;
-         parent.vm.success = successResponse.message.success;
+
+         parent.vm.handleAlert(1, successResponse.message.success);
          $('#authmodal a[data-target="#login"]').tab('show');
          parent.vm.loginCtrl.username = self.username;
+
       }, function (errorResponse) {
-         parent.vm.success = undefined;
-         parent.vm.error = errorResponse.message.error;
+         parent.vm.handleAlert(0, errorResponse.message.error);
+
       });
    };
 };
 BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', function ($scope, AuthFactory, $state, $timeout) {
       var vm = this;
+      vm.error = undefined;
+      vm.success = undefined;
+
       vm.loginCtrl = new login({
          AuthFactory: AuthFactory,
          $timeout: $timeout,
@@ -55,9 +55,39 @@ BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$tim
       });
       vm.registerCtrl = new register({
          AuthFactory: AuthFactory,
-         vm: vm
+         vm: vm,
+         $timeout: $timeout,
       });
-      vm.error = undefined;
-      vm.success = undefined;
+
+      vm.handleAlert = function (success, message) {
+         var alertSuccess = $('.alert.alert-success');
+         var alertError = $('.alert.alert-danger');
+
+         if (success == 1) {
+            vm.success = message;
+            vm.error = undefined;
+            $timeout(function () {
+               alertSuccess.fadeOut('slow', function () {
+                  alertSuccess.css('display', 'block');
+                  $timeout(function () {
+                     vm.error = undefined;
+                     vm.success = undefined;
+                  }, 0);
+               });
+            }, 4000);
+         } else {
+            vm.success = undefined;
+            vm.error = message;
+            $timeout(function () {
+               alertError.fadeOut('slow', function () {
+                  alertError.css('display', 'block');
+                  $timeout(function () {
+                     vm.error = undefined;
+                     vm.success = undefined;
+                  }, 0);
+               });
+            }, 4000);
+         }
+      }
    }
 ]);

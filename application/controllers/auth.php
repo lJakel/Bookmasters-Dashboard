@@ -50,13 +50,13 @@ class Auth extends CI_Controller {
    }
 
    function register() {
-      $result = $this->user_m->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));
+      $this->output->set_header('Content-Type: application/json');
 
+
+      $result = $this->user_m->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));
       if (isset($result['message']['error'])) {
          $this->output->set_status_header('400');
       }
-
-      $this->output->set_header('Content-Type: application/json');
       echo json_encode($result);
    }
 

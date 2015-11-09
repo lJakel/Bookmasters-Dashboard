@@ -1,7 +1,7 @@
 'use strict';
 
 var BMApp = angular.module('BMApp', [
-// common essential modules
+   // common essential modules
    'ngAnimate',
    'ngStorage',
    'ngResource',
@@ -10,8 +10,7 @@ var BMApp = angular.module('BMApp', [
    'ui.jq',
    'ui.event',
    // page-specific and demo. may be removed
-
-// application libs
+   // application libs
    'app.controllers',
    'app.services',
    'app.directives'
@@ -27,9 +26,6 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
               factory: $provide.factory,
               service: $provide.service
            };
-
-
-
 
    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 

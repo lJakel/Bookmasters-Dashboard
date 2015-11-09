@@ -21,9 +21,17 @@ class user_m extends CI_Model {
            'message' => 'Logging in is disabled for the moment. ',
        ],
        'create_new_user' => [
-           'state' => false,
-           'message' => 'Registration is disabled for the moment. '
+           'state' => true,
+           'message' => 'Registration is disabled. Please try again later.'
        ]
+   ];
+   var $SecurityRoles = [
+       0 => 'General Manager',
+       1 => 'Developer',
+       2 => 'Administrator',
+       3 => 'CSR Manager',
+       5 => 'CSR',
+       4 => 'Client'
    ];
    var $DBMethods = [
        'GetUser' => 'GetUser',
@@ -139,53 +147,46 @@ class user_m extends CI_Model {
 
    function create_new_user($username, $password, $email, $regkey) {
 
-      //registration disabled?
+
       if (!$this->enabled['create_new_user']['state']) {
          return ['message' => ['error' => $this->enabled['create_new_user']['message']]];
       }
 
-      //username exist?
       $checkuser = $this->db->query("exec DashboardUser_get ?, ?", [null, $username]);
       if ($checkuser && $checkuser->num_rows()) {
          return ['message' => ['error' => 'This username is already in use.']];
       }
 
-      //select * from registrations where regkey = regkey and check if valid
       $checkregkey = $this->db->query("exec Registration_Get ?", [$regkey]);
       if ($checkregkey && $checkregkey->num_rows() && $checkregkey->row_object()->IsValid) {
-         //continue
+         
       } else {
-         //key not found or invalid
          return ['message' => ['error' => 'The registration key does not exist or is invalid. Please try again or contact your representative.']];
       }
 
-      //generate salt and hash from supplied password
       $passwordSet = $this->create_password($password);
+      $role = $this->SecurityRoles[4];
+      $createuser = $this->db->query("exec DashboardUser_Create ?, ?, ?, ?, ?", [$regkey, $username, $passwordSet['combined'], $role, $email]);
 
-
-      $createuser = $this->db->query("exec DashboardUser_Create ?, ?, ?, ?", [$regkey, $username, $passwordSet['combined'], $email]);
-
+      $userId = '';
       if ($this->db->error()['code'] == '00000') {
-         
+         if ($createuser && $createuser->num_rows() && $createuserReturn = $createuser->row_object()) {
+            $userId = $createuserReturn->Id;
+         }
       } else {
          return ['message' => ['error' => 'A database error has occured']];
       }
 
-      die();
-
-
-
-      $registerquery = $this->db->query("exec {$this->DBMethods['RegisterUser']} ?, ?, ?, ?", [$regkey, $username, $passwordSet['salt'] . "_" . $passwordSet['hash'], $email]);
-
-
-
-      if ($registerquery && $registerquery->num_rows() && $newuser = $registerquery->row_object()) {
-         $registerquery->free_result();
-         return ['message' => ['success' => 'Registration success.']];
+      $updateorigin = $this->db->query("exec Registration_UpdateOrigin ?, ?", [$regkey, $userId]);
+      if ($this->db->error()['code'] == '00000') {
+         if ($updateorigin && $updateorigin->num_rows() && $updateorigin->row_object()->IsValid) {
+            
+         }
       } else {
-         $registerquery->free_result();
-         return ['message' => ['error' => 'Registration failed.', 'detail' => $this->db->_error_message()]];
+         return ['message' => ['error' => 'A database error has occured']];
       }
+
+      return ['message' => ['success' => 'Registration successful.']];
    }
 
    public static function create_password($password, $baseSalt = null) {

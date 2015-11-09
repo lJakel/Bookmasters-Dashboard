@@ -76,6 +76,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
 
       $('[data-toggle="popover"]').popover();
       scriptLoader.loadScripts([
+         'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
          'http://www.bookmasters.com/CDN/js/bs-filepicker/bs-filepicker.js',
          'http://www.bookmasters.com/CDN/js/trip.js/dist/trip.min.js',
          'http://www.bookmasters.com/CDN/js/moment/moment.js',

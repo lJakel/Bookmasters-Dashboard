@@ -56,14 +56,13 @@
       <script src="http://www.bookmasters.com/CDN/js/ngstorage/ngStorage.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-1.4.7/angular-resource.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-event/dist/event.min.js"></script>
-      <script src="https://code.angularjs.org/1.4.7/angular-animate.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/angular-1.4.7/angular-animate.min.js"></script>
 
       <script src="http://www.bookmasters.com/CDN/js/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js"></script>
-
 
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
-      <script src="http://www.bookmasters.com/CDN/js/bootstrap/dist/js/bootstrap.min.js"></script>
+      
+      <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js');?>"></script>
       <script src="http://www.bookmasters.com/CDN/js/pace/pace.min.js" data-pace-options='{ "target": "#main-content", "ghostTime": 1000 }'></script>
 
       <!-- common app js -->

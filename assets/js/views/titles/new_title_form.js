@@ -1,4 +1,4 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedReferences', '$stateParams', function (scriptLoader, $scope, FixedReferences, $stateParams) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedReferences', '$stateParams', 'partialCleanup', function (scriptLoader, $scope, FixedReferences, $stateParams, partialCleanup) {
       var vm = this;
       // if ($stateParams.child) {
       //   alert($stateParams.child)
@@ -6,6 +6,8 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
 
 
       function init() {
+         console.log(partialCleanup)
+         partialCleanup.prepare(['BasicInfo', 'Contributors', 'Formats', 'Demographics', 'Marketing', 'Modals']);
 
          vm.form = 'true';
 
@@ -18,8 +20,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
          vm.save = function () {
             console.log("xD")
             $scope.$broadcast('show-errors-check-validity');
-
-         }
+         };
 
          vm.RefreshJson = function () {
             $('#jsonPre').text(JSON.stringify(
@@ -76,6 +77,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
 
       $('[data-toggle="popover"]').popover();
       scriptLoader.loadScripts([
+         'http://www.bookmasters.com/CDN/js/bootstrap-select/dist/js/bootstrap-select.min.js',
          'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
          'http://www.bookmasters.com/CDN/js/bs-filepicker/bs-filepicker.js',
          'http://www.bookmasters.com/CDN/js/trip.js/dist/trip.min.js',

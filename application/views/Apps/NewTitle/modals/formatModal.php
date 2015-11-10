@@ -33,7 +33,7 @@
                 <label for="ProductForm" class="control-label">Media Type</label>
                 <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form" data-placement="bottom" data-content="The broadest format category into which this book will fit. Print book = paper and ink, Multimedia = Audio or Video, and Digital = eBooks.">?</a>
                 <select id="" class="form-control" ng-required="true" name="ProductType" ng-change="NTF.Formats.FormatModal.GetDynamicProductForms(true)" ng-model="NTF.Formats.FormatModal.ProductType">
-                  <option value="{{type.Id}} - {{type.Display}}" ng-repeat="type in NTF.Formats.FormatModal.FixedProductTypes">{{type.Display}}</option>
+                  <option value="{{type.Id}} - {{type.Name}}" ng-repeat="type in NTF.Formats.FormatModal.FixedProductTypes">{{type.Name}}</option>
                 </select>
               </div>
               <div class="col-md-3 form-group required" data-show-errors>

@@ -5,6 +5,29 @@
 // Define your services here if necessary
 var appServices = angular.module('app.services', []);
 
+
+appServices.factory('partialCleanup', function ($timeout) {
+   var objectsToClean = [];
+   return{
+      prepare: function (array) {
+         array = array || [];
+         objectsToClean = array;
+      },
+      clean: function () {
+         console.log(objectsToClean)
+         $('.partial-script').each(function () {
+            this.remove();
+         });
+         $.each(objectsToClean, function (index, value) {
+            $timeout(function () {
+               window[value] = null;
+            });
+            objectsToClean = [];
+         });
+      }
+   }
+
+});
 /**
  * Override default angular exception handler to log and alert info if debug mode
  */
@@ -16,7 +39,6 @@ appServices.factory('$exceptionHandler', function ($log) {
       app.debug && $log.error.apply($log, arguments);
    };
 });
-
 /**
  * Sing Script loader. Loads script tags asynchronously and in order defined in a page
  */
@@ -39,14 +61,12 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
             var $contents = $($.parseHTML(data, document, true)),
                     $scripts = $contents.filter('script[data-src][type="text/javascript-lazy"]').add($contents.find('script[data-src][type="text/javascript-lazy"]')),
                     scriptLoader = this;
-
             scriptLoader.loadScripts($scripts.map(function () {
                return $(this).attr('data-src');
             }).get())
                     .then(function () {
                        deferred.resolve(data);
                     });
-
             return deferred.promise;
          },
          /**
@@ -55,6 +75,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
           * @returns {*} promise that will be resolved when all scripts are loaded
           */
          loadScripts: function (scripts, loadScope) {
+
             loadScope = loadScope || 'partial';
             var previousDefer = $q.defer();
             previousDefer.resolve();
@@ -77,34 +98,27 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
 
 
                scriptTag.src = script;
-
                defer.processing = true;
-
                $scriptTag.load(function () {
                   $timeout(function () {
                      defer.resolve();
                      defer.processing = false;
                      Pace.restart();
-                  })
+                  });
                });
-
                previousDefer.promise.then(function () {
                   document.body.appendChild(scriptTag);
                });
-
                processedScripts[script] = previousDefer = defer;
             });
-
             return previousDefer.promise;
          }
       }
    }]);
-
 appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', function ($http, $state, $q, $localStorage) {
 
       var local = true;
       var url = '';
-
       if (local == true) {
          var url = 'auth/';
       } else {
@@ -119,9 +133,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
          login: login,
          register: register
       };
-
       return factory;
-
       function changeUser(user) {
          factory.user = user
          $localStorage.user = user;
@@ -131,11 +143,9 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
             $localStorage.$reset();
             changeUser(null);
             $state.go('login');
-
          }, function (response) {
             $state.go('error');
          });
-
       }
 
       function login(user, redirect, success, error) {
@@ -148,8 +158,6 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
             changeUser(null);
             error(response.data);
          });
-
-
       }
 
       function register(user, success, error) {

@@ -31,6 +31,7 @@
                   <h4>What do I do now?</h4>
                   <a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })" class="btn btn-primary"> <i class="fa fa-dashboard"></i> Go to Dashboard</a>
                   <a href="" ng-click='EC.goBack()' class="btn btn-primary"> <i class="fa fa-arrow-left"></i> Go To Application's Home Page</a>
+                  <a href="./" ng-click='EC.reload()' class="btn btn-primary"> <i class="fa fa-refresh"></i> Reload Dashboard</a>
 
                </div>
 
@@ -56,19 +57,21 @@
                margin:0;
             }
          </style>
-<script>
-    BMApp.register.controller('ErrorCtrl', ['$scope', '$state', function($scope, $state) {
-        var self = this;
-        
-         self.code = $state.params.code;
-        self.message = $state.params.message;
-        
-        self.goBack = function() {
-            $scope.previousStateParams.page = 'index';
-            $state.go($scope.previousState, $scope.previousStateParams);
-        }
-    }]);
-</script>
+         <script>
+                    BMApp.register.controller('ErrorCtrl', ['$scope', '$state', function($scope, $state) {
+                        var self = this;
+                        self.code = $state.params.code;
+                        self.message = $state.params.message;
+                        self.goBack = function() {
+                            $scope.previousStateParams.page = 'index';
+                            $state.go($scope.previousState, $scope.previousStateParams);
+                        }
+
+                        self.reload = function() {
+                            window.location = "./";
+                        }
+                    }]);
+         </script>
       </div>
    </div>
 </div>

@@ -77,7 +77,7 @@
                                     </div>
                                  </div>
                               </div>
-                             
+
                            </div>
                         </div>
                         <!--end basic-->
@@ -147,18 +147,16 @@
                                     <tbody>
                                        <tr ng-repeat="Bisac in NTF.Demographics.Bisacs">
                                           <td>{{$index + 1}}</td>
-
                                           <td>
-                                             <select class="form-control" ng-model="Bisac.BisacGroup" ng-change="NTF.Demographics.UpdateBisacCodes($index)" data-size="6" data-live-search="true">
-                                                <option value="{{bis.Name}}" ng-repeat="bis in NTF.Demographics.FixedList">{{bis.Name}}</option>
+                                             
+                                             <select class="form-control selectpicker" selectpicker ng-model="Bisac.BisacGroup" ng-change="NTF.Demographics.UpdateBisacCodes($index)" ng-options="bis.Name for bis in NTF.Demographics.FixedList" data-size="6" data-live-search="true">
+
                                              </select>
                                           </td>
                                           <td>
-
                                              <select class="form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true">
                                                 <option value="{{bis.Index}}" ng-repeat="bis in Bisac.FixedList2">{{bis.Name}}</option>
                                              </select>
-
                                           </td>
                                           <td><button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-minus"></span></button></td>
                                        </tr>
@@ -480,14 +478,13 @@
    </div>
 
    <?php
-   
    $this->load->view('Apps/NewTitle/modals/AppearancesandEventsModal');
    $this->load->view('Apps/NewTitle/modals/contribModal');
    $this->load->view('Apps/NewTitle/modals/endorsementModal');
    $this->load->view('Apps/NewTitle/modals/formatModal');
    $this->load->view('Apps/NewTitle/modals/ReviewModal');
    ?>
- 
+
 
 </div>
 <style>
@@ -516,12 +513,12 @@
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/bootstrap-select/dist/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.css" />
 
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/share/components.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_factory.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/modals/modals.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_basic.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_contributors.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_formats.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_demographics.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_marketing.js?cache=<?php echo rand(1000,9000);?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_form.js?cache=<?php echo rand(1000,9000);?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/modals/modals.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_basic.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_contributors.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_formats.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_demographics.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_marketing.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_form.js?cache=<?php echo rand(1000, 9000); ?>"></script>

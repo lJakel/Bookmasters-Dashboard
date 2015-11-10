@@ -162,12 +162,16 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
            });
 });
 
-BMApp.run(function ($rootScope, $state, $log, AuthFactory) {
+BMApp.run(function ($rootScope, $state, $log, AuthFactory, partialCleanup) {
    $rootScope.previousState;
    $rootScope.previousStateParams;
    $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
       $rootScope.previousState = from.name;
       $rootScope.previousStateParams = fromParams;
+   });
+
+   $rootScope.$on('$stateChangeStart', function () {
+      partialCleanup.clean()
    });
 
    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {

@@ -375,42 +375,75 @@ appDirectives.directive("bsradio", function () {
       }
    }
 });
-appDirectives.directive('selectpicker', ['$parse', function ($parse) {
+appDirectives.directive('selectpicker', ['$parse', '$timeout', function ($parse, $timeout) {
       return {
          restrict: 'A',
-         require: '?ngModel',
-         priority: 10,
-         compile: function (tElement, tAttrs, transclude) {
-            tElement.selectpicker($parse(tAttrs.selectpicker)());
-            tElement.selectpicker('refresh');
-            return function (scope, element, attrs, ngModel) {
-               if (!ngModel)
-                  return;
-
-               scope.$watch(attrs.ngModel, function (newVal, oldVal) {
-                  scope.$evalAsync(function () {
-                     if (!attrs.ngOptions || /track by/.test(attrs.ngOptions))
-                        element.val(newVal);
-                     element.selectpicker('refresh');
-                  });
+         priority: 1000,
+         link: function (scope, element, attrs) {
+            function refresh(newVal) {
+               scope.$applyAsync(function () {
+                  if (attrs.ngOptions && /track by/.test(attrs.ngOptions))
+                     element.val(newVal);
+                  element.selectpicker('refresh');
                });
+            }
 
-               ngModel.$render = function () {
-                  scope.$evalAsync(function () {
-                     element.selectpicker('refresh');
+            attrs.$observe('spTheme', function (val) {
+               $timeout(function () {
+                  element.data('selectpicker').$button.removeClass(function (i, c) {
+                     return (c.match(/(^|\s)?btn-\S+/g) || []).join(' ');
                   });
-               }
-            };
-         }
+                  element.selectpicker('setStyle', val);
+               });
+            });
 
+            $timeout(function () {
+               element.selectpicker($parse(attrs.selectpicker)());
+               element.selectpicker('refresh');
+            });
+
+            if (attrs.ngModel) {
+               scope.$watch(attrs.ngModel, refresh, true);
+            }
+
+            if (attrs.ngDisabled) {
+               scope.$watch(attrs.ngDisabled, refresh, true);
+            }
+
+            scope.$on('$destroy', function () {
+               $timeout(function () {
+                  element.selectpicker('destroy');
+               });
+            });
+         }
       };
    }]);
+appDirectives.directive('toggle', function () {
+   return {
+      restrict: 'ACE',
+      priority: 101,
+      link: function (scope, element, attrs) {
+         var toggleFn = function (e) {
+            var parent = angular.element(this).parent();
+
+            angular.element('.bootstrap-select.open', element)
+                    .not(parent)
+                    .removeClass('open');
+
+            parent.toggleClass('open');
+         };
+
+         element.on('click.bootstrapSelect', '.dropdown-toggle', toggleFn);
+
+         scope.$on('$destroy', function () {
+            element.off('.bootstrapSelect');
+         });
+      }
+   };
+});
 
 appDirectives.directive('summernote', function (scriptLoader) {
    //simple summernote directive
-
-
-
 
    return {
       restrict: 'A',

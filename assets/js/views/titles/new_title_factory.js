@@ -1,6 +1,6 @@
 BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', function ($http, $q, $state) {
 
-      var url = 'http://api.bookmasters.com/references/';
+      var url = 'http://api.bookmasters.com/itemmaster/references/all';
       
 
       var factory = {

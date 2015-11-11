@@ -14,7 +14,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
          vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo);
          vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors);
          vm.Formats = new Formats(data.NewTitle.Formats.Formats, $scope);
-         vm.Demographics = new Demographics(data.NewTitle.Demographics);
+         vm.Demographics = new Demographics(data.NewTitle.Demographics, FixedReferences);
          vm.Marketing = new Marketing(data.NewTitle.Marketing);
 
          vm.save = function () {

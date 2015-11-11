@@ -171,27 +171,30 @@ BMApp.run(function ($rootScope, $state, $log, AuthFactory, partialCleanup) {
    });
 
    $rootScope.$on('$stateChangeStart', function () {
-      partialCleanup.clean()
+      partialCleanup.clean();
    });
 
    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-
+      console.log(error.status)
       switch (error.status) {
          case 200:
          default:
             break;
 
          case 400:
-            $state.go('error', {code: '400'});
+            $state.go('error', {code: '400', message: 'Bad request. The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.'});
+            break;
+
          case 401:
          case 403:
             AuthFactory.logout();
             break;
          case 404:
-            $state.go('error', {code: '404', message: 'Part of/or the page requested was not found.'});
+            $state.go('error', {code: '404', message: 'Part of / and or / the page requested was not found.'});
+            break;
+
          case 500:
             $state.go('error', {code: '500', message: 'An internal server error has occured.'});
-
             break;
       }
    });

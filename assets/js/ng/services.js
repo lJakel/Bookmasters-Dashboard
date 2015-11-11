@@ -19,9 +19,7 @@ appServices.factory('partialCleanup', function ($timeout) {
             this.remove();
          });
          $.each(objectsToClean, function (index, value) {
-            $timeout(function () {
-               window[value] = null;
-            });
+            window[value] = null;
             objectsToClean = [];
          });
       }

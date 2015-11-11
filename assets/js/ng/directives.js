@@ -381,10 +381,12 @@ appDirectives.directive('selectpicker', ['$parse', '$timeout', function ($parse,
          priority: 1000,
          link: function (scope, element, attrs) {
             function refresh(newVal) {
+
                scope.$applyAsync(function () {
-                  if (attrs.ngOptions && /track by/.test(attrs.ngOptions))
+                  if (attrs.ngOptions && /track by/.test(attrs.ngOptions)) {
                      element.val(newVal);
-                  element.selectpicker('refresh');
+                  }
+                  refreshLog('Initial refresh function');
                });
             }
 
@@ -399,15 +401,30 @@ appDirectives.directive('selectpicker', ['$parse', '$timeout', function ($parse,
 
             $timeout(function () {
                element.selectpicker($parse(attrs.selectpicker)());
-               element.selectpicker('refresh');
+               refreshLog('Timeout thing idk');
             });
 
             if (attrs.ngModel) {
-               scope.$watch(attrs.ngModel, refresh, true);
+               scope.$watch(attrs.ngModel, refresh, false);
             }
 
             if (attrs.ngDisabled) {
                scope.$watch(attrs.ngDisabled, refresh, true);
+            }
+
+            if (attrs['options']) {
+               scope.$watch(attrs['options'], function (value) {
+                  if (value) {
+                     scope.$applyAsync(function () {
+                        refreshLog('New Options Attr');
+                     });
+                  }
+               }, true);
+            }
+
+            function refreshLog(message) {
+//               console.log("Refreshed selectpicker - " + message);
+               element.selectpicker('refresh');
             }
 
             scope.$on('$destroy', function () {

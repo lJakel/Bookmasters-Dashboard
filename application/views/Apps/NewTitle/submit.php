@@ -148,14 +148,21 @@
                                        <tr ng-repeat="Bisac in NTF.Demographics.Bisacs">
                                           <td>{{$index + 1}}</td>
                                           <td>
-                                             
-                                             <select class="form-control selectpicker" selectpicker ng-model="Bisac.BisacGroup" ng-change="NTF.Demographics.UpdateBisacCodes($index)" ng-options="bis.Name for bis in NTF.Demographics.FixedList" data-size="6" data-live-search="true">
 
+                                             <select class="form-control selectpicker"
+                                                     selectpicker ng-model="Bisac.BisacGroup"
+                                                     ng-change="NTF.Demographics.UpdateBisacCodes($index)"
+                                                     ng-options="bis.Name for bis in NTF.Demographics.FixedList"
+                                                     options="NTF.Demographics.FixedList"
+                                                     data-size="6" data-live-search="true">
                                              </select>
                                           </td>
                                           <td>
-                                             <select class="form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true">
-                                                <option value="{{bis.Index}}" ng-repeat="bis in Bisac.FixedList2">{{bis.Name}}</option>
+                                             <select class="form-control selectpicker"
+                                                     selectpicker ng-model="Bisac.Code"
+                                                     data-size="6" data-live-search="true"
+                                                     ng-options="bis.Code + ' - ' + bis.Text for bis in Bisac.FixedList2"
+                                                     options="Bisac.FixedList2">
                                              </select>
                                           </td>
                                           <td><button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-minus"></span></button></td>

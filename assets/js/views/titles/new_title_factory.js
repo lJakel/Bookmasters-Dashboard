@@ -1,10 +1,11 @@
 BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', function ($http, $q, $state) {
 
-      var url = 'http://api.bookmasters.com/itemmaster/references/all';
-      
+      var url = 'http://api.bookmasters.com/itemmaster/references/';
+
 
       var factory = {
          getReferences: getReferences,
+         lookupBisac: lookupBisac,
          references: undefined
       };
 
@@ -15,7 +16,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', function ($h
       }
 
       function loadReferences(get) {
-         return $http.post(url, {withCredentials: false}).then(function (response) {
+         return $http.post(url + "all", {withCredentials: false}).then(function (response) {
 
             setReferences({
                ContributorRoles: response.data.ContributorRoles,
@@ -45,5 +46,16 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', function ($h
          } else {
             return $q.when(factory.references);
          }
+      }
+      
+      
+      function lookupBisac(gID) {
+         return $http.post(url + "bisac", {groupid: gID}, {withCredentials: false}).then(function (response) {
+            return response.data;
+
+         }, function (response) {
+            $state.go('error', {code: '500', message: 'An error occured loading the fixed references.'});
+            return;
+         });
       }
    }]);

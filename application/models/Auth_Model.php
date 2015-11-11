@@ -1,6 +1,6 @@
 <?php
 
-class user_m extends CI_Model {
+class Auth_Model extends CI_Model {
 
    var $UserId;
    var $Username;
@@ -194,7 +194,8 @@ class user_m extends CI_Model {
       if ($baseSalt == null) {
          $salt = mcrypt_create_iv(512 / 8, MCRYPT_DEV_URANDOM); //IV
          $baseSalt = base64_encode($salt); //Base the salt
-      } $finalpass = base64_encode(hash_pbkdf2('sha512', $password, $baseSalt, 40000, 100, false)); //Create hash
+      }
+      $finalpass = base64_encode(hash_pbkdf2('sha512', $password, $baseSalt, 40000, 100, false)); //Create hash
       return [
           'salt' => $baseSalt,
           'hash' => $finalpass,

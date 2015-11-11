@@ -243,7 +243,7 @@
                                              <th>ISBN13</th>
                                              <th>Pub Date</th>
                                              <th>US Price</th>
-                                             <th class="twobtn">
+                                             <th style="text-align:center;" class="twobtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Formats.addFormat()"><span class="fa fa-plus"></span></button>
                                              </th>
                                           </tr>
@@ -255,8 +255,8 @@
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>{{Format.USPrice}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-edit fa-fw"></span></button>
+                                                <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-minus fa-fw"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>

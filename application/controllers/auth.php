@@ -6,7 +6,7 @@ class Auth extends CI_Controller {
 
    function __construct() {
       parent::__construct();
-      $this->load->model('user_m');
+      $this->load->model('Auth_Model');
    }
 
    function login() {
@@ -14,7 +14,7 @@ class Auth extends CI_Controller {
       $username = trim($this->input->post('username'));
       $password = trim($this->input->post('password'));
 
-      $result = $this->user_m->login($username, $password);
+      $result = $this->Auth_Model->login($username, $password);
 
       if (isset($result['message']['error'])) {
          http_response_code(400);
@@ -26,7 +26,7 @@ class Auth extends CI_Controller {
 
    function logout() {
 
-      $result = $this->user_m->logout();
+      $result = $this->Auth_Model->logout();
       $success = true;
       if ($success) {
          $this->output->set_header('Content-Type: application/json');
@@ -41,7 +41,7 @@ class Auth extends CI_Controller {
 
    function getuser() {
 
-      $result = $this->user_m->getUser();
+      $result = $this->Auth_Model->getUser();
       if (isset($result['message']['error'])) {
          $this->output->set_status_header('401');
       }
@@ -52,11 +52,24 @@ class Auth extends CI_Controller {
    function register() {
       $this->output->set_header('Content-Type: application/json');
 
-
-      $result = $this->user_m->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));
+      $result = $this->Auth_Model->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));
       if (isset($result['message']['error'])) {
          $this->output->set_status_header('400');
       }
+      echo json_encode($result);
+   }
+
+   function testPW() {
+
+
+      $password = trim($this->input->post('password'));
+      $salt = trim($this->input->post('salt'));
+
+
+      $this->output->set_header('Content-Type: application/json');
+
+      $result = $this->Auth_Model->create_password($password, $salt);
+     
       echo json_encode($result);
    }
 

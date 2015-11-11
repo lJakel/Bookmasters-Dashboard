@@ -8,7 +8,7 @@ class Secure_Controller extends CI_Controller {
       parent::__construct();
 
 
-      $this->load->model('user_m');
+      $this->load->model('Auth_Model');
       $this->load->library('session');
 
 

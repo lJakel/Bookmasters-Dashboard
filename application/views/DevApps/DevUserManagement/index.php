@@ -16,7 +16,7 @@
                         <th>LastModified</th>
                         <th style="text-align: center;width:55px;">
                            <button class="btn btn-info btn-sm" ng-click="DUMC.load()">
-                              <i class="fa fa-refresh" ng-class="{'fa-spin' : DUMC.loading == true}"></i>
+                              <i class="fa fa-refresh fa-fw" ng-class="{'fa-spin' : DUMC.loading == true}"></i>
                            </button>
                         </th>
                      </tr>
@@ -31,13 +31,21 @@
                         <td>{{u.RoleId}}</td>
                         <td>{{u.Created}}</td>
                         <td>{{u.LastModified}}</td>
-                        <td></td>
+                        <td>
+                           <button ng-click="DUMC.loadUser(u.Id)" class="btn btn-primary btn-sm">
+                              <i class="fa fa-edit fa-fw"></i>
+                           </button>
+                        </td>
 
                      </tr>
                   </tbody>
                </table>
 
             </div>
+            <div class="alert alert-info" role="alert">
+               <strong>Info!</strong>  The page loading delay is to show the spinning refresh icon in the table header
+            </div>
+
          </div>
       </div>
    </div>
@@ -52,6 +60,9 @@
 
       var self = this;
       self.loading = false;
+      self.loadUser = function (uId) {
+         $state.go('bm.app.page', {app: 'devusermanagement', page: 'view', child: uId});
+      }
       self.load = function () {
          self.loading = true;
          self.users = [];

@@ -9,7 +9,7 @@
                   <li class="active"><a href="" role="tab" data-target="#login" data-toggle="tab">Login</a></li>
                   <li><a href="" role="tab" data-target="#register" data-toggle="tab">Register</a></li>
                </ul>
-               <div class="login"></div>
+               
                <div class="tab-content">
                   <div class="tab-pane active" id="login">
                      <form method="post">

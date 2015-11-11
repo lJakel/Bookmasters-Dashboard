@@ -20,8 +20,8 @@ class DevUserManagement extends Secure_Controller {
    public function viewusers() {
       $result = $this->DevUserManagement_Model->viewUsers();
 
-      sleep(rand(0,3));
-      
+      sleep(1);
+
       if ($result) {
          $this->output->set_status_header('200');
          $this->output->set_header('Content-Type: application/json');
@@ -29,6 +29,10 @@ class DevUserManagement extends Secure_Controller {
       } else {
          $this->output->set_status_header('400');
       }
+   }
+
+   public function view() {
+      $this->load->view('DevApps/DevUserManagement/view');
    }
 
 }

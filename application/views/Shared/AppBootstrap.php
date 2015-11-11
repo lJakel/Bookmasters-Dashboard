@@ -31,7 +31,7 @@
                      <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle fa-fw"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
                      <ul id="sidebar-devapps" class="collapse">
                         <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
-                        <li><a data-ui-sref="bm.app.page({ 'app': 'usermanagement','page': 'home', child: null })">User Management</a></li>
+                        <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
                      </ul>
                   </li>
                </ul>

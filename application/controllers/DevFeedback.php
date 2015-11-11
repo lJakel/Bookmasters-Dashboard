@@ -6,7 +6,7 @@ class DevFeedback extends Secure_Controller {
 
    function __construct() {
       parent::__construct();
-      $this->load->model('Feedback_Model');
+      $this->load->model('DevModels/DevFeedback_Model');
    }
 
    public function index() {
@@ -19,7 +19,7 @@ class DevFeedback extends Secure_Controller {
 
    public function APIView() {
 
-      $result = $this->Feedback_Model->viewFeedback();
+      $result = $this->DevFeedback_Model->viewFeedback();
       
       if ($result) {
          $this->output->set_status_header('200');
@@ -32,7 +32,7 @@ class DevFeedback extends Secure_Controller {
 
    public function APISubmit() {
 
-      $result = $this->Feedback_Model->submitFeedback(
+      $result = $this->DevFeedback_Model->submitFeedback(
               $this->input->post('username'), $this->input->post('url'), $this->input->post('useragent'), $this->input->post('message'), $this->input->post('contact')
       );
       if ($result) {

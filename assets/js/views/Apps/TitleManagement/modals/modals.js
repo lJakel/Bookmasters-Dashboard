@@ -15,6 +15,8 @@ var Modals = {
       self.Role = '';
       self.Biography = '';
 
+      self.FixedAuthorRoles = [];
+
       self.IsRolePrimary = false;
       self.IsTitlePrimary = false;
       self.AdditionalTitles = [];

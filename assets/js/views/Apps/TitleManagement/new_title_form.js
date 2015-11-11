@@ -5,11 +5,11 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
       // }
 
 
-      function init() {
-         console.log(partialCleanup)
-         partialCleanup.prepare(['BasicInfo', 'Contributors', 'Formats', 'Demographics', 'Marketing', 'Modals']);
 
-         vm.form = 'true';
+
+      function init() {
+
+         partialCleanup.prepare(['BasicInfo', 'Contributors', 'Formats', 'Demographics', 'Marketing', 'Modals']);
 
          vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo);
          vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors);
@@ -35,43 +35,26 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
 
          };
 
-         function loadFixedData() {
-            FixedReferences.getReferences().then(function (response) {
-               console.log(response)
-               vm.Contributors.ContributorModal.FixedAuthorRoles = $.map(response.ContributorRoles, function (item) {
-
-                  return item;
-               });
-
-               vm.Formats.FormatModal.FixedProductTypes = $.map(response.FixedProductTypes, function (item) {
-                  return item;
-               });
-
-               vm.Formats.FormatModal.FixedProductForms = $.map(response.FixedProductForms, function (item) {
-                  return item;
-               });
-
-               vm.Formats.FormatModal.FixedProductFormDetails = $.map(response.FixedProductFormDetails, function (item) {
-                  return item;
-               });
-
-               vm.Formats.FormatModal.FixedProductFormDetailSpecifics = $.map(response.FixedProductFormDetailSpecifics, function (item) {
-                  return item;
-               });
-               vm.Demographics.FixedList = $.map(response.BisacGroups, function (item) {
-                  return item;
-               });
-
-
-
-
+         FixedReferences.getReferences().then(function (response) {
+            vm.Contributors.ContributorModal.FixedAuthorRoles = $.map(response.ContributorRoles, function (item) {
+               return item;
             });
-         }
-
-         loadFixedData();
-
-
-
+            vm.Formats.FormatModal.FixedProductTypes = $.map(response.FixedProductTypes, function (item) {
+               return item;
+            });
+            vm.Formats.FormatModal.FixedProductForms = $.map(response.FixedProductForms, function (item) {
+               return item;
+            });
+            vm.Formats.FormatModal.FixedProductFormDetails = $.map(response.FixedProductFormDetails, function (item) {
+               return item;
+            });
+            vm.Formats.FormatModal.FixedProductFormDetailSpecifics = $.map(response.FixedProductFormDetailSpecifics, function (item) {
+               return item;
+            });
+            vm.Demographics.FixedList = $.map(response.BisacGroups, function (item) {
+               return item;
+            });
+         });
 
       }
 

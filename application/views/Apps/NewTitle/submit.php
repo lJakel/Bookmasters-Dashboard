@@ -25,55 +25,54 @@
                <div class="row">
                   <div class="col-md-12">
                      <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab" ng-style="{'background-color':(BasicInfoPanel.$valid) ? 'none' : 'rgba(169, 67, 66, 0.1)'}">Basic Information</a></li>
+                        <li role="presentation" class="active"><a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic Information</a></li>
                         <li role="presentation"><a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab">Formats</a></li>
                         <li role="presentation"><a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab">Contributors</a></li>
                         <li role="presentation"><a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab">Text</a></li>
                         <li role="presentation"><a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab">Subject</a></li>
                         <li role="presentation"><a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab">Marketing</a></li>
-                        <li role="presentation"><a href="#" data-target="#media" aria-controls="media" role="tab" data-toggle="tab">Media</a></li>
                         <li role="presentation"><a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab">JsonDebug</a></li>
                      </ul>
                      <div class="tab-content">
 
                         <!--basic-->
-                        <div role="tabpanel" class="tab-pane active" id="basic" ng-form="BasicInfoPanel">
+                        <div role="tabpanel" class="tab-pane active" id="basic" ng-form="BasicInfoPanel" ng-repeat="bi in [NTF.BasicInfo]">
                            <div class="row">
                               <div class="col-md-12">
-                                 <div class="form-group" ng-class="{'required':NTF.form}" data-show-errors>
+                                 <div class="form-group" data-show-errors>
                                     <label for="title" class="control-label">Title</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="The unique name for your book. The subtitle (if applicable) should be given separately.">?</a>
-                                    <input type="text" name="title" class="form-control" ng-minlength="4" ng-required="true" ng-model="NTF.BasicInfo.Title">
+                                    <input type="text" name="title" class="form-control" ng-minlength="4" ng-required="true" ng-model="bi.Title">
                                  </div>
                                  <div class="form-group " data-show-errors>
                                     <label for="subtitle" class="control-label">Subtitle</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Subtitle" data-placement="top" data-content="A subtitle should further explain your book's title. It should not include words that explain the format or edition. Not all books have subtitles, so if this book doesn't have one, leave this blank.">?</a>
-                                    <input name="Subtitle" type="text" class="form-control" ng-model="NTF.BasicInfo.Subtitle">
+                                    <input name="Subtitle" type="text" class="form-control" ng-model="bi.Subtitle">
                                  </div>
                                  <div class="form-group required" data-show-errors>
                                     <label for="publisher" class="control-label">Publisher</label>
-                                    <input name="Publisher" type="text" class="form-control" readonly ng-model="NTF.BasicInfo.Publisher">
+                                    <input name="Publisher" type="text" class="form-control" readonly ng-model="bi.Publisher">
                                  </div>
                                  <div class="form-group required" data-show-errors>
                                     <label for="imprint" class="control-label">Imprint</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Imprint" data-placement="top" data-content="The name under which this book will be distributed. An imprint is a specific brand managed by the publisher and can be the same as the publisher name.">?</a>
-                                    <input name="Imprint" type="text" class="form-control" ng-required="true" ng-model="NTF.BasicInfo.Imprint">
+                                    <input name="Imprint" type="text" class="form-control" ng-required="true" ng-model="bi.Imprint">
                                  </div>
                                  <div class="form-group required" data-show-errors>
                                     <label for="" class="control-label">Content Language</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Content language" data-placement="top" data-content="The primary language in which the book is written.">?</a>
-                                    <input name="ContentLanguage" type="text" class="form-control" ng-required="true" ng-model="NTF.BasicInfo.ContentLanguage">
+                                    <input name="ContentLanguage" type="text" class="form-control" ng-required="true" ng-model="bi.ContentLanguage">
                                  </div>
                                  <div class="row">
                                     <div class="form-group col-md-6" data-show-errors>
                                        <label for="" class="control-label">Series Name</label>
                                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Series" data-placement="top" data-content="An indefinite number of titles, published over an indefinite time period, and grouped together under a series title. Primarily for marketing purposes. ">?</a>
-                                       <input name="SeriesName" type="text" class="form-control" ng-model="NTF.BasicInfo.Series">
+                                       <input name="SeriesName" type="text" class="form-control" ng-model="bi.Series">
                                     </div>
                                     <div class="form-group col-md-6" data-show-errors>
                                        <label for="" class="control-label">Number in Series</label>
                                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Number in Series" data-placement="top" data-content="The number of this particular book within the series. Numbers only.">?</a>
-                                       <input name="NumberinSeries" type="text" class="form-control" ng-model="NTF.BasicInfo.NumberinSeries">
+                                       <input name="NumberinSeries" type="text" class="form-control" ng-model="bi.NumberinSeries">
                                     </div>
                                  </div>
                               </div>
@@ -148,7 +147,6 @@
                                        <tr ng-repeat="Bisac in NTF.Demographics.Bisacs">
                                           <td>{{$index + 1}}</td>
                                           <td>
-
                                              <select class="form-control selectpicker"
                                                      selectpicker ng-model="Bisac.BisacGroup"
                                                      ng-change="NTF.Demographics.UpdateBisacCodes($index)"
@@ -252,7 +250,7 @@
                                        </thead>
                                        <tbody>
                                           <tr ng-repeat="Format in NTF.Formats.Formats">
-                                             <td>{{Format.ProductBinding}}</td>
+                                             <td>{{Format.ProductForm}}</td>
                                              <td>{{Format.ISBN13}}</td>
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>{{Format.USPrice}}</td>
@@ -454,7 +452,7 @@
                            </div>
                         </div>
                         <!--end formats-->
-                        <!--text-->
+                        <!--Json-->
                         <div role="tabpanel" class="tab-pane" id="json">
                            <div class="row">
                               <div class="col-md-12">
@@ -464,7 +462,7 @@
                               </div>
                            </div>
                         </div>
-                        <!--end text-->
+                        <!--end Json-->
                      </div>
                   </div>
                </div>
@@ -520,12 +518,12 @@
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/bootstrap-select/dist/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.css" />
 
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/modals/modals.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_basic.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_contributors.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_formats.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_demographics.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_marketing.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/titles/new_title_form.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/modals/modals.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_basic.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_contributors.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_formats.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_demographics.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_marketing.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_form.js?cache=<?php echo rand(1000, 9000); ?>"></script>

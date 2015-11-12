@@ -48,6 +48,7 @@ class Auth_Model extends CI_Model {
 
    public function login($username, $password) {
       if (!$this->enabled['login']['state']) {
+
          return ['message' => ['error' => $this->enabled['login']['message']]];
       }
 

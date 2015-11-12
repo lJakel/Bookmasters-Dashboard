@@ -16,7 +16,7 @@ class Secure_Controller extends CI_Controller {
          
       } else {
          http_response_code(401);
-         exit();
+         exit;
       }
    }
 

@@ -6,6 +6,8 @@ class DevUserManagement extends Secure_Controller {
 
    function __construct() {
       parent::__construct();
+
+      $this->Auth_Model->authorizeApplication('Developer');
       $this->load->model('DevModels/DevUserManagement_Model');
    }
 

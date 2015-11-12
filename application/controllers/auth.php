@@ -6,7 +6,7 @@ class Auth extends CI_Controller {
 
    function __construct() {
       parent::__construct();
-      $this->load->model('Auth_Model');
+      $this->load->model('System/Auth_Model');
    }
 
    function login() {

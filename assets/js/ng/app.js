@@ -186,8 +186,11 @@ BMApp.run(function ($rootScope, $state, $log, AuthFactory, partialCleanup) {
             break;
 
          case 401:
-         case 403:
             AuthFactory.logout();
+            break;
+         case 403:
+            $state.go('error', {code: '403', message: 'You do not have privileges to access this application.'});
+
             break;
          case 404:
             $state.go('error', {code: '404', message: 'Part of / and or / the page requested was not found.'});

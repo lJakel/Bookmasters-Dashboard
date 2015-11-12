@@ -59,13 +59,13 @@
    </div>
 </div>
 <script>
-           BMApp.register.controller('DevUserManagementViewCtrl', function ($state, $http, $stateParams) {
-           if ($stateParams.child) {
-           }
+   BMApp.register.controller('DevUserManagementViewCtrl', function ($state, $http, $stateParams) {
+      if ($stateParams.child) {
+      }
 
-           var self = this;
-           self.child = $stateParams.child;
-           });
+      var self = this;
+      self.child = $stateParams.child;
+   });
 </script>
 <style>
    .tab-pane{

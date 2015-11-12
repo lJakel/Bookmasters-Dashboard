@@ -168,7 +168,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
 
       function isLoggedIn(get) {
          return $http.post(url + 'getuser').then(function (response) {
-            console.log('services.js fn isLoggedIn get session data from server')
+            console.log('services.js fn isLoggedIn get session data from server' )
             changeUser(response.data);
             if (get == true) {
                return response.data;

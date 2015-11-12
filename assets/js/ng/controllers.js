@@ -172,7 +172,7 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
 
       AuthFactory.isLoggedIn(true).then(function (response) {
          $scope.user = response;
-         console.log($scope.user);
+         console.log($scope.user, 'lol');
       });
 
       $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {

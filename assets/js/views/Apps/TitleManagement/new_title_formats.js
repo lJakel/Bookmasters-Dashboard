@@ -5,19 +5,11 @@ var Formats = function (data, $scope) {
     vm.Formats = data || [];
     vm.FormatModal = new Modals.FormatBSModal('');
 
-    /*
-    $scope.$watch('NTF.Formats.FormatModal.ProductForm', function (newvalue, oldvalue) {
-        vm.FormatModal.GetDetails();
-    });
 
-
-    $scope.$watch('NTF.Formats.FormatModal.ProductDetail', function (newvalue, oldvalue) {
-        vm.FormatModal.GetBindings();
-    });
-    */
     vm.showDialog = false;
 
     vm.showFormatModal = function (data, method) {
+       $scope.$broadcast('show-errors-reset');
         console.log(data, method)
         vm.FormatModal.Method = method || 'edit';
         vm.FormatModal.entryData = data;

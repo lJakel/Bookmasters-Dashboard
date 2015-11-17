@@ -8,9 +8,7 @@
       <meta name="description" content="">
       <meta name="author" content="Jake Ihasz">
       <meta name="robots" content="noindex">
-
-
-
+      
       <title>Bookmasters - Dashboard</title>
       <!--<link rel="dns-prefetch" href="//api.bookmasters.com">-->
       <!--[if IE]><link href="http://www.bookmasters.com/CDN/resources/brand/favicon/favicon.ico" rel="icon" /><![endif]-->
@@ -37,15 +35,12 @@
       <![endif]-->
 
 
-
    </head>
    <!-- sn-demo directive enables all functions which are used for demo. e.g. animating notifications count, chat unread messages.
         to be removed in real app-->
-   <body data-ng-controller="BMAppController" data-ng-class="{'login - page': loginPage, 'error - page': errorPage}">
+   <body data-ng-controller="BMAppController">
       <!--App Bootstrap-->
-      <div data-ui-view>
-
-      </div>
+      <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
       <!-- include jquery BEFORE angular so $(el).html() may resolve scripts. see http://stackoverflow.com/a/12200540/1298418 -->
@@ -60,13 +55,14 @@
 
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
-      <script src="http://www.bookmasters.com/CDN/js/pace/pace.min.js" data-pace-options='{ "target": "#main-content", "ghostTime": 1000 }'></script>
+      
 
       <!-- common app js -->
       <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/controllers.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/services.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/directives.js?cache=' . rand(1000, 9000)); ?>"></script>
+
 
       <!-- page specific libs -->
 

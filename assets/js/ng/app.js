@@ -14,7 +14,9 @@ var BMApp = angular.module('BMApp', [
    'app.controllers',
    'app.services',
    'app.directives'
+
 ]);
+
 
 BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider) {
 

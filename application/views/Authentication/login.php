@@ -64,7 +64,7 @@
                      </div>
 
                      <div class="row">
-                        <div class="col-md-12 form-group" style="margin-bottom:0px;" data-show-errors>
+                        <div class="col-md-12 form-group" style="margin-bottom:0px;">
                            <button class="btn btn-primary btn-block" ng-click="L.registerCtrl.register()" ng-disabled="!registerNgForm.$valid">Register <i class="fa fa-refresh fa-fw fa-spin" ng-show="L.registerCtrl.authenticating"></i> </button>
                         </div>
                      </div>

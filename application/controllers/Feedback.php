@@ -6,7 +6,7 @@ class Feedback extends Secure_Controller {
 
    function __construct() {
       parent::__construct();
-      $this->load->model('Feedback_Model');
+      $this->load->model('DevFeedback_Model');
    }
 
    public function index() {
@@ -15,7 +15,7 @@ class Feedback extends Secure_Controller {
 
    public function APISubmit() {
 
-      $result = $this->Feedback_Model->submitFeedback(
+      $result = $this->DevFeedback_Model->submitFeedback(
               $this->input->post('username'), $this->input->post('url'), $this->input->post('useragent'), $this->input->post('message'), $this->input->post('contact')
       );
       if ($result) {

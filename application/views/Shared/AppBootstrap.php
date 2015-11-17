@@ -17,7 +17,7 @@
                      <!--Sales-->
                      <!--Client-->
 
-                     <li ng-if="user.role[0].role == 'csr'"><a data-ui-sref="bm.app.page({ 'app': 'marketingupdate','page': 'index', child: null })">Marketing Update</a></li>
+                     <li><a data-ui-sref="bm.app.page({ 'app': 'marketingupdate','page': 'index', child: null })">Marketing Update</a></li>
                      <li><a data-ui-sref="bm.app.page({ 'app': 'newtitle','page': 'home', child: null })">Title Management</a></li>
                   </ul>
                </li>
@@ -26,12 +26,12 @@
             $dev = true;
             if ($dev) {
                ?>
-               <ul>
+               <ul ng-if="user.roles[0] == 'Developer'">
                   <li>
                      <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle fa-fw"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
                      <ul id="sidebar-devapps" class="collapse">
                         <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
-                        <li><a data-ui-sref="bm.app.page({ 'app': 'usermanagement','page': 'home', child: null })">User Management</a></li>
+                        <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
                      </ul>
                   </li>
                </ul>

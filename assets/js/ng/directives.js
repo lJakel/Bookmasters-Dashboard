@@ -208,17 +208,46 @@ appDirectives.directive('ngWebsiteUrl', function () {
       require: 'ngModel',
       link: function ($scope, $element, $attrs, ngModel) {
 
+
+         ngModel.$parsers.push(function (viewValue) {
+
+            return viewValue;
+         });
+
+
          $scope.$watch($attrs.ngModel, function (value) {
 
 
             var val = value.replace(/^\s+|\s+$/, '');
             var isValid = (val.match(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i));
             if (isValid === null) {
-               ngModel.$setValidity($attrs.ngModel, false);
+               ngModel.$setValidity('websiteUrl', false);
 
             } else {
-               ngModel.$setValidity($attrs.ngModel, true);
+               ngModel.$setValidity('websiteUrl', true);
             }
+         });
+      }
+   }
+});
+appDirectives.directive('isbnValidate', function ($http) {
+
+   return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function ($scope, $element, $attrs, ngModel) {
+         /*We need to check that the value is different to the original*/
+         /*using push() here to run it as the last parser, after we are sure that other validators were run*/
+         ngModel.$parsers.push(function (viewValue) {
+
+            $http.post('http://api.bookmasters.com/util/checkIsbn13', {isbn13: viewValue}).then(function () {
+               ngModel.$setValidity("isbnValidate", true);
+            }, function () {
+               ngModel.$setValidity("isbnValidate", false);
+            });
+
+            return viewValue;
+
          });
       }
    }
@@ -228,6 +257,15 @@ appDirectives.directive('ngWebsiteUrl', function () {
 appDirectives.directive('showErrors', [
    '$timeout', 'showErrorsConfig', '$interpolate', function ($timeout, showErrorsConfig, $interpolate) {
       var getShowSuccess, getTrigger, linkFn;
+
+      var errors = {
+         isbnValidate: 'The ISBN you supplied is invalid',
+         required: 'This field is requierd',
+         minlength: 'Your input is too short',
+         maxlength: 'Your input is too long',
+         email: 'Your email address is invalid',
+      };
+
       getTrigger = function (options) {
          var trigger;
          trigger = showErrorsConfig.trigger;
@@ -283,9 +321,11 @@ appDirectives.directive('showErrors', [
          });
          return toggleClasses = function (invalid) {
             el.toggleClass('has-error', invalid);
-            //el.append('<span class="help-block">Error</span>')
-            console.log(formCtrl[inputName])
-
+            el.find('.help-block').remove();
+            $.each(formCtrl[inputName].$error, function (item) {
+               console.log(item)
+               el.append('<span class="help-block">' + errors[item] + '</span>')
+            });
             if (showSuccess) {
                return el.toggleClass('has-success', !invalid);
             }

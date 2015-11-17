@@ -1,6 +1,6 @@
 <?php
 
-class Feedback_Model extends CI_Model {
+class DevFeedback_Model extends CI_Model {
 
    var $UserId;
 

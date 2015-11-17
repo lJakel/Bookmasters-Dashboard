@@ -101,7 +101,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
                   $timeout(function () {
                      defer.resolve();
                      defer.processing = false;
-                     Pace.restart();
+
                   });
                });
                previousDefer.promise.then(function () {
@@ -119,10 +119,8 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
       var url = '';
       if (local == true) {
          var url = 'auth/';
-      } else {
-         var url = 'http://10.10.11.48/Utilities/api/';
       }
-
+      
       var factory = {
          user: null,
          isLoggedIn: isLoggedIn,
@@ -146,15 +144,18 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
          });
       }
 
-      function login(user, redirect, success, error) {
+      function login(user, success, error ) {
+     
 
-         $http.post(url + 'login', user, redirect).then(function (response) {
-
+         $http.post(url + 'login', user).then(function (response) {
             changeUser(response.data.data); // get user block
             success(response.data); //get parent userblock and message block
+     
          }, function (response) {
             changeUser(null);
             error(response.data);
+   
+
          });
       }
 

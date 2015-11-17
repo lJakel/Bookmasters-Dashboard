@@ -25,7 +25,7 @@
                      <div class="col-md-3 form-group required" id="isbn13" data-show-errors>
                         <label for="ISBN13" class="control-label">ISBN13</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="ISBN" data-placement="left" data-content="The International Standard Book Number (ISBN) is a unique identifier that is required for each format of a title. Example: a print book that also has an ePUB and an ePDF would require 3 unique ISBNs.">?</a>
-                        <input type="text" class="form-control" ng-required="true" name="ISBN13" ng-model="NTF.Formats.FormatModal.ISBN13">
+                        <input type="text" class="form-control" data-isbn-validate ng-required="true" name="ISBN13" ng-model="NTF.Formats.FormatModal.ISBN13" ng-model-options="{ updateOn: 'blur' }">
                      </div>
                   </div>
                   <div class="row">
@@ -43,6 +43,7 @@
                            <option value="" selected>Choose...</option>
                            <option value="{{form.Id}} - {{form.Name}}" ng-repeat="form in NTF.Formats.FormatModal.DynamicProductForms">{{form.Name}}</option>
                         </select>
+
                      </div>
                      <div class="col-md-3 form-group {{(NTF.Formats.FormatModal.DynamicProductFormDetails.length > 1) ? 'required': ''}}" data-show-errors>
                         <label for="ProductDetail" class="control-label">Product Detail</label>
@@ -51,6 +52,8 @@
                            <option value="" selected>Choose...</option>
                            <option value="{{detail.Id}} - {{detail.Name}}" ng-repeat="detail in NTF.Formats.FormatModal.DynamicProductFormDetails">{{detail.Name}}</option>
                         </select>
+                        {{NTF.Formats.FormatModal.ProductDetail.$error|json}}
+
                      </div>
                      <div class="col-md-3 form-group {{(NTF.Formats.FormatModal.DynamicProductFormDetailSpecifics.length > 1) ? 'required': ''}}" data-show-errors>
                         <label for="ProductBinding" class="control-label">Product Binding</label>

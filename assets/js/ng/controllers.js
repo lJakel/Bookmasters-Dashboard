@@ -161,6 +161,8 @@ Helpers.prototype = {
 
 app.helpers = new Helpers();
 
+
+
 appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', function ($scope, $localStorage, AuthFactory, $q, $http) {
       var self = this;
 
@@ -172,14 +174,8 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
 
       AuthFactory.isLoggedIn(true).then(function (response) {
          $scope.user = response;
-         console.log($scope.user);
+         console.log($scope.user, 'lol');
       });
-
-      $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-         $scope.loginPage = toState.name == 'login';
-         $scope.errorPage = toState.name == 'error';
-         $(document).trigger('sn:loaded', [event, toState, toParams, fromState, fromParams]);
-      })
    }]);
 
 var Feedback = function (dep) {

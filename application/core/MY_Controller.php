@@ -8,7 +8,7 @@ class Secure_Controller extends CI_Controller {
       parent::__construct();
 
 
-      $this->load->model('user_m');
+      $this->load->model('System/Auth_Model');
       $this->load->library('session');
 
 
@@ -16,7 +16,7 @@ class Secure_Controller extends CI_Controller {
          
       } else {
          http_response_code(401);
-         exit();
+         exit;
       }
    }
 

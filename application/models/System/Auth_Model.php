@@ -54,7 +54,7 @@ class Auth_Model extends CI_Model {
 
 // Build a query to retrieve the user's details
 // based on the received username and password
-      $queryResult = $this->db->query("exec {$this->DBMethods['GetUser']} ?, ?", [null, $username]);
+      $queryResult = $this->db->query("exec GetUser @username=?", [$username]);
 
 
       if ($queryResult && $queryResult->num_rows() && $user = $queryResult->row_object()) {
@@ -68,11 +68,8 @@ class Auth_Model extends CI_Model {
 
 //create password using the hash from DB
          $exploded = explode('_', $user->Password);
-
          $passwordSet = $this->create_password($password, $exploded[0]);
-
          if ($exploded[1] === $passwordSet['hash']) {
-
 
 //set session
             $this->UserId = (isset($user->Id) ? $user->Id : null);
@@ -154,12 +151,12 @@ class Auth_Model extends CI_Model {
          return ['message' => ['error' => $this->enabled['create_new_user']['message']]];
       }
 
-      $checkuser = $this->db->query("exec DashboardUser_get ?, ?", [null, $username]);
+      $checkuser = $this->db->query("exec DashboardUser_Get @Username=?", [$username]);
       if ($checkuser && $checkuser->num_rows()) {
          return ['message' => ['error' => 'This username is already in use.']];
       }
 
-      $checkregkey = $this->db->query("exec Registration_Get ?", [$regkey]);
+      $checkregkey = $this->db->query("exec Registration_Get @regKey=?", [$regkey]);
       if ($checkregkey && $checkregkey->num_rows() && $checkregkey->row_object()->IsValid) {
          
       } else {
@@ -168,7 +165,7 @@ class Auth_Model extends CI_Model {
 
       $passwordSet = $this->create_password($password);
       $role = $this->SecurityRoles[4];
-      $createuser = $this->db->query("exec DashboardUser_Create ?, ?, ?, ?, ?", [$regkey, $username, $passwordSet['combined'], $role, $email]);
+      $createuser = $this->db->query("exec DashboardUser_Create @RegisteredKey=?, @Username=?, @Password=?, @role=?, @Email=?", [$regkey, $username, $passwordSet['combined'], $role, $email]);
 
       $userId = '';
       if ($this->db->error()['code'] == '00000') {
@@ -179,7 +176,7 @@ class Auth_Model extends CI_Model {
          return ['message' => ['error' => 'A database error has occured']];
       }
 
-      $updateorigin = $this->db->query("exec Registration_UpdateOrigin ?, ?", [$regkey, $userId]);
+      $updateorigin = $this->db->query("exec Registration_UpdateOrigin @RegistrationKey=?, @UserId=?", [$regkey, $userId]);
       if ($this->db->error()['code'] == '00000') {
          if ($updateorigin && $updateorigin->num_rows() && $updateorigin->row_object()->IsValid) {
             
@@ -189,6 +186,44 @@ class Auth_Model extends CI_Model {
       }
 
       return ['message' => ['success' => 'Registration successful.']];
+   }
+
+   function reset_password($username, $email) {
+
+
+      $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $newPassword = substr(str_shuffle($chars), 0, 10);
+
+      $checkuser = $this->db->query("exec DashboardUser_Update @userName=?, @password=?", [$username, $newPassword]);
+
+
+      $updateuser = $this->db->query("exec DashboardUser_Update @userName=?, @password=?", [$username, $newPassword]);
+
+
+      $this->load->library('email');
+
+      $config['protocol'] = 'smtp';
+      $config['smtp_host'] = 'smtp201.domainlocal.com';
+      $config['smtp_host'] = '10.10.10.9';
+      $config['smtp_user'] = '';
+      $config['smtp_pass'] = '';
+      $config['smtp_port'] = '25';
+      $config['charset'] = 'utf-8';
+      $config['newline'] = "\r\n";
+      $config['crlf'] = "\r\n";
+      $config['mailtype'] = 'html';
+
+      $this->email->initialize($config);
+
+      $this->email->from('no-reply@bookmasters.com', 'No Reply');
+      $this->email->to([$email]);
+
+      $this->email->subject('Bookmasters - Forgotten Password');
+      $this->email->message("Hello {$username}, It appears you have forgotten your password. Your temporary password is <i>{$newPassword}</i> Amirighttho?");
+
+      $this->email->send();
+
+      return ['message' => ['success' => 'If this email is associated with this username an email has been sent to reset your password.']];
    }
 
    function authorizeApplication($role) {

@@ -5,18 +5,17 @@ var login = function (parent) {
    self.authenticating = false;
 
    self.login = function (redirect) {
-      self.authenticating = true;
+
 
       parent.AuthFactory.login({username: self.username, password: self.password}, function (res) {
-         self.authenticating = false;
+
 
          parent.vm.handleAlert(1, res.message.success);
          parent.$timeout(function () {
             parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
          }, 2000);
       }, function (err) {
-         self.authenticating = false;
-
+         self.authenticating = true;
          parent.vm.handleAlert(0, err.message.error);
       });
    };
@@ -38,14 +37,14 @@ var register = function (parent) {
          username: self.username,
          password: self.password
       }, function (successResponse) {
-   self.authenticating = false;
+         self.authenticating = false;
 
          parent.vm.handleAlert(1, successResponse.message.success);
          $('#authmodal a[data-target="#login"]').tab('show');
          parent.vm.loginCtrl.username = self.username;
 
       }, function (errorResponse) {
-            self.authenticating = false;
+         self.authenticating = false;
 
          parent.vm.handleAlert(0, errorResponse.message.error);
 
@@ -104,8 +103,6 @@ BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$tim
                });
             }, 4000);
          }
-
-
       }
    }
 ]);

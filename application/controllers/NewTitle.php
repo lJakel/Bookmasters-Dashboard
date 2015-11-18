@@ -16,5 +16,8 @@ class NewTitle extends Secure_Controller {
    public function submit() {
       $this->load->view('Apps/NewTitle/submit');
    }
+   public function submitexcel() {
+      $this->load->view('Apps/NewTitle/submitexcel');
+   }
 
 }

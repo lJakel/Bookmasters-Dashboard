@@ -10,6 +10,7 @@
                <ul class="nav nav-tabs" id="authmodal" role="tablist">
                   <li class="active"><a href="" role="tab" data-target="#login" data-toggle="tab">Login</a></li>
                   <li><a href="" role="tab" data-target="#register" data-toggle="tab">Register</a></li>
+                  <li><a href="" role="tab" data-target="#register" data-toggle="tab">Forgot?</a></li>
                </ul>
 
                <div class="tab-content">
@@ -29,7 +30,7 @@
                         </div>
                         <div class="row">
                            <div class="col-md-12">
-                              <button class="btn btn-primary btn-block" ng-click="L.loginCtrl.login(true)" ng-disabled="!loginNgForm.$valid">Login  <i class="fa fa-refresh fa-fw fa-spin" ng-show="L.loginCtrl.authenticating"></i> </button>
+                              <button class="btn btn-primary btn-block" ng-click="L.loginCtrl.login(true)" ng-disabled="!loginNgForm.$valid">Login  <i class="fa fa-refresh fa-fw fa-spin" ng-if="L.loginCtrl.authenticating"></i> </button>
                            </div>
                         </div>
 
@@ -53,19 +54,20 @@
                      <div class="row">
                         <div class="col-md-12 form-group" data-show-errors>
                            <label for="Password" class="control-label">Password</label>
-                           <input type="password" class="form-control input-sm" id="Password" name="Password" autocomplete="off" ng-model="L.registerCtrl.password" ng-required="true" ng-minlength="8">
+                           <input type="password" class="form-control input-sm" id="Password" name="Password" autocomplete="off" ng-model="L.registerCtrl.password" ng-required="true"  ng-pattern="/(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}/">
+                           
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-12 form-group" data-show-errors>
                            <label for="Email" class="control-label">Email Address</label>
-                           <input type="email" class="form-control input-sm" id="Email" name="Email" autocomplete="off" ng-model="L.registerCtrl.email" ng-required="true" ng-minlength="number">
+                           <input type="email" class="form-control input-sm" id="Email" name="Email" autocomplete="off" ng-model="L.registerCtrl.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" ng-required="true" ng-minlength="number">
                         </div>
                      </div>
 
                      <div class="row">
                         <div class="col-md-12">
-                           <button class="btn btn-primary btn-block" ng-click="L.registerCtrl.register()" ng-disabled="!registerNgForm.$valid">Register <i class="fa fa-refresh fa-fw fa-spin" ng-show="L.registerCtrl.authenticating"></i> </button>
+                           <button class="btn btn-primary btn-block" ng-click="L.registerCtrl.register()" ng-disabled="!registerNgForm.$valid">Register <i class="fa fa-refresh fa-fw fa-spin" ng-if="L.registerCtrl.authenticating"></i> </button>
                         </div>
                      </div>
                   </div>

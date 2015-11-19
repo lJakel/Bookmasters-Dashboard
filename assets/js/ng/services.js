@@ -113,14 +113,14 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
          }
       }
    }]);
-appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', function ($http, $state, $q, $localStorage) {
+appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$timeout', function ($http, $state, $q, $localStorage, $timeout) {
 
       var local = true;
       var url = '';
       if (local == true) {
          var url = 'auth/';
       }
-      
+
       var factory = {
          user: null,
          isLoggedIn: isLoggedIn,
@@ -144,17 +144,17 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', fu
          });
       }
 
-      function login(user, success, error ) {
-     
+      function login(user, success, error) {
 
          $http.post(url + 'login', user).then(function (response) {
             changeUser(response.data.data); // get user block
             success(response.data); //get parent userblock and message block
-     
+
          }, function (response) {
+
             changeUser(null);
             error(response.data);
-   
+
 
          });
       }

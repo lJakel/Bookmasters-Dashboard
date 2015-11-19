@@ -59,7 +59,16 @@ class Auth extends CI_Controller {
       echo json_encode($result);
    }
 
+   function forgot() {
+      $this->output->set_header('Content-Type: application/json');
+
+      $result = $this->Auth_Model->reset_password($this->input->post('username'), $this->input->post('email'));
+
+      echo json_encode($result);
+   }
+
    function testPW() {
+
 
 
       $password = trim($this->input->post('password'));
@@ -69,7 +78,7 @@ class Auth extends CI_Controller {
       $this->output->set_header('Content-Type: application/json');
 
       $result = $this->Auth_Model->create_password($password, $salt);
-     
+
       echo json_encode($result);
    }
 

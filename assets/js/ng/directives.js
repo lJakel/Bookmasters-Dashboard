@@ -264,6 +264,7 @@ appDirectives.directive('showErrors', [
          minlength: 'Your input is too short',
          maxlength: 'Your input is too long',
          email: 'Your email address is invalid',
+         pattern: 'Your password must contain a lowercase and uppercase letter, numbers, and more than 8 characters long',
       };
 
       getTrigger = function (options) {
@@ -404,9 +405,9 @@ appDirectives.directive("bsradio", function () {
             // Update button state to match model
             $element.trigger('change');
          };
-         //         // Observe: Element changes affect Model
+         // Observe: Element changes affect Model
          //       
-         //         // Observe: ngModel for changes
+         // Observe: ngModel for changes
          $scope.$watch(function () {
             return ngModel.$viewValue;
          }, function () {

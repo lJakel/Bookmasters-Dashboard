@@ -8,7 +8,7 @@
       <meta name="description" content="">
       <meta name="author" content="Jake Ihasz">
       <meta name="robots" content="noindex">
-      
+
       <title>Bookmasters - Dashboard</title>
       <!--<link rel="dns-prefetch" href="//api.bookmasters.com">-->
       <!--[if IE]><link href="http://www.bookmasters.com/CDN/resources/brand/favicon/favicon.ico" rel="icon" /><![endif]-->
@@ -19,7 +19,6 @@
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.bookmasters.com/CDN/resources/brand/favicon/apple-touch-icon-114x114-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.bookmasters.com/CDN/resources/brand/favicon/apple-touch-icon-144x144-precomposed.png">
 
-      <!--<link href="css/application.min.css" rel="stylesheet">-->
       <!--Core CSS -->
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-sass/assets/stylesheets/_bootstrap.css" rel="stylesheet">
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
@@ -28,22 +27,20 @@
       <!-- Custom styles for this Dashboard -->
       <link href="http://www.bookmasters.com/CDN/css/dashboard-sass2/assets/stylesheets/_dashboard.css" rel="stylesheet">
 
-      <!--HTML5 Related Downgrade-->
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-      <![endif]-->
-
 
    </head>
-   <!-- sn-demo directive enables all functions which are used for demo. e.g. animating notifications count, chat unread messages.
-        to be removed in real app-->
+
    <body data-ng-controller="BMAppController">
+      <!--[if lt IE 10]>
+          <div class="lt-ie10-bg">
+              <p class="browsehappy">You are using an <strong>outdated</strong> browser.</p>
+              <p>Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+          </div>
+      <![endif]-->
       <!--App Bootstrap-->
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <!-- include jquery BEFORE angular so $(el).html() may resolve scripts. see http://stackoverflow.com/a/12200540/1298418 -->
       <script src="http://www.bookmasters.com/CDN/js/jquery/dist/jquery.min.js"></script>
 
       <script src="http://www.bookmasters.com/CDN/js/angular/angular.min.js"></script>
@@ -55,10 +52,10 @@
 
       <script src="http://www.bookmasters.com/CDN/js/ng-file-upload-bower-10.0.2/ng-file-upload-shim.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/ng-file-upload-bower-10.0.2/ng-file-upload.min.js"></script>
-      
+
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
-      
+
 
       <!-- common app js -->
       <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>

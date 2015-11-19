@@ -9,6 +9,7 @@ var BMApp = angular.module('BMApp', [
    'ui.router.util',
    'ui.jq',
    'ui.event',
+   'ngFileUpload',
    // page-specific and demo. may be removed
    // application libs
    'app.controllers',

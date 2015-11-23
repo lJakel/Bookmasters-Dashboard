@@ -8,7 +8,7 @@ function BasicInfo(data) {
    vm.Series = data.Series || '';
    vm.SeriesName = data.SeriesName || '';
    vm.NumberinSeries = data.NumberinSeries || '';
+   
    vm.MainDescription = data.MainDescription || '';
    vm.ShortDescription = data.ShortDescription || '';
-   vm.Errors = data.Errors || '';
 }

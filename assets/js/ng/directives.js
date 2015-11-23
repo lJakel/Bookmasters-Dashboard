@@ -127,7 +127,6 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
       changeNavigationItem: function (event, toState, toParams) {
 
          var $newActiveLink = this.$el.find('a[href="' + $state.href(toState, toParams) + '"]');
-
          // collapse .collapse only if new and old active links belong to different .collapse
          if (!$newActiveLink.is('.active > .collapse > li > a')) {
             this.$el.find('.active .active').closest('.collapse').collapse('hide');
@@ -135,7 +134,6 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
          this.$el.find('#innersidebar .active').removeClass('active');
          //
          $newActiveLink.closest('li').addClass('active').parents('li').addClass('active').addClass('open');
-
          // uncollapse parent
          $newActiveLink.closest('.collapse').addClass('in').siblings('a[data-toggle=collapse]').removeClass('collapsed');
       },
@@ -213,8 +211,6 @@ appDirectives.directive('ngWebsiteUrl', function () {
 
             return viewValue;
          });
-
-
          $scope.$watch($attrs.ngModel, function (value) {
 
 
@@ -222,7 +218,6 @@ appDirectives.directive('ngWebsiteUrl', function () {
             var isValid = (val.match(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i));
             if (isValid === null) {
                ngModel.$setValidity('websiteUrl', false);
-
             } else {
                ngModel.$setValidity('websiteUrl', true);
             }
@@ -230,24 +225,57 @@ appDirectives.directive('ngWebsiteUrl', function () {
       }
    }
 });
-appDirectives.directive('isbnValidate', function ($http) {
+appDirectives.directive('bmValidate', function ($http, $parse, $timeout) {
 
    return {
       restrict: 'A',
       require: 'ngModel',
       link: function ($scope, $element, $attrs, ngModel) {
-         /*We need to check that the value is different to the original*/
+
          /*using push() here to run it as the last parser, after we are sure that other validators were run*/
-         ngModel.$parsers.push(function (viewValue) {
 
-            $http.post('http://api.bookmasters.com/util/checkIsbn13', {isbn13: viewValue}).then(function () {
-               ngModel.$setValidity("isbnValidate", true);
-            }, function () {
-               ngModel.$setValidity("isbnValidate", false);
-            });
 
-            return viewValue;
+         var ValidateOptions = $parse($attrs.bmValidateOptions);
+         $.each(ValidateOptions(), function (k, value) {
 
+            switch (value) {
+
+               case 'isbn':
+                  ngModel.$parsers.push(function (viewValue) {
+                     $timeout(function () {
+                        $element.parent().parent().removeClass('has-success has-error');
+                        $element.siblings('.input-group-addon').children('i').removeClass().addClass('fa fa-fw fa-refresh fa-spin');
+                     }).then(function () {
+                        $http.post('http://api.bookmasters.com/util/checkIsbn13', {isbn13: viewValue}).then(function () {
+                           ngModel.$setValidity("isbnValidate", true);
+                           $element.siblings('.input-group-addon').children('i').removeClass('fa-refresh fa-spin fa-close fa-question').addClass('fa-check');
+                           $element.parent().parent().removeClass('has-error').addClass('has-success');
+                        }, function () {
+                           ngModel.$setValidity("isbnValidate", false);
+                           $element.parent().parent().removeClass('has-success');
+                           $element.siblings('.input-group-addon').children('i').removeClass('fa-refresh fa-spin fa-check fa-question').addClass('fa-close');
+                        });
+                     });
+                     return viewValue;
+                  });
+                  break;
+
+               case 'bmpassword':
+                  ngModel.$parsers.push(function (viewValue) {
+                     var passwordRegex = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}/;
+                     if (passwordRegex.test(viewValue)) {
+                        ngModel.$setValidity("bmPassword", true);
+                     } else {
+                        ngModel.$setValidity("bmPassword", false);
+                     }
+                     return viewValue;
+                  });
+                  break;
+
+
+               default:
+                  break;
+            }
          });
       }
    }
@@ -257,16 +285,14 @@ appDirectives.directive('isbnValidate', function ($http) {
 appDirectives.directive('showErrors', [
    '$timeout', 'showErrorsConfig', '$interpolate', function ($timeout, showErrorsConfig, $interpolate) {
       var getShowSuccess, getTrigger, linkFn;
-
       var errors = {
          isbnValidate: 'The ISBN you supplied is invalid',
+         bmPassword: 'Your password must contain a lowercase and uppercase letter, numbers, and more than 8 characters long',
          required: 'This field is requierd',
          minlength: 'Your input is too short',
          maxlength: 'Your input is too long',
          email: 'Your email address is invalid',
-         pattern: 'Your password must contain a lowercase and uppercase letter, numbers, and more than 8 characters long',
       };
-
       getTrigger = function (options) {
          var trigger;
          trigger = showErrorsConfig.trigger;
@@ -362,10 +388,6 @@ appDirectives.directive('showErrors', [
       };
    };
 });
-
-
-
-
 appDirectives.directive("bscheck", function () {
    return {
       restrict: "C",
@@ -385,7 +407,6 @@ appDirectives.directive("bsradio", function () {
 
 
          var ngModel = require;
-
          $element.on('change', function () {
             updateModelFromElement();
          });
@@ -439,12 +460,10 @@ appDirectives.directive('selectpicker', ['$parse', '$timeout', function ($parse,
                   element.selectpicker('setStyle', val);
                });
             });
-
             $timeout(function () {
                element.selectpicker($parse(attrs.selectpicker)());
                refreshLog('Timeout thing idk');
             });
-
             if (attrs.ngModel) {
                scope.$watch(attrs.ngModel, refresh, false);
             }
@@ -483,23 +502,18 @@ appDirectives.directive('toggle', function () {
       link: function (scope, element, attrs) {
          var toggleFn = function (e) {
             var parent = angular.element(this).parent();
-
             angular.element('.bootstrap-select.open', element)
                     .not(parent)
                     .removeClass('open');
-
             parent.toggleClass('open');
          };
-
          element.on('click.bootstrapSelect', '.dropdown-toggle', toggleFn);
-
          scope.$on('$destroy', function () {
             element.off('.bootstrapSelect');
          });
       }
    };
 });
-
 appDirectives.directive('summernote', function (scriptLoader) {
    //simple summernote directive
 
@@ -512,11 +526,9 @@ appDirectives.directive('summernote', function (scriptLoader) {
          scriptLoader.loadScripts([
             'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
          ], 'partial').then(summernoteInit);
-
          function summernoteInit() {
             if (!ngModel)
                return;
-
             var options = {
                toolbar: [
                   ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -529,20 +541,14 @@ appDirectives.directive('summernote', function (scriptLoader) {
                   return;
                },
             };
-
             var $summernote = $(element).summernote(options);
             scope.$watch(attrs.ngModel, function (newVal, oldVal) {
                $summernote.code(newVal);
             });
          }
-
-
-
       }
-
    }
 });
-
 appDirectives.directive("modalShow", function () {
    return {
       restrict: "A",

@@ -25,7 +25,14 @@
                      <div class="col-md-3 form-group required" id="isbn13" data-show-errors>
                         <label for="ISBN13" class="control-label">ISBN13</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="ISBN" data-placement="left" data-content="The International Standard Book Number (ISBN) is a unique identifier that is required for each format of a title. Example: a print book that also has an ePUB and an ePDF would require 3 unique ISBNs.">?</a>
-                        <input type="text" class="form-control" data-isbn-validate ng-required="true" name="ISBN13" ng-model="NTF.Formats.FormatModal.ISBN13" ng-model-options="{ updateOn: 'blur' }">
+
+                        <div class="input-group">
+                           <input type="text" class="form-control" data-bm-validate data-bm-validate-options="['isbn','text']" ng-required="true" name="ISBN13" ng-model="NTF.Formats.FormatModal.ISBN13" ng-model-options="{ updateOn: 'blur' }">
+                           <span class="input-group-addon">
+                              <i class="fa fa-question fa-fw"></i>
+                           </span>
+                        </div>
+
                      </div>
                   </div>
                   <div class="row">

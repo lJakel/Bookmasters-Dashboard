@@ -1,10 +1,8 @@
 var Components = {
       AdditionalTitle: function (data) {
             var vm = this;
-
-            vm.ISBN = '';
-            vm.Title = '';
-
+            vm.ISBN = data.ISBN || '';
+            vm.Title = data.Title ||  '';
       },
       Contributor: function (data) {
             var vm = this;
@@ -18,21 +16,14 @@ var Components = {
             vm.Biography = data.Biography || '';
             vm.IsRolePrimary = data.IsRolePrimary || false;
             vm.IsTitlePrimary = data.IsTitlePrimary || false;
-            vm.AdditionalTitles = data.AdditionalTitles || '';
+            vm.AdditionalTitles = data.AdditionalTitles || [];
       },
       Bisac: function (data) {
             var vm = this;
             vm.FixedList = [];
             vm.FixedList2 = [];
             vm.BisacGroup = '';
-            //      vm.BisacGroup.subscribe(function (hmm) {
-            //
-            //         $.post('http://api.bookmasters.com/api/titles/references/bisacs', {'group': hmm}, function (data) {
-            //            vm.FixedList2(data);
-            //         }).then(function () {
-            //            $('.selectpicker').selectpicker('refresh');
-            //         });
-            //      });
+         
             vm.Code = '';
             vm.Text = '';
             vm.Group = '';
@@ -98,7 +89,7 @@ var Components = {
 
             self.ComparableTitles = data.ComparableTitles || [];
       },
-      ComparableTitle: function () {
+      ComparableTitle: function (data) {
             var self = this;
             self.ISBN = data.ISBN || '';
             self.Title = data.Title || '';

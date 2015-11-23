@@ -6,7 +6,7 @@
                <div class="row">
                   <div class="container-fluid">
                      <div class="jumbotron" style="position: static; z-index: auto;">
-                        <h1>Submit New Title <i class="fa fa-check-circle" style="color: #5cb85c;"></i> </h1>
+                        <h1>Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <div>
                            <h4> <strong>{{NTF.BasicInfo.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Publisher}}</span> </h4>
                         </div>
@@ -81,7 +81,7 @@
                         </div>
                         <!--end basic-->
                         <!--contributors-->
-                        <div role="tabpanel" class="tab-pane" id="contributors" ng-form="ContributorsPanel">
+                        <div role="tabpanel" class="tab-pane" id="contributors" ng-form="ContributorsPanel"  ng-repeat="c in [NTF.Contributors]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Contributors</h3>
@@ -97,22 +97,22 @@
                                              <th>Hometown</th>
                                              <th>Role</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" id="btnlol" ng-click="NTF.Contributors.addContributor()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" id="btnlol" ng-click="c.addContributor()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="contributor in NTF.Contributors.Contributors">
+                                          <tr ng-repeat="contributor in c.Contributors">
                                              <td>{{contributor.Prefix}}</td>
                                              <td>{{contributor.FirstName}}</td>
                                              <td>{{contributor.MiddleName}}</td>
                                              <td>{{contributor.LastName}}</td>
                                              <td>{{contributor.Suffix}}</td>
                                              <td>{{contributor.Hometown}}</td>
-                                             <td>{{contributor.Role}}</td>
+                                             <td>{{contributor.Role.Name}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Contributors.showContributorModal(contributor, 'edit')"><span class="fa fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Contributors.removeContributor($index)"><span class="fa fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="c.showContributorModal(contributor, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="c.removeContributor($index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>
@@ -139,7 +139,7 @@
                                           <th style="width: 50%;">Category</th>
                                           <th style="width: 50%;">Code <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="BISAC Subject Code" data-placement="left" data-content='BISAC codes are used by the publishing industry to clearly identify a book&apos;s subject. The Book Industry Study Group (BISG) maintains these codes. (link) <bulleted list> - Always list your most important and specific BISAC code first. Think about who you are trying to sell to and what your book is trying to say. The more specific you are, the better chance your reader has of finding your book.  -Don&apos;t use "general" BISAC codes because they make it more difficult for people to find your book. -You cannot mix Fiction and Non Fiction codes; it&apos;s either fiction or it&apos;s not. -You cannot mix Children&apos;s (Juvenile) and General Audience codes; the book is either for Children or it&apos;s not. -The MEDICAL BIASCs are ONLY for scholarly books aimed at medical professionals. The HEALTH and BODY, MIND, SPIRIT BISACs are for the general public. - Book retailers will interpret these BISAC codes and apply them to how they organize their stores. Choose specific BISACs to help them make better decisions. - Supply at least 1 BISAC, preferably 3, and no more than 5 BISAC codes.'>?</a></th>
                                           <th class="twobtn">
-                                             <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Demographics.addBisac()"><span class="fa fa-plus"></span></button>
+                                             <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Demographics.addBisac()"><span class="fa fa-fw fa-plus"></span></button>
                                           </th>
                                        </tr>
                                     </thead>
@@ -163,7 +163,7 @@
                                                      options="Bisac.FixedList2">
                                              </select>
                                           </td>
-                                          <td><button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-minus"></span></button></td>
+                                          <td><button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -244,7 +244,7 @@
                                              <th>Pub Date</th>
                                              <th>US Price</th>
                                              <th style="text-align:center;" class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Formats.addFormat()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Formats.addFormat()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
@@ -255,8 +255,8 @@
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>{{Format.USPrice}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-edit fa-fw"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-minus fa-fw"></span></button>
+                                                <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-fw fa-edit fa-fw"></span></button>
+                                                <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-fw fa-minus fa-fw"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>
@@ -279,7 +279,7 @@
                                              <th style="width:50%;">Website URL</th>
                                              <th style="width:50%;">Type</th>
                                              <th class="onebtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addWebsite()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addWebsite()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
@@ -302,7 +302,7 @@
                                                    </optgroup>
                                                 </select>
                                              </td>
-                                             <td><button class="btn btn-danger" ng-click="NTF.Marketing.remove('Websites', $index)"><span class="fa fa-minus"></span></button></td>
+                                             <td><button class="btn btn-danger" ng-click="NTF.Marketing.remove('Websites', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
                                        </tbody>
                                     </table>
@@ -325,7 +325,7 @@
                                              <th style="width:25%">Publication</th>
                                              <th>Text</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addReview()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addReview()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
@@ -335,8 +335,8 @@
                                              <td>{{Review.Publication}}</td>
                                              <td>{{Review.Text}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showReviewModal(Review, 'edit')"><span class="fa fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('Reviews', $index)"><span class="fa fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showReviewModal(Review, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('Reviews', $index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>
@@ -356,7 +356,7 @@
                                              <th style="width:25%">Affiliation</th>
                                              <th>Text</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addEndorsement()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addEndorsement()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
@@ -366,8 +366,8 @@
                                              <td>{{Endorsement.Affiliation}}</td>
                                              <td>{{Endorsement.Text}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showEndorsementModal(Endorsement, 'edit')"><span class="fa fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('Endorsements', $index)"><span class="fa fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showEndorsementModal(Endorsement, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('Endorsements', $index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>
@@ -390,7 +390,7 @@
                                              <th style="width:50%;">Type</th>
                                              <th style="width:50%;">Description</th>
                                              <th class="onebtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addMarketingandPublicity()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addMarketingandPublicity()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
@@ -407,7 +407,7 @@
                                                 </select>
                                              </td>
                                              <td><textarea name="" id="" cols="30" rows="3" class="form-control"></textarea></td>
-                                             <td><button class="btn btn-danger" ng-click="NTF.Marketing.remove('MarketingandPublicities', $index)"><span class="fa fa-minus"></span></button></td>
+                                             <td><button class="btn btn-danger" ng-click="NTF.Marketing.remove('MarketingandPublicities', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
                                        </tbody>
                                     </table>
@@ -430,7 +430,7 @@
                                              <th style="width:33%;">Location </th>
                                              <th style="width:33%;">Date</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary btn-block" ng-click="NTF.Marketing.addAppearanceandEvent()"><span class="fa fa-plus"></span></button>
+                                                <button class="btn btn-primary btn-block" ng-click="NTF.Marketing.addAppearanceandEvent()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
@@ -441,8 +441,8 @@
                                              <td>{{Event.Date}}</td>
 
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showAppearanceandEventModal(Event, 'edit')"><span class="fa fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('AppearanceandEvents', $index)"><span class="fa fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showAppearanceandEventModal(Event, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('AppearanceandEvents', $index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>

@@ -12,8 +12,8 @@
          <div class="panel-body">
             <p class="desc">Account Completion <span class="pull-right color-success">34%</span></p>
             <div class="progressbar-container">
-               <div class="progressbar-xs progress ng-isolate-scope" value="34" type="success">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"  aria-valuetext="34%" aria-labelledby="progressbar" style="min-width: 0px; width: 34%;" ng-transclude=""></div>
+               <div class="progressbar-xs progress" value="34" type="success">
+                  <div class="progress-bar progress-bar-success" role="progressbar" style="min-width: 0px; width: 34%;"></div>
                </div>
             </div>
          </div>

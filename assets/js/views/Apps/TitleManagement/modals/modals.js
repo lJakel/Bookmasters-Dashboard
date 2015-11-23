@@ -1,7 +1,5 @@
-//Comment for testing
-
 var Modals = {
-   ContributorBSModal: function () {
+   ContributorBSModal: function (data) {
       var self = this;
       self.entryData = undefined;
       self.method = '';
@@ -22,16 +20,19 @@ var Modals = {
       self.AdditionalTitles = [];
 
 
+      self.addAdditionalTitle = addAdditionalTitle;
+      self.removeAdditionalTitle = removeAdditionalTitle;
 
-      self.addAdditionalTitle = function () {
-         self.AdditionalTitles.push(new Components.AdditionalTitle());
-      };
-      self.removeAdditionalTitle = function (index) {
+
+      function addAdditionalTitle() {
+         self.AdditionalTitles.push(new Components.AdditionalTitle(''));
+      }
+      function removeAdditionalTitle(index) {
          self.AdditionalTitles.splice(index, 1);
-      };
+      }
 
    },
-   FormatBSModal: function ($scope) {
+   FormatBSModal: function () {
       var self = this;
       self.entryData = undefined;
       self.method = '';
@@ -74,7 +75,17 @@ var Modals = {
       self.DynamicProductFormDetailSpecifics = [];
 
 
-      self.GetDynamicProductForms = function (watch) {
+      self.GetDynamicProductForms = GetDynamicProductForms;
+      self.GetDynamicProductDetails = GetDynamicProductDetails;
+      self.GetDynamicProductFormDetailSpecifics = GetDynamicProductFormDetailSpecifics;
+      self.addIllustration = addIllustration;
+      self.removeIllustration = removeIllustration;
+      self.addComparableTitle = addComparableTitle;
+      self.removeComparableTitle = removeComparableTitle;
+
+
+
+      function GetDynamicProductForms(watch) {
          var watch = watch || false;
 
          if (self.ProductType != '') {
@@ -88,17 +99,10 @@ var Modals = {
             self.ProductForm = "";
             self.ProductDetail = "";
             self.ProductBinding = "";
-            if (match != null) {
-               match = match[1]
-               self.DynamicProductForms = newdata.filter(function (el) {
-                  return el.MediaTypeId == match;
-               });
-            }
          }
-
       }
 
-      self.GetDynamicProductDetails = function (watch) {
+      function GetDynamicProductDetails(watch) {
          var watch = watch || false;
 
          if (self.ProductForm != '') {
@@ -120,7 +124,7 @@ var Modals = {
          }
       }
 
-      self.GetDynamicProductFormDetailSpecifics = function (watch) {
+      function GetDynamicProductFormDetailSpecifics(watch) {
          var watch = watch || false;
          if (self.ProductDetail != '') {
             var SelectedProductFormDetail = self.ProductDetail; //get previously seelected item
@@ -139,21 +143,19 @@ var Modals = {
          }
       }
 
-      self.addIllustration = function () {
+
+      function addIllustration() {
          self.Illustrations.push(new Components.Illustration(''));
-      };
-      self.removeIllustration = function (index) {
+      }
+      function removeIllustration(index) {
          self.Illustrations.splice(index, 1);
-      };
-
-
-      self.addComparableTitle = function () {
+      }
+      function addComparableTitle() {
          self.ComparableTitles.push(new Components.ComparableTitle(''));
-      };
-      self.removeComparableTitle = function (index) {
+      }
+      function removeComparableTitle(index) {
          self.ComparableTitles.splice(index, 1);
-      };
-
+      }
 
    },
    ReviewModal: function () {

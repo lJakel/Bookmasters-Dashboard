@@ -22,7 +22,10 @@
       <!--Core CSS -->
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-sass/assets/stylesheets/_bootstrap.css" rel="stylesheet">
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
+
+      <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 
       <!-- Custom styles for this Dashboard -->
       <link href="http://www.bookmasters.com/CDN/css/dashboard-sass2/assets/stylesheets/_dashboard.css" rel="stylesheet">
@@ -31,18 +34,13 @@
    </head>
 
    <body data-ng-controller="BMAppController">
-      <!--[if lt IE 10]>
-          <div class="lt-ie10-bg">
-              <p class="browsehappy">You are using an <strong>outdated</strong> browser.</p>
-              <p>Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-          </div>
-      <![endif]-->
+      <!--[if lt IE 10]><div class="lt-ie10-bg"><p class="browsehappy">You are using an <strong>outdated</strong> browser.</p><p>Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p</div><![endif]-->
+
       <!--App Bootstrap-->
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
       <script src="http://www.bookmasters.com/CDN/js/jquery/dist/jquery.min.js"></script>
-
       <script src="http://www.bookmasters.com/CDN/js/angular/angular.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-router/release/angular-ui-router.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/ngstorage/ngStorage.min.js"></script>
@@ -56,13 +54,11 @@
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
 
-
       <!-- common app js -->
       <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/controllers.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/services.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/directives.js?cache=' . rand(1000, 9000)); ?>"></script>
-
 
       <!-- page specific libs -->
 

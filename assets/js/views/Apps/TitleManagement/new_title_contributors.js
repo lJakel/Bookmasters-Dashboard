@@ -6,7 +6,15 @@ var Contributors = function (data) {
 
    vm.showDialog = false;
 
-   vm.showContributorModal = function (data, method) {
+
+   vm.showContributorModal = showContributorModal;
+   vm.onContributorModalAction = onContributorModalAction;
+   vm.addContributor = addContributor;
+   vm.removeContributor = removeContributor;
+
+
+
+   function showContributorModal(data, method) {
       console.log(data, method)
       vm.ContributorModal.Method = method || 'edit';
       vm.ContributorModal.entryData = data;
@@ -14,9 +22,8 @@ var Contributors = function (data) {
          vm.ContributorModal[k] = data[k] || null;
       });
       vm.showDialog = true;
-   };
-
-   vm.onContributorModalAction = function () {
+   }
+   function onContributorModalAction() {
       $.each(vm.ContributorModal.entryData, function (k, v) {
          vm.ContributorModal.entryData[k] = vm.ContributorModal[k];
       });
@@ -24,13 +31,12 @@ var Contributors = function (data) {
          vm.Contributors.push(vm.ContributorModal.entryData);
       }
       vm.showDialog = false;
-   };
-
-   vm.addContributor = function () {
+   }
+   function addContributor() {
       vm.showContributorModal(new Components.Contributor(''), 'add');
-   };
+   }
 
-   vm.removeContributor = function (index) {
+   function removeContributor(index) {
       vm.Contributors.splice(index, 1);
-   };
-}
+   }
+};

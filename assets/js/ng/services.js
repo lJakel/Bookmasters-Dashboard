@@ -115,11 +115,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
    }]);
 appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$timeout', function ($http, $state, $q, $localStorage, $timeout) {
 
-      var local = true;
-      var url = '';
-      if (local == true) {
-         var url = 'auth/';
-      }
+      var url = 'auth/';
 
       var factory = {
          user: null,
@@ -154,8 +150,6 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
             changeUser(null);
             error(response.data);
-
-
          });
       }
 

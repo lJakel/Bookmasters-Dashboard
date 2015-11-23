@@ -6,18 +6,22 @@ var login = function (parent) {
 
    self.login = function (redirect) {
 
-
-      parent.AuthFactory.login({username: self.username, password: self.password}, function (res) {
-
-
-         parent.vm.handleAlert(1, res.message.success);
-         parent.$timeout(function () {
-            parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
-         }, 2000);
-      }, function (err) {
+      parent.$timeout(function () {
          self.authenticating = true;
-         parent.vm.handleAlert(0, err.message.error);
+      }).then(function () {
+         parent.AuthFactory.login({username: self.username, password: self.password}, function (res) {
+            self.authenticating = false;
+
+            parent.vm.handleAlert(1, res.message.success);
+            parent.$timeout(function () {
+               parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
+            }, 2000);
+         }, function (err) {
+            self.authenticating = false;
+            parent.vm.handleAlert(0, err.message.error);
+         });
       });
+
    };
 };
 var register = function (parent) {

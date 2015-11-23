@@ -4,18 +4,15 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
       //   alert($stateParams.child)
       // }
 
-
-
-
       function init() {
 
          partialCleanup.prepare(['BasicInfo', 'Contributors', 'Formats', 'Demographics', 'Marketing', 'Modals']);
 
-         vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo);
-         vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors);
-         vm.Formats = new Formats(data.NewTitle.Formats.Formats, $scope);
-         vm.Demographics = new Demographics(data.NewTitle.Demographics, FixedReferences);
-         vm.Marketing = new Marketing(data.NewTitle.Marketing);
+         vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '');
+         vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '');
+         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', $scope);
+         vm.Demographics = new Demographics(data.NewTitle.Demographics || '', FixedReferences);
+         vm.Marketing = new Marketing(data.NewTitle.Marketing || '');
 
          vm.save = function () {
             console.log("xD")
@@ -300,3 +297,42 @@ var data = {
       }
    ]
 }
+var data = {
+   "NewTitle": {
+      "BasicInfo": {},
+      "Contributors": {
+         "Contributors": [
+            {
+               "FirstName": "Jake",
+               "MiddleName": "A",
+               "LastName": "Ihasz",
+               "Prefix": "Mr",
+               "Suffix": "3rd",
+               "Hometown": "Ashland",
+               "Role": {
+                  "Id": 1,
+                  "Name": "Author"
+               },
+               "Biography": "Well said mate",
+               "IsRolePrimary": true,
+               "IsTitlePrimary": true,
+               "AdditionalTitles": [
+                  {
+                     "ISBN": "9780000000002",
+                     "Title": "Mcghee",
+                     
+                  },
+                  {
+                     "ISBN": "9780000000002",
+                     "Title": "gfds",
+                     
+                  }
+               ],
+            }
+         ],
+      },
+      "Demographics": {},
+      "Formats": {},
+      "Marketing": {}
+   },
+};

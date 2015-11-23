@@ -54,7 +54,7 @@
                      <div class="row">
                         <div class="col-md-12 form-group" data-show-errors>
                            <label for="Password" class="control-label">Password</label>
-                           <input type="password" class="form-control input-sm" id="Password" name="Password" autocomplete="off" ng-model="L.registerCtrl.password" ng-required="true"  ng-pattern="/(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}/">
+                           <input type="password" class="form-control input-sm" id="Password" name="Password" autocomplete="off" ng-model="L.registerCtrl.password" ng-required="true" data-bm-validate data-bm-validate-options="['bmpassword']">
                            
                         </div>
                      </div>

@@ -1,4 +1,4 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedReferences', '$stateParams', 'partialCleanup', function (scriptLoader, $scope, FixedReferences, $stateParams, partialCleanup) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', function (scriptLoader, $scope, $timeout, FixedReferences, $stateParams, partialCleanup) {
       var vm = this;
       // if ($stateParams.child) {
       //   alert($stateParams.child)
@@ -51,13 +51,24 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
             vm.Demographics.FixedList = $.map(response.BisacGroups, function (item) {
                return item;
             });
+
+         });
+
+         FixedReferences.getIsoCodes().then(function (response) {
+            vm.Formats.FormatModal.FixedIsoCodes = $.map(response, function (item) {
+               
+               return item;
+            });
+         });
+
+         $timeout(function () {
+            //document ready
+            $('[data-toggle="popover"]').popover();
          });
 
       }
 
-      $('[data-toggle="popover"]').popover();
       scriptLoader.loadScripts([
-         'http://www.bookmasters.com/CDN/js/bootstrap-select/dist/js/bootstrap-select.min.js',
          'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
          'http://www.bookmasters.com/CDN/js/bs-filepicker/bs-filepicker.js',
          'http://www.bookmasters.com/CDN/js/trip.js/dist/trip.min.js',
@@ -70,236 +81,16 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', 'FixedRefer
 var data = {
    "NewTitle": {
       "BasicInfo": {
-         "Title": "Comic Book People 2",
-         "Subtitle": "Photographs from the 1990s",
-         "Publisher": "h.f.ullmann",
-         "Imprint": "Estrada INC",
+         "Title": "Jakes Boss Book of Memes",
+         "Subtitle": "To Troll and Beyond",
+         "Publisher": "TrollToTroll",
+         "Imprint": "TrollHasz",
          "ContentLanguage": "English",
          "Series": "Star Wars",
-         "SeriesName": "",
-         "NumberinSeries": "1",
-         "MainDescription": "fsdfdsfdsf",
-         "ShortDescription": "dsfdsfsdfsdfs"
+         "NumberinSeries": "3",
+         "MainDescription": "Main Desc",
+         "ShortDescription": "Short Desc",
       },
-      "Contributors": {
-         "Contributors": [
-            {
-               "FirstName": "Jackie",
-               "MiddleName": "A",
-               "LastName": "Estrada",
-               "Prefix": "Mrs.",
-               "Suffix": "4th",
-               "Hometown": "Ashland",
-               "Role": 'Author',
-               "Biography": "<p>ASlkjdflkjdslkfjdslkfjdsflkdsflkjsd&nbsp;&nbsp;&nbsp;&nbsp;</p>",
-               "IsRolePrimary": true,
-               "IsTitlePrimary": true,
-               "AdditionalTitles": [
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "Cats"
-                  }
-               ]
-            }
-         ]
-      },
-      "Demographics": {
-         "Bisacs": [
-            {
-               "BisacGroup": 3,
-               "Code": 93
-            }
-         ]
-      },
-      "Formats": {
-         "Formats": [
-            {
-               "ProductForm": "12 - Hardback",
-               "ProductDetail": "4 - Printed Case",
-               "ProductBinding": "",
-               "ISBN13": "9780000000002",
-               "Width": "4",
-               "Height": "5",
-               "Spine": "6",
-               "Weight": "7",
-               "PublicationDate": "2015/08/27",
-               "Copyright": "2019",
-               "StockDueDate": "2015/08/27",
-               "TradeSales": true,
-               "Pages": "512",
-               "CartonQuantity": "32",
-               "USPrice": "19.66",
-               "DiscountCode": "TRT",
-               "CustomsValue": "dsa",
-               "Edition": "1",
-               "EditionNumber": "2",
-               "EditionType": "3",
-               "CountryofOrigin": "Nigeria",
-               "PublicationLocation": "United Kingdom",
-               "ComparableTitles": [
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "Cats"
-                  }
-               ]
-            }
-         ]
-      },
-      "Marketing": {
-         "ReviewErrors": [
-         ],
-         "EndorsementErrors": [
-         ],
-         "AppearancesAndEvents": [
-            {
-               "Name": "dsf",
-               "Date": "fds",
-               "Location": "fds",
-               "Description": "fdsfdsfd"
-            }
-         ],
-         "Websites": [
-            {
-               "URL": "http://www.bookmasters.com/marktplc/04762.php",
-               "Type": "2"
-            }
-         ],
-         "MarketingandPublicities": [
-            {
-               "Type": "4",
-               "Description": "fdssfdsfd"
-            }
-         ],
-         "Endorsements": [
-            {
-               "Name": "fds",
-               "Affiliation": "fds",
-               "Text": "fds"
-            }
-         ],
-         "Reviews": [
-            {
-               "Name": "fds",
-               "Publication": "fds",
-               "Text": "fds"
-            }
-         ]
-      }
-   },
-   "IncompleteTitles": [
-      {
-         "BasicInfo": {
-            "Title": "G8",
-            "Subtitle": "Lolcats",
-            "Publisher": "h.f.ullmann2",
-            "Imprint": "Author Solutions",
-            "ContentLanguage": "English",
-            "Series": "",
-            "SeriesName": "Star Wars",
-            "NumberinSeries": "3",
-            "MainDescription": "",
-            "ShortDescription": "",
-            "Errors": ""
-         },
-         "Contributors": {
-            "Contributors": [
-               {
-                  "FirstName": "Sue",
-                  "MiddleName": "Cats",
-                  "LastName": "Bray",
-                  "Prefix": "Mrs",
-                  "Suffix": "3rd",
-                  "Hometown": "Ashland",
-                  "Role": "Authro",
-                  "Biography": "Lol this bio tho",
-                  "IsRolePrimary": false,
-                  "IsTitlePrimary": false,
-                  "AdditionalTitles": [
-                     {
-                        "ISBN": "fdgdfgdfg",
-                        "Title": "dfgfdgdfg"
-                     },
-                     {
-                        "ISBN": "312123",
-                        "Title": "dfgf3213dgdfg"
-                     }
-                  ]
-               },
-               {
-                  "FirstName": "Lelarino",
-                  "MiddleName": "Lol",
-                  "LastName": "Inorino",
-                  "Prefix": "Mr",
-                  "Suffix": "4th",
-                  "Hometown": "Mansfield",
-                  "Role": "CatsMcGhee",
-                  "Biography": "Lelcatssssadasdasd",
-                  "IsRolePrimary": false,
-                  "IsTitlePrimary": false,
-                  "AdditionalTitles": ""
-               }
-            ]
-         }
-      },
-      {
-         "BasicInfo": {
-            "Title": "Comic Book People 2 ",
-            "Subtitle": "Photographs from the 1990s",
-            "Publisher": "h.f.ullmann2",
-            "Imprint": "Estrada INC",
-            "ContentLanguage": "English",
-            "Series": "",
-            "SeriesName": "Star Wards",
-            "NumberinSeries": "3",
-            "MainDescription": "",
-            "ShortDescription": "",
-            "Errors": ""
-         },
-         "Contributors": {
-            "Contributors": [
-               {
-                  "FirstName": "Sue",
-                  "MiddleName": "Cats",
-                  "LastName": "Bray",
-                  "Prefix": "Mrs",
-                  "Suffix": "3rd",
-                  "Hometown": "Ashland",
-                  "Role": "Authro",
-                  "Biography": "Lol this bio tho",
-                  "IsRolePrimary": false,
-                  "IsTitlePrimary": false,
-                  "AdditionalTitles": [
-                     {
-                        "ISBN": "fdgdfgdfg",
-                        "Title": "dfgfdgdfg"
-                     },
-                     {
-                        "ISBN": "312123",
-                        "Title": "dfgf3213dgdfg"
-                     }
-                  ]
-               },
-               {
-                  "FirstName": "Lelarino",
-                  "MiddleName": "Lol",
-                  "LastName": "Inorino",
-                  "Prefix": "Mr",
-                  "Suffix": "4th",
-                  "Hometown": "Mansfield",
-                  "Role": "CatsMcGhee",
-                  "Biography": "Lelcatssssadasdasd",
-                  "IsRolePrimary": false,
-                  "IsTitlePrimary": false,
-                  "AdditionalTitles": ""
-               }
-            ]
-         }
-      }
-   ]
-}
-var data = {
-   "NewTitle": {
-      "BasicInfo": {},
       "Contributors": {
          "Contributors": [
             {
@@ -314,18 +105,16 @@ var data = {
                   "Name": "Author"
                },
                "Biography": "Well said mate",
-               "IsRolePrimary": true,
+               "IsRolePrimary": false,
                "IsTitlePrimary": true,
                "AdditionalTitles": [
                   {
                      "ISBN": "9780000000002",
                      "Title": "Mcghee",
-                     
                   },
                   {
                      "ISBN": "9780000000002",
-                     "Title": "gfds",
-                     
+                     "Title": "Mcghee",
                   }
                ],
             }

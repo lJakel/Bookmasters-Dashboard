@@ -32,7 +32,7 @@ var Modals = {
       }
 
    },
-   FormatBSModal: function () {
+   FormatBSModal: function (data) {
       var self = this;
       self.entryData = undefined;
       self.method = '';
@@ -60,6 +60,8 @@ var Modals = {
       self.CountryofOrigin = data.CountryofOrigin || '';
       self.PublicationLocation = data.PublicationLocation || '';
 
+      self.TerritoryRights = data.TerritoryRights || "world";
+
       self.ComparableTitles = data.ComparableTitles || [];
       self.Illustrations = data.Illustrations || [];
 
@@ -68,6 +70,8 @@ var Modals = {
       self.FixedProductFormDetails = [];
       self.FixedProductFormDetailSpecifics = [];
 
+      self.FixedIsoCodes = [];
+      self.FixedIsoCodesPoop = [];
 
       self.DynamicProductTypes = [];
       self.DynamicProductForms = [];

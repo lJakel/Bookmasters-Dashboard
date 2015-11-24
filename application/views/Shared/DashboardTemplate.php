@@ -50,6 +50,9 @@
 
       <script src="http://www.bookmasters.com/CDN/js/ng-file-upload-bower-10.0.2/ng-file-upload-shim.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/ng-file-upload-bower-10.0.2/ng-file-upload.min.js"></script>
+      
+      <script src="http://www.bookmasters.com/CDN/js/nya-bootstrap-select-2.1.2/js/nya-bs-select.min.js"></script>
+      
 
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
@@ -59,6 +62,7 @@
       <script src="<?php echo site_url('assets/js/ng/controllers.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/services.js?cache=' . rand(1000, 9000)); ?>"></script>
       <script src="<?php echo site_url('assets/js/ng/directives.js?cache=' . rand(1000, 9000)); ?>"></script>
+      <script src="<?php echo site_url('assets/js/ng/validators.js?cache=' . rand(1000, 9000)); ?>"></script>
 
       <!-- page specific libs -->
 

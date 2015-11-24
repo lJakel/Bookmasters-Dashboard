@@ -1,14 +1,13 @@
 function BasicInfo(data) {
-   var vm = this;
-   vm.Title = data.Title || '';
-   vm.Subtitle = data.Subtitle || '';
-   vm.Publisher = data.Publisher || '';
-   vm.Imprint = data.Imprint || '';
-   vm.ContentLanguage = data.ContentLanguage || '';
-   vm.Series = data.Series || '';
-   vm.SeriesName = data.SeriesName || '';
-   vm.NumberinSeries = data.NumberinSeries || '';
-   
-   vm.MainDescription = data.MainDescription || '';
-   vm.ShortDescription = data.ShortDescription || '';
+   var self = this;
+   self.Title = data.Title || '';
+   self.Subtitle = data.Subtitle || '';
+   self.Publisher = data.Publisher || '';
+   self.Imprint = data.Imprint || '';
+   self.ContentLanguage = data.ContentLanguage || '';
+   self.Series = data.Series || '';
+   self.NumberinSeries = data.NumberinSeries || '';
+
+   self.MainDescription = data.MainDescription || '';
+   self.ShortDescription = data.ShortDescription || '';
 }

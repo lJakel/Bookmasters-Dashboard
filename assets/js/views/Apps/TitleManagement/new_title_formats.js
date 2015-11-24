@@ -1,41 +1,40 @@
 var Formats = function (data, $scope) {
 
-    var vm = this;
-    console.log('Formats', data)
-    vm.Formats = data || [];
-    vm.FormatModal = new Modals.FormatBSModal('');
+   var self = this;
+   console.log('Formats', data)
+   self.Formats = data || [];
+   self.FormatModal = new Modals.FormatBSModal('');
 
+   self.showDialog = false;
 
-    vm.showDialog = false;
+   self.showFormatModal = function (data, method) {
+      $scope.$broadcast('show-errors-reset');
+      console.log(data, method)
+      self.FormatModal.Method = method || 'edit';
+      self.FormatModal.entryData = data;
+      $.each(data, function (k, v) {
+         self.FormatModal[k] = data[k] || null;
+      });
+      self.showDialog = true;
+   };
 
-    vm.showFormatModal = function (data, method) {
-       $scope.$broadcast('show-errors-reset');
-        console.log(data, method)
-        vm.FormatModal.Method = method || 'edit';
-        vm.FormatModal.entryData = data;
-        $.each(data, function (k, v) {
-            vm.FormatModal[k] = data[k] || null;
-        });
-        vm.showDialog = true;
-    };
+   self.onFormatModalAction = function () {
+      $.each(self.FormatModal.entryData, function (k, v) {
+         self.FormatModal.entryData[k] = self.FormatModal[k];
+      });
+      if (self.FormatModal.Method === 'add') {
+         self.Formats.push(self.FormatModal.entryData);
+      }
+      self.showDialog = false;
+   };
 
-    vm.onFormatModalAction = function () {
-        $.each(vm.FormatModal.entryData, function (k, v) {
-            vm.FormatModal.entryData[k] = vm.FormatModal[k];
-        });
-        if (vm.FormatModal.Method === 'add') {
-            vm.Formats.push(vm.FormatModal.entryData);
-        }
-        vm.showDialog = false;
-    };
+   self.addFormat = function () {
+      console.log('sad')
+      self.showFormatModal(new Components.Format(''), 'add');
+   };
 
-    vm.addFormat = function () {
-        console.log('sad')
-        vm.showFormatModal(new Components.Format(''), 'add');
-    };
-
-    vm.removeFormat = function (index) {
-        vm.Formats.splice(index, 1);
-    };
+   self.removeFormat = function (index) {
+      self.Formats.splice(index, 1);
+   };
 
 };

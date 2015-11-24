@@ -199,203 +199,6 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
  */
 
 
-appDirectives.directive('ngWebsiteUrl', function () {
-
-   return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function ($scope, $element, $attrs, ngModel) {
-
-
-         ngModel.$parsers.push(function (viewValue) {
-
-            return viewValue;
-         });
-         $scope.$watch($attrs.ngModel, function (value) {
-
-
-            var val = value.replace(/^\s+|\s+$/, '');
-            var isValid = (val.match(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i));
-            if (isValid === null) {
-               ngModel.$setValidity('websiteUrl', false);
-            } else {
-               ngModel.$setValidity('websiteUrl', true);
-            }
-         });
-      }
-   }
-});
-appDirectives.directive('bmValidate', function ($http, $parse, $timeout) {
-
-   return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function ($scope, $element, $attrs, ngModel) {
-
-         /*using push() here to run it as the last parser, after we are sure that other validators were run*/
-
-
-         var ValidateOptions = $parse($attrs.bmValidateOptions);
-         $.each(ValidateOptions(), function (k, value) {
-
-            switch (value) {
-
-               case 'isbn':
-                  ngModel.$parsers.push(function (viewValue) {
-                     $timeout(function () {
-                        $element.parent().parent().removeClass('has-success has-error');
-                        $element.siblings('.input-group-addon').children('i').removeClass().addClass('fa fa-fw fa-refresh fa-spin');
-                     }).then(function () {
-                        $http.post('http://api.bookmasters.com/util/checkIsbn13', {isbn13: viewValue}).then(function () {
-                           ngModel.$setValidity("isbnValidate", true);
-                           $element.siblings('.input-group-addon').children('i').removeClass('fa-refresh fa-spin fa-close fa-question').addClass('fa-check');
-                           $element.parent().parent().removeClass('has-error').addClass('has-success');
-                        }, function () {
-                           ngModel.$setValidity("isbnValidate", false);
-                           $element.parent().parent().removeClass('has-success');
-                           $element.siblings('.input-group-addon').children('i').removeClass('fa-refresh fa-spin fa-check fa-question').addClass('fa-close');
-                        });
-                     });
-                     return viewValue;
-                  });
-                  break;
-
-               case 'bmpassword':
-                  ngModel.$parsers.push(function (viewValue) {
-                     var passwordRegex = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}/;
-                     if (passwordRegex.test(viewValue)) {
-                        ngModel.$setValidity("bmPassword", true);
-                     } else {
-                        ngModel.$setValidity("bmPassword", false);
-                     }
-                     return viewValue;
-                  });
-                  break;
-
-
-               default:
-                  break;
-            }
-         });
-      }
-   }
-});
-
-
-appDirectives.directive('showErrors', [
-   '$timeout', 'showErrorsConfig', '$interpolate', function ($timeout, showErrorsConfig, $interpolate) {
-      var getShowSuccess, getTrigger, linkFn;
-      var errors = {
-         isbnValidate: 'The ISBN you supplied is invalid',
-         bmPassword: 'Your password must contain a lowercase and uppercase letter, numbers, and more than 8 characters long',
-         required: 'This field is requierd',
-         minlength: 'Your input is too short',
-         maxlength: 'Your input is too long',
-         email: 'Your email address is invalid',
-      };
-      getTrigger = function (options) {
-         var trigger;
-         trigger = showErrorsConfig.trigger;
-         if (options && (options.trigger != null)) {
-            trigger = options.trigger;
-         }
-         return trigger;
-      };
-      getShowSuccess = function (options) {
-         var showSuccess;
-         showSuccess = showErrorsConfig.showSuccess;
-         if (options && (options.showSuccess != null)) {
-            showSuccess = options.showSuccess;
-         }
-         return showSuccess;
-      };
-      linkFn = function (scope, el, attrs, formCtrl) {
-         var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, trigger;
-         //console.log(el)
-         blurred = false;
-         options = scope.$eval(attrs.showErrors);
-         showSuccess = getShowSuccess(options);
-         trigger = getTrigger(options);
-         inputEl = el[0].querySelector('.form-control[name]');
-         inputNgEl = angular.element(inputEl);
-         inputName = $interpolate(inputNgEl.attr('name') || '')(scope);
-         if (!inputName) {
-            throw "show-errors element has no child input elements with a 'name' attribute and a 'form-control' class";
-         }
-         inputNgEl.bind(trigger, function () {
-            blurred = true;
-            return toggleClasses(formCtrl[inputName].$invalid);
-         });
-         scope.$watch(function () {
-
-            return formCtrl[inputName] && formCtrl[inputName].$invalid;
-         }, function (invalid) {
-
-            if (!blurred) {
-               return;
-            }
-            return toggleClasses(invalid);
-         });
-         scope.$on('show-errors-check-validity', function () {
-            return toggleClasses(formCtrl[inputName].$invalid);
-         });
-         scope.$on('show-errors-reset', function () {
-            return $timeout(function () {
-               el.removeClass('has-error');
-               el.removeClass('has-success');
-               return blurred = false;
-            }, 0, false);
-         });
-         return toggleClasses = function (invalid) {
-            el.toggleClass('has-error', invalid);
-            el.find('.help-block').remove();
-            $.each(formCtrl[inputName].$error, function (item) {
-               console.log(item)
-               el.append('<span class="help-block">' + errors[item] + '</span>')
-            });
-            if (showSuccess) {
-               return el.toggleClass('has-success', !invalid);
-            }
-         };
-      };
-      return {
-         restrict: 'A',
-         require: '^form',
-         compile: function (elem, attrs) {
-            if (attrs['showErrors'].indexOf('skipFormGroupCheck') === -1) {
-               if (!(elem.hasClass('form-group') || elem.hasClass('input-group'))) {
-                  throw "show-errors element does not have the 'form-group' or 'input-group' class";
-               }
-            }
-            return linkFn;
-         }
-      };
-   }
-]).provider('showErrorsConfig', function () {
-   var _showSuccess, _trigger;
-   _showSuccess = false;
-   _trigger = 'blur';
-   this.showSuccess = function (showSuccess) {
-      return _showSuccess = showSuccess;
-   };
-   this.trigger = function (trigger) {
-      return _trigger = trigger;
-   };
-   this.$get = function () {
-      return {
-         showSuccess: _showSuccess,
-         trigger: _trigger
-      };
-   };
-});
-appDirectives.directive("bscheck", function () {
-   return {
-      restrict: "C",
-      link: function (scope, element, attrs) {
-         $(element).selectpicker();
-      }
-   }
-});
 appDirectives.directive("bsradio", function () {
 
    return {
@@ -437,83 +240,9 @@ appDirectives.directive("bsradio", function () {
       }
    }
 });
-appDirectives.directive('selectpicker', ['$parse', '$timeout', function ($parse, $timeout) {
-      return {
-         restrict: 'A',
-         priority: 1000,
-         link: function (scope, element, attrs) {
-            function refresh(newVal) {
 
-               scope.$applyAsync(function () {
-                  if (attrs.ngOptions && /track by/.test(attrs.ngOptions)) {
-                     element.val(newVal);
-                  }
-                  refreshLog('Initial refresh function');
-               });
-            }
 
-            attrs.$observe('spTheme', function (val) {
-               $timeout(function () {
-                  element.data('selectpicker').$button.removeClass(function (i, c) {
-                     return (c.match(/(^|\s)?btn-\S+/g) || []).join(' ');
-                  });
-                  element.selectpicker('setStyle', val);
-               });
-            });
-            $timeout(function () {
-               element.selectpicker($parse(attrs.selectpicker)());
-               refreshLog('Timeout thing idk');
-            });
-            if (attrs.ngModel) {
-               scope.$watch(attrs.ngModel, refresh, false);
-            }
 
-            if (attrs.ngDisabled) {
-               scope.$watch(attrs.ngDisabled, refresh, true);
-            }
-
-            if (attrs['options']) {
-               scope.$watch(attrs['options'], function (value) {
-                  if (value) {
-                     scope.$applyAsync(function () {
-                        refreshLog('New Options Attr');
-                     });
-                  }
-               }, true);
-            }
-
-            function refreshLog(message) {
-//               console.log("Refreshed selectpicker - " + message);
-               element.selectpicker('refresh');
-            }
-
-            scope.$on('$destroy', function () {
-               $timeout(function () {
-                  element.selectpicker('destroy');
-               });
-            });
-         }
-      };
-   }]);
-appDirectives.directive('toggle', function () {
-   return {
-      restrict: 'ACE',
-      priority: 101,
-      link: function (scope, element, attrs) {
-         var toggleFn = function (e) {
-            var parent = angular.element(this).parent();
-            angular.element('.bootstrap-select.open', element)
-                    .not(parent)
-                    .removeClass('open');
-            parent.toggleClass('open');
-         };
-         element.on('click.bootstrapSelect', '.dropdown-toggle', toggleFn);
-         scope.$on('$destroy', function () {
-            element.off('.bootstrapSelect');
-         });
-      }
-   };
-});
 appDirectives.directive('summernote', function (scriptLoader) {
    //simple summernote directive
 
@@ -544,6 +273,91 @@ appDirectives.directive('summernote', function (scriptLoader) {
             var $summernote = $(element).summernote(options);
             scope.$watch(attrs.ngModel, function (newVal, oldVal) {
                $summernote.code(newVal);
+            });
+         }
+      }
+   }
+});
+
+
+
+
+
+
+
+
+
+
+appDirectives.directive('multiSelect', function (scriptLoader, $timeout) {
+   //simple summernote directive
+
+   return {
+      restrict: 'AC',
+      require: '?ngModel',
+      link: function (scope, element, attrs, ngModel) {
+
+         scriptLoader.loadScripts([
+            'http://loudev.com/js/jquery.multi-select.js',
+         ], 'partial').then(multiselectInit);
+         function multiselectInit() {
+
+
+            function refresh(newVal) {
+
+               scope.$applyAsync(function () {
+                  if (attrs.ngOptions && /track by/.test(attrs.ngOptions)) {
+                     element.val(newVal);
+                  }
+                  refreshLog('Initial refresh function');
+               });
+            }
+
+
+            var options = {
+//               afterSelect: function (values) {
+//                  alert("Select value: " + values);
+//               },
+//               afterDeselect: function (values) {
+//                  alert("Deselect value: " + values);
+//               }
+
+            };
+            $timeout(function () {
+               element.multiSelect(options);
+               refreshLog('Timeout thing idk');
+            });
+
+//            scope.$watch(attrs.ngModel, function (newVal, oldVal) {
+//               $multiSelect.code(newVal);
+//            });
+
+
+//            if (attrs.ngModel) {
+//               scope.$watch(attrs.ngModel, refresh, false);
+//            }
+
+            if (attrs.ngDisabled) {
+               scope.$watch(attrs.ngDisabled, refresh, true);
+            }
+
+            if (attrs['options']) {
+               scope.$watch(attrs['options'], function (value) {
+                  if (value) {
+                     scope.$applyAsync(function () {
+                        refreshLog('New Options Attr');
+                     });
+                  }
+               }, true);
+            }
+
+            function refreshLog(message) {
+//               console.log("Refreshed selectpicker - " + message);
+               element.multiSelect('refresh');
+            }
+            scope.$on('$destroy', function () {
+               $timeout(function () {
+                  element.multiSelect('destroy');
+               });
             });
          }
       }

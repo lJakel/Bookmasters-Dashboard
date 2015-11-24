@@ -17,7 +17,6 @@
          </div>
       </div>
    </div>
-
    <div class="row">
       <div class="col-md-12">
          <div class="panel panel-default">
@@ -34,7 +33,6 @@
                         <li role="presentation"><a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab">JsonDebug</a></li>
                      </ul>
                      <div class="tab-content">
-
                         <!--basic-->
                         <div role="tabpanel" class="tab-pane active" id="basic" ng-form="BasicInfoPanel" ng-repeat="bi in [NTF.BasicInfo]">
                            <div class="row">
@@ -76,7 +74,6 @@
                                     </div>
                                  </div>
                               </div>
-
                            </div>
                         </div>
                         <!--end basic-->
@@ -110,7 +107,7 @@
                                              <td>{{contributor.Suffix}}</td>
                                              <td>{{contributor.Hometown}}</td>
                                              <td>{{contributor.Role.Name}}</td>
-                                             <td>
+                                             <td class="twobtn">
                                                 <button class="btn btn-primary" ng-click="c.showContributorModal(contributor, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
                                                 <button class="btn btn-danger" ng-click="c.removeContributor($index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
@@ -138,7 +135,7 @@
                                           <th style="width:20px;">#</th>
                                           <th style="width: 50%;">Category</th>
                                           <th style="width: 50%;">Code <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="BISAC Subject Code" data-placement="left" data-content='BISAC codes are used by the publishing industry to clearly identify a book&apos;s subject. The Book Industry Study Group (BISG) maintains these codes. (link) <bulleted list> - Always list your most important and specific BISAC code first. Think about who you are trying to sell to and what your book is trying to say. The more specific you are, the better chance your reader has of finding your book.  -Don&apos;t use "general" BISAC codes because they make it more difficult for people to find your book. -You cannot mix Fiction and Non Fiction codes; it&apos;s either fiction or it&apos;s not. -You cannot mix Children&apos;s (Juvenile) and General Audience codes; the book is either for Children or it&apos;s not. -The MEDICAL BIASCs are ONLY for scholarly books aimed at medical professionals. The HEALTH and BODY, MIND, SPIRIT BISACs are for the general public. - Book retailers will interpret these BISAC codes and apply them to how they organize their stores. Choose specific BISACs to help them make better decisions. - Supply at least 1 BISAC, preferably 3, and no more than 5 BISAC codes.'>?</a></th>
-                                          <th class="twobtn">
+                                          <th class="onebtn">
                                              <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Demographics.addBisac()"><span class="fa fa-fw fa-plus"></span></button>
                                           </th>
                                        </tr>
@@ -147,23 +144,28 @@
                                        <tr ng-repeat="Bisac in NTF.Demographics.Bisacs">
                                           <td>{{$index + 1}}</td>
                                           <td>
-                                             <select class="form-control selectpicker"
-                                                     selectpicker ng-model="Bisac.BisacGroup"
-                                                     ng-change="NTF.Demographics.UpdateBisacCodes($index)"
-                                                     ng-options="bis.Name for bis in NTF.Demographics.FixedList"
-                                                     options="NTF.Demographics.FixedList"
-                                                     data-size="6" data-live-search="true">
-                                             </select>
+                                             <ol class="nya-bs-select form-control" ng-model="Bisac.BisacGroup" data-size="6" data-live-search="true" ng-change="NTF.Demographics.UpdateBisacCodes($index)">
+                                                <li nya-bs-option="bis in NTF.Demographics.FixedList">
+                                                   <a>
+                                                      {{bis.Name}}
+                                                      <span class="fa fa-check check-mark"></span>
+                                                   </a>
+                                                </li>
+                                             </ol>
                                           </td>
                                           <td>
-                                             <select class="form-control selectpicker"
-                                                     selectpicker ng-model="Bisac.Code"
-                                                     data-size="6" data-live-search="true"
-                                                     ng-options="bis.Code + ' - ' + bis.Text for bis in Bisac.FixedList2"
-                                                     options="Bisac.FixedList2">
-                                             </select>
+                                             <ol class="nya-bs-select form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true" ng-change="NTF.Demographics.UpdateBisacCodes($index)">
+                                                <li nya-bs-option="bis in Bisac.FixedList2">
+                                                   <a>
+                                                      {{bis.Code}} - {{bis.Text}}
+                                                      <span class="fa fa-check check-mark"></span>
+                                                   </a>
+                                                </li>
+                                             </ol>
                                           </td>
-                                          <td><button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-fw fa-minus"></span></button></td>
+                                          <td class="onebtn">
+                                             <button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-fw fa-minus"></span></button>
+                                          </td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -208,7 +210,7 @@
                         </div>
                         <!--end subject-->
                         <!--text-->
-                        <div role="tabpanel" class="tab-pane" id="text">
+                        <div role="tabpanel" class="tab-pane" id="text" ng-repeat="bi in [NTF.BasicInfo]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Descriptions</h3>
@@ -218,14 +220,12 @@
                               <div class="col-md-6">
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
-                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="NTF.BasicInfo.MainDescription"></textarea>
-
-
+                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.MainDescription"></textarea>
                               </div>
                               <div class="col-md-6">
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="NTF.BasicInfo.ShortDescription"></textarea>
+                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.ShortDescription"></textarea>
                               </div>
                            </div>
                         </div>
@@ -243,7 +243,7 @@
                                              <th>ISBN13</th>
                                              <th>Pub Date</th>
                                              <th>US Price</th>
-                                             <th style="text-align:center;" class="twobtn">
+                                             <th class="twobtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Formats.addFormat()"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
@@ -254,7 +254,7 @@
                                              <td>{{Format.ISBN13}}</td>
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>{{Format.USPrice}}</td>
-                                             <td>
+                                             <td class="twobtn">
                                                 <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-fw fa-edit fa-fw"></span></button>
                                                 <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-fw fa-minus fa-fw"></span></button>
                                              </td>
@@ -284,11 +284,12 @@
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Website in NTF.Marketing.Websites">
-                                             <td class="form-group">
-                                                <input type="text" class="form-control" ng-required="true" name="websiteurl" ng-model="Website.URL">
+                                          <tr ng-repeat="Website in NTF.Marketing.Websites" ng-form="WebsiteRepeat">
+                                             <td>
+                                                <div class="form-group" data-show-errors>
+                                                   <input type="text" class="form-control" ng-required="true" name="websiteurl" ng-model="Website.URL" data-bm-validate data-bm-validate-options="['bmwebsite']" ng-model-options="{updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}">
+                                                </div>
                                              </td>
-
                                              <td>
                                                 <select name="" id="" class="form-control">
                                                    <option value="">Choose...</option>
@@ -439,7 +440,6 @@
                                              <td>{{Event.Name}}</td>
                                              <td>{{Event.Location}}</td>
                                              <td>{{Event.Date}}</td>
-
                                              <td>
                                                 <button class="btn btn-primary" ng-click="NTF.Marketing.showAppearanceandEventModal(Event, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
                                                 <button class="btn btn-danger" ng-click="NTF.Marketing.remove('AppearanceandEvents', $index)"><span class="fa fa-fw fa-minus"></span></button>
@@ -458,7 +458,6 @@
                               <div class="col-md-12">
                                  <pre id="jsonPre"></pre>
                                  <button class="btn btn-primary btn-block" ng-click="NTF.RefreshJson()">Refresh</button>
-
                               </div>
                            </div>
                         </div>
@@ -481,7 +480,6 @@
          </div>
       </div>
    </div>
-
    <?php
    $this->load->view('Apps/NewTitle/modals/AppearancesandEventsModal');
    $this->load->view('Apps/NewTitle/modals/contribModal');
@@ -489,35 +487,28 @@
    $this->load->view('Apps/NewTitle/modals/formatModal');
    $this->load->view('Apps/NewTitle/modals/ReviewModal');
    ?>
-
-
 </div>
 <style>
    .jumbotron {
       background: url("http://www.bookmasters.com/CDN/resources/img/login/moonship.jpg") 0px 78% no-repeat;
       margin-bottom: 0px;
    }
-
    .jumbotron h1 {
       color: white;
    }
-
    .jumbotron div h4 strong {
       color: white;
    }
-
    .jumbotron div h4 em {
       color: white;
    }
-
    .jumbotron div h4 span {
       color: #f2f2f2;
    }
 </style>
 
-<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/bootstrap-select/dist/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.css" />
-
+<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/nya-bootstrap-select-2.1.2/css/nya-bs-select.min.css">
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/modals/modals.js?cache=<?php echo rand(1000, 9000); ?>"></script>

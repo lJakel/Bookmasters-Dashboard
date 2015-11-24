@@ -10,11 +10,13 @@ var BMApp = angular.module('BMApp', [
    'ui.jq',
    'ui.event',
    'ngFileUpload',
+   'nya.bootstrap.select',
    // page-specific and demo. may be removed
    // application libs
    'app.controllers',
    'app.services',
-   'app.directives'
+   'app.directives',
+   'app.validators'
 
 ]);
 

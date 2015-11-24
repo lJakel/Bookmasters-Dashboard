@@ -62,23 +62,33 @@
                         <table class="table table-bordered">
                            <thead>
                               <tr>
-                                 <th>Title <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="Title of any other books to which the contributor has contributed.">?</a></th>
-                                 <th>ISBN <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="ISBN" data-placement="top" data-content="ISBN of any other books to which the contributor has contributed.">?</a></th>
+                                 <th style="width: 50%;">Title <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="Title of any other books to which the contributor has contributed.">?</a></th>
+                                 <th style="width: 50%;">ISBN <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="ISBN" data-placement="top" data-content="ISBN of any other books to which the contributor has contributed.">?</a></th>
                                  <th class="onebtn">
-                                    <button class="btn btn-primary pull-right btn-block btn-sm" ng-click="NTF.Contributors.ContributorModal.addAdditionalTitle()"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Contributors.ContributorModal.addAdditionalTitle()"><span class="fa fa-fw fa-plus"></span></button>
                                  </th>
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-repeat="AdditionalTitles in NTF.Contributors.ContributorModal.AdditionalTitles">
+                              <tr ng-repeat="AdditionalTitles in NTF.Contributors.ContributorModal.AdditionalTitles" ng-form="AdditionalTitleForm">
                                  <td>
-                                    <input type="text" class="form-control" ng-model="AdditionalTitles.Title">
+                                    <div class="form-group" data-show-errors>
+                                       <input type="text" class="form-control" name="AdditionalTitleTitle" ng-required="true" ng-model="AdditionalTitles.Title">
+                                    </div>
+                                    
                                  </td>
                                  <td>
-                                    <input type="text" class="form-control" ng-model="AdditionalTitles.ISBN">
+                                    <div class="form-group" data-show-errors>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" data-bm-validate data-bm-validate-options="['isbn']" ng-required="true" name="AdditionalTitleISBN" ng-model="AdditionalTitles.ISBN" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }">
+                                          <span class="input-group-addon">
+                                             <i class="fa fa-question fa-fw"></i>
+                                          </span>
+                                       </div>
+                                    </div>
                                  </td>
-                                 <td>
-                                    <button class="btn btn-danger btn-sm" ng-click="NTF.Contributors.ContributorModal.removeAdditionalTitle($index)"><span class="fa fa-fw fa-minus"></span></button>
+                                 <td class="onebtn">
+                                    <button class="btn btn-danger" ng-click="NTF.Contributors.ContributorModal.removeAdditionalTitle($index)"><span class="fa fa-fw fa-minus"></span></button>
                                  </td>
                               </tr>
                            </tbody>

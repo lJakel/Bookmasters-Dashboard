@@ -18,6 +18,13 @@
 
                   <br>
                   <h3>What do I do now?</h3>
+                  <p>
+                  <ul>
+                     <li>You can go to the dashboard homepage. </li>
+                     <li>Go to the application's home page&mdash;this will reload the application. </li>
+                     <li>Reloading the dashboard will update the dashboard if there were any updates rolled out since the last time you logged in. This can fix some issues.</li>
+                  </ul>
+                  </p>
                   <a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })" class="btn btn-default"> <i class="fa fa-dashboard"></i> Go to Dashboard</a>
                   <a href="" ng-click='EC.goBack()' class="btn btn-default"> <i class="fa fa-arrow-left"></i> Go To Application's Home Page</a>
                   <a href="./" ng-click='EC.reload()' class="btn btn-default"> <i class="fa fa-refresh"></i> Reload Dashboard</a>
@@ -58,12 +65,16 @@
                color: #222;
                text-shadow: 0px 1px 1px #4d4d4d;
             }
-            p{
+            p,li{
                font-size:16px;
                line-height: 26px;
                margin-top:10px;
                color: #fff;
             }
+            li{
+               line-height: 18px;
+            }
+            
             h3{
                color: #fff;
                font-family:Georgia, serif;

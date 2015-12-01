@@ -14,7 +14,7 @@ appServices.factory('partialCleanup', function ($timeout) {
          objectsToClean = array;
       },
       clean: function () {
-         console.log(objectsToClean)
+         console.log(objectsToClean, 'objectsToClean')
          $('.partial-script').each(function () {
             this.remove();
          });
@@ -93,8 +93,6 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
                           $scriptTag = $(scriptTag).attr('data-bm-lazy', loadScope),
                           defer = $q.defer();
                }
-
-
                scriptTag.src = script;
                defer.processing = true;
                $scriptTag.load(function () {
@@ -125,6 +123,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
          login: login,
          register: register
       };
+
       return factory;
       function changeUser(user) {
          factory.user = user
@@ -132,7 +131,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       }
       function logout() {
          $http.post(url + 'logout').then(function (response) {
-            $localStorage.$reset();
+            $localStorage.$reset({user: null});
             changeUser(null);
             $state.go('login');
          }, function (response) {
@@ -145,9 +144,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
          $http.post(url + 'login', user).then(function (response) {
             changeUser(response.data.data); // get user block
             success(response.data); //get parent userblock and message block
-
          }, function (response) {
-
             changeUser(null);
             error(response.data);
          });
@@ -163,7 +160,6 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
       function isLoggedIn(get) {
          return $http.post(url + 'getuser').then(function (response) {
-            console.log('services.js fn isLoggedIn get session data from server')
             changeUser(response.data);
             if (get == true) {
                return response.data;
@@ -176,11 +172,9 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       }
       function getInfo() {
 
-         if ($localStorage.user == null) {
-            console.log('services.js fn getInfo factory.user == null return islogged from server')
+         if ($localStorage.user == null || factory.user == null) {
             return factory.isLoggedIn(true);
          } else {
-            console.log('services.js fn getInfo factory.user != null return data from storage WHEN')
             factory.user = $localStorage.user;
             return $q.when(factory.user);
          }

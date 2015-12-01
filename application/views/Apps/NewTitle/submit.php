@@ -121,7 +121,7 @@
                         </div>
                         <!--end contributors-->
                         <!--subject-->
-                        <div role="tabpanel" class="tab-pane" id="subject">
+                        <div role="tabpanel" class="tab-pane" id="subject" ng-repeat="dm in [NTF.Demographics]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Add Bisacs</h3>
@@ -136,16 +136,16 @@
                                           <th style="width: 50%;">Category</th>
                                           <th style="width: 50%;">Code <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="BISAC Subject Code" data-placement="left" data-content='BISAC codes are used by the publishing industry to clearly identify a book&apos;s subject. The Book Industry Study Group (BISG) maintains these codes. (link) <bulleted list> - Always list your most important and specific BISAC code first. Think about who you are trying to sell to and what your book is trying to say. The more specific you are, the better chance your reader has of finding your book.  -Don&apos;t use "general" BISAC codes because they make it more difficult for people to find your book. -You cannot mix Fiction and Non Fiction codes; it&apos;s either fiction or it&apos;s not. -You cannot mix Children&apos;s (Juvenile) and General Audience codes; the book is either for Children or it&apos;s not. -The MEDICAL BIASCs are ONLY for scholarly books aimed at medical professionals. The HEALTH and BODY, MIND, SPIRIT BISACs are for the general public. - Book retailers will interpret these BISAC codes and apply them to how they organize their stores. Choose specific BISACs to help them make better decisions. - Supply at least 1 BISAC, preferably 3, and no more than 5 BISAC codes.'>?</a></th>
                                           <th class="onebtn">
-                                             <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Demographics.addBisac()"><span class="fa fa-fw fa-plus"></span></button>
+                                             <button class="btn btn-primary pull-right btn-block" ng-click="dm.addBisac()"><span class="fa fa-fw fa-plus"></span></button>
                                           </th>
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr ng-repeat="Bisac in NTF.Demographics.Bisacs">
+                                       <tr ng-repeat="Bisac in dm.Bisacs">
                                           <td>{{$index + 1}}</td>
                                           <td>
-                                             <ol class="nya-bs-select form-control" ng-model="Bisac.BisacGroup" data-size="6" data-live-search="true" ng-change="NTF.Demographics.UpdateBisacCodes($index)">
-                                                <li nya-bs-option="bis in NTF.Demographics.FixedList">
+                                             <ol class="nya-bs-select form-control" ng-model="Bisac.BisacGroup" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
+                                                <li nya-bs-option="bis in dm.FixedList">
                                                    <a>
                                                       {{bis.Name}}
                                                       <span class="fa fa-check check-mark"></span>
@@ -154,7 +154,7 @@
                                              </ol>
                                           </td>
                                           <td>
-                                             <ol class="nya-bs-select form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true" ng-change="NTF.Demographics.UpdateBisacCodes($index)">
+                                             <ol class="nya-bs-select form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
                                                 <li nya-bs-option="bis in Bisac.FixedList2">
                                                    <a>
                                                       {{bis.Code}} - {{bis.Text}}
@@ -164,7 +164,7 @@
                                              </ol>
                                           </td>
                                           <td class="onebtn">
-                                             <button class="btn btn-danger btn-block" ng-click="NTF.Demographics.removeBisac($index)"><span class="fa fa-fw fa-minus"></span></button>
+                                             <button class="btn btn-danger btn-block" ng-click="dm.removeBisac($index)"><span class="fa fa-fw fa-minus"></span></button>
                                           </td>
                                        </tr>
                                     </tbody>
@@ -185,12 +185,7 @@
                               <div class="col-md-6 form-group">
                                  <label for="" class="control-label">Target Audience</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Audience/Target Group" data-placement="top" data-content="Who is your target group of readers? Most books fall under the General Audience. If you've supplied Juvenile BISACs, the audience must be Children and you must provide an Age Range.">?</a>
-                                 <select name="" id="" class="form-control">
-                                    <option value="General/trade">General/trade</option>
-                                    <option value="Children/juvenile">Children/juvenile</option>
-                                    <option value="Young adult">Young adult</option>
-                                    <option value="Professional and scholarly">Professional and scholarly</option>
-                                 </select>
+                                 <select name="" id="" ng-model="dm.Audience" class="form-control" ng-options="at.Name for at in dm.FixedAudienceTypes track by at.Id"></select>
                               </div>
                               <div class="col-md-6 form-group">
                                  <label for="" class="control-label">Age Range From / To</label>
@@ -250,7 +245,12 @@
                                        </thead>
                                        <tbody>
                                           <tr ng-repeat="Format in NTF.Formats.Formats">
-                                             <td>{{Format.ProductForm}}</td>
+                                             <td>
+                                                {{Format.ProductType.Name}} / 
+                                                {{Format.ProductForm.Name}} / 
+                                                {{Format.ProductDetail.Name}} / 
+                                                {{Format.ProductBinding.Name}}
+                                             </td>
                                              <td>{{Format.ISBN13}}</td>
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>{{Format.USPrice}}</td>
@@ -506,7 +506,7 @@
       color: #f2f2f2;
    }
 </style>
-
+<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.css" />
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/nya-bootstrap-select-2.1.2/css/nya-bs-select.min.css">
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>

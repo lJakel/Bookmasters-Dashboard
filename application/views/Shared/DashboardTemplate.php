@@ -23,7 +23,7 @@
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-sass/assets/stylesheets/_bootstrap.css" rel="stylesheet">
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
 
-      <link rel="stylesheet" href="<?php echo site_url('assets/vendor/font-awesome-4.5.0/css/font-awesome.min.css');?>">
+      <link rel="stylesheet" href="<?php echo site_url('assets/vendor/font-awesome/css/font-awesome.min.css');?>">
 
       <!-- Custom styles for this Dashboard -->
       <link href="http://www.bookmasters.com/CDN/css/dashboard-sass2/assets/stylesheets/_dashboard.css" rel="stylesheet">

@@ -47,43 +47,38 @@
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="ProductForm" class="control-label">Product Form</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form" data-placement="bottom" data-content="The broadest format category into which this book will fit. Print book = paper and ink, Multimedia = Audio or Video, and Digital = eBooks.">?</a>
-                        <select name="ProductForm" 
-                                class="form-control" 
-                                ng-required="true" 
-                                ng-change="fm.GetDynamicProductDetails()" 
-                                ng-model="fm.ProductForm" 
+                        <select name="ProductForm"
+                                class="form-control"
+                                ng-required="true"
+                                ng-change="fm.GetDynamicProductDetails()"
+                                ng-model="fm.ProductForm"
                                 ng-options="form.Name for form in fm.DynamicProductForms track by form.Id" >
                            <option value="">Choose...</option>
-
                         </select>
-
                      </div>
                      <div class="col-md-3 form-group {{(fm.DynamicProductFormDetails.length > 1) ? 'required': ''}}" data-show-errors>
                         <label for="ProductDetail" class="control-label">Product Detail</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form Detail" data-placement="bottom" data-content="The more specific format category into which this book fits. This further explains how the book was made.">?</a>
-                        <select name="ProductDetail" 
-                                class="form-control" 
-                                ng-required="(fm.DynamicProductFormDetails.length > 1)" 
-                                name="ProductDetail" 
-                                ng-change="fm.GetDynamicProductFormDetailSpecifics()" 
-                                ng-model="fm.ProductDetail" 
+                        <select name="ProductDetail"
+                                class="form-control"
+                                ng-required="(fm.DynamicProductFormDetails.length > 1)"
+                                name="ProductDetail"
+                                ng-change="fm.GetDynamicProductFormDetailSpecifics()"
+                                ng-model="fm.ProductDetail"
                                 ng-options="detail.Name for detail in fm.DynamicProductFormDetails track by detail.Id" >
                            <option value="">Choose...</option>
-
                         </select>
                      </div>
                      <div class="col-md-3 form-group {{(fm.DynamicProductFormDetailSpecifics.length > 1) ? 'required': ''}}" data-show-errors>
                         <label for="ProductBinding" class="control-label">Product Binding</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Bind Type" data-placement="bottom" data-content="The most specific format category into which this book will fit. This even further explains how the book was made.">?</a>
-
-                        <select name="ProductBinding" 
-                                class="form-control" 
+                        <select name="ProductBinding"
+                                class="form-control"
                                 ng-required="(fm.DynamicProductFormDetailSpecifics.length > 1)"
-                                name="ProductDetail" 
-                                ng-model="fm.ProductBinding" 
+                                name="ProductDetail"
+                                ng-model="fm.ProductBinding"
                                 ng-options="binding.Name for binding in fm.DynamicProductFormDetailSpecifics track by binding.Id" >
                            <option value="">Choose...</option>
-
                         </select>
                      </div>
                   </div>
@@ -118,38 +113,36 @@
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-md-3 form-group required">
+                     <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Publication Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Date" data-placement="top" data-content="The date that you consider to be the official release date for the book. This must be at least 30 days AFTER the arrival of stock in Bookmasters' warehouse for print books. In addition, to be included in the buying cycles of the print book trade, this date must also be at least 180 days AFTER the day you submit this form.">?</a>
-
-                        <div class="input-group input-group-sm date" 
-                             datetimepicker-options="{format:'MM/DD/YYYY'}"
-                             datetimepicker ng-model="fm.PublicationDate">
-                           <input type="text" class="form-control" />
+                        <div class="input-group input-group-sm date">
+                           <input type="text" class="form-control" name='PublicationDate' ng-required='true' datetimepicker-options="{format:'MM/DD/YYYY'}" datetimepicker ng-model="fm.PublicationDate">
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
                            </span>
                         </div>
-
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Copyright Year</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Copyright Date (year)" data-placement="top" data-content="The year in which the initial copyright for the material was filed.">?</a>
-                        
-                        <div class="input-group input-group-sm date" 
-                             datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}"
-                             datetimepicker ng-model="fm.Copyright">
-                           <input name='Copyright' type="text" class="form-control"  ng-required='true' />
+                        <div class="input-group input-group-sm date">
+                           <input name='Copyright' type="text" class="form-control" ng-required='true' datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.Copyright">
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
                            </span>
                         </div>
-
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="" class="control-label">Stock Due Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Warehouse/Stock Due Date" data-placement="top" data-content="This is the date when you expect stock to arrive at Bookmasters' warehouse. This date must be at least 30 days before the publication date.">?</a>
-                        <input type="text" class="form-control" ng-model="fm.StockDueDate">
+                        
+                        <div class="input-group input-group-sm date">
+                           <input name='Copyright' type="text" class="form-control" datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.StockDueDate">
+                           <span class="input-group-addon">
+                              <span class="fa fa-calendar"></span>
+                           </span>
+                        </div>
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="">Trade Sales</label>
@@ -278,7 +271,6 @@
                         </div>
                         <div class="row">
                            <div class="col-md-12">
-
                               <div class="radio radio-primary">
                                  <input type="radio" name="radio1" id="radio1" ng-model="fm.TerritoryRights" value="world">
                                  <label for="radio1">
@@ -299,7 +291,6 @@
                               <input type="text" class="form-control" ng-model="fm.IsoSearch" ng-model-options="{debounce:500}" placeholder="Filter countries..." >
                            </div>
                         </div>
-
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
                            <div class="col-md-12 form-group">
                               <div style="max-height:290px; min-height:43px; border:solid thin #ddd; padding:0 10px; overflow-y: scroll;">
@@ -309,7 +300,6 @@
                                        {{iso.Name}} - {{iso.Iso2}}
                                     </label>
                                  </div>
-
                               </div>
                            </div>
                         </div>
@@ -319,13 +309,11 @@
                            </div>
                            <div class="col-md-6 form-group">
                               <button class="btn btn-primary btn-block" ng-click="fm.uncheckAllSalesRights()">Un-Check All</button>
-
                            </div>
                         </div>
                         <style>
                            td span.badge{ margin-bottom: 3px;}
                         </style>
-
                      </div>
                   </div>
                </div>
@@ -335,7 +323,6 @@
                         <label for="" class="control-label">Edition</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition" data-placement="top" data-content="An edition tells the reader that this book's content has been revised in some way. Example #1: The second edition includes charts that have been updated since the first edition. Example #2: The large print edition features the same content as the previous edition, but it's presented in an easier-to-read font.">?</a>
                         <input type="text" class="form-control" ng-model="fm.Edition">
-
                      </div>
                      <div class="form-group col-md-4">
                         <label for="" class="control-label">Edition Number</label>
@@ -345,7 +332,8 @@
                      <div class="form-group col-md-4">
                         <label for="" class="control-label">Edition Type</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition Type" data-placement="top" data-content="Indicates that the content of the book is closely related to another book's content but has been changed for a specific reason. It also implies the audience or market for the content of the book.">?</a>
-                        <select name="" id="" class="form-control" ng-options="ed.Name for ed in fm.FixedEditionTypes track by ed.Id"  ng-model="fm.EditionType"></select>
+                        <select name="" id="" class="form-control" ng-options="ed.Name for ed in fm.FixedEditionTypes track by ed.Id"
+                                ng-model="fm.EditionType"></select>
                      </div>
                   </div>
                   <div class="row">
@@ -371,5 +359,4 @@
       <!-- /.modal-content -->
    </div>
    <!-- /.modal-dialog -->
-
 </div>

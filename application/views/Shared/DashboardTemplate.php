@@ -59,7 +59,8 @@
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-bootstrap/ui-bootstrap-tpls-0.14.3.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.js"></script>
-      <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker-standalone.css">
+      
+      
 
       <!-- common app js -->
       <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>

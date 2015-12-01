@@ -506,7 +506,7 @@
       color: #f2f2f2;
    }
 </style>
-<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.css?cache=<?php echo rand(1000, 9000); ?>">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.css" />
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/nya-bootstrap-select-2.1.2/css/nya-bs-select.min.css">
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>

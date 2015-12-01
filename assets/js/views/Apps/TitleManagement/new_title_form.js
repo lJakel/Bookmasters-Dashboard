@@ -158,7 +158,7 @@ var data = {
                "Weight": "5",
                "PublicationDate": "",
                "Copyright": "",
-               "StockDueDate": "5",
+               "StockDueDate": "",
                "TradeSales": true,
                "Pages": "5",
                "CartonQuantity": "5",

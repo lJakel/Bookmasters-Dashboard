@@ -23,9 +23,7 @@
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-sass/assets/stylesheets/_bootstrap.css" rel="stylesheet">
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
 
-      <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
+      <link rel="stylesheet" href="<?php echo site_url('assets/vendor/font-awesome-4.5.0/css/font-awesome.min.css');?>">
 
       <!-- Custom styles for this Dashboard -->
       <link href="http://www.bookmasters.com/CDN/css/dashboard-sass2/assets/stylesheets/_dashboard.css" rel="stylesheet">
@@ -57,7 +55,7 @@
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-bootstrap/ui-bootstrap-tpls-0.14.3.min.js"></script>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/moment/min/moment-with-locales.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.js"></script>
       
       

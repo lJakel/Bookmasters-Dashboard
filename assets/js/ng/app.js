@@ -11,13 +11,14 @@ var BMApp = angular.module('BMApp', [
    'ui.event',
    'ngFileUpload',
    'nya.bootstrap.select',
+   'ui.bootstrap',
    // page-specific and demo. may be removed
    // application libs
    'app.controllers',
    'app.services',
    'app.directives',
-   'app.validators'
-
+   'app.wrappers',
+   'app.validators',
 ]);
 
 
@@ -82,7 +83,6 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
          var deferred = $q.defer();
          AuthFactory.getInfo().then(function (response) {
             if (response != null) {
-               console.log('App.js fn authenticated deferred resolve')
                deferred.resolve();
             } else {
                deferred.reject('Not logged in');

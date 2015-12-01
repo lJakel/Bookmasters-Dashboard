@@ -10,6 +10,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
          minlength: 'Your input is too short',
          maxlength: 'Your input is too long',
          email: 'Your email address is invalid',
+         price: 'The given amount is invalid. Ex 125,944.10',
       };
       getTrigger = function (options) {
          var trigger;
@@ -161,6 +162,17 @@ appValidators.directive('bmValidateOptions', function ($http, $parse, $timeout) 
                         ngModel.$setValidity("bmWebsite", true);
                      } else {
                         ngModel.$setValidity("bmWebsite", false);
+                     }
+                     return viewValue;
+                  });
+                  break;
+               case 'price':
+                  ngModel.$parsers.push(function (viewValue) {
+                     var priceRegex = /^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/gm;
+                     if (priceRegex.test(viewValue)) {
+                        ngModel.$setValidity("price", true);
+                     } else {
+                        ngModel.$setValidity("price", false);
                      }
                      return viewValue;
                   });

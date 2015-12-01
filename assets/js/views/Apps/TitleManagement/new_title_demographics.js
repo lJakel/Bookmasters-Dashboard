@@ -9,13 +9,12 @@ var Demographics = function (data, FixedReferences) {
    vm.Bisacs = data.Bisacs || [];
 
    vm.FixedList = [];
-   
-   vm.FixedIsoCodesPoop=[];
+   vm.FixedAudienceTypes = [];
+   vm.FixedIsoCodesPoop = [];
 
    vm.UpdateBisacCodes = function (index) {
-      console.log(vm.Bisacs[index])
-      FixedReferences.lookupBisac(vm.Bisacs[index].BisacGroup.Id).then(function (lol) {
-         vm.Bisacs[index].FixedList2 = lol;
+      FixedReferences.lookupBisac(vm.Bisacs[index].BisacGroup.Id).then(function (response) {
+         vm.Bisacs[index].FixedList2 = response.data;
       });
    };
 

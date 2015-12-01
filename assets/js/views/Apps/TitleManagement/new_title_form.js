@@ -10,7 +10,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
 
          vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '');
          vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '');
-         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', $scope);
+         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', $scope, $timeout);
          vm.Demographics = new Demographics(data.NewTitle.Demographics || '', FixedReferences);
          vm.Marketing = new Marketing(data.NewTitle.Marketing || '');
 
@@ -48,6 +48,17 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
             vm.Formats.FormatModal.FixedProductFormDetailSpecifics = $.map(response.FixedProductFormDetailSpecifics, function (item) {
                return item;
             });
+            vm.Formats.FormatModal.FixedEditionTypes = $.map(response.Editions, function (item) {
+               return item;
+            });
+            console.log(response)
+            vm.Demographics.FixedAudienceTypes = $.map(response.AudienceTypes, function (item) {
+               return item;
+            });
+            //Where does PublicationStatuses go?
+            //vm.Demographics.PublicationStatuses = $.map(response.PublicationStatuses, function (item) {
+            //return item;
+            //});
             vm.Demographics.FixedList = $.map(response.BisacGroups, function (item) {
                return item;
             });
@@ -56,7 +67,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
 
          FixedReferences.getIsoCodes().then(function (response) {
             vm.Formats.FormatModal.FixedIsoCodes = $.map(response, function (item) {
-               
+
                return item;
             });
          });
@@ -72,11 +83,8 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
          'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
          'http://www.bookmasters.com/CDN/js/bs-filepicker/bs-filepicker.js',
          'http://www.bookmasters.com/CDN/js/trip.js/dist/trip.min.js',
-         'http://www.bookmasters.com/CDN/js/moment/moment.js',
-         'http://www.bookmasters.com/CDN/js/bootstrap-daterangepicker/daterangepicker.js'
       ], 'partial').then(init);
    }]);
-
 
 var data = {
    "NewTitle": {
@@ -105,8 +113,8 @@ var data = {
                   "Name": "Author"
                },
                "Biography": "Well said mate",
-               "IsRolePrimary": false,
-               "IsTitlePrimary": true,
+               "IsRolePrimary": true,
+               "IsTitlePrimary": false,
                "AdditionalTitles": [
                   {
                      "ISBN": "9780000000002",
@@ -121,7 +129,52 @@ var data = {
          ],
       },
       "Demographics": {},
-      "Formats": {},
+      "Formats": {
+         "Formats": [
+            {
+               "ProductType": {
+                  "Id": 1,
+                  "Name": "eBook"
+               },
+               "ProductForm": {
+                  "Id": 1,
+                  "MediaTypeId": 1,
+                  "Name": "eBook"
+               },
+               "ProductDetail": {
+                  "Id": 1,
+                  "FormId": 1,
+                  "Name": "ePUB"
+               },
+               "ProductBinding": {
+                  "Id": 1,
+                  "FormDetailId": 1,
+                  "Name": "Enhanced"
+               },
+               "ISBN13": "9780000000002",
+               "Width": "5",
+               "Height": "5",
+               "Spine": "5",
+               "Weight": "5",
+               "PublicationDate": "",
+               "Copyright": "",
+               "StockDueDate": "",
+               "TradeSales": true,
+               "Pages": "5",
+               "CartonQuantity": "5",
+               "USPrice": "f",
+               "DiscountCode": null,
+               "CustomsValue": null,
+               "Edition": null,
+               "EditionNumber": null,
+               "EditionType": null,
+               "CountryofOrigin": null,
+               "PublicationLocation": null,
+               "ComparableTitles": [
+               ],
+            }
+         ],
+      },
       "Marketing": {}
    },
 };

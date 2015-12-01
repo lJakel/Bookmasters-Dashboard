@@ -172,9 +172,8 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
       $scope.app = app;
       $scope.logout = AuthFactory.logout;
 
-      AuthFactory.isLoggedIn(true).then(function (response) {
+      AuthFactory.getInfo().then(function (response) {
          $scope.user = response;
-         console.log($scope.user, 'lol');
       });
    }]);
 

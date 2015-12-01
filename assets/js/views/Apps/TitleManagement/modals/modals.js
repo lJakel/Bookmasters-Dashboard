@@ -18,12 +18,8 @@ var Modals = {
       self.IsRolePrimary = false;
       self.IsTitlePrimary = false;
       self.AdditionalTitles = [];
-
-
       self.addAdditionalTitle = addAdditionalTitle;
       self.removeAdditionalTitle = removeAdditionalTitle;
-
-
       function addAdditionalTitle() {
          self.AdditionalTitles.push(new Components.AdditionalTitle(''));
       }
@@ -32,7 +28,7 @@ var Modals = {
       }
 
    },
-   FormatBSModal: function (data) {
+   FormatBSModal: function (data, $scope) {
       var self = this;
       self.entryData = undefined;
       self.method = '';
@@ -73,12 +69,12 @@ var Modals = {
       self.FixedIsoCodes = [];
       self.FixedIsoCodesPoop = [];
 
+      self.FixedEditionTypes = [];
+
       self.DynamicProductTypes = [];
       self.DynamicProductForms = [];
       self.DynamicProductFormDetails = [];
       self.DynamicProductFormDetailSpecifics = [];
-
-
       self.GetDynamicProductForms = GetDynamicProductForms;
       self.GetDynamicProductDetails = GetDynamicProductDetails;
       self.GetDynamicProductFormDetailSpecifics = GetDynamicProductFormDetailSpecifics;
@@ -86,16 +82,32 @@ var Modals = {
       self.removeIllustration = removeIllustration;
       self.addComparableTitle = addComparableTitle;
       self.removeComparableTitle = removeComparableTitle;
+      self.uncheckAllSalesRights = uncheckAllSalesRights;
+      self.checkAllSalesRights = checkAllSalesRights;
 
 
+      self.openCalendar = function (e) {
+         e.preventDefault();
+         e.stopPropagation();
 
-      function GetDynamicProductForms(watch) {
-         var watch = watch || false;
+         self.CalendarIsOpen = true;
+      };
 
-         if (self.ProductType != '') {
-            var SelectedProductType = self.ProductType; //get previously seelected item
-            var myRegexp = /(\d+)\s+-\s+\w+/g; // setup regex to grab value from dropdown
-            var match = myRegexp.exec(SelectedProductType); // exec the regex grab
+         self.CalendarIsOpen = false;
+         
+      function uncheckAllSalesRights() {
+         $.each(self.FixedIsoCodes, function (k, v) {
+            v.checked = false;
+         });
+      }
+      function checkAllSalesRights() {
+         $.each(self.FixedIsoCodes, function (k, v) {
+            v.checked = true;
+         });
+      }
+      function GetDynamicProductForms() {
+         if (typeof self.ProductType != 'undefined' || self.ProductType == '' || self.ProductType == null) {
+            var SelectedProductType = self.ProductType;
             var newdata = self.FixedProductForms;
             self.DynamicProductForms = [];
             self.DynamicProductFormDetails = [];
@@ -103,51 +115,37 @@ var Modals = {
             self.ProductForm = "";
             self.ProductDetail = "";
             self.ProductBinding = "";
+            self.DynamicProductForms = newdata.filter(function (el) {
+               return el.MediaTypeId == SelectedProductType.Id;
+            });
          }
       }
 
-      function GetDynamicProductDetails(watch) {
-         var watch = watch || false;
-
-         if (self.ProductForm != '') {
-            var SelectedProductForm = self.ProductForm; //get previously seelected item
-            var myRegexp = /(\d+)\s+-\s+\w+/g; // setup regex to grab value from dropdown
-            var match = myRegexp.exec(SelectedProductForm); // exec the regex grab
+      function GetDynamicProductDetails() {
+         if (typeof self.ProductForm != 'undefined' || self.ProductForm == '' || self.ProductForm == null) {
+            var SelectedProductForm = self.ProductForm;
             var newdata = self.FixedProductFormDetails;
             self.DynamicProductFormDetails = [];
             self.DynamicProductFormDetailSpecifics = [];
             self.ProductDetail = "";
             self.ProductBinding = "";
-            if (match != null) {
-               match = match[1]
-               self.DynamicProductFormDetails = newdata.filter(function (el) {
-                  return el.FormId == match;
-               });
-
-            }
+            self.DynamicProductFormDetails = newdata.filter(function (el) {
+               return el.FormId == SelectedProductForm.Id;
+            });
          }
       }
 
-      function GetDynamicProductFormDetailSpecifics(watch) {
-         var watch = watch || false;
-         if (self.ProductDetail != '') {
-            var SelectedProductFormDetail = self.ProductDetail; //get previously seelected item
-            var myRegexp = /(\d+)\s+-\s+\w+/g; // setup regex to grab value from dropdown
-            var match = myRegexp.exec(SelectedProductFormDetail); // exec the regex grab
-
+      function GetDynamicProductFormDetailSpecifics() {
+         if (typeof self.ProductDetail != 'undefined' || self.ProductDetail == '' || self.ProductDetail == null) {
+            var SelectedProductFormDetail = self.ProductDetail;
             var newdata = self.FixedProductFormDetailSpecifics;
             self.DynamicProductFormDetailSpecifics = [];
             self.ProductBinding = "";
-            if (match != null) {
-               match = match[1]
-               self.DynamicProductFormDetailSpecifics = newdata.filter(function (el) {
-                  return el.FormDetailId == match;
-               });
-            }
+            self.DynamicProductFormDetailSpecifics = newdata.filter(function (el) {
+               return el.FormDetailId == SelectedProductFormDetail.Id;
+            });
          }
       }
-
-
       function addIllustration() {
          self.Illustrations.push(new Components.Illustration(''));
       }
@@ -160,7 +158,6 @@ var Modals = {
       function removeComparableTitle(index) {
          self.ComparableTitles.splice(index, 1);
       }
-
    },
    ReviewModal: function () {
       var self = this;

@@ -6,7 +6,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       var Today = Math.floor(Date.now() / 1000);
       var Days = 5;
       var CacheTime = Days * 24 * 60 * 60;
-      if (typeof $localStorage.FixedReferencesFactory.Cache == 'undefined' || $localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
+      if (typeof $localStorage.FixedReferencesFactory == 'undefined' || typeof $localStorage.FixedReferencesFactory.Cache == 'undefined' || $localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
          $localStorage.$reset({FixedReferencesFactory: {
                Cache: null,
                IsoCodes: null,

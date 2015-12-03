@@ -92,93 +92,10 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
 
 var data = {
    "NewTitle": {
-      "BasicInfo": {
-         "Title": "Jakes Boss Book of Memes",
-         "Subtitle": "To Troll and Beyond",
-         "Publisher": "TrollToTroll",
-         "Imprint": "TrollHasz",
-         "ContentLanguage": "English",
-         "Series": "Star Wars",
-         "NumberinSeries": "3",
-         "MainDescription": "Main Desc",
-         "ShortDescription": "Short Desc",
-      },
-      "Contributors": {
-         "Contributors": [
-            {
-               "FirstName": "Jake",
-               "MiddleName": "A",
-               "LastName": "Ihasz",
-               "Prefix": "Mr",
-               "Suffix": "3rd",
-               "Hometown": "Ashland",
-               "Role": {
-                  "Id": 1,
-                  "Name": "Author"
-               },
-               "Biography": "Well said mate",
-               "IsRolePrimary": true,
-               "IsTitlePrimary": false,
-               "AdditionalTitles": [
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "Mcghee",
-                  },
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "Mcghee",
-                  }
-               ],
-            }
-         ],
-      },
+      "BasicInfo": {},
+      "Contributors": {},
       "Demographics": {},
-      "Formats": {
-         "Formats": [
-            {
-               "ProductType": {
-                  "Id": 1,
-                  "Name": "eBook"
-               },
-               "ProductForm": {
-                  "Id": 1,
-                  "MediaTypeId": 1,
-                  "Name": "eBook"
-               },
-               "ProductDetail": {
-                  "Id": 1,
-                  "FormId": 1,
-                  "Name": "ePUB"
-               },
-               "ProductBinding": {
-                  "Id": 1,
-                  "FormDetailId": 1,
-                  "Name": "Enhanced"
-               },
-               "ISBN13": "9780000000002",
-               "Width": "5",
-               "Height": "5",
-               "Spine": "5",
-               "Weight": "5",
-               "PublicationDate": "",
-               "Copyright": "",
-               "StockDueDate": "",
-               "TradeSales": true,
-               "Pages": "5",
-               "CartonQuantity": "5",
-               "USPrice": "f",
-               "DiscountCode": null,
-               "CustomsValue": null,
-               "Edition": null,
-               "EditionNumber": null,
-               "EditionType": null,
-               "CountryofOrigin": null,
-               "PublicationLocation": null,
-               "ComparableTitles": [
-               ],
-            }
-         ],
-      },
+      "Formats": {},
       "Marketing": {}
    },
 };

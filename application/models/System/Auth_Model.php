@@ -182,8 +182,6 @@ class Auth_Model extends CI_Model {
       $newPassword = substr(str_shuffle($chars), 0, 10);
 
       $checkuser = $this->db->query("exec DashboardUser_Update @userName=?, @password=?", [$username, $newPassword]);
-
-
       $updateuser = $this->db->query("exec DashboardUser_Update @userName=?, @password=?", [$username, $newPassword]);
 
 

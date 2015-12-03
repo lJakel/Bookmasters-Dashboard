@@ -4,7 +4,6 @@
       <!--sidebar left-->
       <div data-bm-sidebar-scroll style="height: 100%;">
          <div id="innersidebar" style="position: relative;">
-            <span class="listheader">Main</span>
             <ul class="">
                <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })"><span class="fa fa-dashboard fa-fw"></span>Dashboard</a></li>
             </ul>

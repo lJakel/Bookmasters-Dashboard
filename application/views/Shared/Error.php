@@ -10,7 +10,7 @@
 
                <div class="col-sm-9">
 
-                  <div class="long-shadow">{{EC.code}}</div>
+                  <div class="long-shadow">#{{EC.code}}</div>
 
 
                   <h2>Error: {{EC.message}}</h2>

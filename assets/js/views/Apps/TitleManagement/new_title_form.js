@@ -64,10 +64,14 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
             });
 
          });
-
+//
          FixedReferences.getIsoCodes().then(function (response) {
             vm.Formats.FormatModal.FixedIsoCodes = $.map(response, function (item) {
-
+               return item;
+            });
+         });
+         FixedReferences.getDiscountCodes().then(function (response) {
+            vm.Formats.FormatModal.FixedDiscountCodes = $.map(response, function (item) {
                return item;
             });
          });

@@ -39,12 +39,10 @@ class API_Model extends CI_Model {
       $itemmaster = $this->load->database('itemmaster', TRUE);
       $isoCodeQuery = $itemmaster->query('exec ISO3166Country_Get');
 
-
       if ($isoCodeQuery && $isoCodeQuery->num_rows() && $isoCodeResult = $isoCodeQuery->result_object()) {
-         return ['message' => ['success' => ''], 'data' => ['codes' => $isoCodeResult, 'cache' => md5(json_encode($isoCodeResult))]];
+         return ['message' => ['success' => ''], 'data' => ['codes' => $isoCodeResult]];
       } else {
          return ['message' => ['error' => '']];
       }
    }
-
 }

@@ -1,4 +1,4 @@
-<div id="NTF" ng-controller="NewTitleForm as NTF">
+<div id="NTF" ng-controller="NewTitleForm as NTF" ng-form="NTFNGForm">
    <div class="row">
       <div class="col-md-12">
          <div class="panel panel-default">
@@ -24,17 +24,33 @@
                <div class="row">
                   <div class="col-md-12">
                      <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic Information</a></li>
-                        <li role="presentation"><a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab">Formats</a></li>
-                        <li role="presentation"><a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab">Contributors</a></li>
-                        <li role="presentation"><a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab">Text</a></li>
-                        <li role="presentation"><a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab">Subject</a></li>
-                        <li role="presentation"><a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab">Marketing</a></li>
-                        <li role="presentation"><a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab">JsonDebug</a></li>
+                        <li role="presentation" class="active">
+                           <a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab"
+                              ng-style="!NTFNGForm.BasicInfoFormPanel.$pristine && NTFNGForm.BasicInfoFormPanel.$invalid ? {'background-color' : '#f2dede'} : {'background-color' : 'none'}">Basic Information</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab">Formats</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab">Contributors</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab">Text</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab">Subject</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab">Marketing</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab">JsonDebug</a>
+                        </li>
                      </ul>
                      <div class="tab-content">
                         <!--basic-->
-                        <div role="tabpanel" class="tab-pane active" id="basic" ng-form="BasicInfoPanel" ng-repeat="bi in [NTF.BasicInfo]">
+                        <div role="tabpanel" class="tab-pane active" id="basic" ng-form="BasicInfoFormPanel" ng-repeat="bi in [NTF.BasicInfo]">
+
                            <div class="row">
                               <div class="col-md-12">
                                  <div class="form-group" data-show-errors>
@@ -185,7 +201,10 @@
                               <div class="col-md-6 form-group">
                                  <label for="" class="control-label">Target Audience</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Audience/Target Group" data-placement="top" data-content="Who is your target group of readers? Most books fall under the General Audience. If you've supplied Juvenile BISACs, the audience must be Children and you must provide an Age Range.">?</a>
-                                 <select name="" id="" ng-model="dm.Audience" class="form-control" ng-options="at.Name for at in dm.FixedAudienceTypes track by at.Id"></select>
+                                 <select name="" id="" ng-model="dm.Audience" class="form-control" ng-options="at.Name for at in dm.FixedAudienceTypes track by at.Id" ng-disabled="dm.LockAudience">
+                                    <option value="">Choose...</option>
+                                 </select>
+                                 <pre>{{dm.Audience|json}}</pre>
                               </div>
                               <div class="col-md-6 form-group">
                                  <label for="" class="control-label">Age Range From / To</label>

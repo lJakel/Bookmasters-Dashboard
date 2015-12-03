@@ -25,53 +25,42 @@ class Auth_Model extends CI_Model {
            'message' => 'Registration is disabled. Please try again later.'
        ]
    ];
-   var $SecurityRoles = [
-       0 => 'General Manager',
-       1 => 'Developer',
-       2 => 'Administrator',
-       3 => 'CSR Manager',
-       5 => 'CSR',
-       4 => 'Client'
-   ];
-   var $DBMethods = [
-       'GetUser' => 'GetUser',
-       'RegisterUser' => 'RegisterUser',
-       'CreateRole' => null,
-       'CreateClaim' => null
+   var $ClientInfo = [
+       'DiscountCodes'
    ];
 
    function __construct() {
       parent::__construct();
       $this->load->library('session');
-      //
    }
 
    public function login($username, $password) {
       if (!$this->enabled['login']['state']) {
-
          return ['message' => ['error' => $this->enabled['login']['message']]];
       }
 
-// Build a query to retrieve the user's details
-// based on the received username and password
       $queryResult = $this->db->query("exec GetUser @username=?", [$username]);
-
 
       if ($queryResult && $queryResult->num_rows() && $user = $queryResult->row_object()) {
 
          $queryResult->free_result();
-//found account, proceed
 
          if ($user->IsActive !== '1') {
             return ['message' => ['error' => 'Your account is disabled.']];
          }
 
-//create password using the hash from DB
          $exploded = explode('_', $user->Password);
          $passwordSet = $this->create_password($password, $exploded[0]);
          if ($exploded[1] === $passwordSet['hash']) {
 
-//set session
+            $itemmaster = $this->load->database('itemmaster', TRUE);
+            $clientGetQuery = $itemmaster->query("exec Client_Get_WithDiscountCodes @clientId=?", [$user->Id]);
+
+            $clientGetResult = '';
+            if ($clientGetQuery && $clientGetQuery->num_rows() && $clientGet = $clientGetQuery->result_object()) {
+               $clientGetResult = $clientGet;
+            }
+
             $this->UserId = (isset($user->Id) ? $user->Id : null);
             $this->Username = (isset($user->Username) ? $user->Username : null);
             $this->Email = (isset($user->Email) ? $user->Email : null);
@@ -85,6 +74,7 @@ class Auth_Model extends CI_Model {
             $this->LastModified = (isset($user->lastmodified) ? $user->lastmodified : null);
             $this->IsActive = (isset($user->IsActive) ? $user->IsActive : null);
             $this->Issuer = (isset($user->Issuer) ? $user->Issuer : null);
+            $this->ClientInfo = ['DiscountCodes' => (isset($clientGetResult) ? $clientGetResult : null)];
 
 
             $this->set_session();
@@ -98,13 +88,9 @@ class Auth_Model extends CI_Model {
    }
 
    function set_session() {
-// session->set_userdata is a CodeIgniter function that
-// stores data in CodeIgniter's session storage.  Some of the values are built in
-// to CodeIgniter, others are added.  See CodeIgniter's documentation for details.
       $this->session->set_userdata(
               [
-                  'user' =>
-                  [
+                  'user' => [
                       'credentials' => [
                           'userid' => $this->UserId,
                           'username' => $this->Username,
@@ -123,7 +109,8 @@ class Auth_Model extends CI_Model {
                           'lastmodified' => $this->LastModified,
                           'isactive' => $this->IsActive,
                           'issuer' => $this->Issuer,
-                      ]
+                      ],
+                      'clientinfo' => $this->ClientInfo
                   ]
               ]
       );

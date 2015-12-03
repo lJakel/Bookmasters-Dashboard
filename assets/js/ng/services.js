@@ -131,7 +131,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       }
       function logout() {
          $http.post(url + 'logout').then(function (response) {
-            $localStorage.$reset();
+            $localStorage.$reset({user: null});
             changeUser(null);
             $state.go('login');
          }, function (response) {

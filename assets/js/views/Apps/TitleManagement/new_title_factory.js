@@ -1,16 +1,21 @@
-BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', function ($http, $q, $state, $timeout, $localStorage) {
+BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory', function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
-
-
-
+      console.log($localStorage.FixedReferencesFactory)
       var Today = Math.floor(Date.now() / 1000);
       var Days = 5;
       var CacheTime = Days * 24 * 60 * 60;
-      if (typeof $localStorage.FixedReferencesFactory == 'undefined' || typeof $localStorage.FixedReferencesFactory.Cache == 'undefined' || $localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
+      if (
+              typeof $localStorage.FixedReferencesFactory == 'undefined'
+              || typeof $localStorage.FixedReferencesFactory.Cache == 'undefined'
+              || $localStorage.FixedReferencesFactory.Cache == null
+              || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime
+              ) {
+         $localStorage.FixedReferencesFactory = {};
          $localStorage.$reset({FixedReferencesFactory: {
                Cache: null,
                IsoCodes: null,
                References: null,
+               DiscountCodes: null,
             }});
          $localStorage.FixedReferencesFactory.Cache = Math.floor(Date.now() / 1000);
       }
@@ -18,9 +23,11 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       var factory = {
          getReferences: getReferences,
          getIsoCodes: getIsoCodes,
+         getDiscountCodes: getDiscountCodes,
          lookupBisac: lookupBisac,
          References: undefined,
          IsoCodes: undefined,
+         DiscountCodes: undefined,
       };
       return factory;
 
@@ -68,12 +75,12 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          }
       }
       function loadReferences(get) {
-         return $http.post("http://api.bookmasters.com/itemmaster/references/all", {withCredentials: false}).then(function (response) {
+         return $http.post("api/test", {withCredentials: false}).then(function (response) {
 
             setReferences({
                ContributorRoles: response.data.ContributorRoles,
                BisacGroups: response.data.BisacGroups,
-               Editions: response.data.Editions,
+               Editions: response.data.EditionTypes,
                PublicationStatuses: response.data.PublicationStatuses,
                FixedProductTypes: response.data.MediaTypes,
                FixedProductForms: response.data.ProductForms,
@@ -105,5 +112,23 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
             });
             return;
          });
+      }
+
+
+      function setDiscountCodes(DiscountCodes) {
+         factory.DiscountCodes = DiscountCodes;
+         $localStorage.FixedReferencesFactory.DiscountCodes = DiscountCodes;
+      }
+
+      function getDiscountCodes() {
+         if (typeof $localStorage.FixedReferencesFactory.DiscountCodes == 'undefined' || $localStorage.FixedReferencesFactory.DiscountCodes == null) {
+            return AuthFactory.getInfo().then(function (response) {
+               setDiscountCodes(response.clientinfo.DiscountCodes);
+               return $q.when(factory.DiscountCodes);
+            });
+         } else {
+            factory.DiscountCodes = $localStorage.FixedReferencesFactory.DiscountCodes
+            return $q.when(factory.DiscountCodes);
+         }
       }
    }]);

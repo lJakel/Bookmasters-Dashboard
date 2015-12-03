@@ -20,9 +20,11 @@ var Modals = {
       self.AdditionalTitles = [];
       self.addAdditionalTitle = addAdditionalTitle;
       self.removeAdditionalTitle = removeAdditionalTitle;
+
       function addAdditionalTitle() {
          self.AdditionalTitles.push(new Components.AdditionalTitle(''));
       }
+
       function removeAdditionalTitle(index) {
          self.AdditionalTitles.splice(index, 1);
       }
@@ -69,6 +71,9 @@ var Modals = {
       self.FixedIsoCodes = [];
       self.FixedIsoCodesPoop = [];
 
+      self.FixedDiscountCodes = [];
+
+
       self.FixedEditionTypes = [];
 
       self.DynamicProductTypes = [];
@@ -93,18 +98,20 @@ var Modals = {
          self.CalendarIsOpen = true;
       };
 
-         self.CalendarIsOpen = false;
-         
+      self.CalendarIsOpen = false;
+
       function uncheckAllSalesRights() {
          $.each(self.FixedIsoCodes, function (k, v) {
             v.checked = false;
          });
       }
+
       function checkAllSalesRights() {
          $.each(self.FixedIsoCodes, function (k, v) {
             v.checked = true;
          });
       }
+
       function GetDynamicProductForms() {
          if (typeof self.ProductType != 'undefined' || self.ProductType == '' || self.ProductType == null) {
             var SelectedProductType = self.ProductType;
@@ -146,15 +153,19 @@ var Modals = {
             });
          }
       }
+
       function addIllustration() {
          self.Illustrations.push(new Components.Illustration(''));
       }
+
       function removeIllustration(index) {
          self.Illustrations.splice(index, 1);
       }
+
       function addComparableTitle() {
          self.ComparableTitles.push(new Components.ComparableTitle(''));
       }
+
       function removeComparableTitle(index) {
          self.ComparableTitles.splice(index, 1);
       }

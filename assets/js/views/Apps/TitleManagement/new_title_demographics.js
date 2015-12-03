@@ -1,28 +1,43 @@
 var Demographics = function (data, FixedReferences) {
 
-   var vm = this;
+   var self = this;
    //juv and jnf forces (children audience, makes age range required)  young adult, age range required
-   vm.AgeFrom = data.AgeFrom || '';
-   vm.AgeTo = data.AgeTo || '';
-   vm.GradeFrom = data.GradeFrom || '';
-   vm.GradeTo = data.GradeTo || '';
-   vm.Bisacs = data.Bisacs || [];
+   self.AgeFrom = data.AgeFrom || '';
+   self.AgeTo = data.AgeTo || '';
+   self.GradeFrom = data.GradeFrom || '';
+   self.GradeTo = data.GradeTo || '';
+   self.Bisacs = data.Bisacs || [];
 
-   vm.FixedList = [];
-   vm.FixedAudienceTypes = [];
-   vm.FixedIsoCodesPoop = [];
+   self.Audience = data.Audience || '';
+   self.LockAudience = false;
 
-   vm.UpdateBisacCodes = function (index) {
-      FixedReferences.lookupBisac(vm.Bisacs[index].BisacGroup.Id).then(function (response) {
-         vm.Bisacs[index].FixedList2 = response.data;
+   self.FixedList = [];
+   self.FixedAudienceTypes = [];
+   self.FixedIsoCodesPoop = [];
+
+   self.UpdateBisacCodes = function (index) {
+      FixedReferences.lookupBisac(self.Bisacs[index].BisacGroup.Id).then(function (response) {
+         $.each(self.Bisacs, function (k, v) {
+            if (v.BisacGroup.Id == 24 || v.BisacGroup.Id == 25) {
+               $.each(self.FixedAudienceTypes, function (k, v) {
+                  if (v.Name == "Children/juvenile") {
+                     self.Audience = v;
+                     self.LockAudience = true;
+                  }
+               });
+            } else {
+               self.LockAudience = false;
+            }
+         });
+         self.Bisacs[index].FixedList2 = response.data;
       });
    };
 
-   vm.addBisac = function () {
-      vm.Bisacs.push(new Components.Bisac(vm.FixedList || ''));
+   self.addBisac = function () {
+      self.Bisacs.push(new Components.Bisac(self.FixedList || ''));
    };
 
-   vm.removeBisac = function (index) {
-      vm.Bisacs.splice(index, 1);
+   self.removeBisac = function (index) {
+      self.Bisacs.splice(index, 1);
    };
 };

@@ -136,7 +136,7 @@
                      <div class="col-md-3 form-group">
                         <label for="" class="control-label">Stock Due Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Warehouse/Stock Due Date" data-placement="top" data-content="This is the date when you expect stock to arrive at Bookmasters' warehouse. This date must be at least 30 days before the publication date.">?</a>
-                        
+
                         <div class="input-group input-group-sm date">
                            <input name='Copyright' type="text" class="form-control" datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.StockDueDate">
                            <span class="input-group-addon">
@@ -175,15 +175,18 @@
                            <input name="usprice" type="text" class="form-control" data-bm-validate-options="['price']" ng-required="true" ng-model="fm.USPrice">
                         </div>
                      </div>
-                     <div class="col-md-4 form-group">
-                        <label for="" class="control-label">Discount Code</label>
-                        <input type="text" class="form-control" ng-model="fm.DiscountCode">
+                     <div class="col-md-4 form-group" data-show-errors>
+                        <label for="DiscountCode" class="control-label">Discount Code</label>
+                        <select id="" name="DiscountCode" class="form-control" ng-model="fm.DiscountCode" ng-options="dc.Name for dc in fm.FixedDiscountCodes track by dc.Id" >
+                           <option value="">Choose...</option>
+                        </select>
                      </div>
-                     <div class="col-md-4 form-group">
-                        <label for="" class="control-label">Customs Value</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Customs Value" data-placement="top" data-content='The worth of one copy of this book, to be declared on customs forms if the book is shipped outside the US.'>?</a>
-                        <input type="text" class="form-control" ng-model="fm.CustomsValue">
+                     <div class="col-md-4 form-group" data-show-errors>
+                        <label for="CustomsValue" class="control-label">Customs Value</label>
+                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Customs Value" data-placement="top" data-content="The worth of one copy of this book, to be declared on customs forms if the book is shipped outside the US.">?</a>
+                        <input name="CustomsValue" type="text" class="form-control" ng-model="fm.CustomsValue">
                      </div>
+
                   </div>
                   <div class="row" ng-show="fm.ProductForm == '3 - Electronic Print'">
                      <div class="col-md-4">

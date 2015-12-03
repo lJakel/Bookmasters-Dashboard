@@ -28,6 +28,8 @@ appDirectives.directive('body', function () {
  * ========================================================================
  */
 
+
+
 appDirectives.directive('bmAction', function ($rootScope) {
    var bmActions = {
       'toggle-left-sidebar': function (e, scope) {
@@ -40,6 +42,7 @@ appDirectives.directive('bmAction', function ($rootScope) {
       link: function (scope, $el, attrs) {
          if (angular.isDefined(attrs.bmAction) && attrs.bmAction != '') {
             $el.on('click', function (e) {
+
                scope.$apply(function () {
                   bmActions[attrs.bmAction].call($el[0], e, scope);
                });
@@ -53,14 +56,6 @@ appDirectives.directive('bmAction', function ($rootScope) {
       }
    }
 });
-/* ========================================================================
- * Sing App Navigation (Sidebar)
- * ========================================================================
- */
-
-
-
-
 appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoader) {
       return function (scope, element, attrs) {
          function render() {
@@ -194,9 +189,14 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
    }
 
 });
-/*
- * Directives-wrappers for 3rd-party plugins & classes
+
+
+/* ========================================================================
+ * Sing App Navigation (Sidebar)
+ * ========================================================================
  */
+
+
 
 
 appDirectives.directive("bsradio", function () {

@@ -1,24 +1,32 @@
 BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory', function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
-      console.log($localStorage.FixedReferencesFactory)
-      var Today = Math.floor(Date.now() / 1000);
-      var Days = 5;
-      var CacheTime = Days * 24 * 60 * 60;
-      if (
-              typeof $localStorage.FixedReferencesFactory == 'undefined'
-              || typeof $localStorage.FixedReferencesFactory.Cache == 'undefined'
-              || $localStorage.FixedReferencesFactory.Cache == null
-              || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime
-              ) {
-         $localStorage.FixedReferencesFactory = {};
-         $localStorage.$reset({FixedReferencesFactory: {
-               Cache: null,
-               IsoCodes: null,
-               References: null,
-               DiscountCodes: null,
-            }});
-         $localStorage.FixedReferencesFactory.Cache = Math.floor(Date.now() / 1000);
+
+      function cacheInit() {
+         console.log($localStorage.FixedReferencesFactory)
+         var Today = Math.floor(Date.now() / 1000);
+         var Days = 5;
+         var CacheTime = Days * 24 * 60 * 60;
+         if (typeof $localStorage.FixedReferencesFactory == 'undefined'
+                 || typeof $localStorage.FixedReferencesFactory.Cache == 'undefined'
+                 || $localStorage.FixedReferencesFactory.Cache == null
+                 || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
+
+            $localStorage.FixedReferencesFactory = {};
+            $localStorage.$reset({FixedReferencesFactory: {
+                  Cache: null,
+                  IsoCodes: null,
+                  References: null,
+                  DiscountCodes: null,
+               }});
+            $localStorage.FixedReferencesFactory.Cache = Math.floor(Date.now() / 1000);
+            return false;
+
+         } else {
+            return true;
+         }
+
       }
+
 
       var factory = {
          getReferences: getReferences,
@@ -57,7 +65,8 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function getIsoCodes() {
-         if (typeof $localStorage.FixedReferencesFactory.IsoCodes == 'undefined' || $localStorage.FixedReferencesFactory.IsoCodes == null) {
+         cacheInit();
+         if ($localStorage.FixedReferencesFactory.IsoCodes == null) {
             return loadIsoCodes(true);
          } else {
             factory.IsoCodes = $localStorage.FixedReferencesFactory.IsoCodes
@@ -66,8 +75,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function getReferences() {
+         cacheInit();
 
-         if (typeof $localStorage.FixedReferencesFactory.References == 'undefined' || $localStorage.FixedReferencesFactory.References == null) {
+         if ($localStorage.FixedReferencesFactory.References == null) {
             return loadReferences(true);
          } else {
             factory.references = $localStorage.FixedReferencesFactory.References
@@ -121,7 +131,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function getDiscountCodes() {
-         if (typeof $localStorage.FixedReferencesFactory.DiscountCodes == 'undefined' || $localStorage.FixedReferencesFactory.DiscountCodes == null) {
+         cacheInit();
+
+         if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
             return AuthFactory.getInfo().then(function (response) {
                setDiscountCodes(response.clientinfo.DiscountCodes);
                return $q.when(factory.DiscountCodes);

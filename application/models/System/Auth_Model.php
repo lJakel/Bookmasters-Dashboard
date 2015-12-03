@@ -218,7 +218,6 @@ class Auth_Model extends CI_Model {
          $this->output->set_status_header('403');
          exit;
       }
-
       return true;
    }
 

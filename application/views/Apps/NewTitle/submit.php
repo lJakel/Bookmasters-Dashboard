@@ -26,7 +26,7 @@
                      <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
                            <a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab"
-                              ng-style="!NTFNGForm.BasicInfoFormPanel.$pristine && NTFNGForm.BasicInfoFormPanel.$invalid ? {'background-color' : '#f2dede'} : {'background-color' : 'none'}">Basic Information</a>
+                              ng-style="!NTFNGForm.BasicInfoFormPanel.$pristine && NTFNGForm.BasicInfoFormPanel.$invalid ? {'background-color': '#f2dede'} : {'background-color': 'none'}">Basic Information</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab">Formats</a>
@@ -157,7 +157,7 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr ng-repeat="Bisac in dm.Bisacs">
+                                       <tr ng-repeat="Bisac in dm.Model.Bisacs">
                                           <td>{{$index + 1}}</td>
                                           <td>
                                              <ol class="nya-bs-select form-control" ng-model="Bisac.BisacGroup" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
@@ -201,23 +201,25 @@
                               <div class="col-md-6 form-group">
                                  <label for="" class="control-label">Target Audience</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Audience/Target Group" data-placement="top" data-content="Who is your target group of readers? Most books fall under the General Audience. If you've supplied Juvenile BISACs, the audience must be Children and you must provide an Age Range.">?</a>
-                                 <select name="" id="" ng-model="dm.Audience" class="form-control" ng-options="at.Name for at in dm.FixedAudienceTypes track by at.Id" ng-disabled="dm.LockAudience">
+                                 <select name="" id="" ng-model="dm.Model.Audience" class="form-control" ng-options="at.Name for at in dm.FixedAudienceTypes track by at.Id" ng-disabled="dm.AudienceDisabled">
                                     <option value="">Choose...</option>
                                  </select>
-                                 <pre>{{dm.Audience|json}}</pre>
+                                 <span class="help-block" ng-if="dm.AudienceDisabled"> 
+                                    <i>This field was automatically chosen based on a previous selection</i>
+                                 </span>
                               </div>
-                              <div class="col-md-6 form-group">
+                              <div class="col-md-6 form-group" data-show-errors ng-class="{'required': dm.AgeRangeRequired}">
                                  <label for="" class="control-label">Age Range From / To</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Age Range " data-placement="top" data-content="If you've added Juvenile BISACs, the Audience must be Children and you must provide an Age Range. This tells book buyers, retailers, and librarians the level at which this book is written so they can make an informed purchasing decision.">?</a>
-                                 <select name="" id="" class="form-control">
-                                    <option value="1">Choose...</option>
-                                    <option value="1">&nbsp;&nbsp;0 — &nbsp;&nbsp;2 &nbsp;&nbsp;Infant</option>
-                                    <option value="1">&nbsp;&nbsp;2 — &nbsp;&nbsp;4 &nbsp;&nbsp;Toddler</option>
-                                    <option value="1">&nbsp;&nbsp;4 — &nbsp;&nbsp;6 &nbsp;&nbsp;Emergent Reader</option>
-                                    <option value="1">&nbsp;&nbsp;6 — &nbsp;&nbsp;8 &nbsp;&nbsp;Early Reader</option>
-                                    <option value="1">&nbsp;&nbsp;8 — 10 &nbsp;&nbsp;Reader</option>
-                                    <option value="1">10 — 14 &nbsp;&nbsp;Early Teen</option>
-                                    <option value="1">14 — 18 &nbsp;&nbsp;Young Adult</option>
+                                 <select name="AgeRange" id="" class="form-control" ng-model="dm.Model.AgeRange" ng-required="dm.AgeRangeRequired" ng-disabled="dm.AgeRangeDisabled">
+                                    <option value="">Choose...</option>
+                                    <option value="2">&nbsp;&nbsp;0 — &nbsp;&nbsp;2 &nbsp;&nbsp;Infant</option>
+                                    <option value="3">&nbsp;&nbsp;2 — &nbsp;&nbsp;4 &nbsp;&nbsp;Toddler</option>
+                                    <option value="4">&nbsp;&nbsp;4 — &nbsp;&nbsp;6 &nbsp;&nbsp;Emergent Reader</option>
+                                    <option value="5">&nbsp;&nbsp;6 — &nbsp;&nbsp;8 &nbsp;&nbsp;Early Reader</option>
+                                    <option value="6">&nbsp;&nbsp;8 — 10 &nbsp;&nbsp;Reader</option>
+                                    <option value="7">10 — 14 &nbsp;&nbsp;Early Teen</option>
+                                    <option value="8">14 — 18 &nbsp;&nbsp;Young Adult</option>
                                  </select>
                               </div>
                            </div>

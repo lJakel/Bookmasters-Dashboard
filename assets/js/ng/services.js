@@ -5,6 +5,20 @@
 // Define your services here if necessary
 var appServices = angular.module('app.services', []);
 
+appServices.factory('GuidCreator', function () {
+   return{
+      CreateGuid: CreateGuid
+   }
+   function CreateGuid() {
+      function s4() {
+         return Math.floor((1 + Math.random()) * 0x10000)
+                 .toString(16)
+                 .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+              s4() + '-' + s4() + s4() + s4();
+   }
+});
 
 appServices.factory('partialCleanup', function ($timeout) {
    var objectsToClean = [];
@@ -131,7 +145,8 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       }
       function logout() {
          $http.post(url + 'logout').then(function (response) {
-            $localStorage.$reset({user: null});
+            $localStorage.$reset();
+            $localStorage.user = null;
             changeUser(null);
             $state.go('login');
          }, function (response) {
@@ -165,14 +180,14 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
                return response.data;
             }
          }, function (response) {
-
             changeUser(null);
             return $state.go('login');
          });
       }
       function getInfo() {
-
          if ($localStorage.user == null || factory.user == null) {
+            console.log('server')
+
             return factory.isLoggedIn(true);
          } else {
             factory.user = $localStorage.user;

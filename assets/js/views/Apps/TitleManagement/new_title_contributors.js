@@ -1,7 +1,9 @@
 var Contributors = function (data) {
    var vm = this;
-   console.log('Contributors', data)
-   vm.Contributors = data || [];
+   vm.Model = {
+      Contributors: data || []
+   };
+   
    vm.ContributorModal = new Modals.ContributorBSModal('');
 
    vm.showDialog = false;
@@ -28,7 +30,7 @@ var Contributors = function (data) {
          vm.ContributorModal.entryData[k] = vm.ContributorModal[k];
       });
       if (vm.ContributorModal.Method === 'add') {
-         vm.Contributors.push(vm.ContributorModal.entryData);
+         vm.Model.Contributors.push(vm.ContributorModal.entryData);
       }
       vm.showDialog = false;
    }
@@ -37,6 +39,6 @@ var Contributors = function (data) {
    }
 
    function removeContributor(index) {
-      vm.Contributors.splice(index, 1);
+      vm.Model.Contributors.splice(index, 1);
    }
 };

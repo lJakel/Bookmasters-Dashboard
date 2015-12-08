@@ -35,7 +35,7 @@ var Components = {
       self.Publication = '';
       self.Text = '';
    },
-   MarketingandPublicity: function () {
+   MarketingAndPublicity: function () {
       var self = this;
       self.Type = '';
       self.Description = '';

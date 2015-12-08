@@ -2,7 +2,7 @@ var Modals = {
    ContributorBSModal: function (data) {
       var self = this;
       self.entryData = undefined;
-      self.method = '';
+      self.Method = '';
 
       self.FirstName = '';
       self.MiddleName = '';
@@ -33,7 +33,7 @@ var Modals = {
    FormatBSModal: function (data, $scope) {
       var self = this;
       self.entryData = undefined;
-      self.method = '';
+      self.Method = '';
       self.ProductType = data.ProductType || '';
       self.ProductForm = data.ProductForm || '';
       self.ProductDetail = data.ProductDetail || '';
@@ -173,7 +173,7 @@ var Modals = {
    ReviewModal: function () {
       var self = this;
       self.entryData = undefined;
-      self.method = '';
+      self.Method = '';
 
       self.Method = '';
       self.Name = '';
@@ -191,7 +191,7 @@ var Modals = {
       self.Text = '';
 
    },
-   AppearanceandEventModal: function () {
+   AppearanceAndEventModal: function () {
       var self = this;
       self.entryData = undefined;
       self.Method = '';
@@ -199,6 +199,6 @@ var Modals = {
       self.Name = '';
       self.Date = '';
       self.Location = '';
-      self.Description = '';
+      self.Text = '';
    }
 };

@@ -7,9 +7,13 @@
                   <div class="container-fluid">
                      <div class="jumbotron" style="position: static; z-index: auto;">
                         <h1>Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
-                        <div>
-                           <h4> <strong>{{NTF.BasicInfo.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Publisher}}</span> </h4>
-                        </div>
+                        <h4>
+                           <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
+                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                              Drafts (AutoSave Enabled) <span class="badge">4</span>
+                           </button>
+                           <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>
+                        </h4>
                      </div>
                   </div>
                </div>
@@ -17,6 +21,69 @@
          </div>
       </div>
    </div>
+   <div class="collapse row" id="collapseExample">
+      <div class="col-md-12">
+         <div class="panel panel-default">
+            <div class="panel-body">
+               <div class="row">
+                  <div class="col-md-8">
+                     <h4>Saved Drafts</h4>
+                     <div class="table-responsive">
+                        <table class="table">
+                           <thead>
+                              <tr>
+                                 <th>Title</th>
+                                 <th>Creation Date</th>
+                                 <th>Last Updated</th>
+                                 <th class='twobtn'>Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr ng-repeat="d in NTF.Drafts">
+                                 <td>{{d.form.BasicInfo.Title}}</td>
+                                 <td>{{d.created}}</td>
+                                 <td></td>
+                                 <td class="twobtn">
+                                    <button class="btn btn-primary"><span class="fa fa-fw fa-edit"></span></button>
+                                    <button class="btn btn-danger"><span class="fa fa-fw fa-minus"></span></button>
+                                 </td>
+                              </tr>
+                           </tbody>
+
+                        </table>
+                     </div>
+
+                  </div>
+                  <div class="col-md-4">
+                     <h4>Draft Options</h4>
+                     <div class="form-group">
+                        <b>Auto Save</b>
+                        <br>
+
+                        <div class="radio radio-success radio-inline">
+                           <input type="radio" name="radio1" id="radio1" ng-model="fm.TerritoryRights" value="world">
+                           <label for="radio1">
+                              On
+                           </label>
+                        </div>
+                        <div class="radio radio-danger radio-inline">
+                           <input type="radio" name="radio1" id="radio2" ng-model="fm.TerritoryRights" value="individual">
+                           <label for="radio2">
+                              Off
+                           </label>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <button class="btn btn-primary">Clear All</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
    <div class="row">
       <div class="col-md-12">
          <div class="panel panel-default">
@@ -56,37 +123,37 @@
                                  <div class="form-group" data-show-errors>
                                     <label for="title" class="control-label">Title</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="The unique name for your book. The subtitle (if applicable) should be given separately.">?</a>
-                                    <input type="text" name="title" class="form-control" ng-minlength="4" ng-required="true" ng-model="bi.Title">
+                                    <input type="text" name="title" class="form-control" ng-minlength="4" ng-required="true" ng-model="bi.Model.Title">
                                  </div>
                                  <div class="form-group " data-show-errors>
                                     <label for="subtitle" class="control-label">Subtitle</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Subtitle" data-placement="top" data-content="A subtitle should further explain your book's title. It should not include words that explain the format or edition. Not all books have subtitles, so if this book doesn't have one, leave this blank.">?</a>
-                                    <input name="Subtitle" type="text" class="form-control" ng-model="bi.Subtitle">
+                                    <input name="Subtitle" type="text" class="form-control" ng-model="bi.Model.Subtitle">
                                  </div>
                                  <div class="form-group required" data-show-errors>
                                     <label for="publisher" class="control-label">Publisher</label>
-                                    <input name="Publisher" type="text" class="form-control" readonly ng-model="bi.Publisher">
+                                    <input name="Publisher" type="text" class="form-control" readonly ng-model="bi.Model.Publisher">
                                  </div>
                                  <div class="form-group required" data-show-errors>
                                     <label for="imprint" class="control-label">Imprint</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Imprint" data-placement="top" data-content="The name under which this book will be distributed. An imprint is a specific brand managed by the publisher and can be the same as the publisher name.">?</a>
-                                    <input name="Imprint" type="text" class="form-control" ng-required="true" ng-model="bi.Imprint">
+                                    <input name="Imprint" type="text" class="form-control" ng-required="true" ng-model="bi.Model.Imprint">
                                  </div>
                                  <div class="form-group required" data-show-errors>
                                     <label for="" class="control-label">Content Language</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Content language" data-placement="top" data-content="The primary language in which the book is written.">?</a>
-                                    <input name="ContentLanguage" type="text" class="form-control" ng-required="true" ng-model="bi.ContentLanguage">
+                                    <input name="ContentLanguage" type="text" class="form-control" ng-required="true" ng-model="bi.Model.ContentLanguage">
                                  </div>
                                  <div class="row">
                                     <div class="form-group col-md-6" data-show-errors>
                                        <label for="" class="control-label">Series Name</label>
                                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Series" data-placement="top" data-content="An indefinite number of titles, published over an indefinite time period, and grouped together under a series title. Primarily for marketing purposes. ">?</a>
-                                       <input name="SeriesName" type="text" class="form-control" ng-model="bi.Series">
+                                       <input name="SeriesName" type="text" class="form-control" ng-model="bi.Model.Series">
                                     </div>
                                     <div class="form-group col-md-6" data-show-errors>
                                        <label for="" class="control-label">Number in Series</label>
                                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Number in Series" data-placement="top" data-content="The number of this particular book within the series. Numbers only.">?</a>
-                                       <input name="NumberinSeries" type="text" class="form-control" ng-model="bi.NumberinSeries">
+                                       <input name="NumberinSeries" type="text" class="form-control" ng-model="bi.Model.NumberinSeries">
                                     </div>
                                  </div>
                               </div>
@@ -115,7 +182,7 @@
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="contributor in c.Contributors">
+                                          <tr ng-repeat="contributor in c.Model.Contributors">
                                              <td>{{contributor.Prefix}}</td>
                                              <td>{{contributor.FirstName}}</td>
                                              <td>{{contributor.MiddleName}}</td>
@@ -236,12 +303,12 @@
                               <div class="col-md-6">
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
-                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.MainDescription"></textarea>
+                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.MainDescription"></textarea>
                               </div>
                               <div class="col-md-6">
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.ShortDescription"></textarea>
+                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.ShortDescription"></textarea>
                               </div>
                            </div>
                         </div>
@@ -265,7 +332,7 @@
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Format in NTF.Formats.Formats">
+                                          <tr ng-repeat="Format in NTF.Formats.Model.Formats">
                                              <td>
                                                 {{Format.ProductType.Name}} / 
                                                 {{Format.ProductForm.Name}} / 
@@ -289,7 +356,7 @@
                         </div>
                         <!--end formats-->
                         <!--marketing-->
-                        <div role="tabpanel" class="tab-pane" id="marketing">
+                        <div role="tabpanel" class="tab-pane" id="marketing" ng-repeat="m in [NTF.Marketing]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Websites</h3>
@@ -300,12 +367,12 @@
                                              <th style="width:50%;">Website URL</th>
                                              <th style="width:50%;">Type</th>
                                              <th class="onebtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addWebsite()"><span class="fa fa-fw fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="m.addSingleMarketingItem('Website')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Website in NTF.Marketing.Websites" ng-form="WebsiteRepeat">
+                                          <tr ng-repeat="Website in m.Websites" ng-form="WebsiteRepeat">
                                              <td>
                                                 <div class="form-group" data-show-errors>
                                                    <input type="text" class="form-control" ng-required="true" name="websiteurl" ng-model="Website.URL" data-bm-validate data-bm-validate-options="['bmwebsite']" ng-model-options="{updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}">
@@ -324,7 +391,7 @@
                                                    </optgroup>
                                                 </select>
                                              </td>
-                                             <td><button class="btn btn-danger" ng-click="NTF.Marketing.remove('Websites', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
+                                             <td><button class="btn btn-danger" ng-click="m.removeMarketingItem('Website', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
                                        </tbody>
                                     </table>
@@ -347,18 +414,18 @@
                                              <th style="width:25%">Publication</th>
                                              <th>Text</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addReview()"><span class="fa fa-fw fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="m.addMarketingItem('Review')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Review in NTF.Marketing.Reviews">
+                                          <tr ng-repeat="Review in m.Model.Reviews">
                                              <td>{{Review.Name}}</td>
                                              <td>{{Review.Publication}}</td>
                                              <td>{{Review.Text}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showReviewModal(Review, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('Reviews', $index)"><span class="fa fa-fw fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="m.showMarketingItemModal(Review, 'Review', 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="m.removeMarketingItem('Review', $index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>
@@ -378,18 +445,18 @@
                                              <th style="width:25%">Affiliation</th>
                                              <th>Text</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addEndorsement()"><span class="fa fa-fw fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="m.addMarketingItem('Endorsement')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Endorsement in NTF.Marketing.Endorsements">
+                                          <tr ng-repeat="Endorsement in m.Model.Endorsements">
                                              <td>{{Endorsement.Name}}</td>
                                              <td>{{Endorsement.Affiliation}}</td>
                                              <td>{{Endorsement.Text}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showEndorsementModal(Endorsement, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('Endorsements', $index)"><span class="fa fa-fw fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="m.showMarketingItemModal(Endorsement, 'Endorsement', 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="m.removeMarketingItem('Endorsement', $index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>
@@ -412,12 +479,12 @@
                                              <th style="width:50%;">Type</th>
                                              <th style="width:50%;">Description</th>
                                              <th class="onebtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Marketing.addMarketingandPublicity()"><span class="fa fa-fw fa-plus"></span></button>
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="m.addSingleMarketingItem('MarketingAndPublicity')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="MarketingandPublicity in NTF.Marketing.MarketingandPublicities">
+                                          <tr ng-repeat="MarketingAndPublicity in m.MarketingAndPublicitys">
                                              <td>
                                                 <select name="" id="" class="form-control">
                                                    <option value="1">Print</option>
@@ -429,7 +496,7 @@
                                                 </select>
                                              </td>
                                              <td><textarea name="" id="" cols="30" rows="3" class="form-control"></textarea></td>
-                                             <td><button class="btn btn-danger" ng-click="NTF.Marketing.remove('MarketingandPublicities', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
+                                             <td><button class="btn btn-danger" ng-click="m.removeMarketingItem('MarketingAndPublicity', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
                                        </tbody>
                                     </table>
@@ -452,18 +519,18 @@
                                              <th style="width:33%;">Location </th>
                                              <th style="width:33%;">Date</th>
                                              <th class="twobtn">
-                                                <button class="btn btn-primary btn-block" ng-click="NTF.Marketing.addAppearanceandEvent()"><span class="fa fa-fw fa-plus"></span></button>
+                                                <button class="btn btn-primary btn-block" ng-click="m.addMarketingItem('AppearanceAndEvent')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Event in NTF.Marketing.AppearanceandEvents">
+                                          <tr ng-repeat="Event in m.Model.AppearanceAndEvents">
                                              <td>{{Event.Name}}</td>
                                              <td>{{Event.Location}}</td>
                                              <td>{{Event.Date}}</td>
                                              <td>
-                                                <button class="btn btn-primary" ng-click="NTF.Marketing.showAppearanceandEventModal(Event, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Marketing.remove('AppearanceandEvents', $index)"><span class="fa fa-fw fa-minus"></span></button>
+                                                <button class="btn btn-primary" ng-click="m.showMarketingItemModal(Event, 'AppearanceAndEvent', 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="m.removeMarketingItem('AppearanceAndEvent', $index)"><span class="fa fa-fw fa-minus"></span></button>
                                              </td>
                                           </tr>
                                        </tbody>

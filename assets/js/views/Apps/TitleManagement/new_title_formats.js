@@ -1,8 +1,9 @@
 var Formats = function (data, $scope, $timeout) {
 
    var self = this;
-   console.log('Formats', data)
-   self.Formats = data || [];
+   self.Model = {
+      Formats: data || []
+   }
    self.FormatModal = new Modals.FormatBSModal('', $scope);
 
    self.showDialog = false;
@@ -38,7 +39,7 @@ var Formats = function (data, $scope, $timeout) {
          self.FormatModal.entryData[k] = self.FormatModal[k];
       });
       if (self.FormatModal.Method === 'add') {
-         self.Formats.push(self.FormatModal.entryData);
+         self.Model.Formats.push(self.FormatModal.entryData);
       }
       self.showDialog = false;
    };
@@ -49,7 +50,7 @@ var Formats = function (data, $scope, $timeout) {
    };
 
    self.removeFormat = function (index) {
-      self.Formats.splice(index, 1);
+      self.Model.Formats.splice(index, 1);
    };
 
 };

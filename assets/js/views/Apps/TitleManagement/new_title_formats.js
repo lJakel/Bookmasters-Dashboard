@@ -1,32 +1,32 @@
-var Formats = function (data, $scope, $timeout) {
+var Formats = function (data, Dependencies) {
 
    var self = this;
    self.Model = {
       Formats: data || []
    }
-   self.FormatModal = new Modals.FormatBSModal('', $scope);
+   self.FormatModal = new Modals.FormatBSModal('', Dependencies.$scope);
 
    self.showDialog = false;
 
    self.showFormatModal = function (data, method) {
-      $scope.$broadcast('show-errors-reset');
+      Dependencies.$scope.$broadcast('show-errors-reset');
 
       self.FormatModal.Method = method || 'edit';
       self.FormatModal.entryData = data;
       $.each(data, function (k, v) {
          self.FormatModal[k] = data[k] || null;
       });
-      $timeout(function () {
+      Dependencies.$timeout(function () {
          self.FormatModal.GetDynamicProductForms();
       }).then(function () {
          self.FormatModal.ProductForm = data.ProductForm;
       });
-      $timeout(function () {
+      Dependencies.$timeout(function () {
          self.FormatModal.GetDynamicProductDetails();
       }).then(function () {
          self.FormatModal.ProductDetail = data.ProductDetail;
       });
-      $timeout(function () {
+      Dependencies.$timeout(function () {
          self.FormatModal.GetDynamicProductFormDetailSpecifics();
       }).then(function () {
          self.FormatModal.ProductBinding = data.ProductBinding;

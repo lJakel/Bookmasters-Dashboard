@@ -83,6 +83,38 @@ class Api extends CI_Controller {
       $output['BisacGroups'] = $refBisacGroupsQuery->result_object();
       $refBisacGroupsQuery->free_result();
 
+//
+//
+//      $output = [
+//          'Users' =>
+//          [
+//              [
+//                  'UserID' => 1,
+//                  'Drafts' => [
+//                      [
+//                          'DraftId' => 'c0b589a1',
+//                          'Created' => 1449687962,
+//                          'Data' => "fdsfsdfsdfdsf"
+//                      ],
+//                  ]
+//              ],
+//              [
+//                  'UserID' => 2,
+//                  'Drafts' => [
+//                      [
+//                          'DraftId' => 'c0b589a1',
+//                          'Created' => 1449687962,
+//                          'Data' => "fdsfsdfsdfdsf"
+//                      ],
+//                      [
+//                          'DraftId' => 'c0b589a1',
+//                          'Created' => 1449687962,
+//                          'Data' => "fdsfsdfsdfdsf"
+//                      ],
+//                  ]
+//              ],
+//          ]
+//      ];
       echo json_encode($output);
    }
 

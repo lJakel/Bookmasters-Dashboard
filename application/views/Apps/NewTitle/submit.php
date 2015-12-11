@@ -9,10 +9,10 @@
                         <h1>Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
-                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+<!--                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                               Drafts (AutoSave Enabled) <span class="badge">4</span>
                            </button>
-                           <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>
+                           <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>-->
                         </h4>
                      </div>
                   </div>
@@ -238,7 +238,7 @@
                                           </td>
                                           <td>
                                              <ol class="nya-bs-select form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
-                                                <li nya-bs-option="bis in Bisac.FixedList2">
+                                                <li nya-bs-option="bis in dm.FixedBisacListContainer[$index]">
                                                    <a>
                                                       {{bis.Code}} - {{bis.Text}}
                                                       <span class="fa fa-check check-mark"></span>
@@ -372,7 +372,7 @@
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="Website in m.Websites" ng-form="WebsiteRepeat">
+                                          <tr ng-repeat="Website in m.Model.Websites" ng-form="WebsiteRepeat">
                                              <td>
                                                 <div class="form-group" data-show-errors>
                                                    <input type="text" class="form-control" ng-required="true" name="websiteurl" ng-model="Website.URL" data-bm-validate data-bm-validate-options="['bmwebsite']" ng-model-options="{updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}">
@@ -484,9 +484,9 @@
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr ng-repeat="MarketingAndPublicity in m.MarketingAndPublicitys">
+                                          <tr ng-repeat="MarketingAndPublicity in m.Model.MarketingAndPublicitys">
                                              <td>
-                                                <select name="" id="" class="form-control">
+                                                <select name="" id="" class="form-control" ng-model="MarketingAndPublicity.Type">
                                                    <option value="1">Print</option>
                                                    <option value="2">Radio</option>
                                                    <option value="3">TV</option>
@@ -495,7 +495,7 @@
                                                    <option value="6">Other</option>
                                                 </select>
                                              </td>
-                                             <td><textarea name="" id="" cols="30" rows="3" class="form-control"></textarea></td>
+                                             <td><textarea name="" id="" cols="30" rows="3" class="form-control"  ng-model="MarketingAndPublicity.Description"></textarea></td>
                                              <td><button class="btn btn-danger" ng-click="m.removeMarketingItem('MarketingAndPublicity', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
                                        </tbody>

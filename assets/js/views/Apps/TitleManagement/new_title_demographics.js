@@ -1,4 +1,4 @@
-var Demographics = function (data, FixedReferences) {
+var Demographics = function (data, Dependencies) {
 
    var self = this;
 
@@ -7,6 +7,7 @@ var Demographics = function (data, FixedReferences) {
       Bisacs: data.Bisacs || [],
       AgeRange: data.AgeFrom || '',
    };
+   self.FixedBisacListContainer = [];
 
 
    self.AgeRangeRequired = false;
@@ -20,8 +21,10 @@ var Demographics = function (data, FixedReferences) {
    self.FixedAudienceTypes = [];
    self.FixedIsoCodesPoop = [];
 
+
+
    self.UpdateBisacCodes = function (index) {
-      FixedReferences.lookupBisac(self.Model.Bisacs[index].BisacGroup.Id).then(function (response) {
+      Dependencies.FixedReferences.lookupBisac(self.Model.Bisacs[index].BisacGroup.Id).then(function (response) {
          $.each(self.Model.Bisacs, function (k, v) {
             if (v.BisacGroup.Id == 24 || v.BisacGroup.Id == 25) { //if juv
                $.each(self.FixedAudienceTypes, function (k, v) {
@@ -38,13 +41,17 @@ var Demographics = function (data, FixedReferences) {
                self.AudienceRequired = false;
                self.AgeRangeRequired = false;
                self.AgeRangeDisabled = true;
-
             }
          });
-         self.Model.Bisacs[index].FixedList2 = response.data;
+         self.FixedBisacListContainer[index] = response.data;
+//         self.Model.Bisacs[index].FixedList2 = response.data;
       });
    };
 
+   //init values
+   $.each(self.Model.Bisacs, function (k, v) {
+      self.UpdateBisacCodes(k);
+   });
    self.addBisac = function () {
       self.Model.Bisacs.push(new Components.Bisac(self.FixedList || ''));
    };

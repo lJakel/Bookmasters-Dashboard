@@ -11,7 +11,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       };
       return self.factory;
 
+
       function cacheInit() {
+         console.log('sad')
          var Today = Math.floor(Date.now() / 1000);
          var Days = 5;
          var CacheTime = Days * 24 * 60 * 60;
@@ -54,7 +56,6 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
 
       function getIsoCodes() {
          cacheInit();
-
          if ($localStorage.FixedReferencesFactory.IsoCodes == null) {
             return loadIsoCodes(true);
          } else {
@@ -73,8 +74,8 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          }
       }
       function loadReferences(get) {
-         return $http.post("api/test", {withCredentials: false}).then(function (response) {
 
+         return $http.post("api/test", {withCredentials: false}).then(function (response) {
             setReferences({
                ContributorRoles: response.data.ContributorRoles,
                BisacGroups: response.data.BisacGroups,
@@ -131,88 +132,136 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          }
       }
    }]);
-
-
 BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
-      var self = this;
-      self.Drafts = [];
-      self.UserId = null;
-      self.Init = false;
-      self.factory = {
-         Drafts: [],
-         SaveDraft: SaveDraft,
-//         LoadDraft: LoadDraft,
-         GetDrafts: GetDrafts,
-      };
-
-      function cacheInit() {
-         return $q(function (resolve, reject) {
-            AuthFactory.getInfo().then(function (r) {
-
-               self.UserId = r.credentials.userid;
-               var Today = Math.floor(Date.now() / 1000);
-               var Days = 5;
-               var CacheTime = Days * 24 * 60 * 60;
-
-               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
-               $localStorage.NewTitleDraftsFactory.Cache = $localStorage.NewTitleDraftsFactory.Cache || null;
-
-               if ($localStorage.NewTitleDraftsFactory.Cache == null || Today - $localStorage.NewTitleDraftsFactory.Cache >= CacheTime) {
-                  $localStorage.NewTitleDraftsFactory = {
-                     Drafts: [], Cache: Math.floor(Date.now() / 1000)
-                  }
-               }
-               resolve();
-            }, function () {
-               $state.go('error', {
-                  code: '500',
-                  message: 'An unknown error occured in NewTitleDraftsFactory.'
-               });
-               reject();
-            });
-         });
-      }
-
-
-      function SetStorage() {
-         $localStorage.NewTitleDraftsFactory.Drafts[self.UserId] = self.factory.Drafts[self.UserId];
-      }
-      function GetDrafts() {
-         return cacheInit().then(function () {
-            self.factory.Drafts[self.UserId] = $localStorage.NewTitleDraftsFactory.Drafts[self.UserId] || [];
-            return $q.when(self.factory.Drafts[self.UserId]);
-         })
-      }
-
-      function ClearDrafts() {
-         return cacheInit().then(function () {
-            self.factory.Drafts[self.UserId] = [];
-            SetStorage();
-            return $q.when(self.factory.Drafts[self.UserId]);
-         });
-      }
-
-
-      function SaveDraft(data) {
-         return cacheInit().then(function () {
-
-            self.factory.Drafts[self.UserId] = self.factory.Drafts[self.UserId] || [];
-
-            self.factory.Drafts[self.UserId].unshift(angular.toJson({
-               DraftId: GuidCreator.CreateGuid(),
-               form: data,
-               created: Math.floor(Date.now() / 1000),
-            }));
-
-            if (self.factory.Drafts[self.UserId].length >= 4) {
-               self.factory.Drafts[self.UserId].length = 4;
-            }
-
-            SetStorage();
-            return $q.when(GetDrafts());
-         })
-
-
-      }
-      return self.factory;
+//      var self = this;
+//      self.UserId = null;
+//      self.Drafts = [];
+//      self.Init = false;
+//
+//      self.factory = {
+//         "Users": [
+////            {
+////               "UserID": 1,
+////               "Drafts": [
+////                  {
+////                     "DraftId": "c0b589a1",
+////                     "Created": 1449687962,
+////                     "Data": "fdsfsdfsdfdsf"
+////                  }
+////               ]
+////            },
+//         ],
+//         Cache: {},
+//         SaveDraft: SaveDraft,
+////         LoadDraft: LoadDraft,
+//         GetDrafts: GetDrafts,
+//      };
+//      function cacheInit() {
+//         return $q(function (resolve, reject) {
+//            if (self.Init) {
+//               resolve();
+//               return;
+//            }
+//            $timeout(function () {
+//               AuthFactory.getInfo().then(function (r) {
+//                  self.UserId = r.credentials.userid;
+//               });
+//            }).then(function () {
+//               var Today = Math.floor(Date.now() / 1000);
+//               var Days = 5;
+//               var CacheTime = Days * 24 * 60 * 60;
+//               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
+//               $localStorage.NewTitleDraftsFactory.Cache = $localStorage.NewTitleDraftsFactory.Cache || null;
+//               if ($localStorage.NewTitleDraftsFactory.Cache == null || Today - $localStorage.NewTitleDraftsFactory.Cache >= CacheTime) {
+//                  $localStorage.NewTitleDraftsFactory = {
+//                     Users: [], Cache: Math.floor(Date.now() / 1000)
+//                  }
+//               }
+//               if (self.UserId != null) {
+//                  self.Init = true;
+//                  resolve();
+//               } else {
+//                  reject($state.go('error', {
+//                     code: '500',
+//                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
+//                  }));
+//               }
+//            });
+//         });
+//      }
+//
+//
+//      function SetStorage() {
+//         return cacheInit().then(function () {
+//            $localStorage.NewTitleDraftsFactory = self.factory;
+//         })
+//      }
+//      function GetDrafts() {
+//         return cacheInit().then(function () {
+//            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
+//            
+//            
+//            if (self.factory.Users.length != 0) {
+//               $.each(self.factory.Users, function (k, v) {
+//                  if (v.UserID == self.UserId) {
+//                     console.log(v)
+//                     self.factory.Users = [v.Drafts];
+//                  }
+//               });
+//            } else {
+//               self.factory.Users = [];
+//            }
+//            console.log(typeof self.factory.Users, self.factory.Users);
+//            return $q.when(self.factory.Users);
+//         })
+//      }
+//
+//      function ClearDrafts() {
+//         return cacheInit().then(function () {
+//            self.factory.Users[self.UserId] = [];
+//            SetStorage();
+//            return $q.when(self.factory.Users[self.UserId]);
+//         });
+//      }
+//
+//
+//      function SaveDraft(data) {
+//         return cacheInit().then(function () {
+//
+//            self.factory.Users = self.factory.Users || [];
+//console.log(self.factory.Users)
+//            var Draft = {
+//               "UserID": self.UserId,
+//               "Drafts": [
+//                  {
+//                     "DraftId": data.Form.DraftId,
+//                     "Created": Math.floor(Date.now() / 1000),
+//                     "Data": angular.toJson({
+//                        form: data,
+//                     })
+//                  }
+//               ]
+//            }
+//
+//            if (self.factory.Users.length == 0) {
+//               self.factory.Users.push(Draft)
+//            } else {
+//               $.each(self.factory.Users, function (k, v) {
+//                  if (v.UserID == self.UserId) {
+//                     v.Drafts.unshift(Draft.Drafts[0]);
+//                  } else {
+//                     self.factory.Users.push(Draft)
+//                  }
+//               });
+//            }
+//
+//
+////            if (self.factory.Users[self.UserId].length >= 4) {
+////               self.factory.Users[self.UserId].length = 4;
+////            }
+//            SetStorage();
+//            return $q.when(GetDrafts());
+//         })
+//      }
+//      return self.factory;
    }]);

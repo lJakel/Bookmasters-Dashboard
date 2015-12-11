@@ -6,7 +6,7 @@
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add / Edit Endorsement</h4>
          </div>
-         <div class="modal-body" ng-repeat="em in [NTF.Marketing.AppearanceAndEventModal]">
+         <div class="modal-body" ng-repeat="em in [NTF.Marketing.EndorsementModal]">
             <div class="row">
                <div class="col-md-6 form-group">
                   <label for="" class="control-label">Name</label>

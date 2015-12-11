@@ -25,6 +25,14 @@ class Auth_Model extends CI_Model {
            'message' => 'Registration is disabled. Please try again later.'
        ]
    ];
+     var $SecurityRoles = [
+       0 => 'General Manager',
+       1 => 'Developer',
+       2 => 'Administrator',
+       3 => 'CSR Manager',
+       5 => 'CSR',
+       4 => 'Client'
+   ];
    var $ClientInfo = [
        'DiscountCodes'
    ];

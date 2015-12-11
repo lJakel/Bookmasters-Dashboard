@@ -1,9 +1,15 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'NewTitleDraftsFactory', 'GuidCreator', function (scriptLoader, $scope, $timeout, FixedReferences, $stateParams, partialCleanup, NewTitleDraftsFactory, GuidCreator) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', function (scriptLoader, $scope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator) {
       var vm = this;
       // if ($stateParams.child) {
       //   alert($stateParams.child)
       // }
-
+      vm.Dependencies = {
+         scriptLoader: scriptLoader,
+         $scope: $scope,
+         $timeout: $timeout,
+         FixedReferences: FixedReferences,
+         $stateParams: $stateParams
+      }
       function init() {
 
          partialCleanup.prepare(['BasicInfo', 'Contributors', 'Formats', 'Demographics', 'Marketing', 'Modals']);
@@ -11,57 +17,25 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
             DraftId: GuidCreator.CreateGuid(),
             ProductGroupId: null,
          }
-         vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '');
+         vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
          vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '');
-         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', $scope, $timeout);
-         vm.Demographics = new Demographics(data.NewTitle.Demographics || '', FixedReferences);
-         vm.Marketing = new Marketing(data.NewTitle.Marketing || '');
+         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
+         vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
+         vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
 
-         vm.Drafts = [];
-
-         vm.GetDrafts = function () {
-            NewTitleDraftsFactory.GetDrafts().then(function (response) {
-               console.log(response)
-               vm.Drafts = $.map(response, function (item) {
-                  return JSON.parse(item);
-               });
-            });
-         };
-         vm.GetDrafts();
-
-         vm.ClearDrafts = function () {
-            NewTitleDraftsFactory.ClearDrafts().then(function (response) {
-               vm.Drafts = response
-            });
-         }
-         vm.SaveDraft = function () {
-            NewTitleDraftsFactory.SaveDraft({
-               "Form": vm.Form,
+         vm.RefreshJson = function () {
+            $('#jsonPre').text(JSON.stringify({
                "BasicInfo": vm.BasicInfo.Model,
                "Contributors": vm.Contributors.Model,
                "Formats": vm.Formats.Model,
                "Demographics": vm.Demographics.Model,
                "Marketing": vm.Marketing.Model,
-            }).then(function (response) {
-               vm.Drafts = $.map(response, function (item) {
-                  return JSON.parse(item);
-               });
-            });
-
-         };
-
-         vm.RefreshJson = function () {
-            $('#jsonPre').text(JSON.stringify({
-               "BasicInfo": (vm.BasicInfo),
-               "Contributors": (vm.Contributors),
-               "Formats": (vm.Formats),
-               "Demographics": (vm.Demographics),
-               "Marketing": (vm.Marketing),
             }));
 
          };
 
          FixedReferences.getReferences().then(function (response) {
+
             vm.Contributors.ContributorModal.FixedAuthorRoles = $.map(response.ContributorRoles, function (item) {
                return item;
             });
@@ -80,7 +54,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
             vm.Formats.FormatModal.FixedEditionTypes = $.map(response.Editions, function (item) {
                return item;
             });
-            console.log(response)
+
             vm.Demographics.FixedAudienceTypes = $.map(response.AudienceTypes, function (item) {
                return item;
             });
@@ -108,9 +82,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
          $timeout(function () {
             $('[data-toggle="popover"]').popover();
          });
-
       }
-
       scriptLoader.loadScripts([
          'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
          'http://www.bookmasters.com/CDN/js/bs-filepicker/bs-filepicker.js',
@@ -128,3 +100,117 @@ var data = {
       "Marketing": {}
    },
 };
+data = {
+   "NewTitle": {
+      "BasicInfo": {
+         "ProductGroupId": null,
+         "Title": "Jakes Book of Memes",
+         "Subtitle": "Test",
+         "Publisher": "Jake",
+         "Imprint": "Lol",
+         "ContentLanguage": "English",
+         "Series": "Starwars",
+         "NumberinSeries": "3",
+         "MainDescription": "hgfdsfdsf",
+         "ShortDescription": "hgfdsfdsfdsfsdfds"
+      },
+      "Contributors": {
+         "Contributors": [
+            {
+               "FirstName": "Jake",
+               "MiddleName": "A",
+               "LastName": "Ihasz",
+               "Prefix": "Mr",
+               "Suffix": "3rd",
+               "Hometown": "Ashland",
+               "Role": {
+                  "Id": "1",
+                  "Name": "Author"
+               },
+               "Biography": "sdfdsfdsfdsfdsfds",
+               "IsRolePrimary": true,
+               "IsTitlePrimary": true,
+               "AdditionalTitles": [
+               ],
+               "$$hashKey": "object:208"
+            }
+         ]
+      },
+      "Formats": {
+         "Formats": [
+         ]
+      },
+      "Demographics": {
+         "Audience": "",
+         "Bisacs": [
+            {
+               "FixedList": [
+               ],
+               "FixedList2": [
+               ],
+               "BisacGroup": {
+                  "Id": "2",
+                  "Prefix": "ARC",
+                  "Name": "ARCHITECTURE",
+                  "YearVersion": "2014",
+                  "$$hashKey": 2
+               },
+               "Code": {
+                  "Id": "48",
+                  "Code": "ARC001000",
+                  "Text": "ARCHITECTURE / Criticism",
+                  "GroupId": "2",
+                  "$$hashKey": 54
+               },
+               "Text": "",
+               "Group": "",
+               "LongName": "",
+               "BisacID": "",
+               "$$hashKey": "object:1078"
+            }
+         ],
+         "AgeRange": ""
+      },
+      "Marketing": {
+         "Websites": [
+            {
+               "URL": "http://google.com/",
+               "Type": "",
+               "$$hashKey": "object:219"
+            }
+         ],
+         "MarketingAndPublicitys": [
+            {
+               "Type": "2",
+               "Description": "jhl",
+               "$$hashKey": "object:243"
+            }
+         ],
+         "Reviews": [
+            {
+               "Name": "rev",
+               "Publication": "fdsf",
+               "Text": "sdfdsfsdfdsfdsf",
+               "$$hashKey": "object:227"
+            }
+         ],
+         "Endorsements": [
+            {
+               "Name": "fds",
+               "Affiliation": "null894",
+               "Text": "sdfdsfs",
+               "$$hashKey": "object:235"
+            }
+         ],
+         "AppearanceAndEvents": [
+            {
+               "Name": "fdsafdsa",
+               "Date": "fsasdfs",
+               "Location": "fdsadsa",
+               "Description": null,
+               "$$hashKey": "object:250"
+            }
+         ]
+      }
+   }
+}

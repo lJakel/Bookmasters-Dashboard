@@ -12,14 +12,14 @@ var login = function (parent) {
          parent.AuthFactory.login({username: self.username, password: self.password}, function (res) {
             self.authenticating = false;
 
-            parent.vm.handleAlert(1, res.response);
+            parent.vm.handleAlert(1, [{message: res.response}]);
             parent.$timeout(function () {
                parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
             }, 2000);
          }, function (err) {
             console.log(err);
             self.authenticating = false;
-            parent.vm.handleAlert(0, err.errors[0].message);
+            parent.vm.handleAlert(0, err.errors);
          });
       });
 
@@ -32,6 +32,7 @@ var register = function (parent) {
    self.password = '';
    self.email = '';
    self.authenticating = false;
+  
 
    self.register = function () {
       self.authenticating = true;
@@ -44,15 +45,13 @@ var register = function (parent) {
       }, function (successResponse) {
          self.authenticating = false;
 
-         parent.vm.handleAlert(1, successResponse.message.success);
+         parent.vm.handleAlert(1, [{message: successResponse.response}]);
          $('#authmodal a[data-target="#login"]').tab('show');
          parent.vm.loginCtrl.username = self.username;
 
       }, function (errorResponse) {
          self.authenticating = false;
-
-         parent.vm.handleAlert(0, errorResponse.message.error);
-
+         parent.vm.handleAlert(0, errorResponse.errors);
       });
    };
 };
@@ -77,37 +76,43 @@ BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$tim
 
       vm.handleAlert = function (success, message) {
 
-         var alertSuccess = $('.alert.alert-success');
-         var alertError = $('.alert.alert-danger');
+
+         $.each(message, function (k, v) {
+            console.log(k, v);
+
+            var alertSuccess = $('.alert.alert-success');
+            var alertError = $('.alert.alert-danger');
 
 
 
-         if (success == 1) {
-            vm.success = message;
-            vm.error = undefined;
-            $timeout(function () {
-               alertSuccess.fadeOut('slow', function () {
-                  $timeout(function () {
-                     alertSuccess.css('display', 'block');
-                     vm.error = undefined;
-                     vm.success = undefined;
+            if (success == 1) {
+               vm.success = v.message;
+               vm.error = undefined;
+               $timeout(function () {
+                  alertSuccess.fadeOut('slow', function () {
+                     $timeout(function () {
+                        alertSuccess.css('display', 'block');
+                        vm.error = undefined;
+                        vm.success = undefined;
+                     });
                   });
-               });
-            }, 4000);
-         } else {
-            vm.success = undefined;
-            vm.error = message;
+               }, 4000);
+            } else {
+               vm.success = undefined;
+               vm.error = v.message;
 
-            $timeout(function () {
-               alertError.fadeOut('slow', function () {
-                  $timeout(function () {
-                     alertError.css('display', 'block');
-                     vm.error = undefined;
-                     vm.success = undefined;
+               $timeout(function () {
+                  alertError.fadeOut('slow', function () {
+                     $timeout(function () {
+                        alertError.css('display', 'block');
+                        vm.error = undefined;
+                        vm.success = undefined;
+                     });
                   });
-               });
-            }, 4000);
-         }
+               }, 4000);
+            }
+         });
+
       }
    }
 ]);

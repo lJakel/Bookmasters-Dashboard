@@ -24,6 +24,7 @@
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-toasty/angular-toasty.min.css">
 
 
       <!-- Custom styles for this Dashboard -->
@@ -58,8 +59,8 @@
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-bootstrap/ui-bootstrap-tpls-0.14.3.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/moment/min/moment-with-locales.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.js"></script>
-      
-      
+      <script src="http://www.bookmasters.com/CDN/js/angular-toasty/angular-toasty.min.js"></script>
+
 
       <!-- common app js -->
       <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>
@@ -71,5 +72,6 @@
 
       <!-- page specific libs -->
 
-   </body>
+   <toasty></toasty>
+</body>
 </html>

@@ -12,6 +12,7 @@ var BMApp = angular.module('BMApp', [
    'ngFileUpload',
    'nya.bootstrap.select',
    'ui.bootstrap',
+   'angular-toasty',
    // page-specific and demo. may be removed
    // application libs
    'app.controllers',
@@ -22,7 +23,20 @@ var BMApp = angular.module('BMApp', [
 ]);
 
 
-BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider) {
+BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider, toastyConfigProvider) {
+
+   toastyConfigProvider.setConfig({
+      limit: 10, // {int} Maximum number of toasties to show at once
+      showClose: true, // {bool} Whether to show the 'X' icon to close the toasty
+      clickToClose: false, // {bool} Whether clicking the toasty closes it
+      position: 'bottom-right', // {string:bottom-right,bottom-left,top-right,top-left} The window position where the toast pops up
+      timeout: 5000, // {int} How long (in miliseconds) the toasty shows before it's removed. Set to false to disable.
+      sound: false, // {bool} Whether to play a sound when a toast is added
+      html: false, // {bool} Whether HTML is allowed in toasts
+      shake: false, // {bool} Whether to shake the toasts
+      theme: 'bootstrap' // {string} What theme to use; default, material or bootstrap
+   });
+
 
    BMApp.register = {
       controller: $controllerProvider.register,

@@ -56,8 +56,9 @@
    }
 </style>
 <script>
-   BMApp.register.controller('DevUserManagementCtrl', function ($state, $http, $q,$scope) {
-
+   BMApp.register.controller('DevUserManagementCtrl', function ($state, $http, $q, $scope,toasty,$timeout) {
+ 
+    
       var self = this;
       self.loading = false;
       self.loadUser = function (uId) {

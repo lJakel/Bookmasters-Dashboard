@@ -1,118 +1,93 @@
-var login = function (parent) {
+var login = function (Dependencies) {
    var self = this;
    self.username = '';
    self.password = '';
-   self.authenticating = false;
 
    self.login = function (redirect) {
 
-      parent.$timeout(function () {
-         self.authenticating = true;
+      Dependencies.$timeout(function () {
       }).then(function () {
-         parent.AuthFactory.login({username: self.username, password: self.password}, function (res) {
-            self.authenticating = false;
+         Dependencies.AuthFactory.login({username: self.username, password: self.password}, function (res) {
 
-            parent.vm.handleAlert(1, [{message: res.response}]);
-            parent.$timeout(function () {
-               parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
+            Dependencies.toasty.success({
+               title: 'Authentication Successful!',
+               msg: 'Welcome Jake!',
+               theme: 'bootstrap',
+               timeout: 5000,
+            });
+            Dependencies.$timeout(function () {
+               Dependencies.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
             }, 2000);
+
          }, function (err) {
-            console.log(err);
-            self.authenticating = false;
-            parent.vm.handleAlert(0, err.errors);
+
+            $.each(err.errors, function (k, v) {
+               Dependencies.toasty.error({
+                  title: 'Authentication Error',
+                  msg: v.message,
+                  theme: 'bootstrap',
+                  timeout: 8000,
+               });
+            });
          });
       });
 
    };
 };
-var register = function (parent) {
+var register = function (Dependencies) {
    var self = this;
    self.regkey = '';
    self.username = '';
    self.password = '';
    self.email = '';
-   self.authenticating = false;
-  
+
 
    self.register = function () {
-      self.authenticating = true;
 
-      parent.AuthFactory.register({
+      Dependencies.AuthFactory.register({
          email: self.email,
          regkey: self.regkey,
          username: self.username,
          password: self.password
       }, function (successResponse) {
-         self.authenticating = false;
 
-         parent.vm.handleAlert(1, [{message: successResponse.response}]);
+
+         Dependencies.toasty.success({
+            title: 'Authentication Successful!',
+            msg: successResponse.response,
+            theme: 'bootstrap',
+            timeout: 5000,
+         });
          $('#authmodal a[data-target="#login"]').tab('show');
-         parent.vm.loginCtrl.username = self.username;
+         Dependencies.vm.loginCtrl.username = self.username;
 
-      }, function (errorResponse) {
-         self.authenticating = false;
-         parent.vm.handleAlert(0, errorResponse.errors);
+      }, function (err) {
+         $.each(err.errors, function (k, v) {
+            Dependencies.toasty.error({
+               title: 'Authentication Error',
+               msg: v.message,
+               theme: 'bootstrap',
+               timeout: 8000,
+            });
+         });
       });
    };
 };
-BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', function ($scope, AuthFactory, $state, $timeout, $q) {
+BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', 'toasty', function ($scope, AuthFactory, $state, $timeout, $q, toasty) {
       var vm = this;
       vm.error = undefined;
       vm.success = undefined;
 
-      vm.loginCtrl = new login({
-         AuthFactory: AuthFactory,
-         $timeout: $timeout,
-         vm: vm,
+      vm.Dependencies = {
          $scope: $scope,
-         $state: $state,
-         $q: $q,
-      });
-      vm.registerCtrl = new register({
          AuthFactory: AuthFactory,
-         vm: vm,
+         $state: $state,
          $timeout: $timeout,
-      });
+         $q: $q,
+         toasty: toasty,
+      };
 
-      vm.handleAlert = function (success, message) {
-
-
-         $.each(message, function (k, v) {
-            console.log(k, v);
-
-            var alertSuccess = $('.alert.alert-success');
-            var alertError = $('.alert.alert-danger');
-
-
-
-            if (success == 1) {
-               vm.success = v.message;
-               vm.error = undefined;
-               $timeout(function () {
-                  alertSuccess.fadeOut('slow', function () {
-                     $timeout(function () {
-                        alertSuccess.css('display', 'block');
-                        vm.error = undefined;
-                        vm.success = undefined;
-                     });
-                  });
-               }, 4000);
-            } else {
-               vm.success = undefined;
-               vm.error = v.message;
-
-               $timeout(function () {
-                  alertError.fadeOut('slow', function () {
-                     $timeout(function () {
-                        alertError.css('display', 'block');
-                        vm.error = undefined;
-                        vm.success = undefined;
-                     });
-                  });
-               }, 4000);
-            }
-         });
-
-      }
+      vm.loginCtrl = new login(vm.Dependencies);
+      vm.registerCtrl = new register(vm.Dependencies);
    }
 ]);

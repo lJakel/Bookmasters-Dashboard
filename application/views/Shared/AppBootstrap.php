@@ -21,6 +21,7 @@
                   </ul>
                </li>
             </ul>
+
             <?php
             $dev = true;
             if ($dev) {
@@ -33,6 +34,9 @@
                         <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
                      </ul>
                   </li>
+               </ul>
+               <ul ng-if="user.roles[0] == 'Developer'">
+                  <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })"><span class="fa fa-bug fa-fw"></span>Debug</a></li>
                </ul>
             <?php } ?>
             <div data-ui-view="appItems"></div>

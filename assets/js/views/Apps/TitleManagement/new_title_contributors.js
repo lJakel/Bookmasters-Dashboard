@@ -1,19 +1,17 @@
-var Contributors = function (data) {
+var Contributors = function (data, Dependencies) {
    var vm = this;
    vm.Model = {
       Contributors: data || []
    };
-   
-   vm.ContributorModal = new Modals.ContributorBSModal('');
+
+   vm.ContributorModal = new Modals.ContributorBSModal('', Dependencies);
 
    vm.showDialog = false;
-
 
    vm.showContributorModal = showContributorModal;
    vm.onContributorModalAction = onContributorModalAction;
    vm.addContributor = addContributor;
    vm.removeContributor = removeContributor;
-
 
 
    function showContributorModal(data, method) {
@@ -25,6 +23,7 @@ var Contributors = function (data) {
       });
       vm.showDialog = true;
    }
+
    function onContributorModalAction() {
       $.each(vm.ContributorModal.entryData, function (k, v) {
          vm.ContributorModal.entryData[k] = vm.ContributorModal[k];
@@ -34,6 +33,7 @@ var Contributors = function (data) {
       }
       vm.showDialog = false;
    }
+
    function addContributor() {
       vm.showContributorModal(new Components.Contributor(''), 'add');
    }

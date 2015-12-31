@@ -166,6 +166,8 @@ app.helpers = new Helpers();
 appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', function ($scope, $localStorage, AuthFactory, $q, $http) {
       var self = this;
 
+
+
       self.Feedback = new Feedback({'$http': $http, 'AuthFactory': AuthFactory});
 
       //fix below for self
@@ -173,6 +175,7 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
       $scope.logout = AuthFactory.logout;
 
       AuthFactory.isLoggedIn(true).then(function (response) {
+         console.log(AuthFactory);
          $scope.user = response;
       });
    }]);

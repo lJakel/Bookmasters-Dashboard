@@ -42,7 +42,7 @@ var Components = {
    },
    AppearanceAndEvent: function () {
       var self = this;
-      self.Name = '';
+      self.EventName = '';
       self.Date = '';
       self.Location = '';
       self.Description = '';

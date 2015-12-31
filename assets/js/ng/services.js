@@ -158,6 +158,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       function login(user, success, error) {
 
          $http.post(url + 'login', user).then(function (response) {
+            console.log(response);
             changeUser(response.data.data); // get user block
             success(response.data); //get parent userblock and message block
          }, function (response) {
@@ -176,9 +177,10 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
       function isLoggedIn(get) {
          return $http.post(url + 'getuser').then(function (response) {
-            changeUser(response.data);
+            console.log(response);
+            changeUser(response.data.data);
             if (get == true) {
-               return response.data;
+               return response.data.data;
             }
          }, function (response) {
             changeUser(null);

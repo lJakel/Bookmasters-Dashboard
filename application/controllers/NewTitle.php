@@ -29,9 +29,70 @@ class NewTitle extends Secure_Controller {
           'files' => $_FILES
       ];
       $this->load->model('ApplicationModels/TitleManagement_Model');
-      
-     $return =  $this->TitleManagement_Model->process($output);
-      echo json_encode($return);
+      $return = $this->TitleManagement_Model->process($output);
+      $output1['message'] = ['error' => 'there was an error in yo stuff'];
+      $output1['data']['success'] = [
+          [
+              'row' => 1,
+              'title' => 'fgdkgdlkfgfd',
+              'isbn' => '9780000000002',
+          ],
+      ];
+      $output1['data']['error'] = [
+          [
+              'row' => 1,
+              'title' => 'fgdkgdlkfgfd',
+              'isbn' => '9780000000002',
+              'errors' => [
+                  [ 'field' => 'Title',
+                      'message' => 'This field is required'
+                  ],
+                  [ 'field' => 'Subtitle',
+                      'message' => 'This field is required'
+                  ],
+                  [ 'field' => 'ISBN',
+                      'message' => 'Invalid ISBN'
+                  ],
+              ],
+          ],
+          [
+              'row' => 1,
+              'title' => 'fgdkgdlkfgfd',
+              'isbn' => '9780000000002',
+              'errors' => [
+                  [
+                      'field' => 'Title',
+                      'message' => 'This field is required'
+                  ],
+                  [
+                      'field' => 'Subtitle',
+                      'message' => 'This field is required'
+                  ],
+                  [
+                      'field' => 'ISBN',
+                      'message' => 'Invalid ISBN'
+                  ],
+              ],
+          ],
+          [
+              'row' => 1,
+              'title' => 'fgdkgdlkfgfd',
+              'isbn' => '9780000000002',
+              'errors' => [
+                  [ 'field' => 'Title',
+                      'message' => 'This field is required'
+                  ],
+                  [ 'field' => 'Subtitle',
+                      'message' => 'This field is required'
+                  ],
+                  [ 'field' => 'ISBN',
+                      'message' => 'Invalid ISBN'
+                  ],
+              ],
+          ],
+      ];
+
+      echo json_encode($output1);
    }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-class API_Model extends CI_Model {
+class API_Model extends ESM {
 
    function __construct() {
       parent::__construct();
@@ -19,7 +19,7 @@ class API_Model extends CI_Model {
       if ($bisacQuery && $bisacQuery->num_rows() && $bisacResult = $bisacQuery->result_object()) {
          return ['message' => ['success' => ''], 'data' => $bisacResult];
       } else {
-         return ['message' => ['error' => '']];
+         return ['message' => ['error' => 'There was an error retrieving Bisac Group Codes.']];
       }
    }
 
@@ -30,7 +30,7 @@ class API_Model extends CI_Model {
       if ($bisacQuery && $bisacQuery->num_rows() && $bisacResult = $bisacQuery->result_object()) {
          return ['message' => ['success' => ''], 'data' => $bisacResult];
       } else {
-         return ['message' => ['error' => '']];
+         return ['message' => ['error' => 'There was an error retrieving All Bisac Groups.']];
       }
    }
 
@@ -42,7 +42,16 @@ class API_Model extends CI_Model {
       if ($isoCodeQuery && $isoCodeQuery->num_rows() && $isoCodeResult = $isoCodeQuery->result_object()) {
          return ['message' => ['success' => ''], 'data' => ['codes' => $isoCodeResult]];
       } else {
-         return ['message' => ['error' => '']];
+         return ['message' => ['error' => 'There was an error retrieving All ISO Codes.']];
       }
    }
+
+   function proof() {
+
+      $this->newError("1200", "lol", $this, __FUNCTION__, "info", null, false);
+      $this->newError("1201", "Password incorrect", $this, __FUNCTION__, "danger", null, false);
+      $data = ["poop" => "lol", "shiiii" => "lol"];
+      return $this->generateResponse($data, "Welcome!");
+   }
+
 }

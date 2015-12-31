@@ -1,8 +1,15 @@
 var Modals = {
-   ContributorBSModal: function (data) {
+   ContributorBSModal: function (data, Dependencies) {
       var self = this;
       self.entryData = undefined;
       self.Method = '';
+
+      Dependencies.$timeout(function () {
+         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContribModalForm.AdditionalTitleForm, function (newVal, oldVal) {
+            console.log(newVal, oldVal);
+         });
+      })
+
 
       self.FirstName = '';
       self.MiddleName = '';
@@ -23,6 +30,8 @@ var Modals = {
 
       function addAdditionalTitle() {
          self.AdditionalTitles.push(new Components.AdditionalTitle(''));
+       
+       console.log(Dependencies.$scope.NTFNGForm.ContribModalForm.AdditionalTitleForm);
       }
 
       function removeAdditionalTitle(index) {

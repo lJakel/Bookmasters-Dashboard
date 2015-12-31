@@ -56,7 +56,7 @@
    }
 </style>
 <script>
-   BMApp.register.controller('DevUserManagementCtrl', function ($state, $http, $q) {
+   BMApp.register.controller('DevUserManagementCtrl', function ($state, $http, $q,$scope) {
 
       var self = this;
       self.loading = false;
@@ -77,5 +77,6 @@
          });
       }
       self.load();
+      console.log($scope);
    });
 </script>

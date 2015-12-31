@@ -126,4 +126,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('System/ErrorSuccess_Model' => 'es');
+$autoload['model'] = array();

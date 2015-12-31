@@ -1,4 +1,4 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', function (scriptLoader, $scope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator, Upload) {
       var vm = this;
       // if ($stateParams.child) {
       //   alert($stateParams.child)
@@ -8,7 +8,8 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
          $scope: $scope,
          $timeout: $timeout,
          FixedReferences: FixedReferences,
-         $stateParams: $stateParams
+         $stateParams: $stateParams,
+         Upload: Upload
       }
       function init() {
 
@@ -18,10 +19,11 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
             ProductGroupId: null,
          }
          vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
-         vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '');
+         vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
          vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
          vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
          vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
+         vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
 
          vm.RefreshJson = function () {
             $('#jsonPre').text(JSON.stringify({
@@ -30,6 +32,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
                "Formats": vm.Formats.Model,
                "Demographics": vm.Demographics.Model,
                "Marketing": vm.Marketing.Model,
+               "Covers": vm.Covers.Model,
             }));
 
          };
@@ -82,6 +85,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
          $timeout(function () {
             $('[data-toggle="popover"]').popover();
          });
+         console.log($scope);
       }
       scriptLoader.loadScripts([
          'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
@@ -131,13 +135,102 @@ data = {
                "IsRolePrimary": true,
                "IsTitlePrimary": true,
                "AdditionalTitles": [
+                  {
+                     "ISBN": "9780000000002",
+                     "Title": "bv",
+                  }
                ],
-               "$$hashKey": "object:208"
             }
          ]
       },
       "Formats": {
          "Formats": [
+            {
+               "ProductType": {
+                  "Id": "1",
+                  "Name": "eBook"
+               },
+               "ProductForm": {
+                  "Id": "1",
+                  "Name": "eBook",
+                  "MediaTypeId": "1"
+               },
+               "ProductDetail": {
+                  "Id": "1",
+                  "Name": "ePUB",
+                  "FormId": "1"
+               },
+               "ProductBinding": {
+                  "Id": "1",
+                  "Name": "Enhanced",
+                  "FormDetailId": "1"
+               },
+               "ISBN13": "9780000000004",
+               "Width": "fds",
+               "Height": "fds",
+               "Spine": "lk",
+               "Weight": "lk",
+               "PublicationDate": "lk",
+               "Copyright": "lk",
+               "StockDueDate": "lk",
+               "TradeSales": null,
+               "Pages": "lk",
+               "CartonQuantity": "lk",
+               "USPrice": "120.00",
+               "DiscountCode": null,
+               "CustomsValue": null,
+               "Edition": null,
+               "EditionNumber": null,
+               "EditionType": null,
+               "CountryofOrigin": null,
+               "PublicationLocation": null,
+               "ComparableTitles": [
+               ],
+               "$$hashKey": "object:1242"
+            },
+            {
+               "ProductType": {
+                  "Id": "1",
+                  "Name": "eBook"
+               },
+               "ProductForm": {
+                  "Id": "1",
+                  "Name": "eBook",
+                  "MediaTypeId": "1"
+               },
+               "ProductDetail": {
+                  "Id": "1",
+                  "Name": "ePUB",
+                  "FormId": "1"
+               },
+               "ProductBinding": {
+                  "Id": "1",
+                  "Name": "Enhanced",
+                  "FormDetailId": "1"
+               },
+               "ISBN13": "9780000000002",
+               "Width": "dsa",
+               "Height": "kj",
+               "Spine": "kj",
+               "Weight": "kj",
+               "PublicationDate": "jk",
+               "Copyright": "kj",
+               "StockDueDate": "kj",
+               "TradeSales": null,
+               "Pages": "kj",
+               "CartonQuantity": "kj",
+               "USPrice": "12.00",
+               "DiscountCode": null,
+               "CustomsValue": null,
+               "Edition": null,
+               "EditionNumber": null,
+               "EditionType": null,
+               "CountryofOrigin": null,
+               "PublicationLocation": null,
+               "ComparableTitles": [
+               ],
+               "$$hashKey": "object:1255"
+            }
          ]
       },
       "Demographics": {

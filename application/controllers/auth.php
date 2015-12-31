@@ -68,15 +68,10 @@ class Auth extends CI_Controller {
    }
 
    function testPW() {
-
-
-
       $password = trim($this->input->post('password'));
       $salt = trim($this->input->post('salt'));
 
-
       $this->output->set_header('Content-Type: application/json');
-
       $result = $this->Auth_Model->create_password($password, $salt);
 
       echo json_encode($result);

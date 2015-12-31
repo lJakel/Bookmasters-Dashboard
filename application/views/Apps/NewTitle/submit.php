@@ -9,10 +9,10 @@
                         <h1>Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
-<!--                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                              Drafts (AutoSave Enabled) <span class="badge">4</span>
-                           </button>
-                           <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>-->
+                           <!--                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                         Drafts (AutoSave Enabled) <span class="badge">4</span>
+                                                      </button>
+                                                      <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>-->
                         </h4>
                      </div>
                   </div>
@@ -49,10 +49,8 @@
                                  </td>
                               </tr>
                            </tbody>
-
                         </table>
                      </div>
-
                   </div>
                   <div class="col-md-4">
                      <h4>Draft Options</h4>
@@ -82,8 +80,6 @@
          </div>
       </div>
    </div>
-
-
    <div class="row">
       <div class="col-md-12">
          <div class="panel panel-default">
@@ -109,6 +105,9 @@
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab">Marketing</a>
+                        </li>
+                        <li role="presentation">
+                           <a href="#" data-target="#covers" aria-controls="covers" role="tab" data-toggle="tab">Covers</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab">JsonDebug</a>
@@ -540,6 +539,86 @@
                            </div>
                         </div>
                         <!--end formats-->
+                        <!--covers-->
+                        <div role="tabpanel" class="tab-pane" id="covers" ng-repeat="c in [NTF.Covers]">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <h3>Cover Upload</h3>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <div class="panel panel-default">
+                                    <div class="table-responsive">
+                                       <table class="table table-hover">
+                                          <thead>
+                                             <tr>
+                                                <th>ISBN</th>
+                                                <th>Format</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Size</th>
+                                                <th style="width:105px;">Upload</th>
+                                                <th style="width:200px;">Progress</th>
+                                                <th style="width:60px; text-align: center;">Status</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr ng-repeat="Format in NTF.Formats.Model.Formats">
+                                                <td>
+                                                   {{Format.ISBN13}}
+                                                </td>
+                                                <td>
+                                                   {{Format.ProductType.Name}} / 
+                                                   {{Format.ProductForm.Name}} / 
+                                                   {{Format.ProductDetail.Name}} / 
+                                                   {{Format.ProductBinding.Name}}
+                                                </td>
+                                                <td>
+                                                   {{c.files[Format.ISBN13]['name']}}
+                                                </td>
+                                                <td>
+                                                   <span ng-if="c.files[Format.ISBN13]['type'] == 'application/pdf'">Type: <i class="fa fa-file-pdf-o"></i> ({{c.files[Format.ISBN13]['type']}})</span>
+                                                   <span ng-if="c.files[Format.ISBN13]['type'] == 'image/jpeg'">Type: <i class="fa fa-file-image-o"></i> ({{c.files[Format.ISBN13]['type']}})</span>
+                                                </td>
+                                                <td>
+                                                   <span ng-if="c.files[Format.ISBN13]['name']">
+                                                      {{c.formatBytes(c.files[Format.ISBN13]['size'], 2)}}
+                                                   </span>
+                                                </td>
+                                                <td>
+                                                   <div class="btn btn-primary" ngf-pattern="'.pdf,.jpg'" accept=".pdf,.jpg" ngf-select="c.upload($file,{{Format.ISBN13}})">
+                                                      <i class="fa fa-upload"></i> Browse...
+                                                   </div>        
+                                                </td>
+                                                <td>
+                                                   <div class="progress">
+                                                      <div class="progress-bar {{c.files[Format.ISBN13]['progress']['color']}}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{c.files[Format.ISBN13]['progress']['width']}}%;">
+                                                         {{c.files[Format.ISBN13]['progress']['percentage']}}
+                                                      </div>
+                                                   </div>
+                                                </td>
+                                              
+                                                <td style="text-align: center;">
+                                                   <span style="font-size:24px; line-height: 24px;">
+                                                      <i ng-if="c.files[Format.ISBN13]['status'] == true" class="text-success fa fa-check"></i>
+                                                      <i ng-if="c.files[Format.ISBN13]['status'] == false" class="text-danger fa fa-exclamation-circle"></i>
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                         
+
+                                       </table>
+
+
+                                    </div>
+                                 </div>
+
+                              </div>
+                           </div>
+                        </div>
+                        <!--end covers-->
                         <!--Json-->
                         <div role="tabpanel" class="tab-pane" id="json">
                            <div class="row">
@@ -605,4 +684,5 @@
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_formats.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_demographics.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_marketing.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_covers.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_form.js?cache=<?php echo rand(1000, 9000); ?>"></script>

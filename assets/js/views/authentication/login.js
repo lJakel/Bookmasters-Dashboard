@@ -12,13 +12,14 @@ var login = function (parent) {
          parent.AuthFactory.login({username: self.username, password: self.password}, function (res) {
             self.authenticating = false;
 
-            parent.vm.handleAlert(1, res.message.success);
+            parent.vm.handleAlert(1, res.response);
             parent.$timeout(function () {
                parent.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
             }, 2000);
          }, function (err) {
+            console.log(err);
             self.authenticating = false;
-            parent.vm.handleAlert(0, err.message.error);
+            parent.vm.handleAlert(0, err.errors[0].message);
          });
       });
 

@@ -21,28 +21,45 @@ var Demographics = function (data, Dependencies) {
    self.FixedAudienceTypes = [];
    self.FixedIsoCodesPoop = [];
 
+   
+   Dependencies.$scope.$watchCollection(function () {
+      return self.Model.Audience;
+   }, function (newVal, oldVal) {
+      if (newVal.Name == "Children/juvenile") {
+         self.AgeRangeRequired = true;
+         self.AgeRangeDisabled = false;
+
+      } else {
+         self.AgeRangeRequired = false;
+         self.AgeRangeDisabled = true;
+
+
+      }
+
+   });
+   Dependencies.$scope.$watchCollection(function () {
+      return self.Model.Bisacs;
+   }, function (newVal, oldVal) {
+
+      if (self.Model.Bisacs.length == 0) {
+         self.CheckJuv();
+      }
+
+      $.each(self.Model.Bisacs, function (k, v) {
+         Dependencies.$scope.$watchCollection(function () {
+            return v;
+         }, function (newVal, oldVal) {
+            self.CheckJuv();
+         });
+      });
+   });
+
 
 
    self.UpdateBisacCodes = function (index) {
+
       Dependencies.FixedReferences.lookupBisac(self.Model.Bisacs[index].BisacGroup.Id).then(function (response) {
-         $.each(self.Model.Bisacs, function (k, v) {
-            if (v.BisacGroup.Id == 24 || v.BisacGroup.Id == 25) { //if juv
-               $.each(self.FixedAudienceTypes, function (k, v) {
-                  if (v.Name == "Children/juvenile") {
-                     self.Model.Audience = v;
-                     self.AudienceDisabled = true;
-                     self.AudienceRequired = false;
-                     self.AgeRangeRequired = true;
-                     self.AgeRangeDisabled = false;
-                  }
-               });
-            } else {
-               self.AudienceDisabled = false;
-               self.AudienceRequired = false;
-               self.AgeRangeRequired = false;
-               self.AgeRangeDisabled = true;
-            }
-         });
+
          self.FixedBisacListContainer[index] = response.data;
 //         self.Model.Bisacs[index].FixedList2 = response.data;
       });
@@ -59,4 +76,29 @@ var Demographics = function (data, Dependencies) {
    self.removeBisac = function (index) {
       self.Model.Bisacs.splice(index, 1);
    };
+   self.CheckJuv = function() {
+      var found = false;
+      $.each(self.Model.Bisacs, function (k, v) {
+         if (v.BisacGroup.Prefix == "JUV" || v.BisacGroup.Prefix == "JNF") {
+            found = true;
+         }
+      });
+
+      if (found) {
+         $.each(self.FixedAudienceTypes, function (k, v) {
+            if (v.Name == "Children/juvenile") {
+               self.Model.Audience = v;
+            }
+         });
+         self.AudienceDisabled = true;
+         self.AudienceRequired = false;
+         self.AgeRangeRequired = true;
+         self.AgeRangeDisabled = false;
+      } else {
+         self.AudienceDisabled = false;
+         self.AudienceRequired = true;
+         self.AgeRangeRequired = false;
+         self.AgeRangeDisabled = true;
+      }
+   }
 };

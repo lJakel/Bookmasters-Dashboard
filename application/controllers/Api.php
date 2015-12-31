@@ -118,4 +118,8 @@ class Api extends CI_Controller {
       echo json_encode($output);
    }
 
+   public function proof() {
+      echo json_encode($this->API_Model->proof());
+   }
+
 }

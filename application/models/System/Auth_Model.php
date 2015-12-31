@@ -1,6 +1,6 @@
 <?php
 
-class Auth_Model extends CI_Model {
+class Auth_Model extends ESM {
 
    var $UserId;
    var $Username;
@@ -18,14 +18,14 @@ class Auth_Model extends CI_Model {
    var $enabled = [
        'login' => [
            'state' => true,
-           'message' => 'Logging in is disabled for the moment. ',
+           'message' => 'Logging in is currently disabled. Please try again later.',
        ],
        'create_new_user' => [
            'state' => true,
            'message' => 'Registration is disabled. Please try again later.'
        ]
    ];
-     var $SecurityRoles = [
+   var $SecurityRoles = [
        0 => 'General Manager',
        1 => 'Developer',
        2 => 'Administrator',
@@ -44,7 +44,9 @@ class Auth_Model extends CI_Model {
 
    public function login($username, $password) {
       if (!$this->enabled['login']['state']) {
-         return ['message' => ['error' => $this->enabled['login']['message']]];
+
+         $this->newError("0000", $this->enabled['login']['message'], $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
 
       $queryResult = $this->db->query("exec GetUser @username=?", [$username]);
@@ -54,7 +56,9 @@ class Auth_Model extends CI_Model {
          $queryResult->free_result();
 
          if ($user->IsActive !== '1') {
-            return ['message' => ['error' => 'Your account is disabled.']];
+
+            $this->newError("0000", "Your account is disabled", $this, __FUNCTION__, "danger", null, false);
+            return $this->generateResponse();
          }
 
          $exploded = explode('_', $user->Password);
@@ -86,12 +90,16 @@ class Auth_Model extends CI_Model {
 
 
             $this->set_session();
-            return ['message' => ['success' => 'Welcome!'], 'data' => ['user' => $this->session->userdata]];
+
+            $data = ['user' => $this->session->userdata];
+            return $this->generateResponse($data, "Welcome!");
          } else {
-            return ['message' => ['error' => 'There was a problem with the username and/or password you supplied.']];
+            $this->newError("0000", "There was a problem with the username and/or password you supplied.", $this, __FUNCTION__, "danger", null, false);
+            return $this->generateResponse();
          }
       } else {
-         return ['message' => ['error' => 'There was a problem with the username you supplied or your account has been disabled.']];
+         $this->newError("0000", "There was a problem with the username you supplied or your account has been disabled.", $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
    }
 
@@ -126,9 +134,11 @@ class Auth_Model extends CI_Model {
 
    function getUser() {
       if ($this->session->user == null) {
-         return ['message' => ['error' => 'User is not logged in.']];
+         $this->newError("0000", "User is not logged in.", $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       } else {
-         return $this->session->user;
+         
+         return $this->generateResponse($this->session->user);
       }
    }
 

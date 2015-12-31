@@ -65,17 +65,16 @@
                                  <th style="width: 50%;">Title <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="Title of any other books to which the contributor has contributed.">?</a></th>
                                  <th style="width: 50%;">ISBN <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="ISBN" data-placement="top" data-content="ISBN of any other books to which the contributor has contributed.">?</a></th>
                                  <th class="onebtn">
-                                    <button class="btn btn-primary pull-right btn-block" ng-click="cm.addAdditionalTitle()"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button class="btn btn-primary pull-right btn-block"  ng-click="cm.addAdditionalTitle()"><span class="fa fa-fw fa-plus"></span></button>
                                  </th>
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-repeat="AdditionalTitles in cm.AdditionalTitles" ng-form="AdditionalTitleForm">
+                              <tr ng-repeat="AdditionalTitles in cm.AdditionalTitles" ng-form="ContribModalForm.AdditionalTitleForm[{{$index}}]">
                                  <td>
                                     <div class="form-group" data-show-errors>
                                        <input type="text" class="form-control" name="AdditionalTitleTitle" ng-required="true" ng-model="AdditionalTitles.Title">
                                     </div>
-                                    
                                  </td>
                                  <td>
                                     <div class="form-group" data-show-errors>
@@ -92,6 +91,16 @@
                                  </td>
                               </tr>
                            </tbody>
+                           <tfoot>
+                              <tr>
+                                 <td colspan="3">
+                                    <pre>
+                                    {{ContribModalForm|json}}
+                                    </pre>
+                                 </td>
+                              </tr>
+                           </tfoot>
+
                         </table>
                      </div>
                   </div>

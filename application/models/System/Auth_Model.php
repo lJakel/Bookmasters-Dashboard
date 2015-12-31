@@ -44,7 +44,6 @@ class Auth_Model extends ESM {
 
    public function login($username, $password) {
       if (!$this->enabled['login']['state']) {
-
          $this->newError("0000", $this->enabled['login']['message'], $this, __FUNCTION__, "danger", null, false);
          return $this->generateResponse();
       }
@@ -56,7 +55,6 @@ class Auth_Model extends ESM {
          $queryResult->free_result();
 
          if ($user->IsActive !== '1') {
-
             $this->newError("0000", "Your account is disabled", $this, __FUNCTION__, "danger", null, false);
             return $this->generateResponse();
          }
@@ -137,7 +135,7 @@ class Auth_Model extends ESM {
          $this->newError("0000", "User is not logged in.", $this, __FUNCTION__, "danger", null, false);
          return $this->generateResponse();
       } else {
-         
+
          return $this->generateResponse($this->session->user);
       }
    }
@@ -145,27 +143,30 @@ class Auth_Model extends ESM {
    function logout() {
       $this->session->set_userdata('user');
       $this->session->sess_destroy();
-
-      return ['message' => ['success' => 'Registration successful.']];
+      return $this->generateResponse(null, "Logout successful.");
    }
 
    function create_new_user($username, $password, $email, $regkey) {
 
 
       if (!$this->enabled['create_new_user']['state']) {
-         return ['message' => ['error' => $this->enabled['create_new_user']['message']]];
+
+         $this->newError("0000", $this->enabled['create_new_user']['message'], $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
 
       $checkuser = $this->db->query("exec DashboardUser_Get @Username=?", [$username]);
       if ($checkuser && $checkuser->num_rows()) {
-         return ['message' => ['error' => 'This username is already in use.']];
+         $this->newError("0000", "This username is already in use.", $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
 
       $checkregkey = $this->db->query("exec Registration_Get @regKey=?", [$regkey]);
       if ($checkregkey && $checkregkey->num_rows() && $checkregkey->row_object()->IsValid) {
          
       } else {
-         return ['message' => ['error' => 'The registration key does not exist or is invalid. Please try again or contact your representative.']];
+         $this->newError("0000", "The registration key does not exist or is invalid. Please try again or contact your representative.", $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
 
       $passwordSet = $this->create_password($password);
@@ -178,7 +179,9 @@ class Auth_Model extends ESM {
             $userId = $createuserReturn->Id;
          }
       } else {
-         return ['message' => ['error' => 'A database error has occured']];
+
+         $this->newError("0000", ['A database error has occured'], $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
 
       $updateorigin = $this->db->query("exec Registration_UpdateOrigin @RegistrationKey=?, @UserId=?", [$regkey, $userId]);
@@ -187,10 +190,11 @@ class Auth_Model extends ESM {
             
          }
       } else {
-         return ['message' => ['error' => 'A database error has occured']];
+         $this->newError("0000", ['A database error has occured'], $this, __FUNCTION__, "danger", null, false);
+         return $this->generateResponse();
       }
 
-      return ['message' => ['success' => 'Registration successful.']];
+      return $this->generateResponse(null, "Registration successful.");
    }
 
    function reset_password($username, $email) {
@@ -226,7 +230,8 @@ class Auth_Model extends ESM {
 
       $this->email->send();
 
-      return ['message' => ['success' => 'If this email is associated with this username an email has been sent to reset your password.']];
+
+      return $this->generateResponse(null, 'If this email is associated with this username an email has been sent to reset your password.');
    }
 
    function authorizeApplication($role) {

@@ -20,11 +20,11 @@
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.bookmasters.com/CDN/resources/brand/favicon/apple-touch-icon-144x144-precomposed.png">
 
       <!--Core CSS -->
-      <link href="http://www.bookmasters.com/CDN/css/bootstrap-sass/assets/stylesheets/_bootstrap.css" rel="stylesheet">
+      <link href="http://www.bookmasters.com/CDN/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-      <link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-toasty/angular-toasty.min.css">
+      <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/angular-toasty/dist/angular-toasty.min.css">
 
 
       <!-- Custom styles for this Dashboard -->
@@ -40,26 +40,24 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <script src="http://www.bookmasters.com/CDN/js/jquery/dist/jquery.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular/angular.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-ui-router/release/angular-ui-router.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/ngstorage/ngStorage.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-1.4.7/angular-resource.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-ui-event/dist/event.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-1.4.7/angular-animate.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/jquery/dist/jquery.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular/angular.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/ngstorage/ngStorage.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-resource/angular-resource.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-ui-event/dist/event.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-animate/angular-animate.min.js"></script>
 
-      <script src="http://www.bookmasters.com/CDN/js/ng-file-upload-bower-10.0.2/ng-file-upload-shim.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/ng-file-upload-bower-10.0.2/ng-file-upload.min.js"></script>
-
-      <script src="http://www.bookmasters.com/CDN/js/nya-bootstrap-select-2.1.2/js/nya-bs-select.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/ng-file-upload-shim/ng-file-upload-all.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.min.js"></script>
 
 
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
-      <script src="<?php echo site_url('assets/vendor/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-ui-bootstrap/ui-bootstrap-tpls-0.14.3.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/moment/min/moment-with-locales.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.js"></script>
-      <script src="http://www.bookmasters.com/CDN/js/angular-toasty/angular-toasty.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/moment/min/moment-with-locales.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-toasty/dist/angular-toasty.min.js"></script>
 
 
       <!-- common app js -->

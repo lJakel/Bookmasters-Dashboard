@@ -14,4 +14,3 @@ function BasicInfo(data) {
    }
 
 }
-;

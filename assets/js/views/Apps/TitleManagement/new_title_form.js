@@ -88,9 +88,9 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
          console.log($scope);
       }
       scriptLoader.loadScripts([
-         'http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js',
+         'http://www.bookmasters.com/CDN/bower_components/summernote/dist/summernote.min.js',
          'http://www.bookmasters.com/CDN/js/bs-filepicker/bs-filepicker.js',
-         'http://www.bookmasters.com/CDN/js/trip.js/dist/trip.min.js',
+         'http://www.bookmasters.com/CDN/bower_components/Trip.js/dist/trip.min.js',
       ], 'partial').then(init);
    }]);
 

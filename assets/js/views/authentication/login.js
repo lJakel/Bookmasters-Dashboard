@@ -53,7 +53,7 @@ var register = function (Dependencies) {
 
 
          Dependencies.toasty.success({
-            title: 'Authentication Successful!',
+            title: 'Registration Successful!',
             msg: successResponse.response,
             theme: 'bootstrap',
             timeout: 5000,
@@ -64,7 +64,7 @@ var register = function (Dependencies) {
       }, function (err) {
          $.each(err.errors, function (k, v) {
             Dependencies.toasty.error({
-               title: 'Authentication Error',
+               title: 'Registration Error',
                msg: v.message,
                theme: 'bootstrap',
                timeout: 8000,
@@ -84,7 +84,7 @@ BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$tim
          $state: $state,
          $timeout: $timeout,
          $q: $q,
-         toasty: toasty,
+         toasty: toasty
       };
 
       vm.loginCtrl = new login(vm.Dependencies);

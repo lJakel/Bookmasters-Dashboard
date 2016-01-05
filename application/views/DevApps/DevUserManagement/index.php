@@ -42,9 +42,22 @@
                </table>
 
             </div>
-            <div class="alert alert-info" role="alert">
+              <div class="alert alert-danger" role="alert">
                <strong>Info!</strong>  The page loading delay is to show the spinning refresh icon in the table header
             </div>
+              <div class="alert alert-warning" role="alert">
+               <strong>Info!</strong>  The page loading delay is to show the spinning refresh icon in the table header
+            </div>
+              <div class="alert alert-info" role="alert">
+               <strong>Info!</strong>  The page loading delay is to show the spinning refresh icon in the table header
+            </div>
+              <div class="alert alert-success" role="alert">
+               <strong>Info!</strong>  The page loading delay is to show the spinning refresh icon in the table header
+            </div>
+              <div class="alert alert-info" role="alert">
+               <strong>Info!</strong>  The page loading delay is to show the spinning refresh icon in the table header
+            </div>
+
 
          </div>
       </div>
@@ -56,15 +69,52 @@
    }
 </style>
 <script>
-   BMApp.register.controller('DevUserManagementCtrl', function ($state, $http, $q, $scope,toasty,$timeout) {
- 
-    
+   BMApp.register.controller('DevUserManagementCtrl', function ($state, $http, $q, $scope, toasty, $timeout) {
       var self = this;
       self.loading = false;
+
       self.loadUser = function (uId) {
          $state.go('bm.app.page', {app: 'devusermanagement', page: 'view', child: uId});
       }
       self.load = function () {
+
+         toasty.default({
+            title: 'Info!',
+            msg: 'The page loading delay is to show the spinning refresh icon in the table header.',
+            theme: 'bootstrap',
+            timeout: 0,
+         });
+         toasty.info({
+            title: 'Info!',
+            msg: 'The page loading delay is to show the spinning refresh icon in the table header.',
+            theme: 'bootstrap',
+            timeout: 0,
+         });
+         toasty.success({
+            title: 'Info!',
+            msg: 'The page loading delay is to show the spinning refresh icon in the table header.',
+            theme: 'bootstrap',
+            timeout: 0,
+         });
+         toasty.error({
+            title: 'Info!',
+            msg: 'The page loading delay is to show the spinning refresh icon in the table header.',
+            theme: 'bootstrap',
+            timeout: 0,
+         });
+         toasty.warning({
+            title: 'Info!',
+            msg: 'The page loading delay is to show the spinning refresh icon in the table header.',
+            theme: 'bootstrap',
+            timeout: 0,
+         });
+         toasty.wait({
+            title: 'Info!',
+            msg: 'The page loading delay is to show the spinning refresh icon in the table header.',
+            theme: 'bootstrap',
+            timeout: 0,
+         });
+
          self.loading = true;
          self.users = [];
          $http.post('devusermanagement/viewusers').then(function (response) {

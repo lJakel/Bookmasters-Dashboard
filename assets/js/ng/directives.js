@@ -72,7 +72,7 @@ appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoad
             $(element).getNiceScroll().show();
          }
 
-         scriptLoader.loadScripts(['http://www.bookmasters.com/CDN/js/nicescroll/dist/jquery.nicescroll.min.js'], 'sidebar').then(render);
+         scriptLoader.loadScripts(['http://www.bookmasters.com/CDN/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js'], 'sidebar').then(render);
       };
    }]);
 appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) {

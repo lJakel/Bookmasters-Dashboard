@@ -119,7 +119,7 @@
 
                            <div class="row">
                               <div class="col-md-12">
-                                 <div class="form-group" data-show-errors>
+                                 <div class="form-group required" data-show-errors>
                                     <label for="title" class="control-label">Title</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="The unique name for your book. The subtitle (if applicable) should be given separately.">?</a>
                                     <input type="text" name="title" class="form-control" ng-minlength="4" ng-required="true" ng-model="bi.Model.Title">
@@ -299,12 +299,12 @@
                               </div>
                            </div>
                            <div class="row">
-                              <div class="col-md-6">
+                              <div class="col-md-6 required" data-show-errors>
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
                                  <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.MainDescription"></textarea>
                               </div>
-                              <div class="col-md-6">
+                              <div class="col-md-6" data-show-errors>
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
                                  <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.ShortDescription"></textarea>
@@ -593,7 +593,7 @@
                                                 </td>
                                                 <td>
                                                    <div class="progress">
-                                                      <div class="progress-bar {{c.files[Format.ISBN13]['progress']['color']}}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{c.files[Format.ISBN13]['progress']['width']}}%;">
+                                                      <div class="progress-bar {{c.files[Format.ISBN13]['progress']['color']}}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" ng-style="{width: c.files[Format.ISBN13]['progress']['width']+ '%' }">
                                                          {{c.files[Format.ISBN13]['progress']['percentage']}}
                                                       </div>
                                                    </div>
@@ -673,9 +673,9 @@
       color: #f2f2f2;
    }
 </style>
-<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/angular-ui-datetime-picker/bootstrap-datetimepicker.min.css?cache=<?php echo rand(1000, 9000); ?>">
-<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.css" />
-<link rel="stylesheet" href="http://www.bookmasters.com/CDN/js/nya-bootstrap-select-2.1.2/css/nya-bs-select.min.css">
+<link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/summernote/dist/summernote.css" />
+<link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/modals/modals.js?cache=<?php echo rand(1000, 9000); ?>"></script>

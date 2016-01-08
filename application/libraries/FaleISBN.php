@@ -10,10 +10,10 @@ require_once APPPATH . '/third_party/FaleISBN/Translate.php';
 require_once APPPATH . '/third_party/FaleISBN/Isbn.php';
 require_once APPPATH . '/third_party/FaleISBN/Validation.php';
 
-
-
 class FaleISBN extends Isbn\Isbn {
+
    public function __construct() {
       parent::__construct();
    }
+
 }

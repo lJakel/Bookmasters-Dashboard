@@ -299,15 +299,15 @@
                               </div>
                            </div>
                            <div class="row">
-                              <div class="col-md-6 required" data-show-errors>
+                              <div class="col-md-6 required form-group" data-show-errors>
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
-                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.MainDescription"></textarea>
+                                 <textarea name="MainDescription" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.MainDescription"></textarea>
                               </div>
-                              <div class="col-md-6" data-show-errors>
+                              <div class="col-md-6 form-group" data-show-errors>
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <textarea name="" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.ShortDescription"></textarea>
+                                 <textarea name="ShortDescription" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.ShortDescription"></textarea>
                               </div>
                            </div>
                         </div>

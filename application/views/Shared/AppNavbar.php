@@ -31,8 +31,8 @@
          </a>
          <ul class="dropdown-menu extended logout">
             <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
-            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-            <li><a href="" ng-click="logout()"><i class="fa fa-key"></i> Log Out</a></li>
+            <li><a data-ui-sref="bm.app.page({ 'app': 'AccountSettings','page': 'home', child: null })"><i class="fa fa-cog"></i> Account Settings</a></li>
+            <li><a href="#" ng-click="logout()"><i class="fa fa-key"></i> Log Out</a></li>
          </ul>
       </li>
       <!-- user login dropdown end -->

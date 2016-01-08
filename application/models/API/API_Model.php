@@ -48,10 +48,6 @@ class API_Model extends ESM {
 
    function proof() {
 
-      $this->newError("1200", "lol", $this, __FUNCTION__, "info", null, false);
-      $this->newError("1201", "Password incorrect", $this, __FUNCTION__, "danger", null, false);
-      $data = ["poop" => "lol", "shiiii" => "lol"];
-      return $this->generateResponse($data, "Welcome!");
    }
 
 }

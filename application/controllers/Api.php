@@ -122,4 +122,12 @@ class Api extends CI_Controller {
       echo json_encode($this->API_Model->proof());
    }
 
+   public function post() {
+      echo json_encode([
+          "post" => $_POST,
+          "get" => $_GET,
+          "files" => $_FILES,
+      ]);
+   }
+
 }

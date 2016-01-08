@@ -20,7 +20,7 @@
          </div>
       </div>
    </div>
-   <script data-src="http://www.bookmasters.com/CDN/js/summernote/dist/summernote.min.js" type="text/javascript-lazy"></script>
+   
    <div class="col-md-3">
       <div class="panel panel-default">
          <div class="panel-body">

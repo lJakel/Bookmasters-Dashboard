@@ -83,32 +83,32 @@
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-md-3 form-group required">
+                     <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Width</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Width" data-placement="top" data-content="The measurement from spine to cut edge of the book. The horizontal measure. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Width">
+                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Width" name="Width">
                            <span class="input-group-addon">in</span> </div>
                      </div>
-                     <div class="col-md-3 form-group required">
+                     <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Height</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Height" data-placement="top" data-content="The measurement from top to bottom of spine. The vertical measure. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Height">
+                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Height" name="Height">
                            <span class="input-group-addon">in</span> </div>
                      </div>
-                     <div class="col-md-3 form-group required">
+                     <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Spine</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Spine Thickness " data-placement="top" data-content="The depth of the spine of the book. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Spine">
+                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Spine" name="Spine">
                            <span class="input-group-addon">in</span> </div>
                      </div>
-                     <div class="col-md-3 form-group required">
+                     <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Weight</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Book Weight" data-placement="top" data-content="The finished weight of the book. Give this amount in decimal pounds, to the nearest hundredth of a pound. Example: 1.25 lbs, 1.6 lbs">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Weight">
+                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Weight" name="Weight">
                            <span class="input-group-addon">lbs</span> </div>
                      </div>
                   </div>

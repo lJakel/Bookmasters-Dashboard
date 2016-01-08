@@ -198,14 +198,13 @@ class Auth_Model extends ESM {
    }
 
    function reset_password($username, $email) {
-
-
+      error_reporting(E_ALL);
       $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $newPassword = substr(str_shuffle($chars), 0, 10);
-
-      $checkuser = $this->db->query("exec DashboardUser_Update @userName=?, @password=?", [$username, $newPassword]);
-      $updateuser = $this->db->query("exec DashboardUser_Update @userName=?, @password=?", [$username, $newPassword]);
-
+      $newPasswordHash = $this->create_password($newPassword);
+      $updateuser = $this->db->query("exec DashboardUser_Update @userName=?, @setpwd=?, @changepwd=?", [$username, $newPasswordHash['combined'], 1]);
+   
+      $data = [$newPassword, $newPasswordHash];
 
       $this->load->library('email');
 
@@ -226,12 +225,11 @@ class Auth_Model extends ESM {
       $this->email->to([$email]);
 
       $this->email->subject('Bookmasters - Forgotten Password');
-      $this->email->message("Hello {$username}, It appears you have forgotten your password. Your temporary password is <i>{$newPassword}</i> Amirighttho?");
+      $this->email->message("Hello {$username}, It appears you have forgotten your password. Your temporary password is <i>{$newPassword}</i>?");
 
       $this->email->send();
-
-
-      return $this->generateResponse(null, 'If this email is associated with this username an email has been sent to reset your password.');
+      
+      return $this->generateResponse($data, 'If this email is associated with this username a temporary password has been sent to this email address.');
    }
 
    function authorizeApplication($role) {

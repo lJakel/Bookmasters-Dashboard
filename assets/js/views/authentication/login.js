@@ -73,7 +73,43 @@ var register = function (Dependencies) {
       });
    };
 };
-BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', 'toasty', function ($scope, AuthFactory, $state, $timeout, $q, toasty) {
+var forgot = function (Dependencies) {
+   var self = this;
+   self.regkey = '';
+   self.username = '';
+   self.password = '';
+   self.email = '';
+
+
+   self.forgot = function () {
+
+      Dependencies.AuthFactory.forgot({
+         email: self.email,
+         username: self.username,
+      }, function (successResponse) {
+
+
+         Dependencies.toasty.success({
+            title: 'Registration Successful!',
+            msg: successResponse.response,
+            theme: 'bootstrap',
+            timeout: 5000,
+         });
+         $('#authmodal a[data-target="#login"]').tab('show');
+
+      }, function (err) {
+         $.each(err.errors, function (k, v) {
+            Dependencies.toasty.error({
+               title: 'Registration Error',
+               msg: v.message,
+               theme: 'bootstrap',
+               timeout: 8000,
+            });
+         });
+      });
+   };
+};
+BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', 'toasty', function ($scope, AuthFactory, $state, $timeout, $q, toasty) {
       var vm = this;
       vm.error = undefined;
       vm.success = undefined;
@@ -87,7 +123,13 @@ BMApp.register.controller('LoginCtrl', ['$scope', 'AuthFactory', '$state', '$tim
          toasty: toasty
       };
 
+      vm.forgotPassword = function () {
+         $('#authmodal a[data-target="#forgot"]').tab('show');
+
+      }
+
       vm.loginCtrl = new login(vm.Dependencies);
       vm.registerCtrl = new register(vm.Dependencies);
+      vm.forgotCtrl = new forgot(vm.Dependencies);
    }
 ]);

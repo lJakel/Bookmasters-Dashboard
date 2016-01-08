@@ -32,13 +32,15 @@
                      <ul id="sidebar-devapps" class="collapse">
                         <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
                         <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
+                        <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })">Debug</a></li>
                      </ul>
                   </li>
                </ul>
-               <ul ng-if="user.roles[0] == 'Developer'">
-                  <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })"><span class="fa fa-bug fa-fw"></span>Debug</a></li>
-               </ul>
+             
             <?php } ?>
+            <ul>
+               <li><a data-ui-sref="bm.app.page({ 'app': 'utilities','page': 'home', child: null })"><span class="fa fa-wrench fa-fw"></span>Utilities</a></li>
+            </ul>
             <div data-ui-view="appItems"></div>
 
             <div class="bugfeedback">

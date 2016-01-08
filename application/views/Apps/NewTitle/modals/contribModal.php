@@ -91,15 +91,7 @@
                                  </td>
                               </tr>
                            </tbody>
-                           <tfoot>
-                              <tr>
-                                 <td colspan="3">
-                                    <pre>
-                                    {{ContribModalForm|json}}
-                                    </pre>
-                                 </td>
-                              </tr>
-                           </tfoot>
+                           
 
                         </table>
                      </div>

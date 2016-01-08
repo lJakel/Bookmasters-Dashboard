@@ -135,6 +135,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
          isLoggedIn: isLoggedIn,
          getInfo: getInfo,
          logout: logout,
+         forgot: forgot,
          login: login,
          register: register
       };
@@ -169,6 +170,13 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
       function register(user, success, error) {
          $http.post(url + 'register', user).success(function (user) {
+            success(user);
+         }).error(function (err) {
+            error(err);
+         });
+      }
+      function forgot(user, success, error) {
+         $http.post(url + 'forgot', user).success(function (user) {
             success(user);
          }).error(function (err) {
             error(err);

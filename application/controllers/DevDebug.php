@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
 class DevDebug extends Secure_Controller {
 
    function __construct() {

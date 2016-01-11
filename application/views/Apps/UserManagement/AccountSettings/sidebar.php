@@ -1,5 +1,5 @@
 <span class="listheader">Account Settings</span>
-<ul class="">
+<ul class="application-items">
    <li>
       <a class="submenu collapsed" data-target="#<?= $appName; ?>-signin" data-toggle="collapse" href="#">
          <span class="fa fa-lock"></span>Sign-in & Security<span class="fa fa-plus-circle plusmin"></span>

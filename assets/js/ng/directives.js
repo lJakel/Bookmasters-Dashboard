@@ -132,38 +132,46 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
          // uncollapse parent
          $newActiveLink.closest('.collapse').addClass('in').siblings('a[data-toggle=collapse]').removeClass('collapsed');
       },
+      bindHandler: function () {
+         var self = this;
+         $timeout(function () {
+            self.$el.find('.collapse').on('show.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget) {
+                  return;
+               }
+               var $triggerLink = $(this).prev('[data-toggle=collapse]');
+               $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
+            }).on('show.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget) {
+                  return;
+               }
+               $(this).closest('li').addClass('open');
+            }).on('hide.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget) {
+                  return;
+               }
+               $(this).closest('li').removeClass('open');
+            });
+         });
+      }
    };
    return {
       link: function (scope, $el) {
          var BmNav = new BmNavigationDirective($el, scope);
+
          $timeout(function () {
             // set active navigation item
 
             BmNav.changeNavigationItem({}, $state.$current, $state.params);
             $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
-            $el.find('.collapse').on('show.bs.collapse', function (e) {
-               // execute only if we're actually the .collapse element initiated event
-               // return for bubbled events
-               if (e.target != e.currentTarget)
-                  return;
-               var $triggerLink = $(this).prev('[data-toggle=collapse]');
-               $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
-            })
-                    /* adding additional classes to navigation link li-parent for several purposes. see navigation styles */
-                    .on('show.bs.collapse', function (e) {
-
-                       // execute only if we're actually the .collapse element initiated event
-                       // return for bubbled events
-                       if (e.target != e.currentTarget)
-                          return;
-                       $(this).closest('li').addClass('open');
-                    }).on('hide.bs.collapse', function (e) {
-               // execute only if we're actually the .collapse element initiated event
-               // return for bubbled events
-               if (e.target != e.currentTarget)
-                  return;
-               $(this).closest('li').removeClass('open');
-            });
+            $rootScope.$on('$stateChangeSuccess', $.proxy(BmNav.bindHandler, BmNav));
+            BmNav.bindHandler();
          });
          scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
             if (newVal == oldVal) {

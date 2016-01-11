@@ -4,10 +4,10 @@
       <!--sidebar left-->
       <div data-bm-sidebar-scroll style="height: 100%;">
          <div id="innersidebar" style="position: relative;">
-            <ul class="">
-               <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })"><span class="fa fa-dashboard fa-fw"></span>Dashboard</a></li>
-            </ul>
-            <ul>
+            <ul class="application-items">
+               <li>
+                  <a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })"><span class="fa fa-dashboard fa-fw"></span>Dashboard</a>
+               </li>
                <li>
                   <a class="submenu collapsed" data-target="#sidebar-apps" data-toggle="collapse" href="#"><span class="fa fa-cubes fa-fw"></span>Apps<span class="fa fa-plus-circle plusmin"></span></a>
                   <ul id="sidebar-apps" class="collapse">
@@ -15,34 +15,22 @@
                      <!--CSR-->
                      <!--Sales-->
                      <!--Client-->
-
                      <li><a data-ui-sref="bm.app.page({ 'app': 'marketingupdate','page': 'index', child: null })">Marketing Update</a></li>
                      <li><a data-ui-sref="bm.app.page({ 'app': 'newtitle','page': 'home', child: null })">Title Management</a></li>
                   </ul>
                </li>
-            </ul>
-
-            <?php
-            $dev = true;
-            if ($dev) {
-               ?>
-               <ul ng-if="user.roles[0] == 'Developer'">
-                  <li>
-                     <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle fa-fw"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
-                     <ul id="sidebar-devapps" class="collapse">
-                        <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
-                        <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
-                        <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })">Debug</a></li>
-                     </ul>
-                  </li>
-               </ul>
-             
-            <?php } ?>
-            <ul>
+               <li>
+                  <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle fa-fw"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
+                  <ul id="sidebar-devapps" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
+                     <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
+                     <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })">Debug</a></li>
+                  </ul>
+               </li>
                <li><a data-ui-sref="bm.app.page({ 'app': 'utilities','page': 'home', child: null })"><span class="fa fa-wrench fa-fw"></span>Utilities</a></li>
             </ul>
+            
             <div data-ui-view="appItems"></div>
-
             <div class="bugfeedback">
                <a href="" ng-click="BMA.Feedback.showFeedbackModal()"> <span class="fa fa-bug"></span> Report a Problem</a>
             </div>

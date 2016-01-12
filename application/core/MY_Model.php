@@ -1,7 +1,11 @@
 <?php
 
 class MY_Model extends CI_Model {
-   
+
+   function __construct() {
+      $_POST = json_decode(file_get_contents('php://input'), true);
+   }
+
 }
 
 class ESM extends MY_Model {

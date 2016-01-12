@@ -101,9 +101,10 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          });
       }
 
-      function lookupBisac(group) {
-         return $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
-            return response.data;
+      function lookupBisac(group, success, error) {
+
+         $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
+            success(response.data);
          }, function (response) {
             $state.go('error', {
                code: '500',

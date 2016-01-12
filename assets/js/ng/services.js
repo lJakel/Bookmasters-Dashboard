@@ -31,7 +31,7 @@ appServices.factory('partialCleanup', function ($timeout) {
       clean: function () {
          console.log(objectsToClean, 'objectsToClean')
          $('.partial-script').each(function () {
-            this.remove();
+            $(this).remove();
          });
          $.each(objectsToClean, function (index, value) {
             window[value] = null;

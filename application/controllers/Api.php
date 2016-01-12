@@ -7,6 +7,7 @@ class Api extends CI_Controller {
    function __construct() {
       parent::__construct();
       //$this->Auth_Model->authorizeApplication('Developer');
+
       $this->load->model('API/API_Model');
       $this->output->set_header('Content-Type: application/json');
    }
@@ -16,6 +17,9 @@ class Api extends CI_Controller {
    }
 
    public function bisacs($method = '') {
+      $this->output->set_header('Expires: Thur, 01 Jan 2015 00:00:00 GMT');
+      $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
+
       switch ($method) {
 
          case 'getGroupCodes':
@@ -83,38 +87,6 @@ class Api extends CI_Controller {
       $output['BisacGroups'] = $refBisacGroupsQuery->result_object();
       $refBisacGroupsQuery->free_result();
 
-//
-//
-//      $output = [
-//          'Users' =>
-//          [
-//              [
-//                  'UserID' => 1,
-//                  'Drafts' => [
-//                      [
-//                          'DraftId' => 'c0b589a1',
-//                          'Created' => 1449687962,
-//                          'Data' => "fdsfsdfsdfdsf"
-//                      ],
-//                  ]
-//              ],
-//              [
-//                  'UserID' => 2,
-//                  'Drafts' => [
-//                      [
-//                          'DraftId' => 'c0b589a1',
-//                          'Created' => 1449687962,
-//                          'Data' => "fdsfsdfsdfdsf"
-//                      ],
-//                      [
-//                          'DraftId' => 'c0b589a1',
-//                          'Created' => 1449687962,
-//                          'Data' => "fdsfsdfsdfdsf"
-//                      ],
-//                  ]
-//              ],
-//          ]
-//      ];
       echo json_encode($output);
    }
 
@@ -127,6 +99,7 @@ class Api extends CI_Controller {
           "post" => $_POST,
           "get" => $_GET,
           "files" => $_FILES,
+          "RawInput" => json_decode(file_get_contents('php://input'))
       ]);
    }
 

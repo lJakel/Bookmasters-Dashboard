@@ -10,7 +10,7 @@ class Auth extends CI_Controller {
    }
 
    function login() {
-
+      
       $username = trim($this->input->post('username'));
       $password = trim($this->input->post('password'));
 
@@ -50,6 +50,8 @@ class Auth extends CI_Controller {
    }
 
    function register() {
+      
+
       $this->output->set_header('Content-Type: application/json');
 
       $result = $this->Auth_Model->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));

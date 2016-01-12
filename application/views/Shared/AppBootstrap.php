@@ -6,30 +6,43 @@
          <div id="innersidebar" style="position: relative;">
             <ul class="application-items">
                <li>
-                  <a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })"><span class="fa fa-dashboard fa-fw"></span>Dashboard</a>
+                  <a class="submenu collapsed" data-target="#DashboardList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Dashboard<span class="fa fa-plus-circle plusmin"></span></a>
+                  <ul id="DashboardList" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })">Dashboard</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'main', page: 'submit' })">Calendar</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'main', page: 'view' })">Notes</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'main', page: 'view' })">Settings</a></li>
+                  </ul>
                </li>
+            </ul>
+            <span class="listheader">Applications</span>
+            <ul class="application-items">
                <li>
-                  <a class="submenu collapsed" data-target="#sidebar-apps" data-toggle="collapse" href="#"><span class="fa fa-cubes fa-fw"></span>Apps<span class="fa fa-plus-circle plusmin"></span></a>
-                  <ul id="sidebar-apps" class="collapse">
-                     <!--Admin-->
-                     <!--CSR-->
-                     <!--Sales-->
-                     <!--Client-->
-                     <li><a data-ui-sref="bm.app.page({ 'app': 'marketingupdate','page': 'index', child: null })">Marketing Update</a></li>
-                     <li><a data-ui-sref="bm.app.page({ 'app': 'newtitle','page': 'home', child: null })">Title Management</a></li>
+                  <a class="submenu collapsed" data-target="#TitleManagementList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Title Management<span class="fa fa-plus-circle plusmin"></span></a>
+                  <ul id="TitleManagementList" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'index', child: null})">Title Submission Details</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'submit', child: null})">Submit New Title</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'submitexcel', child: null})">Submit Title Spreadsheet</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'view', child: null })">View Titles</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'view', child: null })">Settings</a></li>
                   </ul>
                </li>
                <li>
-                  <a class="submenu collapsed" data-target="#sidebar-devapps" data-toggle="collapse" href="#"><span class="fa fa-info-circle fa-fw"></span>Developer Apps<span class="fa fa-plus-circle plusmin"></span></a>
-                  <ul id="sidebar-devapps" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })">Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
-                     <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })">User Management</a></li>
-                     <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })">Debug</a></li>
+                  <a class="submenu collapsed" data-target="#MarketingUpdateList" data-toggle="collapse" href="#"><span class="fa fa-microphone"></span>Marketing Update<span class="fa fa-plus-circle plusmin"></span></a>
+                  <ul id="MarketingUpdateList" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'index', child: null})">View All Entries</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'create', child: null})">Create Entry</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'settings', child: null })">Settings</a></li>
                   </ul>
                </li>
+            </ul>
+            <span class="listheader">Developer Applications</span>
+            <ul class="application-items" ng-if="user.roles[0] == 'Developer'">
+               <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })"><span class="fa fa-comment fa-fw"></span>Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
+               <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })"><span class="fa fa-user fa-fw"></span>User Management</a></li>
+               <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })"><span class="fa fa-bug fa-fw"></span>Debug</a></li>
                <li><a data-ui-sref="bm.app.page({ 'app': 'utilities','page': 'home', child: null })"><span class="fa fa-wrench fa-fw"></span>Utilities</a></li>
             </ul>
-            
             <div data-ui-view="appItems"></div>
             <div class="bugfeedback">
                <a href="" ng-click="BMA.Feedback.showFeedbackModal()"> <span class="fa fa-bug"></span> Report a Problem</a>
@@ -38,7 +51,6 @@
       </div>
       <!--sidebar left-->
    </div>
-
    <!--<div class="chat-sidebar" data-sn-chat-sidebar data-ng-include="'views/partials/chat.html'"></div>-->
    <div id="main-content">
       <div class="wrapper content view-animate fade-up" role="main" data-ui-view="mainContent">

@@ -21,7 +21,7 @@ var Demographics = function (data, Dependencies) {
    self.FixedAudienceTypes = [];
    self.FixedIsoCodesPoop = [];
 
-   
+
    Dependencies.$scope.$watchCollection(function () {
       return self.Model.Audience;
    }, function (newVal, oldVal) {
@@ -57,12 +57,17 @@ var Demographics = function (data, Dependencies) {
 
 
    self.UpdateBisacCodes = function (index) {
-
-      Dependencies.FixedReferences.lookupBisac(self.Model.Bisacs[index].BisacGroup.Id).then(function (response) {
-
-         self.FixedBisacListContainer[index] = response.data;
-//         self.Model.Bisacs[index].FixedList2 = response.data;
+      Dependencies.$timeout(function () {
+console.log('lol');
+         Dependencies.FixedReferences.lookupBisac(self.Model.Bisacs[index].BisacGroup.Id, function (response) {
+//         self.FixedBisacListContainer[index] = response.data;
+         }, function (response) {
+            alert();
+         });
       });
+
+
+
    };
 
    //init values
@@ -76,7 +81,7 @@ var Demographics = function (data, Dependencies) {
    self.removeBisac = function (index) {
       self.Model.Bisacs.splice(index, 1);
    };
-   self.CheckJuv = function() {
+   self.CheckJuv = function () {
       var found = false;
       $.each(self.Model.Bisacs, function (k, v) {
          if (v.BisacGroup.Prefix == "JUV" || v.BisacGroup.Prefix == "JNF") {

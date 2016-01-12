@@ -117,7 +117,13 @@
                         <label for="" class="control-label">Publication Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Date" data-placement="top" data-content="The date that you consider to be the official release date for the book. This must be at least 30 days AFTER the arrival of stock in Bookmasters' warehouse for print books. In addition, to be included in the buying cycles of the print book trade, this date must also be at least 180 days AFTER the day you submit this form.">?</a>
                         <div class="input-group input-group-sm date">
-                           <input type="text" class="form-control" name='PublicationDate' ng-required='true' datetimepicker-options="{format:'MM/DD/YYYY'}" datetimepicker ng-model="fm.PublicationDate">
+                           <input type="text" class="form-control" 
+                                  name='PublicationDate'
+                                  ng-required='true' 
+                                  datetimepicker-options="{format:'MMMM DD YYYY'}"
+                                  datetimepicker 
+                                  placeholder="mm/dd/yyyy" 
+                                  ng-model="fm.PublicationDate">
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
                            </span>

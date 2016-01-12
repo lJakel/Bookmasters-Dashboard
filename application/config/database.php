@@ -96,28 +96,7 @@ $db['default'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
-//$db['default'] = array(
-//    'dsn' => '',
-//    'hostname' => '10.10.10.10',
-//    'username' => 'bmi_connect',
-//    'password' => 'automated',
-//    'database' => 'AuthenticationMaster',
-//    'dbdriver' => 'sqlsrv',
-//    'dbprefix' => '',
-//    'pconnect' => FALSE,
-//    'db_debug' => FALSE,
-//    'cache_on' => FALSE,
-//    'cachedir' => '',
-//    'char_set' => 'utf8',
-//    'dbcollat' => 'utf8_general_ci',
-//    'swap_pre' => '',
-//    'autoinit' => TRUE,
-//    'encrypt' => FALSE,
-//    'compress' => FALSE,
-//    'stricton' => FALSE,
-//    'failover' => array(),
-//    'save_queries' => TRUE
-//);
+
 $db['itemmaster'] = array(
     'dsn' => 'sqlsrv:server=10.10.10.10,1433;Database=ItemMasterData;',
     'hostname' => '',
@@ -125,6 +104,29 @@ $db['itemmaster'] = array(
     'password' => 'automated',
     'database' => '',
     'dbdriver' => 'pdo',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => TRUE,
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'autoinit' => FALSE,
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
+$db['marketingUpdate'] = array(
+    'dsn' => '',
+    'hostname' => '173.255.197.6:3306',
+    'username' => 'mu-user',
+    'password' => 'y32HnQ7GzWwmEzfH',
+    'database' => 'marketing_update',
+    'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => FALSE,
     'db_debug' => TRUE,

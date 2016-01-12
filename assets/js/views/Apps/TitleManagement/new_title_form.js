@@ -1,4 +1,4 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator, Upload) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope','$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', 'Upload', function (scriptLoader, $scope,$rootScope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator, Upload) {
       var vm = this;
       // if ($stateParams.child) {
       //   alert($stateParams.child)
@@ -6,6 +6,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$timeout',
       vm.Dependencies = {
          scriptLoader: scriptLoader,
          $scope: $scope,
+         $rootScope: $rootScope,
          $timeout: $timeout,
          FixedReferences: FixedReferences,
          $stateParams: $stateParams,

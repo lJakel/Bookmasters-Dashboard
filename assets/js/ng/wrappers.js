@@ -1,50 +1,33 @@
 var appWrappers = angular.module('app.wrappers', []);
 
 
-appWrappers.directive('datetimepicker', ['$timeout', function ($timeout) {
+appWrappers.directive('datetimepicker', ['$timeout', '$parse', function ($timeout, $parse) {
       return {
-         require: '?ngModel',
-         restrict: 'EA',
-         scope: {
-            datetimepickerOptions: '@',
-            onDateChangeFunction: '&',
-            onDateClickFunction: '&'
-         },
-         link: function ($scope, $element, $attrs, controller) {
-            $element.on('dp.change', function () {
-               $timeout(function () {
-                  var dtp = $element.data('DateTimePicker');
-                  controller.$setViewValue(dtp.date());
-                  $scope.onDateChangeFunction();
+         link: function ($scope, element, $attrs) {
+            return $timeout(function () {
+               var ngModelGetter = $parse($attrs['ngModel']);
+               var options = $scope.$eval($attrs.datetimepickerOptions) || {};
+               options.allowInputToggle = true;
+               options.useCurrent = false;
+               options.icons = {
+                  time: 'fa fa-clock-o',
+                  date: 'fa fa-calendar',
+                  up: 'fa fa-chevron-up',
+                  down: 'fa fa-chevron-down',
+                  previous: 'fa fa-chevron-left',
+                  next: 'fa fa-chevron-right',
+                  today: 'fa fa-screenshot',
+                  clear: 'fa fa-trash',
+                  close: 'fa fa-times'
+               };
+               console.log(options)
+
+               return $(element).datetimepicker(options).on('dp.change', function (event) {
+                  $scope.$apply(function () {
+                     return ngModelGetter.assign($scope, event.target.value);
+                  });
                });
             });
-
-            $element.on('click', function () {
-               $scope.onDateClickFunction();
-            });
-
-            controller.$render = function () {
-               if (!!controller && !!controller.$viewValue) {
-                  var result = controller.$viewValue;
-                  $element.data('DateTimePicker').date(result);
-               }
-            };
-
-            var options = $scope.$eval($attrs.datetimepickerOptions) || {};
-            console.log(options)
-            options.icons = {
-               time: 'fa fa-clock-o',
-               date: 'fa fa-calendar',
-               up: 'fa fa-chevron-up',
-               down: 'fa fa-chevron-down',
-               previous: 'fa fa-chevron-left',
-               next: 'fa fa-chevron-right',
-               today: 'fa fa-screenshot',
-               clear: 'fa fa-trash',
-               close: 'fa fa-times'
-            }
-            options.allowInputToggle = true;
-            $element.datetimepicker(options);
          }
       };
    }

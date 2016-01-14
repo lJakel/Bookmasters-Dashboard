@@ -110,221 +110,222 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope
          scriptLoader.loadScripts([
             'http://www.bookmasters.com/CDN/bower_components/Trip.js/dist/trip.min.js',
          ], 'partial').then(init);
-      },3000);
+      }, 3000);
 
    }]);
 
 //blank model
-
-data = {
-   "NewTitle": {
-      "BasicInfo": {
-         "ProductGroupId": null,
-         "Title": "Jakes Book of Memes",
-         "Subtitle": "Test",
-         "Publisher": "Jake",
-         "Imprint": "Lol",
-         "ContentLanguage": "English",
-         "Series": "Starwars",
-         "NumberinSeries": "3",
-         "MainDescription": "hgfdsfdsf",
-         "ShortDescription": "hgfdsfdsfdsfsdfds"
-      },
-      "Contributors": {
-         "Contributors": [
-            {
-               "FirstName": "Jake",
-               "MiddleName": "A",
-               "LastName": "Ihasz",
-               "Prefix": "Mr",
-               "Suffix": "3rd",
-               "Hometown": "Ashland",
-               "Role": {
-                  "Id": "1",
-                  "Name": "Author"
-               },
-               "Biography": "sdfdsfdsfdsfdsfds",
-               "IsRolePrimary": true,
-               "IsTitlePrimary": true,
-               "AdditionalTitles": [
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "bv",
-                  }
-               ],
-            }
-         ]
-      },
-      "Formats": {
-         "Formats": [
-            {
-               "ProductType": {
-                  "Id": "1",
-                  "Name": "eBook"
-               },
-               "ProductForm": {
-                  "Id": "1",
-                  "Name": "eBook",
-                  "MediaTypeId": "1"
-               },
-               "ProductDetail": {
-                  "Id": "1",
-                  "Name": "ePUB",
-                  "FormId": "1"
-               },
-               "ProductBinding": {
-                  "Id": "1",
-                  "Name": "Enhanced",
-                  "FormDetailId": "1"
-               },
-               "ISBN13": "9780000000004",
-               "Width": "fds",
-               "Height": "fds",
-               "Spine": "lk",
-               "Weight": "lk",
-               "PublicationDate": "lk",
-               "Copyright": "lk",
-               "StockDueDate": "lk",
-               "TradeSales": null,
-               "Pages": "lk",
-               "CartonQuantity": "lk",
-               "USPrice": "120.00",
-               "DiscountCode": null,
-               "CustomsValue": null,
-               "Edition": null,
-               "EditionNumber": null,
-               "EditionType": null,
-               "CountryofOrigin": null,
-               "PublicationLocation": null,
-               "ComparableTitles": [
-               ],
-               "$$hashKey": "object:1242"
-            },
-            {
-               "ProductType": {
-                  "Id": "1",
-                  "Name": "eBook"
-               },
-               "ProductForm": {
-                  "Id": "1",
-                  "Name": "eBook",
-                  "MediaTypeId": "1"
-               },
-               "ProductDetail": {
-                  "Id": "1",
-                  "Name": "ePUB",
-                  "FormId": "1"
-               },
-               "ProductBinding": {
-                  "Id": "1",
-                  "Name": "Enhanced",
-                  "FormDetailId": "1"
-               },
-               "ISBN13": "9780000000002",
-               "Width": "dsa",
-               "Height": "kj",
-               "Spine": "kj",
-               "Weight": "kj",
-               "PublicationDate": "jk",
-               "Copyright": "kj",
-               "StockDueDate": "kj",
-               "TradeSales": null,
-               "Pages": "kj",
-               "CartonQuantity": "kj",
-               "USPrice": "12.00",
-               "DiscountCode": null,
-               "CustomsValue": null,
-               "Edition": null,
-               "EditionNumber": null,
-               "EditionType": null,
-               "CountryofOrigin": null,
-               "PublicationLocation": null,
-               "ComparableTitles": [
-               ],
-               "$$hashKey": "object:1255"
-            }
-         ]
-      },
-      "Demographics": {
-         "Audience": "",
-         "Bisacs": [
-            {
-               "FixedList": [
-               ],
-               "FixedList2": [
-               ],
-               "BisacGroup": {
-                  "Id": "2",
-                  "Prefix": "ARC",
-                  "Name": "ARCHITECTURE",
-                  "YearVersion": "2014",
-                  "$$hashKey": 2
-               },
-               "Code": {
-                  "Id": "48",
-                  "Code": "ARC001000",
-                  "Text": "ARCHITECTURE / Criticism",
-                  "GroupId": "2",
-                  "$$hashKey": 54
-               },
-               "Text": "",
-               "Group": "",
-               "LongName": "",
-               "BisacID": "",
-               "$$hashKey": "object:1078"
-            }
-         ],
-         "AgeRange": ""
-      },
-      "Marketing": {
-         "Websites": [
-            {
-               "URL": "http://google.com/",
-               "Type": "",
-               "$$hashKey": "object:219"
-            }
-         ],
-         "MarketingAndPublicitys": [
-            {
-               "Type": "2",
-               "Description": "jhl",
-               "$$hashKey": "object:243"
-            }
-         ],
-         "Reviews": [
-            {
-               "Name": "rev",
-               "Publication": "fdsf",
-               "Text": "sdfdsfsdfdsfdsf",
-               "$$hashKey": "object:227"
-            }
-         ],
-         "Endorsements": [
-            {
-               "Name": "fds",
-               "Affiliation": "null894",
-               "Text": "sdfdsfs",
-               "$$hashKey": "object:235"
-            }
-         ],
-         "AppearanceAndEvents": [
-            {
-               "Name": "fdsafdsa",
-               "Date": "fsasdfs",
-               "Location": "fdsadsa",
-               "Description": null,
-               "$$hashKey": "object:250"
-            }
-         ]
-      }
-   }
-}
 var data = {
    "NewTitle": {
-      "BasicInfo": {},
+      "BasicInfo": {
+         "Publisher": "Awesome Publications INC.",
+      },
       "Contributors": {},
       "Demographics": {},
       "Formats": {},
       "Marketing": {}
    },
 };
+//data = {
+//   "NewTitle": {
+//      "BasicInfo": {
+//         "ProductGroupId": null,
+//         "Title": "Jakes Book of Memes",
+//         "Subtitle": "Test",
+//         "Publisher": "Jake",
+//         "Imprint": "Lol",
+//         "ContentLanguage": "English",
+//         "Series": "Starwars",
+//         "NumberinSeries": "3",
+//         "MainDescription": "hgfdsfdsf",
+//         "ShortDescription": "hgfdsfdsfdsfsdfds"
+//      },
+//      "Contributors": {
+//         "Contributors": [
+//            {
+//               "FirstName": "Jake",
+//               "MiddleName": "A",
+//               "LastName": "Ihasz",
+//               "Prefix": "Mr",
+//               "Suffix": "3rd",
+//               "Hometown": "Ashland",
+//               "Role": {
+//                  "Id": "1",
+//                  "Name": "Author"
+//               },
+//               "Biography": "sdfdsfdsfdsfdsfds",
+//               "IsRolePrimary": true,
+//               "IsTitlePrimary": true,
+//               "AdditionalTitles": [
+//                  {
+//                     "ISBN": "9780000000002",
+//                     "Title": "bv",
+//                  }
+//               ],
+//            }
+//         ]
+//      },
+//      "Formats": {
+//         "Formats": [
+//            {
+//               "ProductType": {
+//                  "Id": "1",
+//                  "Name": "eBook"
+//               },
+//               "ProductForm": {
+//                  "Id": "1",
+//                  "Name": "eBook",
+//                  "MediaTypeId": "1"
+//               },
+//               "ProductDetail": {
+//                  "Id": "1",
+//                  "Name": "ePUB",
+//                  "FormId": "1"
+//               },
+//               "ProductBinding": {
+//                  "Id": "1",
+//                  "Name": "Enhanced",
+//                  "FormDetailId": "1"
+//               },
+//               "ISBN13": "9780000000004",
+//               "Width": "fds",
+//               "Height": "fds",
+//               "Spine": "lk",
+//               "Weight": "lk",
+//               "PublicationDate": "lk",
+//               "Copyright": "lk",
+//               "StockDueDate": "lk",
+//               "TradeSales": null,
+//               "Pages": "lk",
+//               "CartonQuantity": "lk",
+//               "USPrice": "120.00",
+//               "DiscountCode": null,
+//               "CustomsValue": null,
+//               "Edition": null,
+//               "EditionNumber": null,
+//               "EditionType": null,
+//               "CountryofOrigin": null,
+//               "PublicationLocation": null,
+//               "ComparableTitles": [
+//               ],
+//               "$$hashKey": "object:1242"
+//            },
+//            {
+//               "ProductType": {
+//                  "Id": "1",
+//                  "Name": "eBook"
+//               },
+//               "ProductForm": {
+//                  "Id": "1",
+//                  "Name": "eBook",
+//                  "MediaTypeId": "1"
+//               },
+//               "ProductDetail": {
+//                  "Id": "1",
+//                  "Name": "ePUB",
+//                  "FormId": "1"
+//               },
+//               "ProductBinding": {
+//                  "Id": "1",
+//                  "Name": "Enhanced",
+//                  "FormDetailId": "1"
+//               },
+//               "ISBN13": "9780000000002",
+//               "Width": "dsa",
+//               "Height": "kj",
+//               "Spine": "kj",
+//               "Weight": "kj",
+//               "PublicationDate": "jk",
+//               "Copyright": "kj",
+//               "StockDueDate": "kj",
+//               "TradeSales": null,
+//               "Pages": "kj",
+//               "CartonQuantity": "kj",
+//               "USPrice": "12.00",
+//               "DiscountCode": null,
+//               "CustomsValue": null,
+//               "Edition": null,
+//               "EditionNumber": null,
+//               "EditionType": null,
+//               "CountryofOrigin": null,
+//               "PublicationLocation": null,
+//               "ComparableTitles": [
+//               ],
+//               "$$hashKey": "object:1255"
+//            }
+//         ]
+//      },
+//      "Demographics": {
+//         "Audience": "",
+//         "Bisacs": [
+//            {
+//               "FixedList": [
+//               ],
+//               "FixedList2": [
+//               ],
+//               "BisacGroup": {
+//                  "Id": "2",
+//                  "Prefix": "ARC",
+//                  "Name": "ARCHITECTURE",
+//                  "YearVersion": "2014",
+//                  "$$hashKey": 2
+//               },
+//               "Code": {
+//                  "Id": "48",
+//                  "Code": "ARC001000",
+//                  "Text": "ARCHITECTURE / Criticism",
+//                  "GroupId": "2",
+//                  "$$hashKey": 54
+//               },
+//               "Text": "",
+//               "Group": "",
+//               "LongName": "",
+//               "BisacID": "",
+//               "$$hashKey": "object:1078"
+//            }
+//         ],
+//         "AgeRange": ""
+//      },
+//      "Marketing": {
+//         "Websites": [
+//            {
+//               "URL": "http://google.com/",
+//               "Type": "",
+//               "$$hashKey": "object:219"
+//            }
+//         ],
+//         "MarketingAndPublicitys": [
+//            {
+//               "Type": "2",
+//               "Description": "jhl",
+//               "$$hashKey": "object:243"
+//            }
+//         ],
+//         "Reviews": [
+//            {
+//               "Name": "rev",
+//               "Publication": "fdsf",
+//               "Text": "sdfdsfsdfdsfdsf",
+//               "$$hashKey": "object:227"
+//            }
+//         ],
+//         "Endorsements": [
+//            {
+//               "Name": "fds",
+//               "Affiliation": "null894",
+//               "Text": "sdfdsfs",
+//               "$$hashKey": "object:235"
+//            }
+//         ],
+//         "AppearanceAndEvents": [
+//            {
+//               "Name": "fdsafdsa",
+//               "Date": "fsasdfs",
+//               "Location": "fdsadsa",
+//               "Description": null,
+//               "$$hashKey": "object:250"
+//            }
+//         ]
+//      }
+//   }
+//}

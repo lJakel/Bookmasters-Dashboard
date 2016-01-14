@@ -319,8 +319,8 @@
                         </div>
                         <div class="row">
                            <div class="col-md-12">
-                              <bs-radio model="fm.TerritoryRights" value="TRUE" name="TerritoryRights" label="Worldwide rights - all territories" ng-click='mode = "MODE1"'></bs-radio>
-                              <bs-radio model="fm.TerritoryRights" value="FALSE" name="TerritoryRights" label="Individual territories - select territories" ng-click='mode = "MODE1"'></bs-radio>
+                              <bs-radio model="fm.TerritoryRights" value="true" name="TerritoryRights" label="Worldwide rights - all territories"></bs-radio>
+                              <bs-radio model="fm.TerritoryRights" value="false" name="TerritoryRights" label="Individual territories - select territories"></bs-radio>
 
                               {{fm.TerritoryRights}}
                            </div>

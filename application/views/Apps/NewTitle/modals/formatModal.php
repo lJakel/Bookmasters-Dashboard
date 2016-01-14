@@ -87,28 +87,28 @@
                         <label for="" class="control-label">Width</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Width" data-placement="top" data-content="The measurement from spine to cut edge of the book. The horizontal measure. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Width" name="Width">
+                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Width" name="Width">
                            <span class="input-group-addon">in</span> </div>
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Height</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Height" data-placement="top" data-content="The measurement from top to bottom of spine. The vertical measure. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Height" name="Height">
+                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Height" name="Height">
                            <span class="input-group-addon">in</span> </div>
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Spine</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Spine Thickness " data-placement="top" data-content="The depth of the spine of the book. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Spine" name="Spine">
+                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Spine" name="Spine">
                            <span class="input-group-addon">in</span> </div>
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Weight</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Book Weight" data-placement="top" data-content="The finished weight of the book. Give this amount in decimal pounds, to the nearest hundredth of a pound. Example: 1.25 lbs, 1.6 lbs">?</a>
                         <div class="input-group">
-                           <input type="text" class="form-control" ng-required="true" ng-model="fm.Weight" name="Weight">
+                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Weight" name="Weight">
                            <span class="input-group-addon">lbs</span> </div>
                      </div>
                   </div>
@@ -120,9 +120,9 @@
                            <input type="text" class="form-control" 
                                   name='PublicationDate'
                                   ng-required='true' 
-                                  datetimepicker-options="{format:'MMMM DD YYYY'}"
+                                  datetimepicker-options="{format:'MM/DD/YYYY'}"
                                   datetimepicker 
-                                  placeholder="mm/dd/yyyy" 
+                                  placeholder="MMM/DD/YYYY" 
                                   ng-model="fm.PublicationDate">
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
@@ -142,9 +142,15 @@
                      <div class="col-md-3 form-group">
                         <label for="" class="control-label">Stock Due Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Warehouse/Stock Due Date" data-placement="top" data-content="This is the date when you expect stock to arrive at Bookmasters' warehouse. This date must be at least 30 days before the publication date.">?</a>
-
                         <div class="input-group input-group-sm date">
-                           <input name='Copyright' type="text" class="form-control" datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.StockDueDate">
+                           <input type="text" class="form-control" 
+                                  name='PublicationDate'
+                                  ng-required='true' 
+                                  datetimepicker-options="{format:'MM/DD/YYYY'}"
+                                  datetimepicker 
+                                  placeholder="MMM/DD/YYYY" 
+                                  ng-model="fm.StockDueDate">
+                           
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
                            </span>
@@ -163,12 +169,12 @@
                      <div class="col-md-3 required">
                         <label for="" class="control-label">Pages</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Page Count" data-placement="top" data-content="The numbered pages of a book, including frontmatter + body text + endmatter. Do not include blank pages in the count. Since eBooks include the cover image as a page, add one page accordingly.">?</a>
-                        <input type="text" class="form-control" ng-required="true" ng-model="fm.Pages">
+                        <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Pages">
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="" class="control-label">Carton Quantity</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Carton Quantity " data-placement="top" data-content="The number of books contained in a full carton. Your printer can give you this information.">?</a>
-                        <input type="text" class="form-control" ng-model="fm.CartonQuantity">
+                        <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.CartonQuantity">
                      </div>
                   </div>
                </div>

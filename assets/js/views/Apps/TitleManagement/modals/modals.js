@@ -122,6 +122,7 @@ var Modals = {
       }
 
       function GetDynamicProductForms() {
+         console.log(self.ProductType);
          if (typeof self.ProductType != 'undefined' || self.ProductType == '' || self.ProductType == null) {
             var SelectedProductType = self.ProductType;
             var newdata = self.FixedProductForms;

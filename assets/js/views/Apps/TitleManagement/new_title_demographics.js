@@ -58,9 +58,8 @@ var Demographics = function (data, Dependencies) {
 
    self.UpdateBisacCodes = function (index) {
       Dependencies.$timeout(function () {
-console.log('lol');
          Dependencies.FixedReferences.lookupBisac(self.Model.Bisacs[index].BisacGroup.Id, function (response) {
-//         self.FixedBisacListContainer[index] = response.data;
+            self.FixedBisacListContainer[index] = response.data;
          }, function (response) {
             alert();
          });

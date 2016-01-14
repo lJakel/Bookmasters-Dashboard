@@ -219,7 +219,7 @@ appDirectives.directive("bsRadio", function ($compile) {
       },
       template: '' +
               '<div class="radio radio-primary">' +
-              '<input type="radio" name="name" ng-model="model" value="value" ng-checked="model">' +
+              '<input type="radio" name="name" ng-model="model" value="value" ng-checked="model" ng-click="model=value">' +
               '<label name="name" ng-click="model=value">' +
               '{{label}}' +
               '</label>' +

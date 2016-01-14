@@ -115,15 +115,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope
    }]);
 
 //blank model
-var data = {
-   "NewTitle": {
-      "BasicInfo": {},
-      "Contributors": {},
-      "Demographics": {},
-      "Formats": {},
-      "Marketing": {}
-   },
-};
+
 data = {
    "NewTitle": {
       "BasicInfo": {
@@ -327,3 +319,12 @@ data = {
       }
    }
 }
+var data = {
+   "NewTitle": {
+      "BasicInfo": {},
+      "Contributors": {},
+      "Demographics": {},
+      "Formats": {},
+      "Marketing": {}
+   },
+};

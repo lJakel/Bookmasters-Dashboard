@@ -207,47 +207,29 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
 
 
 
-appDirectives.directive("bsradio", function () {
-
+appDirectives.directive("bsRadio", function ($compile) {
    return {
-      restrict: 'A',
-      transclude: true,
-      replace: false,
-      require: 'ngModel',
-      link: function ($scope, $element, $attr, require) {
-
-
-         var ngModel = require;
-         $element.on('change', function () {
-            updateModelFromElement();
-         });
-         var updateModelFromElement = function () {
-            // If modified
-            var checked = $element.prop('checked');
-            if (checked != ngModel.$viewValue) {
-               // Update ngModel
-               $element.prop('checked', checked)
-
-               ngModel.$setViewValue(checked);
-            }
-         }
-
-         // Update input from Model
-         var updateElementFromModel = function () {
-            // Update button state to match model
-            $element.trigger('change');
-         };
-         // Observe: Element changes affect Model
-         //       
-         // Observe: ngModel for changes
-         $scope.$watch(function () {
-            return ngModel.$viewValue;
-         }, function () {
-            updateElementFromModel();
-         });
+      restrict: 'E',
+      scope: {
+         model: '=',
+         value: '@',
+         label: '@',
+         name: '@',
+         
+      },
+      template: '' +
+              '<div class="radio radio-primary">' +
+              '<input type="radio" name="name" ng-model="model" value="value" ng-checked="model">' +
+              '<label name="name" ng-click="model=value">' +
+              '{{label}}' +
+              '</label>' +
+              '</div>',
+      compile: function (tElt) {
+         tElt.addClass('sm-radio');
       }
-   }
+   };
 });
+
 
 
 

@@ -1,4 +1,4 @@
-<div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Formats.showDialog" class="modal fade">
+<div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Formats.showDialog" class="modal fade" data-backdrop="static">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="FormatModalForm" ng-repeat="fm in [NTF.Formats.FormatModal]">
          <div class="modal-header">
@@ -122,7 +122,7 @@
                                   ng-required='true' 
                                   datetimepicker-options="{format:'MM/DD/YYYY'}"
                                   datetimepicker 
-                                  placeholder="MMM/DD/YYYY" 
+                                  placeholder="mm/dd/yyyy" 
                                   ng-model="fm.PublicationDate">
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
@@ -148,9 +148,9 @@
                                   ng-required='true' 
                                   datetimepicker-options="{format:'MM/DD/YYYY'}"
                                   datetimepicker 
-                                  placeholder="MMM/DD/YYYY" 
+                                  placeholder="mm/dd/yyyy" 
                                   ng-model="fm.StockDueDate">
-                           
+
                            <span class="input-group-addon">
                               <span class="fa fa-calendar"></span>
                            </span>
@@ -166,15 +166,15 @@
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-md-3 required">
+                     <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Pages</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Page Count" data-placement="top" data-content="The numbered pages of a book, including frontmatter + body text + endmatter. Do not include blank pages in the count. Since eBooks include the cover image as a page, add one page accordingly.">?</a>
-                        <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Pages">
+                        <input name="Pages" type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Pages">
                      </div>
-                     <div class="col-md-3 form-group">
+                     <div class="col-md-3 form-group" data-show-errors>
                         <label for="" class="control-label">Carton Quantity</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Carton Quantity " data-placement="top" data-content="The number of books contained in a full carton. Your printer can give you this information.">?</a>
-                        <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.CartonQuantity">
+                        <input name="CartonQuantity" type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.CartonQuantity">
                      </div>
                   </div>
                </div>
@@ -184,7 +184,7 @@
                         <label for="" class="control-label">US Price</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="USD Price" data-placement="top" data-content="The price of your book in U.S. Dollars. Other currencies will be determined from this USD amount, if applicable. eBook pricing must end in .99.">?</a>
                         <div class="input-group"> <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                           <input name="usprice" type="text" class="form-control" data-bm-validate-options="['price']" ng-required="true" ng-model="fm.USPrice">
+                           <input name="USPrice" type="text" class="form-control" data-bm-validate-options="['price']" ng-required="true" ng-model="fm.USPrice">
                         </div>
                      </div>
                      <div class="col-md-4 form-group" data-show-errors>
@@ -196,7 +196,9 @@
                      <div class="col-md-4 form-group" data-show-errors>
                         <label for="CustomsValue" class="control-label">Customs Value</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Customs Value" data-placement="top" data-content="The worth of one copy of this book, to be declared on customs forms if the book is shipped outside the US.">?</a>
-                        <input name="CustomsValue" type="text" class="form-control" ng-model="fm.CustomsValue">
+                        <div class="input-group"> <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                           <input name="CustomsValue" type="text" class="form-control" data-bm-validate-options="['price']" ng-model="fm.CustomsValue">
+                        </div>
                      </div>
 
                   </div>
@@ -218,17 +220,33 @@
                            <table class="table table-bordered">
                               <thead>
                                  <tr>
-                                    <th>Title <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Comparable Title - Title" data-placement="top" data-content="The title of a book that is similar to your title in both subject and potential sales.">?</a></th>
-                                    <th>ISBN <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Comparable Title - ISBN" data-placement="top" data-content="The 13-digit ISBN of the Comparable title.">?</a></th>
+                                    <th style="width: 50%;">Title <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Comparable Title - Title" data-placement="top" data-content="The title of a book that is similar to your title in both subject and potential sales.">?</a></th>
+                                    <th style="width: 50%;">ISBN <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Comparable Title - ISBN" data-placement="top" data-content="The 13-digit ISBN of the Comparable title.">?</a></th>
                                     <th class="onebtn"> <button class="btn btn-primary pull-right btn-block btn-sm" ng-click="fm.addComparableTitle()"><span class="fa fa-plus"></span></button>
                                     </th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="CTitle in fm.ComparableTitles">
-                                    <td><input type="text" class="form-control" ng-model="CTitle.Title"></td>
-                                    <td><input type="text" class="form-control" ng-model="CTitle.ISBN" data-bm-validate-options="['isbn']"></td>
-                                    <td><button class="btn-danger btn btn block btn-small" ng-click="fm.removeComparableTitle($index)"><span class="fa fa-fw fa-minus"></span></button></td>
+
+                                 <tr ng-repeat="CTitle in fm.ComparableTitles" ng-form="FormatModalForm.ComparableTitlesForm[{{$index}}]">
+                                    <td>
+                                       <div class="form-group" data-show-errors>
+                                          <input type="text" class="form-control" name="AdditionalTitleTitle" ng-required="true" ng-model="CTitle.Title">
+                                       </div>
+                                    </td>
+                                    <td>
+                                       <div class="form-group" data-show-errors>
+                                          <div class="input-group">
+                                             <input type="text" class="form-control" data-bm-validate data-bm-validate-options="['isbn']" ng-required="true" name="AdditionalTitleISBN" ng-model="CTitle.ISBN" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }">
+                                             <span class="input-group-addon">
+                                                <i class="fa fa-question fa-fw"></i>
+                                             </span>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td class="onebtn">
+                                       <button class="btn-danger btn btn block btn-small" ng-click="fm.removeComparableTitle($index)"><span class="fa fa-fw fa-minus"></span></button>
+                                    </td>
                                  </tr>
                               </tbody>
                            </table>
@@ -243,31 +261,46 @@
                         <table class="table table-bordered">
                            <thead>
                               <tr>
-                                 <th>Type</th>
-                                 <th>Description</th>
-                                 <th>Number</th>
-                                 <th class="onebtn"> <button class="btn btn-primary btn-block btn-sm" ng-click="fm.addIllustration()"><span class="fa fa-plus"></span></button>
+                                 <th style="width:33%;">Type</th>
+                                 <th style="width:33%;">Description</th>
+                                 <th style="width:33%;">Number</th>
+                                 <th class="onebtn"> <button class="btn btn-primary btn-block btn-sm" ng-click="fm.addIllustration()"><span class="fa fa-plus fa-fw"></span></button>
                                  </th>
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-repeat="illus in fm.Illustrations">
-                                 <td><select name="" id="" class="form-control" ng-model="illus.Type">
-                                       <option value=""></option>
-                                       <option value="01">Illustrations, black and white</option>
-                                       <option value="02">Illustrations, color</option>
-                                       <option value="03">Halftones, black and white</option>
-                                       <option value="04">Halftones, color</option>
-                                       <option value="05">Line drawings, black and white</option>
-                                       <option value="06">Line drawings, color</option>
-                                       <option value="07">Tables, black and white</option>
-                                       <option value="08">Tables, color</option>
-                                       <option value="14">Maps</option>
-                                       <option value="18">Charts</option>
-                                    </select></td>
-                                 <td><input type="text" class="form-control" ng-model="illus.Description"></td>
-                                 <td><input type="text" class="form-control" ng-model="illus.Number"></td>
-                                 <td><button class="btn-danger btn btn block btn-small" ng-click="fm.removeIllustration($index)"><span class="fa fa-minus"></span></button></td>
+
+                              <tr ng-repeat="illus in fm.Illustrations" ng-form="FormatModalForm.IllustrationsForm[{{$index}}]">
+                                 <td>
+                                    <div class="form-group" data-show-errors>
+                                       <select ng-required="true" name="IllustrationsType" class="form-control" ng-model="illus.Type">
+                                          <option value="">Choose...</option>
+                                          <option value="01">Illustrations, black and white</option>
+                                          <option value="02">Illustrations, color</option>
+                                          <option value="03">Halftones, black and white</option>
+                                          <option value="04">Halftones, color</option>
+                                          <option value="05">Line drawings, black and white</option>
+                                          <option value="06">Line drawings, color</option>
+                                          <option value="07">Tables, black and white</option>
+                                          <option value="08">Tables, color</option>
+                                          <option value="14">Maps</option>
+                                          <option value="18">Charts</option>
+                                       </select>
+                                    </div>
+                                 </td>
+                                 <td>
+                                    <div class="form-group" data-show-errors>
+                                       <input type="text" ng-required="true" name="IllustrationsDescription"  class="form-control" ng-model="illus.Description">
+                                    </div>
+                                 </td>
+                                 <td>
+                                    <div class="form-group" data-show-errors>
+                                       <input type="text" ng-required="true" name="IllustrationsNumber" class="form-control" ng-model="illus.Number">
+                                    </div>
+                                 </td>
+                                 <td class="onebtn">
+                                    <button class="btn-danger btn btn block btn-small" ng-click="fm.removeIllustration($index)"><span class="fa fa-minus"></span></button>
+                                 </td>
                               </tr>
                            </tbody>
                         </table>
@@ -286,18 +319,10 @@
                         </div>
                         <div class="row">
                            <div class="col-md-12">
-                              <div class="radio radio-primary">
-                                 <input type="radio" name="radio1" id="radio1" ng-model="fm.TerritoryRights" value="world">
-                                 <label for="radio1">
-                                    Worldwide rights - all territories
-                                 </label>
-                              </div>
-                              <div class="radio radio-primary">
-                                 <input type="radio" name="radio1" id="radio2" ng-model="fm.TerritoryRights" value="individual">
-                                 <label for="radio2">
-                                    Individual territories - select territories
-                                 </label>
-                              </div>
+                              <bs-radio model="fm.TerritoryRights" value="TRUE" name="TerritoryRights" label="Worldwide rights - all territories" ng-click='mode = "MODE1"'></bs-radio>
+                              <bs-radio model="fm.TerritoryRights" value="FALSE" name="TerritoryRights" label="Individual territories - select territories" ng-click='mode = "MODE1"'></bs-radio>
+
+                              {{fm.TerritoryRights}}
                            </div>
                         </div>
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
@@ -309,7 +334,7 @@
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
                            <div class="col-md-12 form-group">
                               <div style="max-height:290px; min-height:43px; border:solid thin #ddd; padding:0 10px; overflow-y: scroll;">
-                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes| filter:fm.IsoSearch">
+                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes | filter:fm.IsoSearch">
                                     <input id="iso{{$index}}" type="checkbox" ng-model="iso.checked">
                                     <label for="iso{{$index}}">
                                        {{iso.Name}} - {{iso.Iso2}}
@@ -355,7 +380,7 @@
                      <div class="form-group col-md-6 required">
                         <label for="" class="control-label">Country of Origin</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Country of Origin" data-placement="top" data-content="The country in which the book was printed.">?</a>
-                        <input type="text" class="form-control" ng-model="fm.CountryofOrigin">
+                        <input name="CountryofOrigin" ng-required="true" type="text" class="form-control" ng-model="fm.CountryofOrigin">
                      </div>
                      <div class="form-group col-md-6">
                         <label for="" class="control-label">Publication Location</label>

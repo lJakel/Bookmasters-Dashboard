@@ -6,7 +6,6 @@ class NewTitle extends Secure_Controller {
 
    function __construct() {
       parent::__construct();
-      $this->Auth_Model->authorizeApplication('Developer');
    }
 
    public function index() {

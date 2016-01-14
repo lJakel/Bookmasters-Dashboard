@@ -62,6 +62,8 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
             return $timeout(function () {
                el.removeClass('has-error');
                el.removeClass('has-success');
+               el.find('.help-block').remove();
+
                return blurred = false;
             }, 0, false);
          });

@@ -122,7 +122,7 @@
                                  <div class="form-group required" data-show-errors>
                                     <label for="title" class="control-label">Title</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="The unique name for your book. The subtitle (if applicable) should be given separately.">?</a>
-                                    <input type="text" name="title" class="form-control" ng-minlength="4" ng-required="true" ng-model="bi.Model.Title">
+                                    <input type="text" name="title" class="form-control" ng-required="true" ng-model="bi.Model.Title">
                                  </div>
                                  <div class="form-group " data-show-errors>
                                     <label for="subtitle" class="control-label">Subtitle</label>

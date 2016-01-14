@@ -114,47 +114,37 @@
                   </div>
                   <div class="row">
                      <div class="col-md-3 form-group required" data-show-errors>
-                        <label for="" class="control-label">Publication Date</label>
+                        <label for="PublicationDate" class="control-label">Publication Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Date" data-placement="top" data-content="The date that you consider to be the official release date for the book. This must be at least 30 days AFTER the arrival of stock in Bookmasters' warehouse for print books. In addition, to be included in the buying cycles of the print book trade, this date must also be at least 180 days AFTER the day you submit this form.">?</a>
-                        <div class="input-group input-group-sm date">
-                           <input type="text" class="form-control" 
-                                  name='PublicationDate'
-                                  ng-required='true' 
-                                  datetimepicker-options="{format:'MM/DD/YYYY'}"
-                                  datetimepicker 
-                                  placeholder="mm/dd/yyyy" 
-                                  ng-model="fm.PublicationDate">
-                           <span class="input-group-addon">
-                              <span class="fa fa-calendar"></span>
-                           </span>
-                        </div>
+
+                        <input type="text" class="form-control" 
+                               name='PublicationDate'
+                               ng-required='true' 
+                               datetimepicker-options="{format:'MM/DD/YYYY'}"
+                               datetimepicker 
+                               placeholder="mm/dd/yyyy" 
+                               ng-model="fm.PublicationDate">
+
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
-                        <label for="" class="control-label">Copyright Year</label>
+                        <label for="CopyrightYear" class="control-label">Copyright Year</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Copyright Date (year)" data-placement="top" data-content="The year in which the initial copyright for the material was filed.">?</a>
-                        <div class="input-group input-group-sm date">
-                           <input name='Copyright' type="text" class="form-control" ng-required='true' datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.Copyright">
-                           <span class="input-group-addon">
-                              <span class="fa fa-calendar"></span>
-                           </span>
-                        </div>
+
+                        <input name='CopyrightYear' type="text" class="form-control" ng-required='true' datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.Copyright">
+
                      </div>
                      <div class="col-md-3 form-group">
-                        <label for="" class="control-label">Stock Due Date</label>
+                        <label for="StockDueDate" class="control-label">Stock Due Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Warehouse/Stock Due Date" data-placement="top" data-content="This is the date when you expect stock to arrive at Bookmasters' warehouse. This date must be at least 30 days before the publication date.">?</a>
-                        <div class="input-group input-group-sm date">
-                           <input type="text" class="form-control" 
-                                  name='PublicationDate'
-                                  ng-required='true' 
-                                  datetimepicker-options="{format:'MM/DD/YYYY'}"
-                                  datetimepicker 
-                                  placeholder="mm/dd/yyyy" 
-                                  ng-model="fm.StockDueDate">
 
-                           <span class="input-group-addon">
-                              <span class="fa fa-calendar"></span>
-                           </span>
-                        </div>
+                        <input type="text" class="form-control" 
+                               name='StockDueDate'
+                               ng-required='true' 
+                               datetimepicker-options="{format:'MM/DD/YYYY'}"
+                               datetimepicker 
+                               placeholder="mm/dd/yyyy" 
+                               ng-model="fm.StockDueDate">
+
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="">Trade Sales</label>
@@ -167,14 +157,14 @@
                   </div>
                   <div class="row">
                      <div class="col-md-3 form-group required" data-show-errors>
-                        <label for="" class="control-label">Pages</label>
+                        <label for="Pages" class="control-label">Pages</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Page Count" data-placement="top" data-content="The numbered pages of a book, including frontmatter + body text + endmatter. Do not include blank pages in the count. Since eBooks include the cover image as a page, add one page accordingly.">?</a>
-                        <input name="Pages" type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Pages">
+                        <input name="Pages" type="number" class="form-control" ng-required="true" min="0" ng-model="fm.Pages">
                      </div>
                      <div class="col-md-3 form-group" data-show-errors>
-                        <label for="" class="control-label">Carton Quantity</label>
+                        <label for="CartonQuantity" class="control-label">Carton Quantity</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Carton Quantity " data-placement="top" data-content="The number of books contained in a full carton. Your printer can give you this information.">?</a>
-                        <input name="CartonQuantity" type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.CartonQuantity">
+                        <input name="CartonQuantity" type="number" class="form-control" ng-required="true" min="0" ng-model="fm.CartonQuantity">
                      </div>
                   </div>
                </div>
@@ -334,7 +324,7 @@
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
                            <div class="col-md-12 form-group">
                               <div style="max-height:290px; min-height:43px; border:solid thin #ddd; padding:0 10px; overflow-y: scroll;">
-                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes | filter:fm.IsoSearch">
+                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes| filter:fm.IsoSearch">
                                     <input id="iso{{$index}}" type="checkbox" ng-model="iso.checked">
                                     <label for="iso{{$index}}">
                                        {{iso.Name}} - {{iso.Iso2}}

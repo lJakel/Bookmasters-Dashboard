@@ -36,7 +36,7 @@
                   </ul>
                </li>
             </ul>
-            <span class="listheader">Developer Applications</span>
+            <span ng-if="user.roles[0] == 'Developer'" class="listheader">Developer Applications</span>
             <ul class="application-items" ng-if="user.roles[0] == 'Developer'">
                <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })"><span class="fa fa-comment fa-fw"></span>Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
                <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })"><span class="fa fa-user fa-fw"></span>User Management</a></li>

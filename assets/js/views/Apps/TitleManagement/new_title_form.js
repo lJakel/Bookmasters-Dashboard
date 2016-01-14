@@ -1,4 +1,4 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope','$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', 'Upload', function (scriptLoader, $scope,$rootScope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator, Upload) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator, Upload) {
       var vm = this;
       // if ($stateParams.child) {
       //   alert($stateParams.child)
@@ -105,9 +105,13 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope','$rootScope'
          });
          console.log($scope);
       }
-      scriptLoader.loadScripts([
-         'http://www.bookmasters.com/CDN/bower_components/Trip.js/dist/trip.min.js',
-      ], 'partial').then(init);
+      $timeout(function () {
+
+         scriptLoader.loadScripts([
+            'http://www.bookmasters.com/CDN/bower_components/Trip.js/dist/trip.min.js',
+         ], 'partial').then(init);
+      },3000);
+
    }]);
 
 //blank model

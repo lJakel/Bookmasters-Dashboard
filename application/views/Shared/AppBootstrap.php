@@ -6,7 +6,7 @@
          <div id="innersidebar" style="position: relative;">
             <ul class="application-items">
                <li>
-                  <a class="submenu collapsed" data-target="#DashboardList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Dashboard<span class="fa fa-plus-circle plusmin"></span></a>
+                  <a class="submenu collapsed" data-target="#DashboardList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Dashboard<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="DashboardList" class="collapse">
                      <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })">Dashboard</a></li>
                      <li><a data-ui-sref="bm.app.page({app:'main', page: 'submit' })">Calendar</a></li>
@@ -18,7 +18,7 @@
             <span class="listheader">Applications</span>
             <ul class="application-items">
                <li>
-                  <a class="submenu collapsed" data-target="#TitleManagementList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Title Management<span class="fa fa-plus-circle plusmin"></span></a>
+                  <a class="submenu collapsed" data-target="#TitleManagementList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Title Management<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="TitleManagementList" class="collapse">
                      <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'index', child: null})">Title Submission Details</a></li>
                      <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'submit', child: null})">Submit New Title</a></li>
@@ -28,7 +28,7 @@
                   </ul>
                </li>
                <li>
-                  <a class="submenu collapsed" data-target="#MarketingUpdateList" data-toggle="collapse" href="#"><span class="fa fa-microphone"></span>Marketing Update<span class="fa fa-plus-circle plusmin"></span></a>
+                  <a class="submenu collapsed" data-target="#MarketingUpdateList" data-toggle="collapse" href="#"><span class="fa fa-microphone"></span>Marketing Update<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="MarketingUpdateList" class="collapse">
                      <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'index', child: null})">View All Entries</a></li>
                      <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'create', child: null})">Create Entry</a></li>

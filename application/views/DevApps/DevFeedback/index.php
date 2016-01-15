@@ -41,15 +41,16 @@
    }
 </style>
 <script>
-   BMApp.register.controller('DevFeedbackCtrl', function ($state, $http) {
-
+   BMApp.register.controller('DevFeedbackCtrl', function ($state, $timeout, $http) {
       var self = this;
-      $http.post('devfeedback/apiview').then(function (response) {
-         self.feedback = $.map(response.data, function (item) {
-            return item;
+      $timeout(function () {
+         $http.post('devfeedback/apiview').then(function (response) {
+            self.feedback = $.map(response.data, function (item) {
+               return item;
+            });
+         }, function (response) {
+            $state.go('error');
          });
-      }, function (response) {
-         $state.go('error');
-      });
+      },1000);
    });
 </script>

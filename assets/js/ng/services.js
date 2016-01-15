@@ -21,26 +21,7 @@ appServices.factory('GuidCreator', function () {
    }
 });
 
-appServices.factory('partialCleanup', function ($timeout) {
-   var objectsToClean = [];
-   return{
-      prepare: function (array) {
-         array = array || [];
-         objectsToClean = array;
-      },
-      clean: function () {
-         console.log(objectsToClean, 'objectsToClean')
-         $('.partial-script').each(function () {
-            $(this).remove();
-         });
-         $.each(objectsToClean, function (index, value) {
-            window[value] = null;
-            objectsToClean = [];
-         });
-      }
-   }
 
-});
 /**
  * Override default angular exception handler to log and alert info if debug mode
  */

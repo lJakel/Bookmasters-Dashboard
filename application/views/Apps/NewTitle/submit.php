@@ -6,7 +6,7 @@
                <div class="row">
                   <div class="container-fluid">
                      <div class="jumbotron" style="position: static; z-index: auto;">
-                        <h1>Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
+                        <h1 ng-click="NTF.load()">Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
                            <!--                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -302,12 +302,12 @@
                               <div class="col-md-6 required form-group" data-show-errors>
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
-                                 <summernote ng-model="bi.Model.MainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                                 <summernote class="form-control" name="bi.MainDescription" ng-model="bi.Model.MainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                               <div class="col-md-6 form-group" data-show-errors>
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <summernote ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                                 <summernote class="form-control" name="bi.ShortDescription" ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                            </div>
                         </div>
@@ -607,14 +607,9 @@
                                                 </td>
                                              </tr>
                                           </tbody>
-
-
                                        </table>
-
-
                                     </div>
                                  </div>
-
                               </div>
                            </div>
                         </div>
@@ -675,13 +670,4 @@
 </style>
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/modals/modals.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_basic.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_contributors.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_formats.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_demographics.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_marketing.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_covers.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_form.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/build/build.js?cache=<?php echo rand(1000, 9000); ?>"></script>

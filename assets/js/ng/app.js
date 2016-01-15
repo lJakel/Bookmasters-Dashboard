@@ -13,7 +13,7 @@ var BMApp = angular.module('BMApp', [
    'nya.bootstrap.select',
    'ui.bootstrap',
    'angular-toasty',
-   'summernote',
+//   'summernote',
    // page-specific and demo. may be removed
    // application libs
    'app.controllers',
@@ -145,7 +145,7 @@ BMApp.config(function ($stateProvider, $urlRouterProvider, $controllerProvider, 
            });
 });
 
-BMApp.run(function ($rootScope, $state, $log, AuthFactory, partialCleanup) {
+BMApp.run(function ($rootScope, $state, $log, AuthFactory) {
    $rootScope.previousState;
    $rootScope.previousStateParams;
    $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
@@ -153,10 +153,7 @@ BMApp.run(function ($rootScope, $state, $log, AuthFactory, partialCleanup) {
       $rootScope.previousStateParams = fromParams;
    });
 
-   $rootScope.$on('$stateChangeStart', function () {
-      partialCleanup.clean();
-   });
-
+  
    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
       console.log(error.status)
       switch (error.status) {

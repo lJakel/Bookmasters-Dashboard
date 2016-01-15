@@ -1,8 +1,6 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'partialCleanup', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, partialCleanup, GuidCreator, Upload) {
+BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload) {
       var vm = this;
-      // if ($stateParams.child) {
-      //   alert($stateParams.child)
-      // }
+    
       vm.Dependencies = {
          scriptLoader: scriptLoader,
          $scope: $scope,
@@ -13,12 +11,11 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope
          Upload: Upload
       }
       function init() {
-
-         partialCleanup.prepare(['BasicInfo', 'Contributors', 'Formats', 'Demographics', 'Marketing', 'Modals']);
          vm.Form = {
             DraftId: GuidCreator.CreateGuid(),
             ProductGroupId: null,
          }
+
          vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
          vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
          vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
@@ -38,49 +35,23 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope
 
          };
 
+
          FixedReferences.getReferences().then(function (response) {
-
-            vm.Contributors.ContributorModal.FixedAuthorRoles = $.map(response.ContributorRoles, function (item) {
-               return item;
-            });
-            vm.Formats.FormatModal.FixedProductTypes = $.map(response.FixedProductTypes, function (item) {
-               return item;
-            });
-            vm.Formats.FormatModal.FixedProductForms = $.map(response.FixedProductForms, function (item) {
-               return item;
-            });
-            vm.Formats.FormatModal.FixedProductFormDetails = $.map(response.FixedProductFormDetails, function (item) {
-               return item;
-            });
-            vm.Formats.FormatModal.FixedProductFormDetailSpecifics = $.map(response.FixedProductFormDetailSpecifics, function (item) {
-               return item;
-            });
-            vm.Formats.FormatModal.FixedEditionTypes = $.map(response.Editions, function (item) {
-               return item;
-            });
-
-            vm.Demographics.FixedAudienceTypes = $.map(response.AudienceTypes, function (item) {
-               return item;
-            });
-            //Where does PublicationStatuses go?
-            //vm.Demographics.PublicationStatuses = $.map(response.PublicationStatuses, function (item) {
-            //return item;
-            //});
-            vm.Demographics.FixedList = $.map(response.BisacGroups, function (item) {
-               return item;
-            });
-
+            vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
+            vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
+            vm.Formats.FormatModal.FixedProductForms = response.FixedProductForms;
+            vm.Formats.FormatModal.FixedProductFormDetails = response.FixedProductFormDetails;
+            vm.Formats.FormatModal.FixedProductFormDetailSpecifics = response.FixedProductFormDetailSpecifics;
+            vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
+            vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
+            vm.Demographics.FixedList = response.BisacGroups;
          });
-//
+
          FixedReferences.getIsoCodes().then(function (response) {
-            vm.Formats.FormatModal.FixedIsoCodes = $.map(response, function (item) {
-               return item;
-            });
+            vm.Formats.FormatModal.FixedIsoCodes = response.codes;
          });
          FixedReferences.getDiscountCodes().then(function (response) {
-            vm.Formats.FormatModal.FixedDiscountCodes = $.map(response, function (item) {
-               return item;
-            });
+            vm.Formats.FormatModal.FixedDiscountCodes = response;
          });
 
          $timeout(function () {
@@ -89,6 +60,7 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope
 
       }
       $timeout(function () {
+
       }).then(init);
 
    }]);

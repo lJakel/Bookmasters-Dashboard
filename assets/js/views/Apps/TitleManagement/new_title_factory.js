@@ -13,7 +13,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
 
 
       function cacheInit() {
-         
+
          var Today = Math.floor(Date.now() / 1000);
          var Days = 5;
          var CacheTime = Days * 24 * 60 * 60;
@@ -121,7 +121,6 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function getDiscountCodes() {
-
          if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
             return AuthFactory.getInfo().then(function (response) {
                setDiscountCodes(response.clientinfo.DiscountCodes);

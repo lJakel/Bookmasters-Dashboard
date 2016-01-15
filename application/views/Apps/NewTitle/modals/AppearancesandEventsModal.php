@@ -30,7 +30,7 @@
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="AMText" class="control-label">Description</label>
-                  <summernote config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="am.Text"></summernote>
+                  <summernote class="form-control" name="am.Text" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="am.Text"></summernote>
                </div>
             </div>
          </div>

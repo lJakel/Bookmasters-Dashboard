@@ -14,7 +14,7 @@
                <li role="presentation"><a href="#" data-target="#Illustrations" aria-controls="Illustrations" role="tab" data-toggle="tab">Illustrations</a></li>
                <li role="presentation"><a href="#" data-target="#SalesRights" aria-controls="SalesRights" role="tab" data-toggle="tab">Sales Rights</a></li>
                <li role="presentation" ng-show="fm.ProductForm == '3 - Electronic Print'"><a href="#" data-target="#RelatedProduct" aria-controls="RelatedProduct" role="tab" data-toggle="tab">Related Product</a></li>
-               <li role="presentation"><a href="#" data-target="#Other" aria-controls="Other" role="tab" data-toggle="tab">Other</a></li>
+
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -97,18 +97,18 @@
                            <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Height" name="Height">
                            <span class="input-group-addon">in</span> </div>
                      </div>
-                     <div class="col-md-3 form-group required" data-show-errors>
+                     <div class="col-md-3 form-group" data-show-errors>
                         <label for="" class="control-label">Spine</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Spine Thickness " data-placement="top" data-content="The depth of the spine of the book. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Spine" name="Spine">
+                           <input type="number" class="form-control" min="0" max="99" ng-model="fm.Spine" name="Spine">
                            <span class="input-group-addon">in</span> </div>
                      </div>
-                     <div class="col-md-3 form-group required" data-show-errors>
+                     <div class="col-md-3 form-group" data-show-errors>
                         <label for="" class="control-label">Weight</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Book Weight" data-placement="top" data-content="The finished weight of the book. Give this amount in decimal pounds, to the nearest hundredth of a pound. Example: 1.25 lbs, 1.6 lbs">?</a>
                         <div class="input-group">
-                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Weight" name="Weight">
+                           <input type="number" class="form-control" min="0" max="99" ng-model="fm.Weight" name="Weight">
                            <span class="input-group-addon">lbs</span> </div>
                      </div>
                   </div>
@@ -165,6 +165,17 @@
                         <label for="CartonQuantity" class="control-label">Carton Quantity</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Carton Quantity " data-placement="top" data-content="The number of books contained in a full carton. Your printer can give you this information.">?</a>
                         <input name="CartonQuantity" type="number" class="form-control" ng-required="true" min="0" ng-model="fm.CartonQuantity">
+                     </div>
+
+                     <div class="form-group col-md-3">
+                        <label for="" class="control-label">Edition Number</label>
+                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition Number" data-placement="top" data-content="Indicates that the version of content in this book differs from the previously numbered edition's content. Numbers only, no letters. If the book is a first edition, you are not required to put that here.">?</a>
+                        <input type="text" class="form-control" ng-model="fm.EditionNumber">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="" class="control-label">Edition Type</label>
+                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition Type" data-placement="top" data-content="Indicates that the content of the book is closely related to another book's content but has been changed for a specific reason. It also implies the audience or market for the content of the book.">?</a>
+                        <select name="" id="" class="form-control" ng-options="ed.Name for ed in fm.FixedEditionTypes track by ed.Id" ng-model="fm.EditionType"></select>
                      </div>
                   </div>
                </div>
@@ -308,11 +319,21 @@
                            </div>
                         </div>
                         <div class="row">
+                           <div class="form-group col-md-6 required">
+                              <label for="" class="control-label">Country of Origin</label>
+                              <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Country of Origin" data-placement="top" data-content="The country in which the book was printed.">?</a>
+                              <input name="CountryofOrigin" ng-required="true" type="text" class="form-control" ng-model="fm.CountryofOrigin">
+                           </div>
+                           <div class="form-group col-md-6">
+                              <label for="" class="control-label">Publication Location</label>
+                              <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Location" data-placement="top" data-content="The country in which the publisher of the book is located.">?</a>
+                              <input type="text" class="form-control" ng-model="fm.PublicationLocation">
+                           </div>
+                        </div>
+                        <div class="row">
                            <div class="col-md-12">
-                              <bs-radio model="fm.TerritoryRights" value="true" name="TerritoryRights" label="Worldwide rights - all territories"></bs-radio>
-                              <bs-radio model="fm.TerritoryRights" value="false" name="TerritoryRights" label="Individual territories - select territories"></bs-radio>
-
-                              {{fm.TerritoryRights}}
+                              <bs-radio model="fm.TerritoryRights" value="world" name="TerritoryRights" label="Worldwide rights - all territories"></bs-radio>
+                              <bs-radio model="fm.TerritoryRights" value="individual" name="TerritoryRights" label="Individual territories - select territories"></bs-radio>
                            </div>
                         </div>
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
@@ -347,38 +368,7 @@
                      </div>
                   </div>
                </div>
-               <div role="tabpanel" class="tab-pane" id="Other">
-                  <div class="row">
-                     <div class="form-group col-md-4">
-                        <label for="" class="control-label">Edition</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition" data-placement="top" data-content="An edition tells the reader that this book's content has been revised in some way. Example #1: The second edition includes charts that have been updated since the first edition. Example #2: The large print edition features the same content as the previous edition, but it's presented in an easier-to-read font.">?</a>
-                        <input type="text" class="form-control" ng-model="fm.Edition">
-                     </div>
-                     <div class="form-group col-md-4">
-                        <label for="" class="control-label">Edition Number</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition Number" data-placement="top" data-content="Indicates that the version of content in this book differs from the previously numbered edition's content. Numbers only, no letters. If the book is a first edition, you are not required to put that here.">?</a>
-                        <input type="text" class="form-control" ng-model="fm.EditionNumber">
-                     </div>
-                     <div class="form-group col-md-4">
-                        <label for="" class="control-label">Edition Type</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition Type" data-placement="top" data-content="Indicates that the content of the book is closely related to another book's content but has been changed for a specific reason. It also implies the audience or market for the content of the book.">?</a>
-                        <select name="" id="" class="form-control" ng-options="ed.Name for ed in fm.FixedEditionTypes track by ed.Id"
-                                ng-model="fm.EditionType"></select>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="form-group col-md-6 required">
-                        <label for="" class="control-label">Country of Origin</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Country of Origin" data-placement="top" data-content="The country in which the book was printed.">?</a>
-                        <input name="CountryofOrigin" ng-required="true" type="text" class="form-control" ng-model="fm.CountryofOrigin">
-                     </div>
-                     <div class="form-group col-md-6">
-                        <label for="" class="control-label">Publication Location</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Location" data-placement="top" data-content="The country in which the publisher of the book is located.">?</a>
-                        <input type="text" class="form-control" ng-model="fm.PublicationLocation">
-                     </div>
-                  </div>
-               </div>
+
             </div>
          </div>
          <div class="modal-footer">

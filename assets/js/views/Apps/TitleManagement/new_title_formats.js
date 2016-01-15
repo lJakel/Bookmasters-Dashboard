@@ -45,7 +45,7 @@ var Formats = function (data, Dependencies) {
    };
 
    self.addFormat = function () {
-      console.log('sad')
+      
       self.showFormatModal(new Components.Format(''), 'add');
    };
 

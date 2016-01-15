@@ -30,7 +30,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
       };
       linkFn = function (scope, el, attrs, formCtrl) {
          var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, trigger;
-         //console.log(el)
+         
          blurred = false;
          options = scope.$eval(attrs.showErrors);
          showSuccess = getShowSuccess(options);
@@ -71,7 +71,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
             el.toggleClass('has-error', invalid);
             el.find('.help-block').remove();
             $.each(formCtrl[inputName].$error, function (item) {
-               console.log(item)
+               
                el.append('<span class="help-block">' + errors[item] + '</span>')
             });
             if (showSuccess) {

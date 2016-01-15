@@ -15,7 +15,7 @@ var Contributors = function (data, Dependencies) {
 
 
    function showContributorModal(data, method) {
-      console.log(data, method)
+      
       vm.ContributorModal.Method = method || 'edit';
       vm.ContributorModal.entryData = data;
       $.each(data, function (k, v) {

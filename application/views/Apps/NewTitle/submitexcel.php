@@ -125,7 +125,7 @@
                   file.result = response.data.data;
                });
             }, function (response) {
-               console.log(response)
+               
                if (response.status > 0) {
                   self.failed.items = $.map(response.data.data.error, function (item) {
                      return item;

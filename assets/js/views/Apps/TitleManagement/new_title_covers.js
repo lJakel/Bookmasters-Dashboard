@@ -23,7 +23,7 @@ function Covers(data, Dependencies) {
                CoverFile: file
             }
          }).then(function (resp) {
-            console.log(resp.config.data);
+            
             self.files[argisbn]['name'] = resp.config.data.CoverFile.name;
             self.files[argisbn]['type'] = resp.config.data.CoverFile.type;
             self.files[argisbn]['size'] = resp.config.data.CoverFile.size;

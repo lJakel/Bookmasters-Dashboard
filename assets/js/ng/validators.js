@@ -5,11 +5,12 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
       var errors = {
          isbnValidate: 'The ISBN you supplied is invalid',
          bmPassword: 'Your password must contain a lowercase and uppercase letter, numbers, and 8 or more characters long',
-         bmWebsite: 'Please enter a valid URL. Example: http://google.com',
-         required: 'This field is requierd',
+         bmWebsite: 'Please enter a valid URL. Example: http://bookmasters.com',
+         required: 'This field is required',
          minlength: 'Your input is too short',
          maxlength: 'Your input is too long',
          email: 'Your email address is invalid',
+         number: 'Your input is not a number',
          price: 'The given amount is invalid. Ex 125,944.10',
       };
       getTrigger = function (options) {
@@ -71,8 +72,8 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
             el.toggleClass('has-error', invalid);
             el.find('.help-block').remove();
             $.each(formCtrl[inputName].$error, function (item) {
-               
-               el.append('<span class="help-block">' + errors[item] + '</span>')
+               console.log(item);
+               el.append('<span class="help-block">' + errors[item] + '</span>');
             });
             if (showSuccess) {
                return el.toggleClass('has-success', !invalid);

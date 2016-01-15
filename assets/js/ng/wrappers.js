@@ -20,7 +20,7 @@ appWrappers.directive('datetimepicker', ['$timeout', '$parse', function ($timeou
                   clear: 'fa fa-trash',
                   close: 'fa fa-times'
                };
-               console.log(options)
+               
 
                return $(element).datetimepicker(options).on('dp.change', function (event) {
                   $scope.$apply(function () {
@@ -32,40 +32,3 @@ appWrappers.directive('datetimepicker', ['$timeout', '$parse', function ($timeou
       };
    }
 ]);
-appWrappers.directive('summernote', function (scriptLoader) {
-   //simple summernote directive
-
-   return {
-      restrict: 'A',
-      require: '?ngModel',
-      priority: 10,
-      link: function (scope, element, attrs, ngModel) {
-
-         scriptLoader.loadScripts([
-            'http://www.bookmasters.com/CDN/bower_components/summernote/dist/summernote.min.js',
-         ], 'partial').then(summernoteInit);
-         function summernoteInit() {
-            if (!ngModel)
-               return;
-            var options = {
-               toolbar: [
-                  ['style', ['bold', 'italic', 'underline', 'clear']],
-                  ['para', ['ul', 'ol']]
-               ],
-               height: 150,
-               styleWithSpan: false,
-               callbacks: {
-                  onBlur: function () {
-                     ngModel.$setViewValue($summernote.summernote('code'));
-                     return;
-                  }
-               },
-            };
-            var $summernote = $(element).summernote(options);
-            scope.$watch(attrs.ngModel, function (newVal, oldVal) {
-               $summernote.summernote("code", newVal);
-            });
-         }
-      }
-   }
-});

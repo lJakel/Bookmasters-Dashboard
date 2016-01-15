@@ -20,7 +20,7 @@
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.bookmasters.com/CDN/resources/brand/favicon/apple-touch-icon-144x144-precomposed.png">
 
       <!--Core CSS -->
-      
+
       <link href="http://www.bookmasters.com/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -50,7 +50,12 @@
 
       <script src="http://www.bookmasters.com/CDN/bower_components/ng-file-upload-shim/ng-file-upload-all.min.js"></script>
       <script src="http://www.bookmasters.com/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.min.js"></script>
+      <!--<script src="http://www.bookmasters.com/CDN/bower_components/summernote/dist/summernote.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/bower_components/angular-summernote/dist/angular-summernote.js"></script>-->
 
+      <script src="http://www.bookmasters.com/CDN/js/summernote/angular-summernote.min.js"></script>
+      <script src="http://www.bookmasters.com/CDN/js/summernote/summernote.min.js"></script>
+      <link rel="stylesheet" href="https://cdn.rawgit.com/summernote/summernote/v0.7.0/dist/summernote.css">
 
       <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="http://www.bookmasters.com/CDN/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

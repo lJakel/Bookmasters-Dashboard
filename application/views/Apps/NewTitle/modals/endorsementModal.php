@@ -21,7 +21,7 @@
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="EMText" class="control-label">Endorsement Description</label>
                   <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Endorsement Description" data-placement="right" data-content='An Endorsement is usually from a celebrity or expert in the field of the content of the book. They are endorsing the contributor or book, but not reviewing the book. Example: "This book is great!" - George Washington, First President of the United States of America. (To clarify, please do not submit fake Endorsements like this example! Only submit real endorsements that were given to you with permission to use.)'>?</a>
-                  <textarea name="EMText" data-summernote id="" cols="30" ng-required="true" rows="10" class="form-control" ng-model="em.Text"></textarea>
+                  <summernote config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="em.Text"></summernote>
                </div>
             </div>
          </div>

@@ -30,7 +30,7 @@
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="AMText" class="control-label">Description</label>
-                  <textarea name="AMText" id="" cols="30" data-summernote rows="10" ng-required="true" class="form-control" ng-model="am.Text"></textarea>
+                  <summernote config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="am.Text"></summernote>
                </div>
             </div>
          </div>

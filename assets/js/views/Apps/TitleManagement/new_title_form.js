@@ -82,35 +82,14 @@ BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope
                return item;
             });
          });
-         vm.LoadDraft = function () {
-            var data = {
-               "NewTitle": {
-                  "BasicInfo": {},
-                  "Contributors": {},
-                  "Demographics": {},
-                  "Formats": {},
-                  "Marketing": {}
-               },
-            };
-            vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
-            vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
-            vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
-            vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
-            vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
-            vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
-         }
 
          $timeout(function () {
             $('[data-toggle="popover"]').popover();
          });
-         console.log($scope);
+
       }
       $timeout(function () {
-
-         scriptLoader.loadScripts([
-            'http://www.bookmasters.com/CDN/bower_components/Trip.js/dist/trip.min.js',
-         ], 'partial').then(init);
-      }, 3000);
+      }).then(init);
 
    }]);
 

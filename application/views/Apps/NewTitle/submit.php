@@ -98,7 +98,7 @@
                            <a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab">Contributors</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab">Text</a>
+                           <a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab">Descriptions</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab">Subject</a>
@@ -302,12 +302,12 @@
                               <div class="col-md-6 required form-group" data-show-errors>
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
-                                 <textarea name="MainDescription" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.MainDescription"></textarea>
+                                 <summernote ng-model="bi.Model.MainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                               <div class="col-md-6 form-group" data-show-errors>
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <textarea name="ShortDescription" id="" cols="30" rows="10" class="form-control" data-summernote ng-model="bi.Model.ShortDescription"></textarea>
+                                 <summernote ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                            </div>
                         </div>
@@ -593,12 +593,12 @@
                                                 </td>
                                                 <td>
                                                    <div class="progress">
-                                                      <div class="progress-bar {{c.files[Format.ISBN13]['progress']['color']}}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" ng-style="{width: c.files[Format.ISBN13]['progress']['width']+ '%' }">
+                                                      <div class="progress-bar {{c.files[Format.ISBN13]['progress']['color']}}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" ng-style="{width: c.files[Format.ISBN13]['progress']['width'] + '%' }">
                                                          {{c.files[Format.ISBN13]['progress']['percentage']}}
                                                       </div>
                                                    </div>
                                                 </td>
-                                              
+
                                                 <td style="text-align: center;">
                                                    <span style="font-size:24px; line-height: 24px;">
                                                       <i ng-if="c.files[Format.ISBN13]['status'] == true" class="text-success fa fa-check"></i>
@@ -607,7 +607,7 @@
                                                 </td>
                                              </tr>
                                           </tbody>
-                                         
+
 
                                        </table>
 
@@ -637,8 +637,8 @@
                   <div class="col-md-4 col-md-offset-4">
                      <div class="row">
                         <div class="col-md-6 col-md-offset-3">
-                           <button class="btn btn-block" ng-click="NTF.save()">Submit</button>
-                           <button class="btn btn-primary btn-block" ng-click="NTF.LoadDraft()">Load Draft</button>
+                           <!--                           <button class="btn btn-block" ng-click="NTF.save()">Submit</button>
+                                                      <button class="btn btn-primary btn-block" ng-click="NTF.LoadDraft()">Load Draft</button>-->
                         </div>
                      </div>
                   </div>
@@ -674,7 +674,6 @@
    }
 </style>
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
-<link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/summernote/dist/summernote.css" />
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/share/components.js?cache=<?php echo rand(1000, 9000); ?>"></script>
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/new_title_factory.js?cache=<?php echo rand(1000, 9000); ?>"></script>

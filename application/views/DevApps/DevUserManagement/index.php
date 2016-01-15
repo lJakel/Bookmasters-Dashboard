@@ -128,6 +128,6 @@
          });
       }
       self.load();
-      console.log($scope);
+      
    });
 </script>

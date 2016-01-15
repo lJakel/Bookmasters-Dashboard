@@ -207,7 +207,9 @@ appDirectives.directive('bmNavigation', function ($timeout, $rootScope, $state) 
 
 
 
-appDirectives.directive("bsRadio", function ($compile) {
+appDirectives.directive("bsRadio", function ($compile, $timeout) {
+
+
    return {
       restrict: 'E',
       scope: {
@@ -215,19 +217,20 @@ appDirectives.directive("bsRadio", function ($compile) {
          value: '@',
          label: '@',
          name: '@',
-         
       },
       template: '' +
               '<div class="radio radio-primary">' +
-              '<input type="radio" name="name" ng-model="model" value="value" ng-checked="model" ng-click="model=value">' +
+              '<input type="radio" name="name" ng-model="model" value="value" ng-checked="model==value" ng-click="model=value">' +
               '<label name="name" ng-click="model=value">' +
-              '{{label}}' +
+              '{{label}}{{model==value}}' +
               '</label>' +
               '</div>',
       compile: function (tElt) {
-         tElt.addClass('sm-radio');
+         tElt.addClass('bs-radio');
       }
    };
+
+
 });
 
 

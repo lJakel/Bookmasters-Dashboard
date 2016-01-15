@@ -22,7 +22,7 @@
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="RMText" class="control-label">Text</label>
                   <a tabindex="-1" class="badge badge-light" role="button" title="Reviews - Text">?</a>
-                  <textarea name="RMText" data-summernote id="" cols="30" rows="10" ng-required="true" class="summernote form-control" ng-model="rm.Text"></textarea>
+                  <summernote config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="rm.Text"></summernote>
                </div>
             </div>
          </div>

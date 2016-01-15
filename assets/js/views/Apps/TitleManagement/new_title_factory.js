@@ -13,7 +13,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
 
 
       function cacheInit() {
-         console.log('sad')
+         
          var Today = Math.floor(Date.now() / 1000);
          var Days = 5;
          var CacheTime = Days * 24 * 60 * 60;

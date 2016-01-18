@@ -25,14 +25,14 @@ appServices.factory('GuidCreator', function () {
 /**
  * Override default angular exception handler to log and alert info if debug mode
  */
-appServices.factory('$exceptionHandler', function ($log) {
-   return function (exception, cause) {
-      var errors = JSON.parse(localStorage.getItem('bm-angular-errors')) || {};
-      errors[new Date().getTime()] = arguments;
-      localStorage.setItem('bm-angular-errors', JSON.stringify(errors));
-      app.debug && $log.error.apply($log, arguments);
-   };
-});
+appServices.factory('$exceptionHandler', ['$log', function ($log) {
+      return function (exception, cause) {
+         var errors = JSON.parse(localStorage.getItem('bm-angular-errors')) || {};
+         errors[new Date().getTime()] = arguments;
+         localStorage.setItem('bm-angular-errors', JSON.stringify(errors));
+         app.debug && $log.error.apply($log, arguments);
+      };
+   }]);
 /**
  * Sing Script loader. Loads script tags asynchronously and in order defined in a page
  */

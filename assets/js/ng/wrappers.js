@@ -1,6 +1,4 @@
 var appWrappers = angular.module('app.wrappers', []);
-
-
 appWrappers.directive('datetimepicker', ['$timeout', '$parse', function ($timeout, $parse) {
       return {
          link: function ($scope, element, $attrs) {

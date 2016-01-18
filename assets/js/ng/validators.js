@@ -31,7 +31,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
       };
       linkFn = function (scope, el, attrs, formCtrl) {
          var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, trigger;
-         
+
          blurred = false;
          options = scope.$eval(attrs.showErrors);
          showSuccess = getShowSuccess(options);
@@ -111,80 +111,80 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
    };
 });
 
-appValidators.directive('bmValidateOptions',['$http', '$parse', '$timeout', function ($http, $parse, $timeout) {
-   return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function ($scope, $element, $attrs, ngModel) {
-         /*using push() here to run it as the last parser, after we are sure that other validators were run*/
-         var ValidateOptions = $parse($attrs.bmValidateOptions);
-         $.each(ValidateOptions(), function (k, value) {
+appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', function ($http, $parse, $timeout) {
+      return {
+         restrict: 'A',
+         require: 'ngModel',
+         link: function ($scope, $element, $attrs, ngModel) {
+            /*using push() here to run it as the last parser, after we are sure that other validators were run*/
+            var ValidateOptions = $parse($attrs.bmValidateOptions);
+            $.each(ValidateOptions(), function (k, value) {
 
-            switch (value) {
+               switch (value) {
 
-               case 'isbn':
-                  ngModel.$parsers.push(function (viewValue) {
-                     var formGroup = $element.parent().parent();
-                     var inputGroupAddon = $element.siblings('.input-group-addon').children('i');
+                  case 'isbn':
+                     ngModel.$parsers.push(function (viewValue) {
+                        var formGroup = $element.parent().parent();
+                        var inputGroupAddon = $element.siblings('.input-group-addon').children('i');
 
-                     $timeout(function () {
-                        inputGroupAddon.removeClass().addClass('fa fa-fw fa-refresh fa-spin');
-                     }).then(function () {
-                        $http.post('http://api.bookmasters.com/validation/isbn13', {isbn13: viewValue}).then(function () {
-                           ngModel.$setValidity("isbnValidate", true);
-                           inputGroupAddon.removeClass('fa-refresh fa-spin fa-close fa-question').addClass('fa-check');
-                           formGroup.removeClass('has-error').addClass('has-success');
-                        }, function () {
-                           formGroup.removeClass('has-success');
-                           inputGroupAddon.removeClass('fa-refresh fa-spin fa-check fa-question').addClass('fa-close');
-                           ngModel.$setValidity("isbnValidate", false);
+                        $timeout(function () {
+                           inputGroupAddon.removeClass().addClass('fa fa-fw fa-refresh fa-spin');
+                        }).then(function () {
+                           $http.post('http://api.bookmasters.com/validation/isbn13', {isbn13: viewValue}).then(function () {
+                              ngModel.$setValidity("isbnValidate", true);
+                              inputGroupAddon.removeClass('fa-refresh fa-spin fa-close fa-question').addClass('fa-check');
+                              formGroup.removeClass('has-error').addClass('has-success');
+                           }, function () {
+                              formGroup.removeClass('has-success');
+                              inputGroupAddon.removeClass('fa-refresh fa-spin fa-check fa-question').addClass('fa-close');
+                              ngModel.$setValidity("isbnValidate", false);
 
+                           });
                         });
+                        return viewValue;
                      });
-                     return viewValue;
-                  });
-                  break;
+                     break;
 
-               case 'bmpassword':
-                  ngModel.$parsers.push(function (viewValue) {
-                     var passwordRegex = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}/;
-                     if (passwordRegex.test(viewValue)) {
-                        ngModel.$setValidity("bmPassword", true);
-                     } else {
-                        ngModel.$setValidity("bmPassword", false);
-                     }
-                     return viewValue;
-                  });
+                  case 'bmpassword':
+                     ngModel.$parsers.push(function (viewValue) {
+                        var passwordRegex = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}/;
+                        if (passwordRegex.test(viewValue)) {
+                           ngModel.$setValidity("bmPassword", true);
+                        } else {
+                           ngModel.$setValidity("bmPassword", false);
+                        }
+                        return viewValue;
+                     });
 
-                  break;
+                     break;
 
-               case 'bmwebsite':
-                  ngModel.$parsers.push(function (viewValue) {
-                     var websiteRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
-                     if (websiteRegex.test(viewValue)) {
-                        ngModel.$setValidity("bmWebsite", true);
-                     } else {
-                        ngModel.$setValidity("bmWebsite", false);
-                     }
-                     return viewValue;
-                  });
-                  break;
-               case 'price':
-                  ngModel.$parsers.push(function (viewValue) {
-                     var priceRegex = /^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/gm;
-                     if (priceRegex.test(viewValue)) {
-                        ngModel.$setValidity("price", true);
-                     } else {
-                        ngModel.$setValidity("price", false);
-                     }
-                     return viewValue;
-                  });
-                  break;
+                  case 'bmwebsite':
+                     ngModel.$parsers.push(function (viewValue) {
+                        var websiteRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+                        if (websiteRegex.test(viewValue)) {
+                           ngModel.$setValidity("bmWebsite", true);
+                        } else {
+                           ngModel.$setValidity("bmWebsite", false);
+                        }
+                        return viewValue;
+                     });
+                     break;
+                  case 'price':
+                     ngModel.$parsers.push(function (viewValue) {
+                        var priceRegex = /^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/gm;
+                        if (priceRegex.test(viewValue)) {
+                           ngModel.$setValidity("price", true);
+                        } else {
+                           ngModel.$setValidity("price", false);
+                        }
+                        return viewValue;
+                     });
+                     break;
 
-               default:
-                  break;
-            }
-         });
+                  default:
+                     break;
+               }
+            });
+         }
       }
-   }
-}]);
+   }]);

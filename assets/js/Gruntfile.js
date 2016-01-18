@@ -56,7 +56,7 @@ module.exports = function (grunt) {
          },
          BMApp: {
             options:{
-               mangle: true
+               mangle: false
             },
             files: {
                'ng/build/appbuild.min.js': ['ng/build/appbuild.js']

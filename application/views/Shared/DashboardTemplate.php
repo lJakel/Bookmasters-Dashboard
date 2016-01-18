@@ -65,14 +65,10 @@
       <script src="http://www.bookmasters.com/CDN/bower_components/angular-toasty/dist/angular-toasty.min.js"></script>
 
 
-      <!-- common app js -->
-      <script src="<?php echo site_url('assets/js/ng/app.js?cache=' . rand(1000, 9000)); ?>"></script>
-      <script src="<?php echo site_url('assets/js/ng/controllers.js?cache=' . rand(1000, 9000)); ?>"></script>
-      <script src="<?php echo site_url('assets/js/ng/services.js?cache=' . rand(1000, 9000)); ?>"></script>
-      <script src="<?php echo site_url('assets/js/ng/directives.js?cache=' . rand(1000, 9000)); ?>"></script>
-      <script src="<?php echo site_url('assets/js/ng/wrappers.js?cache=' . rand(1000, 9000)); ?>"></script>
-      <script src="<?php echo site_url('assets/js/ng/validators.js?cache=' . rand(1000, 9000)); ?>"></script>
 
+      <!-- common app js -->
+      <script src="<?php echo site_url('assets/js/ng/build/appbuild.min.js?cache=' . rand(1000, 9000)); ?>"></script>
+      <!--<script src="<?php echo site_url('assets/js/ng/build/appbuild.js?cache=' . rand(1000, 9000)); ?>"></script>-->
       <!-- page specific libs -->
 
    <toasty></toasty>

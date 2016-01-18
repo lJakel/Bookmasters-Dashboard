@@ -111,7 +111,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
    };
 });
 
-appValidators.directive('bmValidateOptions', function ($http, $parse, $timeout) {
+appValidators.directive('bmValidateOptions',['$http', '$parse', '$timeout', function ($http, $parse, $timeout) {
    return {
       restrict: 'A',
       require: 'ngModel',
@@ -187,4 +187,4 @@ appValidators.directive('bmValidateOptions', function ($http, $parse, $timeout) 
          });
       }
    }
-});
+}]);

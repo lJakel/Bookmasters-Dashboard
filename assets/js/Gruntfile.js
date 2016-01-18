@@ -1,6 +1,17 @@
 module.exports = function (grunt) {
    grunt.initConfig({
       concat: {
+         BMApp: {
+            src: [
+               'ng/app.js',
+               'ng/controllers.js',
+               'ng/services.js',
+               'ng/directives.js',
+               'ng/wrappers.js',
+               'ng/validators.js',
+            ],
+            dest: 'ng/build/appbuild.js',
+         },
          NTF: {
             src: ['views/apps/TitleManagement/share/components.js',
                'views/apps/TitleManagement/new_title_factory.js',
@@ -17,10 +28,23 @@ module.exports = function (grunt) {
       },
       watch: {
          NTF: {
-            files: ['views/apps/TitleManagement/*.js', 'views/apps/TitleManagement/modals/*.js', 'views/apps/TitleManagement/share/*.js'],
+            files: [
+               'views/apps/TitleManagement/*.js',
+               'views/apps/TitleManagement/modals/*.js',
+               'views/apps/TitleManagement/share/*.js'
+            ],
             tasks: [
                'concat',
-//               'uglify'
+               'uglify'
+            ],
+         },
+         BMApp: {
+            files: [
+               'ng/*.js'
+            ],
+            tasks: [
+               'concat',
+               'uglify'
             ],
          },
       },
@@ -28,6 +52,14 @@ module.exports = function (grunt) {
          NTF: {
             files: {
                'views/apps/TitleManagement/build/build.min.js': ['views/apps/TitleManagement/build/build.js']
+            }
+         },
+         BMApp: {
+            options:{
+               mangle: true
+            },
+            files: {
+               'ng/build/appbuild.min.js': ['ng/build/appbuild.js']
             }
          }
       }

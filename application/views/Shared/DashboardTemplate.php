@@ -67,8 +67,9 @@
 
 
       <!-- common app js -->
-      <script src="<?php echo site_url('assets/js/ng/build/appbuild.min.js?cache=' . rand(1000, 9000)); ?>"></script>
-      <!--<script src="<?php echo site_url('assets/js/ng/build/appbuild.js?cache=' . rand(1000, 9000)); ?>"></script>-->
+      <script src="assets/js/ng/build/appbuild.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+      <!--<script src="assets/js/ng/build/appbuild.js?cache=<?php echo rand(1000, 9000); ?>"></script>-->
+      
       <!-- page specific libs -->
 
    <toasty></toasty>

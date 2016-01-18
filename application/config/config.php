@@ -18,7 +18,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | environments.
   |
  */
-$config['base_url'] = '';
+
+$allowed_domains = array('10.10.11.48', 'dashboard.bookmasters.com');
+$default_domain = 'dashboard.bookmasters.com';
+
+if (in_array($_SERVER['HTTP_HOST'], $allowed_domains, TRUE)) {
+   if ($_SERVER['HTTP_HOST'] == '10.10.11.48') {
+      $domain = '10.10.11.48/Bookmasters-Dashboard';
+   } else {
+      $domain = $_SERVER['HTTP_HOST'];
+   }
+} else {
+   $domain = $default_domain;
+}
+
+if (!empty($_SERVER['HTTPS'])) {
+   $config['base_url'] = 'https://' . $domain;
+} else {
+   $config['base_url'] = 'http://' . $domain;
+}
 
 /*
   |--------------------------------------------------------------------------

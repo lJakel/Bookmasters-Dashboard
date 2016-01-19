@@ -117,7 +117,7 @@
          self.errFile = errFiles && errFiles[0];
          if (file) {
             file.upload = Upload.upload({
-               url: 'newtitle/submitexcelupload',
+               url: 'TitleManagement/submitexcelupload',
                data: {file: file}
             });
             file.upload.then(function (response) {

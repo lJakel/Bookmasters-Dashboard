@@ -20,11 +20,11 @@
                <li>
                   <a class="submenu collapsed" data-target="#TitleManagementList" data-toggle="collapse" href="#"><span class="fa fa-globe"></span>Title Management<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="TitleManagementList" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'index', child: null})">Title Submission Details</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'submit', child: null})">Submit New Title</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'submitexcel', child: null})">Submit Title Spreadsheet</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'view', child: null })">View Titles</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'newtitle', page: 'view', child: null })">Settings</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'index', child: null})">Title Submission Details</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'submit', child: null})">Submit New Title</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'submitexcel', child: null})">Submit Title Spreadsheet</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'view', child: null })">View Titles</a></li>
+                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'view', child: null })">Settings</a></li>
                   </ul>
                </li>
                <li>

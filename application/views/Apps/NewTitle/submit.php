@@ -670,4 +670,4 @@
 </style>
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="http://www.bookmasters.com/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/build/build.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/build/build.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>

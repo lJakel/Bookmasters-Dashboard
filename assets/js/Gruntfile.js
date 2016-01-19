@@ -50,12 +50,15 @@ module.exports = function (grunt) {
       },
       uglify: {
          NTF: {
+            options: {
+               mangle: false
+            },
             files: {
                'views/apps/TitleManagement/build/build.min.js': ['views/apps/TitleManagement/build/build.js']
             }
          },
          BMApp: {
-            options:{
+            options: {
                mangle: false
             },
             files: {
@@ -68,5 +71,5 @@ module.exports = function (grunt) {
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-watch');
    grunt.loadNpmTasks('grunt-contrib-uglify');
-   grunt.registerTask('default', ['concat', 'watch']);
+   grunt.registerTask('default', ['concat', 'uglify', 'watch']);
 }

@@ -648,21 +648,21 @@ appDirectives.directive('bmAction', ['$rootScope', function ($rootScope) {
    }]);
 appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoader) {
       return function (scope, element, attrs) {
-         function render() {
-            $(element).niceScroll({
-               cursorcolor: "#6181a2",
-               cursorborder: "0px solid #fff",
-               cursorborderradius: "0px",
-               cursorwidth: "5px"
-            });
-            $(element).getNiceScroll().resize();
-            if ($('.sidebar-left').hasClass('hide-left-bar')) {
-               $(element).getNiceScroll().hide();
-            }
-            $(element).getNiceScroll().show();
-         }
 
-         scriptLoader.loadScripts(['http://www.bookmasters.com/CDN/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js'], 'sidebar').then(render);
+         $(element).niceScroll({
+            cursorcolor: "#6181a2",
+            cursorborder: "0px solid #fff",
+            cursorborderradius: "0px",
+            cursorwidth: "5px"
+         });
+         $(element).getNiceScroll().resize();
+         if ($('.sidebar-left').hasClass('hide-left-bar')) {
+            $(element).getNiceScroll().hide();
+         }
+         $(element).getNiceScroll().show();
+
+
+
       };
    }]);
 appDirectives.directive('bmNavigation', ['$timeout', '$rootScope', '$state', function ($timeout, $rootScope, $state) {
@@ -865,6 +865,7 @@ appDirectives.directive('draggable', ['$document', function ($document) {
 
 
             scope.$watch("modalOpen", function (newValue, oldValue) {
+               console.log(newValue, oldValue);
                if (newValue == true) {
                   startX = 0, startY = 0, x = 0, y = 0;
                }

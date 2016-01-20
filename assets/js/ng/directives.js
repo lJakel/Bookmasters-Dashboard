@@ -58,7 +58,6 @@ appDirectives.directive('bmAction', ['$rootScope', function ($rootScope) {
    }]);
 appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoader) {
       return function (scope, element, attrs) {
-
          $(element).niceScroll({
             cursorcolor: "#6181a2",
             cursorborder: "0px solid #fff",
@@ -70,11 +69,9 @@ appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoad
             $(element).getNiceScroll().hide();
          }
          $(element).getNiceScroll().show();
-
-
-
       };
    }]);
+
 appDirectives.directive('bmNavigation', ['$timeout', '$rootScope', '$state', function ($timeout, $rootScope, $state) {
       var BmNavigationDirective = function ($el, scope) {
          this.$el = $el;

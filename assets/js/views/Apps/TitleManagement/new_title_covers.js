@@ -2,18 +2,16 @@ function Covers(data, Dependencies) {
    var self = this;
    self.Model = {
       Covers: []
-   }
+   };
    self.log = '';
    self.files = {};
 
    self.upload = function (file, isbn) {
 
       if (file) {
-         var argisbn = isbn
+         var argisbn = isbn;
          self.files[argisbn] = {};
          self.files[argisbn]['status'] = null;
-
-       
 
          Dependencies.Upload.upload({
             url: 'http://api.bookmasters.com/Files/Cover',
@@ -23,7 +21,7 @@ function Covers(data, Dependencies) {
                CoverFile: file
             }
          }).then(function (resp) {
-            
+
             self.files[argisbn]['name'] = resp.config.data.CoverFile.name;
             self.files[argisbn]['type'] = resp.config.data.CoverFile.type;
             self.files[argisbn]['size'] = resp.config.data.CoverFile.size;
@@ -62,6 +60,6 @@ function Covers(data, Dependencies) {
       var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
       var i = Math.floor(Math.log(bytes) / Math.log(k));
       return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
-   }
+   };
 
 }

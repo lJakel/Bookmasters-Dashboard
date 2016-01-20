@@ -63,6 +63,7 @@
       <script src="CDN/bower_components/moment/min/moment-with-locales.min.js"></script>
       <script src="CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
       <script src="CDN/bower_components/angular-toasty/dist/angular-toasty.min.js"></script>
+      <script src="cdn/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
 
 
 

@@ -1,373 +1,3 @@
-var Components = {
-   AdditionalTitle: function (data) {
-      var vm = this;
-      vm.ISBN = data.ISBN || '';
-      vm.Title = data.Title || '';
-   },
-   Contributor: function (data) {
-      var vm = this;
-      vm.FirstName = data.FirstName || '';
-      vm.MiddleName = data.MiddleName || '';
-      vm.LastName = data.LastName || '';
-      vm.Prefix = data.Prefix || '';
-      vm.Suffix = data.Suffix || '';
-      vm.Hometown = data.Hometown || '';
-      vm.Role = data.Role || '';
-      vm.Biography = data.Biography || '';
-      vm.IsRolePrimary = data.IsRolePrimary || false;
-      vm.IsTitlePrimary = data.IsTitlePrimary || false;
-      vm.AdditionalTitles = data.AdditionalTitles || [];
-   },
-   Bisac: function (data) {
-      var vm = this;
-      vm.FixedList = [];
-      vm.FixedList2 = [];
-      vm.BisacGroup = '';
-      vm.Code = '';
-      vm.Text = '';
-      vm.Group = '';
-      vm.LongName = '';
-      vm.BisacID = '';
-   },
-   Review: function () {
-      var self = this;
-      self.Name = '';
-      self.Publication = '';
-      self.Text = '';
-   },
-   MarketingAndPublicity: function () {
-      var self = this;
-      self.Type = '';
-      self.Description = '';
-   },
-   AppearanceAndEvent: function () {
-      var self = this;
-      self.EventName = '';
-      self.Date = '';
-      self.Location = '';
-      self.Description = '';
-   },
-   Website: function () {
-      var self = this;
-
-      self.URL = '';
-      self.Type = '';
-   },
-   Endorsement: function () {
-      var self = this;
-      self.Name = '';
-      self.Affiliation = '';
-      self.Text = '';
-   },
-   Format: function (data) {
-      var self = this;
-
-      self.ProductType = data.ProductType || '';
-      self.ProductForm = data.ProductForm || '';
-      self.ProductDetail = data.ProductDetail || '';
-      self.ProductBinding = data.ProductBinding || '';
-      self.ISBN13 = data.ISBN13 || '';
-      self.Width = data.Width || '';
-      self.Height = data.Height || '';
-      self.Spine = data.Spine || '';
-      self.Weight = data.Weight || '';
-      self.PublicationDate = data.PublicationDate || '';
-      self.Copyright = data.Copyright || '';
-      self.StockDueDate = data.StockDueDate || '';
-      self.TradeSales = data.TradeSales || '';
-      self.Pages = data.Pages || '';
-      self.CartonQuantity = data.CartonQuantity || '';
-      self.USPrice = data.USPrice || '';
-      self.DiscountCode = data.DiscountCode || '';
-      self.CustomsValue = data.CustomsValue || '';
-      self.Edition = data.Edition || '';
-      self.EditionNumber = data.EditionNumber || '';
-      self.EditionType = data.EditionType || '';
-      self.CountryofOrigin = data.CountryofOrigin || '';
-      self.PublicationLocation = data.PublicationLocation || '';
-      self.ComparableTitles = data.ComparableTitles || [];
-   },
-   ComparableTitle: function (data) {
-      var self = this;
-      self.ISBN = data.ISBN || '';
-      self.Title = data.Title || '';
-   },
-   Illustration: function (data) {
-      var self = this;
-      self.Type = data.Type || '';
-      self.Description = data.Description || '';
-      self.Number = data.Number || '';
-
-   }
-};
-BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory', function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
-      var self = this;
-      self.factory = {
-         getReferences: getReferences,
-         getIsoCodes: getIsoCodes,
-         getDiscountCodes: getDiscountCodes,
-         lookupBisac: lookupBisac,
-         References: undefined,
-         IsoCodes: undefined,
-         DiscountCodes: undefined,
-      };
-      return self.factory;
-
-
-      function cacheInit() {
-
-         var Today = Math.floor(Date.now() / 1000);
-         var Days = 5;
-         var CacheTime = Days * 24 * 60 * 60;
-         $localStorage.FixedReferencesFactory = $localStorage.FixedReferencesFactory || {};
-         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || null;
-         if ($localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
-            $localStorage.FixedReferencesFactory = {
-               Cache: Math.floor(Date.now() / 1000), IsoCodes: null,
-               References: null, DiscountCodes: null,
-            }
-         }
-      }
-
-
-
-      function setReferences(references) {
-         self.factory.references = references;
-         $localStorage.FixedReferencesFactory.References = references;
-      }
-
-      function setIsoCodes(IsoCodes) {
-         self.factory.IsoCodes = IsoCodes;
-         $localStorage.FixedReferencesFactory.IsoCodes = IsoCodes;
-      }
-
-      function loadIsoCodes(get) {
-         return $http.post("api/IsoCodes/getAllCodes").then(function (response) {
-            setIsoCodes(response.data.data);
-            if (get == true) {
-               return self.factory.IsoCodes;
-            }
-         }, function () {
-            setIsoCodes(null);
-            $state.go('error', {
-               code: '500',
-               message: 'An error occured loading the Country ISO Codes.'
-            });
-         });
-      }
-
-      function getIsoCodes() {
-         cacheInit();
-         if ($localStorage.FixedReferencesFactory.IsoCodes == null) {
-            return loadIsoCodes(true);
-         } else {
-            self.factory.IsoCodes = $localStorage.FixedReferencesFactory.IsoCodes
-            return $q.when(self.factory.IsoCodes);
-         }
-      }
-
-      function getReferences() {
-         cacheInit();
-         if ($localStorage.FixedReferencesFactory.References == null) {
-            return loadReferences(true);
-         } else {
-            self.factory.references = $localStorage.FixedReferencesFactory.References
-            return $q.when(self.factory.references);
-         }
-      }
-      function loadReferences(get) {
-
-         return $http.post("api/test", {withCredentials: false}).then(function (response) {
-            setReferences({
-               ContributorRoles: response.data.ContributorRoles,
-               BisacGroups: response.data.BisacGroups,
-               Editions: response.data.EditionTypes,
-               PublicationStatuses: response.data.PublicationStatuses,
-               FixedProductTypes: response.data.MediaTypes,
-               FixedProductForms: response.data.ProductForms,
-               FixedProductFormDetails: response.data.ProductFormDetails,
-               FixedProductFormDetailSpecifics: response.data.ProductFormDetailSpecifics,
-               AudienceTypes: response.data.AudienceTypes,
-            });
-            if (get == true) {
-               return self.factory.references;
-            }
-
-         }, function (response) {
-            setReferences(null);
-            $state.go('error', {
-               code: '500',
-               message: 'An error occured loading the fixed references.'
-            });
-            return;
-         });
-      }
-
-      function lookupBisac(group, success, error) {
-
-         $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
-            success(response.data);
-         }, function (response) {
-            $state.go('error', {
-               code: '500',
-               message: 'An error occured looking up the bisac code.'
-            });
-            return;
-         });
-      }
-
-
-      function setDiscountCodes(DiscountCodes) {
-         self.factory.DiscountCodes = DiscountCodes;
-         $localStorage.FixedReferencesFactory.DiscountCodes = DiscountCodes;
-      }
-
-      function getDiscountCodes() {
-         if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
-            return AuthFactory.getInfo().then(function (response) {
-               setDiscountCodes(response.clientinfo.DiscountCodes);
-               return $q.when(self.factory.DiscountCodes);
-            });
-         } else {
-            self.factory.DiscountCodes = $localStorage.FixedReferencesFactory.DiscountCodes
-            return $q.when(self.factory.DiscountCodes);
-         }
-      }
-   }]);
-BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
-//      var self = this;
-//      self.UserId = null;
-//      self.Drafts = [];
-//      self.Init = false;
-//
-//      self.factory = {
-//         "Users": [
-////            {
-////               "UserID": 1,
-////               "Drafts": [
-////                  {
-////                     "DraftId": "c0b589a1",
-////                     "Created": 1449687962,
-////                     "Data": "fdsfsdfsdfdsf"
-////                  }
-////               ]
-////            },
-//         ],
-//         Cache: {},
-//         SaveDraft: SaveDraft,
-////         LoadDraft: LoadDraft,
-//         GetDrafts: GetDrafts,
-//      };
-//      function cacheInit() {
-//         return $q(function (resolve, reject) {
-//            if (self.Init) {
-//               resolve();
-//               return;
-//            }
-//            $timeout(function () {
-//               AuthFactory.getInfo().then(function (r) {
-//                  self.UserId = r.credentials.userid;
-//               });
-//            }).then(function () {
-//               var Today = Math.floor(Date.now() / 1000);
-//               var Days = 5;
-//               var CacheTime = Days * 24 * 60 * 60;
-//               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
-//               $localStorage.NewTitleDraftsFactory.Cache = $localStorage.NewTitleDraftsFactory.Cache || null;
-//               if ($localStorage.NewTitleDraftsFactory.Cache == null || Today - $localStorage.NewTitleDraftsFactory.Cache >= CacheTime) {
-//                  $localStorage.NewTitleDraftsFactory = {
-//                     Users: [], Cache: Math.floor(Date.now() / 1000)
-//                  }
-//               }
-//               if (self.UserId != null) {
-//                  self.Init = true;
-//                  resolve();
-//               } else {
-//                  reject($state.go('error', {
-//                     code: '500',
-//                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
-//                  }));
-//               }
-//            });
-//         });
-//      }
-//
-//
-//      function SetStorage() {
-//         return cacheInit().then(function () {
-//            $localStorage.NewTitleDraftsFactory = self.factory;
-//         })
-//      }
-//      function GetDrafts() {
-//         return cacheInit().then(function () {
-//            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-//            
-//            
-//            if (self.factory.Users.length != 0) {
-//               $.each(self.factory.Users, function (k, v) {
-//                  if (v.UserID == self.UserId) {
-//                     console.log(v)
-//                     self.factory.Users = [v.Drafts];
-//                  }
-//               });
-//            } else {
-//               self.factory.Users = [];
-//            }
-//            console.log(typeof self.factory.Users, self.factory.Users);
-//            return $q.when(self.factory.Users);
-//         })
-//      }
-//
-//      function ClearDrafts() {
-//         return cacheInit().then(function () {
-//            self.factory.Users[self.UserId] = [];
-//            SetStorage();
-//            return $q.when(self.factory.Users[self.UserId]);
-//         });
-//      }
-//
-//
-//      function SaveDraft(data) {
-//         return cacheInit().then(function () {
-//
-//            self.factory.Users = self.factory.Users || [];
-//console.log(self.factory.Users)
-//            var Draft = {
-//               "UserID": self.UserId,
-//               "Drafts": [
-//                  {
-//                     "DraftId": data.Form.DraftId,
-//                     "Created": Math.floor(Date.now() / 1000),
-//                     "Data": angular.toJson({
-//                        form: data,
-//                     })
-//                  }
-//               ]
-//            }
-//
-//            if (self.factory.Users.length == 0) {
-//               self.factory.Users.push(Draft)
-//            } else {
-//               $.each(self.factory.Users, function (k, v) {
-//                  if (v.UserID == self.UserId) {
-//                     v.Drafts.unshift(Draft.Drafts[0]);
-//                  } else {
-//                     self.factory.Users.push(Draft)
-//                  }
-//               });
-//            }
-//
-//
-////            if (self.factory.Users[self.UserId].length >= 4) {
-////               self.factory.Users[self.UserId].length = 4;
-////            }
-//            SetStorage();
-//            return $q.when(GetDrafts());
-//         })
-//      }
-//      return self.factory;
-   }]);
-
 var Modals = {
    ContributorBSModal: function (data, Dependencies) {
       var self = this;
@@ -643,62 +273,71 @@ var Contributors = function (data, Dependencies) {
       vm.Model.Contributors.splice(index, 1);
    }
 };
-var Formats = function (data, Dependencies) {
-
+function Covers(data, Dependencies) {
    var self = this;
    self.Model = {
-      Formats: data || []
-   }
-   self.FormatModal = new Modals.FormatBSModal('', Dependencies.$scope);
-
-   self.showDialog = false;
-
-   self.showFormatModal = function (data, method) {
-      Dependencies.$scope.$broadcast('show-errors-reset');
-
-      self.FormatModal.Method = method || 'edit';
-      self.FormatModal.entryData = data;
-      $.each(data, function (k, v) {
-         self.FormatModal[k] = data[k] || null;
-      });
-      Dependencies.$timeout(function () {
-         self.FormatModal.GetDynamicProductForms();
-      }).then(function () {
-         self.FormatModal.ProductForm = data.ProductForm;
-      });
-      Dependencies.$timeout(function () {
-         self.FormatModal.GetDynamicProductDetails();
-      }).then(function () {
-         self.FormatModal.ProductDetail = data.ProductDetail;
-      });
-      Dependencies.$timeout(function () {
-         self.FormatModal.GetDynamicProductFormDetailSpecifics();
-      }).then(function () {
-         self.FormatModal.ProductBinding = data.ProductBinding;
-      });
-      self.showDialog = true;
+      Covers: []
    };
+   self.log = '';
+   self.files = {};
 
-   self.onFormatModalAction = function () {
-      $.each(self.FormatModal.entryData, function (k, v) {
-         self.FormatModal.entryData[k] = self.FormatModal[k];
-      });
-      if (self.FormatModal.Method === 'add') {
-         self.Model.Formats.push(self.FormatModal.entryData);
+   self.upload = function (file, isbn) {
+
+      if (file) {
+         var argisbn = isbn;
+         self.files[argisbn] = {};
+         self.files[argisbn]['status'] = null;
+
+         Dependencies.Upload.upload({
+            url: 'http://api.bookmasters.com/Files/Cover',
+            data: {
+               username: 'poop',
+               isbn13: isbn,
+               CoverFile: file
+            }
+         }).then(function (resp) {
+
+            self.files[argisbn]['name'] = resp.config.data.CoverFile.name;
+            self.files[argisbn]['type'] = resp.config.data.CoverFile.type;
+            self.files[argisbn]['size'] = resp.config.data.CoverFile.size;
+            self.files[argisbn]['status'] = true;
+
+            self.files[isbn]['progress'] = {
+               percentage: "100%",
+               width: 100,
+               color: "progress-bar-success"
+
+            };
+         }, function (resp) {
+            self.files[argisbn]['status'] = false;
+            self.files[isbn]['progress'] = {
+               percentage: "Error",
+               width: 100,
+               color: "progress-bar-danger"
+            };
+         }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            self.files[isbn]['progress'] = {
+               percentage: progressPercentage + "%",
+               width: progressPercentage,
+               color: "progress-bar-info"
+
+            };
+         });
       }
-      self.showDialog = false;
    };
 
-   self.addFormat = function () {
-      
-      self.showFormatModal(new Components.Format(''), 'add');
+   self.formatBytes = function (bytes, decimals) {
+      if (bytes == 0)
+         return '0 Byte';
+      var k = 1000;
+      var dm = decimals + 1 || 3;
+      var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      var i = Math.floor(Math.log(bytes) / Math.log(k));
+      return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
    };
 
-   self.removeFormat = function (index) {
-      self.Model.Formats.splice(index, 1);
-   };
-
-};
+}
 var Demographics = function (data, Dependencies) {
 
    var self = this;
@@ -807,133 +446,274 @@ var Demographics = function (data, Dependencies) {
       }
    }
 };
-var Marketing = function (data) {
+BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory', function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
+      var self = this;
+      self.factory = {
+         getReferences: getReferences,
+         getIsoCodes: getIsoCodes,
+         getDiscountCodes: getDiscountCodes,
+         lookupBisac: lookupBisac,
+         References: undefined,
+         IsoCodes: undefined,
+         DiscountCodes: undefined,
+      };
+      return self.factory;
 
-   var self = this;
 
-   self.Model = {
-      Websites: data.Websites || [],
-      MarketingAndPublicitys: data.MarketingAndPublicitys || [],
-      Reviews: data.Reviews || [],
-      Endorsements: data.Endorsements || [],
-      AppearanceAndEvents: data.AppearanceAndEvents || [],
-   }
+      function cacheInit() {
 
-   self.addSingleMarketingItem = addSingleMarketingItem;
-   self.addMarketingItem = addMarketingItem;
-   self.showMarketingItemModal = showMarketingItemModal;
-   self.onMarketingItemModalAction = onMarketingItemModalAction;
-   self.removeMarketingItem = removeMarketingItem;
-
-   self.ReviewModal = new Modals.ReviewModal('');
-   self.showReviewDialog = false;
-
-   self.EndorsementModal = new Modals.EndorsementModal('');
-   self.showEndorsementDialog = false;
-
-   self.AppearanceAndEventModal = new Modals.AppearanceAndEventModal('');
-   self.showAppearanceAndEventDialog = false;
-
-   function addSingleMarketingItem(Component) {
-      self.Model[Component + 's'].push(new Components[Component]());
-   }
-
-   function addMarketingItem(Component) {
-      self.showMarketingItemModal(new Components[Component], Component, 'add');
-   }
-
-   function showMarketingItemModal(entryDataViewModel, Component, Method) {
-      self[Component + 'Modal'].Method = Method || 'edit';
-      self[Component + 'Modal'].entryData = entryDataViewModel;
-
-      $.each(entryDataViewModel, function (k, v) {
-         self[Component + 'Modal'][k] = entryDataViewModel[k] || null;
-      });
-      self['show' + Component + 'Dialog'] = true;
-   }
-
-   function onMarketingItemModalAction(Component) {
-      $.each(self[Component + 'Modal'].entryData, function (k, v) {
-         self[Component + 'Modal'].entryData[k] = self[Component + 'Modal'][k];
-      });
-      if (self[Component + 'Modal'].Method === 'add') {
-         self.Model[Component + 's'].push(self[Component + 'Modal'].entryData);
-      }
-      self['show' + Component + 'Dialog'] = false;
-   }
-
-   function removeMarketingItem(Component, index) {
-      self.Model[Component + 's'].splice(index, 1);
-   }
-
-};
-function Covers(data, Dependencies) {
-   var self = this;
-   self.Model = {
-      Covers: []
-   }
-   self.log = '';
-   self.files = {};
-
-   self.upload = function (file, isbn) {
-
-      if (file) {
-         var argisbn = isbn
-         self.files[argisbn] = {};
-         self.files[argisbn]['status'] = null;
-
-       
-
-         Dependencies.Upload.upload({
-            url: 'http://api.bookmasters.com/Files/Cover',
-            data: {
-               username: 'poop',
-               isbn13: isbn,
-               CoverFile: file
+         var Today = Math.floor(Date.now() / 1000);
+         var Days = 5;
+         var CacheTime = Days * 24 * 60 * 60;
+         $localStorage.FixedReferencesFactory = $localStorage.FixedReferencesFactory || {};
+         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || null;
+         if ($localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
+            $localStorage.FixedReferencesFactory = {
+               Cache: Math.floor(Date.now() / 1000), IsoCodes: null,
+               References: null, DiscountCodes: null,
             }
-         }).then(function (resp) {
-            
-            self.files[argisbn]['name'] = resp.config.data.CoverFile.name;
-            self.files[argisbn]['type'] = resp.config.data.CoverFile.type;
-            self.files[argisbn]['size'] = resp.config.data.CoverFile.size;
-            self.files[argisbn]['status'] = true;
+         }
+      }
 
-            self.files[isbn]['progress'] = {
-               percentage: "100%",
-               width: 100,
-               color: "progress-bar-success"
 
-            };
-         }, function (resp) {
-            self.files[argisbn]['status'] = false;
-            self.files[isbn]['progress'] = {
-               percentage: "Error",
-               width: 100,
-               color: "progress-bar-danger"
-            };
-         }, function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            self.files[isbn]['progress'] = {
-               percentage: progressPercentage + "%",
-               width: progressPercentage,
-               color: "progress-bar-info"
 
-            };
+      function setReferences(references) {
+         self.factory.references = references;
+         $localStorage.FixedReferencesFactory.References = references;
+      }
+
+      function setIsoCodes(IsoCodes) {
+         self.factory.IsoCodes = IsoCodes;
+         $localStorage.FixedReferencesFactory.IsoCodes = IsoCodes;
+      }
+
+      function loadIsoCodes(get) {
+         return $http.post("api/IsoCodes/getAllCodes").then(function (response) {
+            setIsoCodes(response.data.data);
+            if (get == true) {
+               return self.factory.IsoCodes;
+            }
+         }, function () {
+            setIsoCodes(null);
+            $state.go('error', {
+               code: '500',
+               message: 'An error occured loading the Country ISO Codes.'
+            });
          });
       }
-   };
 
-   self.formatBytes = function (bytes, decimals) {
-      if (bytes == 0)
-         return '0 Byte';
-      var k = 1000;
-      var dm = decimals + 1 || 3;
-      var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-      var i = Math.floor(Math.log(bytes) / Math.log(k));
-      return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
-   }
+      function getIsoCodes() {
+         cacheInit();
+         if ($localStorage.FixedReferencesFactory.IsoCodes == null) {
+            return loadIsoCodes(true);
+         } else {
+            self.factory.IsoCodes = $localStorage.FixedReferencesFactory.IsoCodes
+            return $q.when(self.factory.IsoCodes);
+         }
+      }
 
-}
+      function getReferences() {
+         cacheInit();
+         if ($localStorage.FixedReferencesFactory.References == null) {
+            return loadReferences(true);
+         } else {
+            self.factory.references = $localStorage.FixedReferencesFactory.References
+            return $q.when(self.factory.references);
+         }
+      }
+      function loadReferences(get) {
+
+         return $http.post("api/test", {withCredentials: false}).then(function (response) {
+            setReferences({
+               ContributorRoles: response.data.ContributorRoles,
+               BisacGroups: response.data.BisacGroups,
+               Editions: response.data.EditionTypes,
+               PublicationStatuses: response.data.PublicationStatuses,
+               FixedProductTypes: response.data.MediaTypes,
+               FixedProductForms: response.data.ProductForms,
+               FixedProductFormDetails: response.data.ProductFormDetails,
+               FixedProductFormDetailSpecifics: response.data.ProductFormDetailSpecifics,
+               AudienceTypes: response.data.AudienceTypes,
+            });
+            if (get == true) {
+               return self.factory.references;
+            }
+
+         }, function (response) {
+            setReferences(null);
+            $state.go('error', {
+               code: '500',
+               message: 'An error occured loading the fixed references.'
+            });
+            return;
+         });
+      }
+
+      function lookupBisac(group, success, error) {
+
+         $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
+            success(response.data);
+         }, function (response) {
+            $state.go('error', {
+               code: '500',
+               message: 'An error occured looking up the bisac code.'
+            });
+            return;
+         });
+      }
+
+
+      function setDiscountCodes(DiscountCodes) {
+         self.factory.DiscountCodes = DiscountCodes;
+         $localStorage.FixedReferencesFactory.DiscountCodes = DiscountCodes;
+      }
+
+      function getDiscountCodes() {
+         if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
+            return AuthFactory.getInfo().then(function (response) {
+               setDiscountCodes(response.clientinfo.DiscountCodes);
+               return $q.when(self.factory.DiscountCodes);
+            });
+         } else {
+            self.factory.DiscountCodes = $localStorage.FixedReferencesFactory.DiscountCodes
+            return $q.when(self.factory.DiscountCodes);
+         }
+      }
+   }]);
+BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
+//      var self = this;
+//      self.UserId = null;
+//      self.Drafts = [];
+//      self.Init = false;
+//
+//      self.factory = {
+//         "Users": [
+////            {
+////               "UserID": 1,
+////               "Drafts": [
+////                  {
+////                     "DraftId": "c0b589a1",
+////                     "Created": 1449687962,
+////                     "Data": "fdsfsdfsdfdsf"
+////                  }
+////               ]
+////            },
+//         ],
+//         Cache: {},
+//         SaveDraft: SaveDraft,
+////         LoadDraft: LoadDraft,
+//         GetDrafts: GetDrafts,
+//      };
+//      function cacheInit() {
+//         return $q(function (resolve, reject) {
+//            if (self.Init) {
+//               resolve();
+//               return;
+//            }
+//            $timeout(function () {
+//               AuthFactory.getInfo().then(function (r) {
+//                  self.UserId = r.credentials.userid;
+//               });
+//            }).then(function () {
+//               var Today = Math.floor(Date.now() / 1000);
+//               var Days = 5;
+//               var CacheTime = Days * 24 * 60 * 60;
+//               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
+//               $localStorage.NewTitleDraftsFactory.Cache = $localStorage.NewTitleDraftsFactory.Cache || null;
+//               if ($localStorage.NewTitleDraftsFactory.Cache == null || Today - $localStorage.NewTitleDraftsFactory.Cache >= CacheTime) {
+//                  $localStorage.NewTitleDraftsFactory = {
+//                     Users: [], Cache: Math.floor(Date.now() / 1000)
+//                  }
+//               }
+//               if (self.UserId != null) {
+//                  self.Init = true;
+//                  resolve();
+//               } else {
+//                  reject($state.go('error', {
+//                     code: '500',
+//                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
+//                  }));
+//               }
+//            });
+//         });
+//      }
+//
+//
+//      function SetStorage() {
+//         return cacheInit().then(function () {
+//            $localStorage.NewTitleDraftsFactory = self.factory;
+//         })
+//      }
+//      function GetDrafts() {
+//         return cacheInit().then(function () {
+//            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
+//            
+//            
+//            if (self.factory.Users.length != 0) {
+//               $.each(self.factory.Users, function (k, v) {
+//                  if (v.UserID == self.UserId) {
+//                     console.log(v)
+//                     self.factory.Users = [v.Drafts];
+//                  }
+//               });
+//            } else {
+//               self.factory.Users = [];
+//            }
+//            console.log(typeof self.factory.Users, self.factory.Users);
+//            return $q.when(self.factory.Users);
+//         })
+//      }
+//
+//      function ClearDrafts() {
+//         return cacheInit().then(function () {
+//            self.factory.Users[self.UserId] = [];
+//            SetStorage();
+//            return $q.when(self.factory.Users[self.UserId]);
+//         });
+//      }
+//
+//
+//      function SaveDraft(data) {
+//         return cacheInit().then(function () {
+//
+//            self.factory.Users = self.factory.Users || [];
+//console.log(self.factory.Users)
+//            var Draft = {
+//               "UserID": self.UserId,
+//               "Drafts": [
+//                  {
+//                     "DraftId": data.Form.DraftId,
+//                     "Created": Math.floor(Date.now() / 1000),
+//                     "Data": angular.toJson({
+//                        form: data,
+//                     })
+//                  }
+//               ]
+//            }
+//
+//            if (self.factory.Users.length == 0) {
+//               self.factory.Users.push(Draft)
+//            } else {
+//               $.each(self.factory.Users, function (k, v) {
+//                  if (v.UserID == self.UserId) {
+//                     v.Drafts.unshift(Draft.Drafts[0]);
+//                  } else {
+//                     self.factory.Users.push(Draft)
+//                  }
+//               });
+//            }
+//
+//
+////            if (self.factory.Users[self.UserId].length >= 4) {
+////               self.factory.Users[self.UserId].length = 4;
+////            }
+//            SetStorage();
+//            return $q.when(GetDrafts());
+//         })
+//      }
+//      return self.factory;
+   }]);
+
 BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload) {
       var vm = this;
 
@@ -1172,3 +952,222 @@ data = {
       }
    }
 }
+
+var Formats = function (data, Dependencies) {
+
+   var self = this;
+   self.Model = {
+      Formats: data || []
+   }
+   self.FormatModal = new Modals.FormatBSModal('', Dependencies.$scope);
+
+   self.showDialog = false;
+
+   self.showFormatModal = function (data, method) {
+      Dependencies.$scope.$broadcast('show-errors-reset');
+
+      self.FormatModal.Method = method || 'edit';
+      self.FormatModal.entryData = data;
+      $.each(data, function (k, v) {
+         self.FormatModal[k] = data[k] || null;
+      });
+      Dependencies.$timeout(function () {
+         self.FormatModal.GetDynamicProductForms();
+      }).then(function () {
+         self.FormatModal.ProductForm = data.ProductForm;
+      });
+      Dependencies.$timeout(function () {
+         self.FormatModal.GetDynamicProductDetails();
+      }).then(function () {
+         self.FormatModal.ProductDetail = data.ProductDetail;
+      });
+      Dependencies.$timeout(function () {
+         self.FormatModal.GetDynamicProductFormDetailSpecifics();
+      }).then(function () {
+         self.FormatModal.ProductBinding = data.ProductBinding;
+      });
+      self.showDialog = true;
+   };
+
+   self.onFormatModalAction = function () {
+      $.each(self.FormatModal.entryData, function (k, v) {
+         self.FormatModal.entryData[k] = self.FormatModal[k];
+      });
+      if (self.FormatModal.Method === 'add') {
+         self.Model.Formats.push(self.FormatModal.entryData);
+      }
+      self.showDialog = false;
+   };
+
+   self.addFormat = function () {
+      
+      self.showFormatModal(new Components.Format(''), 'add');
+   };
+
+   self.removeFormat = function (index) {
+      self.Model.Formats.splice(index, 1);
+   };
+
+};
+var Marketing = function (data) {
+
+   var self = this;
+
+   self.Model = {
+      Websites: data.Websites || [],
+      MarketingAndPublicitys: data.MarketingAndPublicitys || [],
+      Reviews: data.Reviews || [],
+      Endorsements: data.Endorsements || [],
+      AppearanceAndEvents: data.AppearanceAndEvents || [],
+   }
+
+   self.addSingleMarketingItem = addSingleMarketingItem;
+   self.addMarketingItem = addMarketingItem;
+   self.showMarketingItemModal = showMarketingItemModal;
+   self.onMarketingItemModalAction = onMarketingItemModalAction;
+   self.removeMarketingItem = removeMarketingItem;
+
+   self.ReviewModal = new Modals.ReviewModal('');
+   self.showReviewDialog = false;
+
+   self.EndorsementModal = new Modals.EndorsementModal('');
+   self.showEndorsementDialog = false;
+
+   self.AppearanceAndEventModal = new Modals.AppearanceAndEventModal('');
+   self.showAppearanceAndEventDialog = false;
+
+   function addSingleMarketingItem(Component) {
+      self.Model[Component + 's'].push(new Components[Component]());
+   }
+
+   function addMarketingItem(Component) {
+      self.showMarketingItemModal(new Components[Component], Component, 'add');
+   }
+
+   function showMarketingItemModal(entryDataViewModel, Component, Method) {
+      self[Component + 'Modal'].Method = Method || 'edit';
+      self[Component + 'Modal'].entryData = entryDataViewModel;
+
+      $.each(entryDataViewModel, function (k, v) {
+         self[Component + 'Modal'][k] = entryDataViewModel[k] || null;
+      });
+      self['show' + Component + 'Dialog'] = true;
+   }
+
+   function onMarketingItemModalAction(Component) {
+      $.each(self[Component + 'Modal'].entryData, function (k, v) {
+         self[Component + 'Modal'].entryData[k] = self[Component + 'Modal'][k];
+      });
+      if (self[Component + 'Modal'].Method === 'add') {
+         self.Model[Component + 's'].push(self[Component + 'Modal'].entryData);
+      }
+      self['show' + Component + 'Dialog'] = false;
+   }
+
+   function removeMarketingItem(Component, index) {
+      self.Model[Component + 's'].splice(index, 1);
+   }
+
+};
+var Components = {
+   AdditionalTitle: function (data) {
+      var vm = this;
+      vm.ISBN = data.ISBN || '';
+      vm.Title = data.Title || '';
+   },
+   Contributor: function (data) {
+      var vm = this;
+      vm.FirstName = data.FirstName || '';
+      vm.MiddleName = data.MiddleName || '';
+      vm.LastName = data.LastName || '';
+      vm.Prefix = data.Prefix || '';
+      vm.Suffix = data.Suffix || '';
+      vm.Hometown = data.Hometown || '';
+      vm.Role = data.Role || '';
+      vm.Biography = data.Biography || '';
+      vm.IsRolePrimary = data.IsRolePrimary || false;
+      vm.IsTitlePrimary = data.IsTitlePrimary || false;
+      vm.AdditionalTitles = data.AdditionalTitles || [];
+   },
+   Bisac: function (data) {
+      var vm = this;
+      vm.FixedList = [];
+      vm.FixedList2 = [];
+      vm.BisacGroup = '';
+      vm.Code = '';
+      vm.Text = '';
+      vm.Group = '';
+      vm.LongName = '';
+      vm.BisacID = '';
+   },
+   Review: function () {
+      var self = this;
+      self.Name = '';
+      self.Publication = '';
+      self.Text = '';
+   },
+   MarketingAndPublicity: function () {
+      var self = this;
+      self.Type = '';
+      self.Description = '';
+   },
+   AppearanceAndEvent: function () {
+      var self = this;
+      self.EventName = '';
+      self.Date = '';
+      self.Location = '';
+      self.Description = '';
+   },
+   Website: function () {
+      var self = this;
+
+      self.URL = '';
+      self.Type = '';
+   },
+   Endorsement: function () {
+      var self = this;
+      self.Name = '';
+      self.Affiliation = '';
+      self.Text = '';
+   },
+   Format: function (data) {
+      var self = this;
+
+      self.ProductType = data.ProductType || '';
+      self.ProductForm = data.ProductForm || '';
+      self.ProductDetail = data.ProductDetail || '';
+      self.ProductBinding = data.ProductBinding || '';
+      self.ISBN13 = data.ISBN13 || '';
+      self.Width = data.Width || '';
+      self.Height = data.Height || '';
+      self.Spine = data.Spine || '';
+      self.Weight = data.Weight || '';
+      self.PublicationDate = data.PublicationDate || '';
+      self.Copyright = data.Copyright || '';
+      self.StockDueDate = data.StockDueDate || '';
+      self.TradeSales = data.TradeSales || '';
+      self.Pages = data.Pages || '';
+      self.CartonQuantity = data.CartonQuantity || '';
+      self.USPrice = data.USPrice || '';
+      self.DiscountCode = data.DiscountCode || '';
+      self.CustomsValue = data.CustomsValue || '';
+      self.Edition = data.Edition || '';
+      self.EditionNumber = data.EditionNumber || '';
+      self.EditionType = data.EditionType || '';
+      self.CountryofOrigin = data.CountryofOrigin || '';
+      self.PublicationLocation = data.PublicationLocation || '';
+      self.ComparableTitles = data.ComparableTitles || [];
+   },
+   ComparableTitle: function (data) {
+      var self = this;
+      self.ISBN = data.ISBN || '';
+      self.Title = data.Title || '';
+   },
+   Illustration: function (data) {
+      var self = this;
+      self.Type = data.Type || '';
+      self.Description = data.Description || '';
+      self.Number = data.Number || '';
+
+   }
+};

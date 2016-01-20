@@ -652,7 +652,7 @@
 </div>
 <style>
    .jumbotron {
-      background: url("cdn/resources/img/login/moonship.jpg") 0px 78% no-repeat;
+      background: url("/cdn/resources/img/login/moonship.jpg") 0px 78% no-repeat;
       margin-bottom: 0px;
    }
    .jumbotron h1 {
@@ -668,6 +668,6 @@
       color: #f2f2f2;
    }
 </style>
-<link rel="stylesheet" href="cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
-<link rel="stylesheet" href="cdn/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
+<link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="/cdn/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
 <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/build/build.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>

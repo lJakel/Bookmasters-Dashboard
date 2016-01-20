@@ -2,9 +2,9 @@
 
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="AppearanceAndEventModalForm" ng-repeat="am in [NTF.Marketing.AppearanceAndEventModal]">
-         <div class="modal-header">
-            <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Add / Edit Appearances and Events</h4>
+        <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
+            <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add / Edit Format</h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -36,7 +36,7 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-disabled="!AppearanceAndEventModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('AppearanceAndEvent')" id="save-changes">Save changes</button>
+            <button type="button" class="btn btn-primary" ng-disabled="!AppearanceAndEventModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('AppearanceAndEvent')" id="save-changes">Add Event</button>
          </div>
       </div>
       <!-- /.modal-content -->

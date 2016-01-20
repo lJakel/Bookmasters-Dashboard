@@ -40,6 +40,7 @@ var Modals = {
    FormatBSModal: function (data, $scope) {
       var self = this;
       self.entryData = undefined;
+
       self.Method = '';
       self.ProductType = data.ProductType || '';
       self.ProductForm = data.ProductForm || '';
@@ -96,6 +97,8 @@ var Modals = {
       self.removeComparableTitle = removeComparableTitle;
       self.uncheckAllSalesRights = uncheckAllSalesRights;
       self.checkAllSalesRights = checkAllSalesRights;
+
+
 
 
       self.openCalendar = function (e) {

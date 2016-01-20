@@ -2,7 +2,7 @@
 <!--logo start-->
 <div class="brand">
    <a href="#/app/dashboard/" class="logo">
-      <img src="http://www.bookmasters.com/CDN/resources/brand/bm/small/flat-horiz-white.png" alt="">
+      <img src="//dashboard.bookmasters.com/cdn/resources/brand/bm/small/flat-horiz-white.png" alt="">
    </a>
    <div class="sidebar-toggle-box" data-bm-action='toggle-left-sidebar'>
       <div class="fa fa-bars"></div>
@@ -24,7 +24,7 @@
       <!-- user login dropdown start-->
       <li class="dropdown">
          <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-            <img alt="" src="http://10.10.11.48/Dashboard_CI_Require/assets/resources/badger.png" width="33" height="33">
+            <img alt="" src="//dashboard.bookmasters.com/cdn/resources/img/badger.png" width="33" height="33">
             <span class="username">{{user.credentials.username}} <!--{{user.user.firstname}} {{user.user.lastname}}--></span>
             <span class="label label-info" style="font-size: 10.5px;">{{user.roles[0]}}</span>
             <b class="caret"></b>

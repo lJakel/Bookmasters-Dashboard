@@ -130,7 +130,7 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
                         $timeout(function () {
                            inputGroupAddon.removeClass().addClass('fa fa-fw fa-refresh fa-spin');
                         }).then(function () {
-                           $http.post('http://api.bookmasters.com/validation/isbn13', {isbn13: viewValue}).then(function () {
+                           $http.post('//api.bookmasters.com/validation/isbn13', {isbn13: viewValue}).then(function () {
                               ngModel.$setValidity("isbnValidate", true);
                               inputGroupAddon.removeClass('fa-refresh fa-spin fa-close fa-question').addClass('fa-check');
                               formGroup.removeClass('has-error').addClass('has-success');

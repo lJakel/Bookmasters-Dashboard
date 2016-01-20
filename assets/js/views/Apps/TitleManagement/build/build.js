@@ -289,7 +289,7 @@ function Covers(data, Dependencies) {
          self.files[argisbn]['status'] = null;
 
          Dependencies.Upload.upload({
-            url: 'http://api.bookmasters.com/Files/Cover',
+            url: '//api.bookmasters.com/Files/Cover',
             data: {
                username: 'poop',
                isbn13: isbn,

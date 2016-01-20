@@ -10,7 +10,7 @@
                <div class="tab-pane active fade in" id="ProfileOverview">
                   <div class="row">
                      <div class="col-md-2">
-                        <img src="http://www.bookmasters.com/CDN/resources/img/badger.png" width="100%" alt="" class="thumbnail">
+                        <img src="/CDN/resources/img/badger.png" width="100%" alt="" class="thumbnail">
                      </div>
                      <div class="col-md-7">
                         <h1 style="line-height: 50px;    font-family: 'Open Sans',sans-serif;    font-size: 45px;    font-weight: 300;">Jake Ihasz</h1>

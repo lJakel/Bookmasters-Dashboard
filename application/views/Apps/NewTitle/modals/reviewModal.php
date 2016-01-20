@@ -1,21 +1,21 @@
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showReviewDialog" class="modal fade">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ReviewModalForm" ng-repeat="rm in [NTF.Marketing.ReviewModal]">
-         <div class="modal-header">
+         <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add / Edit Reviews</h4>
          </div>
          <div class="modal-body"> 
             <div class="row">
                <div class="col-md-6 form-group required" data-show-errors>
-                  <label for="RMName" class="control-label">Name</label>
+                  <label for="RMName" class="control-label">Reviewer Name</label>
                   <a tabindex="-1" class="badge badge-light" role="button" title="Reviews - Reviewser's Name">?</a>
                   <input type="text" class="form-control" name="RMName" ng-model="rm.Name" ng-required="true">
                </div>
                <div class="col-md-6 form-group required" data-show-errors>
                   <label for="RMPublication" class="control-label">Publication</label>
                   <a tabindex="-1" class="badge badge-light" role="button" title="Reviews - Reviewsing Publication">?</a>
-                  <input type="text" class="form-control" name="RMPublication" ng-model="rm.Affiliation" ng-required="true">
+                  <input type="text" class="form-control" name="RMPublication" ng-model="rm.Publication" ng-required="true">
                </div>
             </div>
             <div class="row">
@@ -28,7 +28,7 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-disabled="!ReviewModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Review')">Save changes</button>
+            <button type="button" class="btn btn-primary" ng-disabled="!ReviewModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Review')">Add Review</button>
          </div>
       </div>
       <!-- /.modal-content -->

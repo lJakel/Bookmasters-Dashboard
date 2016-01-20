@@ -32,11 +32,12 @@ if (in_array($_SERVER['HTTP_HOST'], $allowed_domains, TRUE)) {
    $domain = $default_domain;
 }
 
-//if (!empty($_SERVER['HTTPS'])) {
-//   $config['base_url'] = 'https://' . $domain;
-//} else {
+if (!empty($_SERVER['HTTPS'])) {
+   $config['base_url'] = 'https://' . $domain;
+} else {
    $config['base_url'] = 'http://' . $domain;
-//}
+}
+
 
 /*
   |--------------------------------------------------------------------------

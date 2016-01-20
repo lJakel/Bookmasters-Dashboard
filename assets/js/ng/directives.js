@@ -228,40 +228,81 @@ appDirectives.directive("bsRadio", ['$compile', '$timeout', function ($compile, 
 
 
 
-appDirectives.directive("modalShow", function () {
-   return {
-      restrict: "A",
-      scope: {
-         modalVisible: "="
-      },
-      link: function (scope, element, attrs) {
+appDirectives.directive("modalShow", ['$document', function ($document) {
+      return {
+         restrict: "A",
+         scope: {
+            modalVisible: "=",
+            draggable: "=",
+         },
+         link: function (scope, element, attrs) {
 
-         //Hide or show the modal
-         scope.showModal = function (visible) {
-            if (visible) {
-               element.modal("show");
+            //Hide or show the modal
+            scope.showModal = function (visible) {
+               if (visible) {
+                  element.modal("show");
+               } else {
+                  element.modal("hide");
+               }
+            }
+
+            //Check to see if the modal-visible attribute exists
+            if (!attrs.modalVisible) {
+               //The attribute isn't defined, show the modal by default
+               scope.showModal(true);
             } else {
-               element.modal("hide");
+               //Watch for changes to the modal-visible attribute
+               scope.$watch("modalVisible", function (newValue, oldValue) {
+                  scope.showModal(newValue);
+               });
+               //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
+               element.bind("hide.bs.modal", function () {
+                  scope.modalVisible = false;
+                  if (!scope.$$phase && !scope.$root.$$phase) {
+                     scope.$apply();
+                  }
+               });
             }
          }
+      };
+   }]);
+appDirectives.directive('draggable', ['$document', function ($document) {
+      return{
+         scope: {
+            modalOpen: "=",
+         },
+         link: function (scope, element, attr) {
 
-         //Check to see if the modal-visible attribute exists
-         if (!attrs.modalVisible) {
-            //The attribute isn't defined, show the modal by default
-            scope.showModal(true);
-         } else {
-            //Watch for changes to the modal-visible attribute
-            scope.$watch("modalVisible", function (newValue, oldValue) {
-               scope.showModal(newValue);
-            });
-            //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
-            element.bind("hide.bs.modal", function () {
-               scope.modalVisible = false;
-               if (!scope.$$phase && !scope.$root.$$phase) {
-                  scope.$apply();
+
+            scope.$watch("modalOpen", function (newValue, oldValue) {
+               console.log(newValue, oldValue);
+               if (newValue == true) {
+                  startX = 0, startY = 0, x = 0, y = 0;
                }
             });
+
+
+            var startX = 0, startY = 0, x = 0, y = 0;
+            element.css({position: 'relative'});
+            element.on('mousedown', function (event) {
+               event.preventDefault();
+               startX = event.screenX - x;
+               startY = event.screenY - y;
+               $document.on('mousemove', mousemove);
+               $document.on('mouseup', mouseup);
+            });
+            function mousemove(event) {
+               y = event.screenY - startY;
+               x = event.screenX - startX;
+               element.parent().parent().css({
+                  top: y + 'px',
+                  left: x + 'px'
+               });
+            }
+            function mouseup() {
+               $document.off('mousemove', mousemove);
+               $document.off('mouseup', mouseup);
+            }
          }
-      }
-   };
-});
+      };
+   }]);

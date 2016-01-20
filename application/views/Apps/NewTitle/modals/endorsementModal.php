@@ -1,14 +1,14 @@
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showEndorsementDialog" class="modal fade"  data-backdrop="static"> 
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="EndorsementModalForm" ng-repeat="em in [NTF.Marketing.EndorsementModal]">
-         <div class="modal-header">
+         <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add / Edit Endorsement</h4>
          </div>
          <div class="modal-body">
             <div class="row">
                <div class="col-md-6 form-group required" data-show-errors>
-                  <label for="EMName" class="control-label">Name</label>
+                  <label for="EMName" class="control-label">Name of Endorser</label>
                   <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Endorser's Name and Affiliation" data-placement="top" data-content='The name and credentials of the person who gave the Endorsement. '>?</a>
                   <input type="text" class="form-control" name="EMName" ng-model="em.Name" ng-required="true">
                </div>
@@ -27,7 +27,7 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!EndorsementModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Endorsement')">Save changes</button>
+            <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!EndorsementModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Endorsement')">Add Endorsement</button>
          </div>
       </div>
       <!-- /.modal-content -->

@@ -3,9 +3,9 @@
 
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ContribModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
-         <div class="modal-header">
-            <button type="button" data-dismiss="modal" class="close" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Add / Edit Contributor</h4>
+         <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
+            <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add / Edit Format</h4>
          </div>
          <div class="modal-body" >
             <form action="" id="contribModalID">
@@ -107,21 +107,21 @@
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Is Primary Contributor for Title" data-placement="top" data-content="The book's primary contributor. This name will be listed first.">?</a>
                      </div>
                   </div>
-                  <div class="col-md-6 form-group">
-                     <div class="checkbox checkbox-primary">
-                        <input id="IsRolePrimary" type="checkbox" ng-model="cm.IsRolePrimary" bsradio>
-                        <label for="IsRolePrimary">
-                           Is Primary for Role <span class="required">*</span>
-                        </label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Is Primary Contributor for Role" data-placement="top" data-content="The book's primary contributor within the role. Example: Jane Smith, Bob Roberts, and Bill Williams are all illustrators for this book, but since Jane Smith is the primary illustrator, she will be listed first.">?</a>
-                     </div>
-                  </div>
+                  <!--       todo           <div class="col-md-6 form-group">
+                                       <div class="checkbox checkbox-primary">
+                                          <input id="IsRolePrimary" type="checkbox" ng-model="cm.IsRolePrimary" bsradio>
+                                          <label for="IsRolePrimary">
+                                             Is Primary for Role <span class="required">*</span>
+                                          </label>
+                                          <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Is Primary Contributor for Role" data-placement="top" data-content="The book's primary contributor within the role. Example: Jane Smith, Bob Roberts, and Bill Williams are all illustrators for this book, but since Jane Smith is the primary illustrator, she will be listed first.">?</a>
+                                       </div>
+                                    </div>-->
                </div>
             </form>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-disabled="!ContribModalForm.$valid" ng-click="NTF.Contributors.onContributorModalAction()">Save changes</button>
+            <button type="button" class="btn btn-primary" ng-disabled="!ContribModalForm.$valid" ng-click="NTF.Contributors.onContributorModalAction()">Add Contributor</button>
          </div>
       </div><!-- /.modal-content -->
    </div><!-- /.modal-dialog -->

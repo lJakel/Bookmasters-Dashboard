@@ -11,7 +11,7 @@ BMApp.register.controller('UtilitiesFraserReport', function ($state, $http, $q, 
 
 
       Upload.upload({
-         url: 'http://10.10.11.48/Bookmasters-Dashboard/api/post',
+         url: '//api/post',
          data: {
             match: self.match,
             source: self.source,

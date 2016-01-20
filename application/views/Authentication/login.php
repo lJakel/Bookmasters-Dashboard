@@ -3,7 +3,7 @@
       <div class="wrapper content view-animate fade-up">
          <div class="loginFrm" ng-controller="AuthCtrl as L">
             <div>
-               <img src="http://www.bookmasters.com/CDN/resources/brand/bm/small/flat-horiz-white.png" width='400' alt="">
+               <img src="/CDN/resources/brand/bm/small/flat-horiz-white.png" width='400' alt="">
                <ul class="nav nav-tabs" id="authmodal" role="tablist">
                   <li class="active"><a href="" role="tab" data-target="#login" data-toggle="tab">Login</a></li>
                   <li><a href="" role="tab" data-target="#register" data-toggle="tab">Create Account</a></li>
@@ -94,7 +94,7 @@
 
          <style>
             html body {
-               background: url(http://www.bookmasters.com/CDN/resources/img/login/moonship.jpg);
+               background: url(///CDN/resources/img/login/moonship.jpg);
             }
             li.active a{
                background-color:#f4f4f4 !important;

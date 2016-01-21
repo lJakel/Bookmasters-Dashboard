@@ -331,8 +331,8 @@
                         </div>
                         <div class="row">
                            <div class="col-md-12">
-                              <bs-radio model="fm.TerritoryRights" value="world" name="TerritoryRights" label="Worldwide rights - all territories"></bs-radio>
-                              <bs-radio model="fm.TerritoryRights" value="individual" name="TerritoryRights" label="Individual territories - select territories"></bs-radio>
+                              <div class="bs-radio radio-primary" id="TerritoryRights1" model="fm.TerritoryRights" value="world" label="World"></div>
+                              <div class="bs-radio radio-primary" id="TerritoryRights2" model="fm.TerritoryRights" value="individual" label="Individial"></div>
                            </div>
                         </div>
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
@@ -344,7 +344,7 @@
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
                            <div class="col-md-12 form-group">
                               <div style="max-height:290px; min-height:43px; border:solid thin #ddd; padding:0 10px; overflow-y: scroll;">
-                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes | filter:fm.IsoSearch">
+                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes| filter:fm.IsoSearch">
                                     <input id="iso{{$index}}" type="checkbox" ng-model="iso.checked">
                                     <label for="iso{{$index}}">
                                        {{iso.Name}} - {{iso.Iso2}}

@@ -596,32 +596,27 @@ appDirectives.directive('bmNavigation', ['$timeout', '$rootScope', '$state', fun
 
 
 
-appDirectives.directive("bsRadio", ['$compile', '$timeout', function ($compile, $timeout) {
+appDirectives.directive("bsRadio", [function () {
       return {
-         restrict: 'E',
+         restrict: 'C',
          scope: {
             model: '=',
+            value: '@',
             label: '@',
-            value: '=',
-            name: '@',
-            id: '@',
+            id: '@'
          },
-         template: '<div class="radio radio-primary">' +
-                 '<input id="" type="radio" ng-model="model" value="{{value}}" ng-checked="model==value" ng-click="model=value">' +
-                 '<label for="id" ng-click="model=value">' +
-                 '{{label}} {{model|json}} {{value|json}} {{id}} {{model==value}}' +
+         template: '<div class="radio">' +
+                 '<input type="radio" id="{{id}}" ng-model="model" value="{{value}}">' +
+                 '<label for="{{id}}" ng-click="model=value">' +
+                 '{{label}}' +
                  '</label>' +
                  '</div>',
          replace: true,
-         link: function (scope, element, attrs) {
-            scope.flavor = attrs.flavor;
-         }
-
       };
    }]);
 
 
-appDirectives.directive("modalShow", ['$document', function ($document) {
+appDirectives.directive("modalShow", [function () {
       return {
          restrict: "A",
          scope: {

@@ -331,8 +331,8 @@
                         </div>
                         <div class="row">
                            <div class="col-md-12">
-                              <bs-radio model="fm.TerritoryRights" value="world" name="TerritoryRights" label="Worldwide rights - all territories"></bs-radio>
-                              <bs-radio model="fm.TerritoryRights" value="individual" name="TerritoryRights" label="Individual territories - select territories"></bs-radio>
+                              <bs-radio model="fm.TerritoryRights" value="world" name="TerritoryRights" id="r1" label="Worldwide rights - all territories"></bs-radio>
+                              <bs-radio model="fm.TerritoryRights" value="individual" name="TerritoryRights" id="r2" label="Individual territories - select territories"></bs-radio>
                            </div>
                         </div>
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">

@@ -94,7 +94,7 @@
 
          <style>
             html body {
-               background: url(///CDN/resources/img/login/moonship.jpg);
+               background: url(/CDN/resources/img/login/moonship.jpg);
             }
             li.active a{
                background-color:#f4f4f4 !important;

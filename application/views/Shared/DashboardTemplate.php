@@ -42,8 +42,8 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <script src="assets/vendor/vendor.js"></script>
-<!--      <script src="/CDN/bower_components/angular/angular.min.js"></script>
+      <script src="assets/vendor/vendor.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+      <!--<script src="/CDN/bower_components/angular/angular.min.js"></script>
       <script src="/CDN/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
       <script src="/CDN/bower_components/ngstorage/ngStorage.min.js"></script>
       <script src="/CDN/bower_components/angular-resource/angular-resource.min.js"></script>

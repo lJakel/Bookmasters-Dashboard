@@ -1,5 +1,5 @@
 <div id="container" ng-controller="BMAppController as BMA">
-   <header class="header fixed-top clearfix" data-ng-include="'<?php echo site_url('Shared/appNavbar'); ?>'"></header>
+   <header class="header fixed-top clearfix" data-ng-include="'Shared/appNavbar'"></header>
    <div class="sidebar sidebar-left" data-bm-navigation>
       <!--sidebar left-->
       <div data-bm-sidebar-scroll style="height: 100%;">

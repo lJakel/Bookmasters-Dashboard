@@ -177,6 +177,36 @@
                         <select name="" id="" class="form-control" ng-options="ed.Name for ed in fm.FixedEditionTypes track by ed.Id" ng-model="fm.EditionType"></select>
                      </div>
                   </div>
+                  <div class="row">
+                     <div class="form-group col-md-6 required">
+                        <label for="" class="control-label">Country of Origin</label>
+                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Country of Origin" data-placement="top" data-content="The country in which the book was printed.">?</a>
+
+                        <ol class="nya-bs-select dropup form-control" ng-required="true" ng-model="fm.CountryofOrigin" data-size="6" data-live-search="true">
+                           <li nya-bs-option="iso in fm.FixedIsoCodes">
+                              <a>
+                                 {{iso.Name}} - {{iso.Iso2}}
+                                 <span class="fa fa-check check-mark"></span>
+                              </a>
+                           </li>
+                        </ol>
+
+                     </div>
+                     <div class="form-group col-md-6">
+                        <label for="" class="control-label">Publication Location</label>
+                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Location" data-placement="top" data-content="The country in which the publisher of the book is located.">?</a>
+
+                        <ol class="nya-bs-select dropup form-control" ng-required="true" ng-model="fm.PublicationLocation" data-size="6" data-live-search="true">
+                           <li nya-bs-option="iso in fm.FixedIsoCodes">
+                              <a>
+                                 {{iso.Name}} - {{iso.Iso2}}
+                                 <span class="fa fa-check check-mark"></span>
+                              </a>
+                           </li>
+                        </ol>
+
+                     </div>
+                  </div>
                </div>
                <div role="tabpanel" class="tab-pane" id="Prices">
                   <div class="row">
@@ -317,18 +347,7 @@
                               <p>Select the territories for which you hold rights.</p>
                            </div>
                         </div>
-                        <div class="row">
-                           <div class="form-group col-md-6 required">
-                              <label for="" class="control-label">Country of Origin</label>
-                              <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Country of Origin" data-placement="top" data-content="The country in which the book was printed.">?</a>
-                              <input name="CountryofOrigin" ng-required="true" type="text" class="form-control" ng-model="fm.CountryofOrigin">
-                           </div>
-                           <div class="form-group col-md-6">
-                              <label for="" class="control-label">Publication Location</label>
-                              <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Location" data-placement="top" data-content="The country in which the publisher of the book is located.">?</a>
-                              <input type="text" class="form-control" ng-model="fm.PublicationLocation">
-                           </div>
-                        </div>
+
                         <div class="row">
                            <div class="col-md-12">
                               <div class="bs-radio radio-primary" id="TerritoryRights1" model="fm.TerritoryRights" value="world" label="World"></div>
@@ -344,7 +363,7 @@
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
                            <div class="col-md-12 form-group">
                               <div style="max-height:290px; min-height:43px; border:solid thin #ddd; padding:0 10px; overflow-y: scroll;">
-                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes| filter:fm.IsoSearch">
+                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes | filter:fm.IsoSearch">
                                     <input id="iso{{$index}}" type="checkbox" ng-model="iso.checked">
                                     <label for="iso{{$index}}">
                                        {{iso.Name}} - {{iso.Iso2}}
@@ -370,9 +389,12 @@
 
             </div>
          </div>
-         <div class="modal-footer">
+         <div class="modal-footer">            
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!FormatModalForm.$valid" ng-click="NTF.Formats.onFormatModalAction()">Add Format</button>
+            <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!FormatModalForm.$valid" ng-click="NTF.Formats.onFormatModalAction()">
+               <span ng-if="fm.Method == 'edit'">Save</span>
+               <span ng-if="fm.Method == 'add'">Add</span> 
+               Format</button>
          </div>
       </div>
       <!-- /.modal-content -->

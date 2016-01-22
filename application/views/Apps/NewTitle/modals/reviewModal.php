@@ -1,7 +1,7 @@
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showReviewDialog" class="modal fade">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ReviewModalForm" ng-repeat="rm in [NTF.Marketing.ReviewModal]">
-         <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
+         <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showReviewDialog" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add / Edit Reviews</h4>
          </div>

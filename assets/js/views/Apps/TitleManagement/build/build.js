@@ -8,7 +8,7 @@ var Modals = {
          Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContribModalForm.AdditionalTitleForm, function (newVal, oldVal) {
             console.log(newVal, oldVal);
          });
-      })
+      });
 
 
       self.FirstName = '';

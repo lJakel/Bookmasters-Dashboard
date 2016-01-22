@@ -1,5 +1,5 @@
 <div id="container" ng-controller="BMAppController as BMA">
-   <header class="header fixed-top clearfix" data-ng-include="'<?php echo site_url('Shared/appNavbar'); ?>'"></header>
+   <header class="header fixed-top clearfix" data-ng-include="'Shared/appNavbar'"></header>
    <div class="sidebar sidebar-left" data-bm-navigation>
       <!--sidebar left-->
       <div data-bm-sidebar-scroll style="height: 100%;">
@@ -33,6 +33,13 @@
                      <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'index', child: null})">View All Entries</a></li>
                      <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'create', child: null})">Create Entry</a></li>
                      <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'settings', child: null })">Settings</a></li>
+                  </ul>
+               </li>
+               <li>
+                  <a class="submenu collapsed" data-target="#SalesToolsList" data-toggle="collapse" href="#"><span class="fa fa-microphone"></span>Sales Tools<span class="fa fa-angle-down plusmin"></span></a>
+                  <ul id="SalesToolsList" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({app:'sales', page: 'top100', child: null})">Top100</a></li>
+
                   </ul>
                </li>
             </ul>

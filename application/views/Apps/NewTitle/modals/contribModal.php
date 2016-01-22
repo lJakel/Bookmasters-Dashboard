@@ -1,9 +1,8 @@
 <!-- Modal Start -->
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Contributors.showDialog" class="modal fade" data-backdrop="static">
-
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ContribModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
-         <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
+         <div class="modal-header" modal-open="NTF.Contributors.showDialog" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add / Edit Format</h4>
          </div>
@@ -13,7 +12,6 @@
                   <div class="col-md-4 form-group required" data-show-errors>
                      <label for="" class="control-label">First Name</label>
                      <input type="text" class="form-control" name="FirstName" ng-required="true" ng-model="cm.FirstName">
-
                   </div>
                   <div class="col-md-4 form-group">
                      <label for="" class="control-label">Middle Name</label>
@@ -43,9 +41,17 @@
                      <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Contributor Hometown" data-placement="top" data-content="The town with which the contributor is most identified. Used to identify regional purchasing opportunities. Include city and state / country.">?</a>
                      <input type="text" class="form-control" ng-required="true" ng-model="cm.Hometown">
                   </div>
-                  <div class="col-md-6 form-group required">
+                  <div class="col-md-3 form-group required">
                      <label for="" class="control-label">Role</label>
                      <select ng-required="true" class="form-control" ng-model="cm.Role" ng-options="role.Name for role in cm.FixedAuthorRoles track by role.Id" ></select>
+                  </div>
+                  <div class="col-md-3 form-group required">
+                     <label class="control-label" for="">Primary Role</label>
+                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Is Primary Contributor for Title" data-placement="top" data-content="The book's primary contributor. This name will be listed first.">?</a>
+                     <div class="checkbox checkbox-primary">
+                        <input id="IsTitlePrimary" type="checkbox" ng-model="cm.IsTitlePrimary">
+                        <label for="IsTitlePrimary"> Primary Role for Title </label>
+                     </div>
                   </div>
                </div>
                <div class="row">
@@ -91,37 +97,18 @@
                                  </td>
                               </tr>
                            </tbody>
-
-
                         </table>
                      </div>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="col-md-6 form-group">
-                     <div class="checkbox checkbox-primary">
-                        <input id="IsTitlePrimary" type="checkbox" ng-model="cm.IsTitlePrimary" bsradio>
-                        <label class="control-label" for="IsTitlePrimary">
-                           Is Primary for Title <span class="required">*</span>
-                        </label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Is Primary Contributor for Title" data-placement="top" data-content="The book's primary contributor. This name will be listed first.">?</a>
-                     </div>
-                  </div>
-                  <!--       todo           <div class="col-md-6 form-group">
-                                       <div class="checkbox checkbox-primary">
-                                          <input id="IsRolePrimary" type="checkbox" ng-model="cm.IsRolePrimary" bsradio>
-                                          <label for="IsRolePrimary">
-                                             Is Primary for Role <span class="required">*</span>
-                                          </label>
-                                          <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Is Primary Contributor for Role" data-placement="top" data-content="The book's primary contributor within the role. Example: Jane Smith, Bob Roberts, and Bill Williams are all illustrators for this book, but since Jane Smith is the primary illustrator, she will be listed first.">?</a>
-                                       </div>
-                                    </div>-->
                </div>
             </form>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-disabled="!ContribModalForm.$valid" ng-click="NTF.Contributors.onContributorModalAction()">Add Contributor</button>
+            <button type="button" class="btn btn-primary" ng-disabled="!ContribModalForm.$valid" ng-click="NTF.Contributors.onContributorModalAction()">
+               <span ng-if="cm.Method == 'edit'">Save</span>
+               <span ng-if="cm.Method == 'add'">Add</span> 
+               Contributor</button>
          </div>
       </div><!-- /.modal-content -->
    </div><!-- /.modal-dialog -->

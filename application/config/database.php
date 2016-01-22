@@ -119,6 +119,28 @@ $db['itemmaster'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
+$db['SalesReports'] = array(
+    'dsn' => 'sqlsrv:server=10.10.10.10,1433;Database=ItemMasterData;',
+    'hostname' => '',
+    'username' => 'bmi_connect',
+    'password' => 'automated',
+    'database' => '',
+    'dbdriver' => 'pdo',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => TRUE,
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'autoinit' => FALSE,
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
 
 $db['marketingUpdate'] = array(
     'dsn' => '',

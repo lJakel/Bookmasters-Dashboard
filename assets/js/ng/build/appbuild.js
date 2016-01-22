@@ -13,6 +13,7 @@ var BMApp = angular.module('BMApp', [
    'ui.bootstrap',
    'angular-toasty',
    'summernote',
+   'ngTasty',
    // page-specific and demo. may be removed
    // application libs
    'app.controllers',

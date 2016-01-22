@@ -35,6 +35,13 @@
                      <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'settings', child: null })">Settings</a></li>
                   </ul>
                </li>
+               <li>
+                  <a class="submenu collapsed" data-target="#SalesToolsList" data-toggle="collapse" href="#"><span class="fa fa-microphone"></span>Sales Tools<span class="fa fa-angle-down plusmin"></span></a>
+                  <ul id="SalesToolsList" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({app:'sales', page: 'top100', child: null})">Top100</a></li>
+
+                  </ul>
+               </li>
             </ul>
             <span ng-if="user.roles[0] == 'Developer'" class="listheader">Developer Applications</span>
             <ul class="application-items" ng-if="user.roles[0] == 'Developer'">

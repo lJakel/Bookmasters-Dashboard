@@ -29,6 +29,8 @@
 
       <!-- Custom styles for this Dashboard -->
       <link href="/CDN/css/dashboard-sass2/assets/stylesheets/dashboard.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdn.rawgit.com/summernote/summernote/v0.7.0/dist/summernote.css">
+
 
 
    </head>
@@ -40,30 +42,24 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <script src="/CDN/bower_components/jquery/dist/jquery.min.js"></script>
-      <script src="/CDN/bower_components/angular/angular.min.js"></script>
+      <script src="assets/vendor/vendor.js"></script>
+<!--      <script src="/CDN/bower_components/angular/angular.min.js"></script>
       <script src="/CDN/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
       <script src="/CDN/bower_components/ngstorage/ngStorage.min.js"></script>
       <script src="/CDN/bower_components/angular-resource/angular-resource.min.js"></script>
       <script src="/CDN/bower_components/angular-ui-event/dist/event.min.js"></script>
       <script src="/CDN/bower_components/angular-animate/angular-animate.min.js"></script>
-
+       common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version 
       <script src="/CDN/bower_components/ng-file-upload-shim/ng-file-upload-all.min.js"></script>
       <script src="/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.min.js"></script>
-      <!--<script src="/CDN/bower_components/summernote/dist/summernote.min.js"></script>
-      <script src="/CDN/bower_components/angular-summernote/dist/angular-summernote.js"></script>-->
-
       <script src="/CDN/bower_components/angular-summernote/dist/angular-summernote.min.js"></script>
       <script src="/CDN/bower_components/summernote/dist/summernote.min.js"></script>
-      <link rel="stylesheet" href="https://cdn.rawgit.com/summernote/summernote/v0.7.0/dist/summernote.css">
-
-      <!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
       <script src="/CDN/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
       <script src="/CDN/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
       <script src="/CDN/bower_components/moment/min/moment-with-locales.min.js"></script>
       <script src="/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
       <script src="/CDN/bower_components/angular-toasty/dist/angular-toasty.min.js"></script>
-      <script src="/CDN/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
+      <script src="/CDN/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>-->
 
 
 

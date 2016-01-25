@@ -119,8 +119,8 @@ $db['itemmaster'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
-$db['SalesReports'] = array(
-    'dsn' => 'sqlsrv:server=10.10.10.10,1433;Database=ItemMasterData;',
+$db['DataImports'] = array(
+    'dsn' => 'sqlsrv:server=10.10.10.10,1433;Database=DataImports;',
     'hostname' => '',
     'username' => 'bmi_connect',
     'password' => 'automated',

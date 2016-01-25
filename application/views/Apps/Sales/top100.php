@@ -66,7 +66,7 @@
             }
          };
          self.getResource = function (params, paramsObj) {
-            var urlApi = 'http://10.10.11.48/Bookmasters-Dashboard/sales/api';
+            var urlApi = 'sales/api';
             return $http.post(urlApi, paramsObj).then(function (response) {
                console.log(response);
                return {

@@ -133,9 +133,8 @@ class Auth_Model extends ESM {
    function getUser() {
       if ($this->session->user == null) {
          $this->newError("0000", "User is not logged in.", $this, __FUNCTION__, "danger", null, false);
-         return $this->generateResponse();
+         return $this->generateResponse(null, null, 401);
       } else {
-
          return $this->generateResponse($this->session->user);
       }
    }
@@ -203,7 +202,7 @@ class Auth_Model extends ESM {
       $newPassword = substr(str_shuffle($chars), 0, 10);
       $newPasswordHash = $this->create_password($newPassword);
       $updateuser = $this->db->query("exec DashboardUser_Update @userName=?, @setpwd=?, @changepwd=?", [$username, $newPasswordHash['combined'], 1]);
-   
+
       $data = [$newPassword, $newPasswordHash];
 
       $this->load->library('email');
@@ -228,7 +227,7 @@ class Auth_Model extends ESM {
       $this->email->message("Hello {$username}, It appears you have forgotten your password. Your temporary password is <i>{$newPassword}</i>?");
 
       $this->email->send();
-      
+
       return $this->generateResponse($data, 'If this email is associated with this username a temporary password has been sent to this email address.');
    }
 

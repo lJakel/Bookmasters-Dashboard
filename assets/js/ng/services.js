@@ -107,7 +107,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
          }
       }
    }]);
-appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$timeout', function ($http, $state, $q, $localStorage, $timeout) {
+appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location) {
 
       var url = 'auth/';
 
@@ -121,7 +121,11 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
          register: register
       };
 
+
+
       return factory;
+
+
       function changeUser(user) {
          factory.user = user
          $localStorage.user = user;
@@ -131,7 +135,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
             $localStorage.$reset();
             $localStorage.user = null;
             changeUser(null);
-            $state.go('login');
+            $location.path('/login');
          }, function (response) {
             $state.go('error');
          });
@@ -140,8 +144,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       function login(user, success, error) {
 
          $http.post(url + 'login', user).then(function (response) {
-            console.log(response);
-            changeUser(response.data.data); // get user block
+            changeUser(response.data.data.user.user); // get user block
             success(response.data); //get parent userblock and message block
          }, function (response) {
             changeUser(null);
@@ -166,25 +169,20 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
       function isLoggedIn(get) {
          return $http.post(url + 'getuser').then(function (response) {
-            console.log(response);
             changeUser(response.data.data);
             if (get == true) {
                return response.data.data;
             }
          }, function (response) {
             changeUser(null);
-            return $state.go('login');
          });
       }
       function getInfo() {
          if ($localStorage.user == null || factory.user == null) {
-            console.log('server')
-
             return factory.isLoggedIn(true);
          } else {
             factory.user = $localStorage.user;
             return $q.when(factory.user);
          }
       }
-
    }]);

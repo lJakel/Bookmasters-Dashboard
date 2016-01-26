@@ -48,7 +48,13 @@
                <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })"><span class="fa fa-comment fa-fw"></span>Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
                <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })"><span class="fa fa-user fa-fw"></span>User Management</a></li>
                <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })"><span class="fa fa-bug fa-fw"></span>Debug</a></li>
-               <li><a data-ui-sref="bm.app.page({ 'app': 'utilities','page': 'home', child: null })"><span class="fa fa-wrench fa-fw"></span>Utilities</a></li>
+               <li>
+                  <a class="submenu collapsed" data-target="#DevUtilities" data-toggle="collapse" href=""><span class="fa fa-microphone fa-fw"></span>Utilities<span class="fa fa-angle-down plusmin"></span></a>
+                  <ul id="DevUtilities" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({app:'Utilities', page: 'ISBNConversion', child: null})">ISBN Conversion</a></li>
+
+                  </ul>
+               </li>
             </ul>
             <div data-ui-view="appItems"></div>
             <div class="bugfeedback">

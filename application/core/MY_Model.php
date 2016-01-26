@@ -64,7 +64,7 @@ class ESM extends MY_Model {
     * @param data $data
     * @param boolean $exit
     */
-   public function generateResponse($data = null, $response = null) {
+   public function generateResponse($data = null, $response = null, $httpcode = '400') {
       $output['errors'] = $this->errors;
       $output['data'] = $data;
       $output['response'] = $response;
@@ -73,8 +73,8 @@ class ESM extends MY_Model {
          $output['status'] = 200;
          $this->output->set_status_header(200);
       } else {
-         $output['status'] = 400;
-         $this->output->set_status_header(400);
+         $output['status'] = $httpcode;
+         $this->output->set_status_header($httpcode);
       }
 
       return $output;

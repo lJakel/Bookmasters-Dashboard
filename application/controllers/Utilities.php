@@ -10,21 +10,22 @@ class Utilities extends Secure_Controller {
       parent::__construct();
       $this->app['links'] = get_class_methods($this);
       $this->app['appName'] = get_class($this);
+      $this->load->model('UtilitiesModels/Utilities_Model', 'UM');
    }
 
    public function ISBNConversion() {
-      $this->load->model('UtilitiesModels/Utilities_Model');
-      if ($this->input->post('Report')) {
-         print_r($this->Utilities_Model->uploadFraserReport());
-      } else {
-         $this->load->view('Apps/' . get_class($this) . '/' . __FUNCTION__);
-      }
+      $this->load->view('Apps/' . get_class($this) . '/' . __FUNCTION__);
+   }
+
+   public function ISBNConversionAPI() {
+      header('Content-Type: application/json');
+      echo json_encode($this->UM->ConvertIsbns());
    }
 
    public function fraserReport() {
-      $this->load->model('UtilitiesModels/Utilities_Model');
+
       if ($this->input->post('Report')) {
-         print_r($this->Utilities_Model->uploadFraserReport());
+         print_r($this->UM->uploadFraserReport());
       } else {
          $this->load->view('Apps/' . get_class($this) . '/' . __FUNCTION__);
       }

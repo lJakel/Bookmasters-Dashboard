@@ -64,6 +64,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
                   deferred.resolve();
                } else {
                   deferred.reject('Not logged in');
+                  console.log('Not logged in');
                }
             });
             return deferred.promise;
@@ -108,7 +109,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
             id: {value: null}
          },
          resolve: {
-            authenticated: authenticated,
+//            authenticated: authenticated,
             deps: ['scriptLoader', function (scriptLoader) {
                   return scriptLoader;
                }]
@@ -125,10 +126,11 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
 
 
       //separate state for login & error pages
-      $stateProvider.state('login', {
-         url: '/login',
-         templateUrl: 'Shared/login'
-      })
+      $stateProvider
+              .state('login', {
+                 url: '/login',
+                 templateUrl: 'Shared/login'
+              })
               .state('error', {
                  url: '/error',
                  params: {
@@ -137,43 +139,49 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
                  },
                  templateUrl: 'Shared/error'
               })
-
               .state('404', {
                  url: '/404',
                  templateUrl: 'Shared/notFound'
               });
    }]);
 
-BMApp.run(['$rootScope', '$state', '$log', 'AuthFactory', function ($rootScope, $state, $log, AuthFactory) {
+BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootScope, $state, AuthFactory, $location) {
       $rootScope.previousState;
       $rootScope.previousStateParams;
-      $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+      $rootScope.$on('$stateChangeSuccess', function (from, fromParams) {
          $rootScope.previousState = from.name;
          $rootScope.previousStateParams = fromParams;
       });
-
-
-      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+         if (!$.isEmptyObject(toParams)) {
+            $rootScope.redirectToStateAfterLogin = JSON.stringify(toParams);
+         }
+         AuthFactory.getInfo().then(function (response) {
+            if (!response) {
+               $rootScope.returnToState = toState.url;
+               $rootScope.returnToStateParams = toParams.Id;
+               $location.path('/login');
+            }
+         });
+      });
+      
+      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error, $location) {
          switch (error.status) {
             case 200:
             default:
                break;
-
             case 400:
                $state.go('error', {code: '400', message: 'Bad request. The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.'});
                break;
-
             case 401:
-               AuthFactory.logout();
+               $location.path('/login');
                break;
             case 403:
                $state.go('error', {code: '403', message: 'You do not have privileges to access this application.'});
-
                break;
             case 404:
                $state.go('error', {code: '404', message: 'Part of / and or / the page requested was not found.'});
                break;
-
             case 500:
                $state.go('error', {code: '500', message: 'An internal server error has occured.'});
                break;
@@ -350,8 +358,7 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
       //fix below for self
       $scope.app = app;
       $scope.logout = AuthFactory.logout;
-      AuthFactory.isLoggedIn(true).then(function (response) {
-         console.log(AuthFactory);
+      AuthFactory.getInfo().then(function (response) {
          $scope.user = response;
       });
    }]);
@@ -529,45 +536,53 @@ appDirectives.directive('bmNavigation', ['$timeout', '$rootScope', '$state', fun
             $newActiveLink.closest('li').addClass('active').parents('li').addClass('active').addClass('open');
             // uncollapse parent
             $newActiveLink.closest('.collapse').addClass('in').siblings('a[data-toggle=collapse]').removeClass('collapsed');
-         },
-      };
-      return {
-         link: function (scope, $el) {
-            var BmNav = new BmNavigationDirective($el, scope);
-            $timeout(function () {
-               // set active navigation item
-
-               BmNav.changeNavigationItem({}, $state.$current, $state.params);
-               $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
-               $el.find('.collapse').on('show.bs.collapse', function (e) {
-                  // execute only if we're actually the .collapse element initiated event
-                  // return for bubbled events
-                  if (e.target != e.currentTarget)
-                     return;
-                  var $triggerLink = $(this).prev('[data-toggle=collapse]');
-                  $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
-               })
-                       /* adding additional classes to navigation link li-parent for several purposes. see navigation styles */
-                       .on('show.bs.collapse', function (e) {
-
-                          // execute only if we're actually the .collapse element initiated event
-                          // return for bubbled events
-                          if (e.target != e.currentTarget)
-                             return;
-                          $(this).closest('li').addClass('open');
-                       }).on('hide.bs.collapse', function (e) {
-                  // execute only if we're actually the .collapse element initiated event
-                  // return for bubbled events
-                  if (e.target != e.currentTarget)
-                     return;
-                  $(this).closest('li').removeClass('open');
-               });
-            });
-            scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
-               if (newVal == oldVal) {
+      },
+      bindHandler: function () {
+         var self = this;
+         $timeout(function () {
+            self.$el.find('.collapse').on('show.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget) {
                   return;
                }
-               BmNav.toggleLeftSidebar();
+               var $triggerLink = $(this).prev('[data-toggle=collapse]');
+               $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
+            }).on('show.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget) {
+                  return;
+               }
+               $(this).closest('li').addClass('open');
+            }).on('hide.bs.collapse', function (e) {
+               // execute only if we're actually the .collapse element initiated event
+               // return for bubbled events
+               if (e.target != e.currentTarget) {
+                  return;
+               }
+               $(this).closest('li').removeClass('open');
+            });
+         });
+      }
+   };
+   return {
+      link: function (scope, $el) {
+         var BmNav = new BmNavigationDirective($el, scope);
+
+         $timeout(function () {
+            // set active navigation item
+
+            BmNav.changeNavigationItem({}, $state.$current, $state.params);
+            $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
+            $rootScope.$on('$stateChangeSuccess', $.proxy(BmNav.bindHandler, BmNav));
+            BmNav.bindHandler();
+         });
+         scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
+            if (newVal == oldVal) {
+               return;
+            }
+            BmNav.toggleLeftSidebar();
             });
             $('.header,#main-content,.sidebar-left').click(function () {
                if ($('#container').hasClass('open-right-panel')) {
@@ -809,7 +824,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
          }
       }
    }]);
-appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$timeout', function ($http, $state, $q, $localStorage, $timeout) {
+appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location) {
 
       var url = 'auth/';
 
@@ -823,7 +838,11 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
          register: register
       };
 
+
+
       return factory;
+
+
       function changeUser(user) {
          factory.user = user
          $localStorage.user = user;
@@ -833,7 +852,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
             $localStorage.$reset();
             $localStorage.user = null;
             changeUser(null);
-            $state.go('login');
+            $location.path('/login');
          }, function (response) {
             $state.go('error');
          });
@@ -842,8 +861,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       function login(user, success, error) {
 
          $http.post(url + 'login', user).then(function (response) {
-            console.log(response);
-            changeUser(response.data.data); // get user block
+            changeUser(response.data.data.user.user); // get user block
             success(response.data); //get parent userblock and message block
          }, function (response) {
             changeUser(null);
@@ -868,27 +886,22 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
       function isLoggedIn(get) {
          return $http.post(url + 'getuser').then(function (response) {
-            console.log(response);
             changeUser(response.data.data);
             if (get == true) {
                return response.data.data;
             }
          }, function (response) {
             changeUser(null);
-            return $state.go('login');
          });
       }
       function getInfo() {
          if ($localStorage.user == null || factory.user == null) {
-            console.log('server')
-
             return factory.isLoggedIn(true);
          } else {
             factory.user = $localStorage.user;
             return $q.when(factory.user);
          }
       }
-
    }]);
 var appValidators = angular.module('app.validators', []);
 

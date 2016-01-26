@@ -16,7 +16,14 @@ var login = function (Dependencies) {
                timeout: 5000,
             });
             Dependencies.$timeout(function () {
-               Dependencies.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
+               if (Dependencies.$rootScope.redirectToStateAfterLogin) {
+                  var previousState = JSON.parse(Dependencies.$rootScope.redirectToStateAfterLogin);
+               }
+               if (!$.isEmptyObject(previousState)) {
+                  Dependencies.$state.go('bm.app.page', {app: previousState.app, page: previousState.page, child: previousState.child});
+               } else {
+                  Dependencies.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
+               }
             }, 2000);
 
          }, function (err) {
@@ -109,7 +116,7 @@ var forgot = function (Dependencies) {
       });
    };
 };
-BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', 'toasty', function ($scope, AuthFactory, $state, $timeout, $q, toasty) {
+BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', 'toasty', '$rootScope', function ($scope, AuthFactory, $state, $timeout, $q, toasty, $rootScope) {
       var vm = this;
       vm.error = undefined;
       vm.success = undefined;
@@ -120,7 +127,8 @@ BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$time
          $state: $state,
          $timeout: $timeout,
          $q: $q,
-         toasty: toasty
+         toasty: toasty,
+         $rootScope: $rootScope
       };
 
       vm.forgotPassword = function () {

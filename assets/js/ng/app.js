@@ -64,6 +64,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
                   deferred.resolve();
                } else {
                   deferred.reject('Not logged in');
+                  console.log('Not logged in');
                }
             });
             return deferred.promise;
@@ -108,7 +109,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
             id: {value: null}
          },
          resolve: {
-            authenticated: authenticated,
+//            authenticated: authenticated,
             deps: ['scriptLoader', function (scriptLoader) {
                   return scriptLoader;
                }]
@@ -125,10 +126,11 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
 
 
       //separate state for login & error pages
-      $stateProvider.state('login', {
-         url: '/login',
-         templateUrl: 'Shared/login'
-      })
+      $stateProvider
+              .state('login', {
+                 url: '/login',
+                 templateUrl: 'Shared/login'
+              })
               .state('error', {
                  url: '/error',
                  params: {
@@ -137,43 +139,49 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
                  },
                  templateUrl: 'Shared/error'
               })
-
               .state('404', {
                  url: '/404',
                  templateUrl: 'Shared/notFound'
               });
    }]);
 
-BMApp.run(['$rootScope', '$state', '$log', 'AuthFactory', function ($rootScope, $state, $log, AuthFactory) {
+BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootScope, $state, AuthFactory, $location) {
       $rootScope.previousState;
       $rootScope.previousStateParams;
-      $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+      $rootScope.$on('$stateChangeSuccess', function (from, fromParams) {
          $rootScope.previousState = from.name;
          $rootScope.previousStateParams = fromParams;
       });
-
-
-      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+         if (!$.isEmptyObject(toParams)) {
+            $rootScope.redirectToStateAfterLogin = JSON.stringify(toParams);
+         }
+         AuthFactory.getInfo().then(function (response) {
+            if (!response) {
+               $rootScope.returnToState = toState.url;
+               $rootScope.returnToStateParams = toParams.Id;
+               $location.path('/login');
+            }
+         });
+      });
+      
+      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error, $location) {
          switch (error.status) {
             case 200:
             default:
                break;
-
             case 400:
                $state.go('error', {code: '400', message: 'Bad request. The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.'});
                break;
-
             case 401:
-               AuthFactory.logout();
+               $location.path('/login');
                break;
             case 403:
                $state.go('error', {code: '403', message: 'You do not have privileges to access this application.'});
-
                break;
             case 404:
                $state.go('error', {code: '404', message: 'Part of / and or / the page requested was not found.'});
                break;
-
             case 500:
                $state.go('error', {code: '500', message: 'An internal server error has occured.'});
                break;

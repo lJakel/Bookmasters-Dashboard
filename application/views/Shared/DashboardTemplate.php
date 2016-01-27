@@ -34,53 +34,39 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <?php
-      $AppLibs = [
-          'assets/js/ng/app.js',
-          'assets/js/ng/controllers.js',
-          'assets/js/ng/directives.js',
-          'assets/js/ng/services.js',
-          'assets/js/ng/validators.js',
-          'assets/js/ng/wrappers.js',
-      ];
-      $VendorLibs = [
-          '/CDN/bower_components/jquery/dist/jquery.js',
-          '/CDN/bower_components/angular/angular.js',
-          '/CDN/bower_components/angular-ui-router/release/angular-ui-router.js',
-          '/CDN/bower_components/ngstorage/ngStorage.js',
-          '/CDN/bower_components/angular-resource/angular-resource.js',
-          '/CDN/bower_components/angular-ui-event/dist/event.js',
-          '/CDN/bower_components/angular-animate/angular-animate.js',
-          '/CDN/bower_components/ng-file-upload/ng-file-upload-all.js',
-          '/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js',
-          '/CDN/bower_components/angular-summernote/dist/angular-summernote.js',
-          '/CDN/bower_components/summernote/dist/summernote.js',
-          '/CDN/bower_components/bootstrap/dist/js/bootstrap.js',
-          '/CDN/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-          '/CDN/bower_components/moment/min/moment-with-locales.js',
-          '/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-          '/CDN/bower_components/angular-toasty/dist/angular-toasty.js',
-          '/CDN/bower_components/jquery.nicescroll/jquery.nicescroll.js',
-          '/CDN/bower_components/ng-tasty/ng-tasty-tpls.js',
-      ];
-      if ($_SERVER['HTTP_HOST'] == '10.10.11.48') {
-         foreach ($VendorLibs as $value) {
-            echo "<script src=\"{$value}\"></script>\n";
-         }
-      } else {
-         echo "<script src=\"assets/vendor/vendor.min.js?cache=" . rand(1000, 9000) . "\"></script>";
-      }
-      ?>
+      <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+         <script src="/CDN/bower_components/jquery/dist/jquery.js"></script>
+         <script src="/CDN/bower_components/angular/angular.js"></script>
+         <script src="/CDN/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+         <script src="/CDN/bower_components/ngstorage/ngStorage.js"></script>
+         <script src="/CDN/bower_components/angular-resource/angular-resource.js"></script>
+         <script src="/CDN/bower_components/angular-ui-event/dist/event.js"></script>
+         <script src="/CDN/bower_components/angular-animate/angular-animate.js"></script>
+         <script src="/CDN/bower_components/ng-file-upload/ng-file-upload-all.js"></script>
+         <script src="/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
+         <script src="/CDN/bower_components/angular-summernote/dist/angular-summernote.js"></script>
+         <script src="/CDN/bower_components/summernote/dist/summernote.js"></script>
+         <script src="/CDN/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+         <script src="/CDN/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+         <script src="/CDN/bower_components/moment/min/moment-with-locales.js"></script>
+         <script src="/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+         <script src="/CDN/bower_components/angular-toasty/dist/angular-toasty.js"></script>
+         <script src="/CDN/bower_components/jquery.nicescroll/jquery.nicescroll.js"></script>
+         <script src="/CDN/bower_components/ng-tasty/ng-tasty-tpls.js"></script>
+      <?php } else { ?>
+         <script src="assets/vendor/vendor.min.js?cache=<?= rand(1000, 9000); ?>"></script>
+      <?php } ?>
       <!-- common app js -->
-      <?php
-      if ($_SERVER['HTTP_HOST'] == '10.10.11.48') {
-         foreach ($AppLibs as $value) {
-            echo "<script src=\"{$value}\"></script>\n";
-         }
-      } else {
-         echo "<script src=\"assets/js/ng/build/appbuild.min.js?cache=" . rand(1000, 9000) . "\"></script>";
-      }
-      ?>
+      <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+         <script src="assets/js/ng/app.js"></script>
+         <script src="assets/js/ng/controllers.js"></script>
+         <script src="assets/js/ng/directives.js"></script>
+         <script src="assets/js/ng/services.js"></script>
+         <script src="assets/js/ng/validators.js"></script>
+         <script src="assets/js/ng/wrappers.js"></script>
+      <?php } else { ?>
+         <script src="assets/js/ng/build/appbuild.min.js?cache=<?= rand(1000, 9000); ?>"></script>
+      <?php } ?>
       <!-- page specific libs -->
    <toasty></toasty>
 </body>

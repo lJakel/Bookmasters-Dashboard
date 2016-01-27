@@ -164,7 +164,7 @@ BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootSc
             }
          });
       });
-      
+
       $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error, $location) {
          switch (error.status) {
             case 200:

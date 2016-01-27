@@ -22,6 +22,14 @@ class Utilities extends Secure_Controller {
       echo json_encode($this->UM->ConvertIsbns());
    }
 
+   public function CatalogDescriptions() {
+      if ($this->input->post('')) {
+         
+      } else {
+         $this->load->view('Apps/' . get_class($this) . '/' . __FUNCTION__);
+      }
+   }
+
    public function fraserReport() {
 
       if ($this->input->post('Report')) {

@@ -9,10 +9,10 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                <li role="presentation" class="active"><a href="#" data-target="#Specifications" aria-controls="Specifications" role="tab" data-toggle="tab">Specifications</a></li>
-               <li role="presentation"><a href="#" data-target="#Prices" aria-controls="Prices" role="tab" data-toggle="tab">Prices</a></li>
-               <li role="presentation"><a href="#" data-target="#ComparableTitles" aria-controls="ComparableTitles" role="tab" data-toggle="tab">Comparable Titles</a></li>
-               <li role="presentation"><a href="#" data-target="#Illustrations" aria-controls="Illustrations" role="tab" data-toggle="tab">Illustrations</a></li>
-               <li role="presentation"><a href="#" data-target="#SalesRights" aria-controls="SalesRights" role="tab" data-toggle="tab">Sales Rights</a></li>
+               <li role="presentation"><a href="#" class="required" data-target="#Prices" aria-controls="Prices" role="tab" data-toggle="tab">Prices</a></li>
+               <li role="presentation"><a href="#" class="required" data-target="#SalesRights" aria-controls="SalesRights" role="tab" data-toggle="tab">Sales Rights</a></li>
+               <li role="presentation"><a href="#" class="" data-target="#ComparableTitles" aria-controls="ComparableTitles" role="tab" data-toggle="tab">Comparable Titles</a></li>
+               <li role="presentation"><a href="#" class="" data-target="#Illustrations" aria-controls="Illustrations" role="tab" data-toggle="tab">Illustrations</a></li>
                <li role="presentation" ng-show="fm.ProductForm == '3 - Electronic Print'"><a href="#" data-target="#RelatedProduct" aria-controls="RelatedProduct" role="tab" data-toggle="tab">Related Product</a></li>
             </ul>
             <!-- Tab panes -->
@@ -363,7 +363,7 @@
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
                            <div class="col-md-12 form-group">
                               <div style="max-height:290px; min-height:43px; border:solid thin #ddd; padding:0 10px; overflow-y: scroll;">
-                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes | filter:fm.IsoSearch">
+                                 <div class="checkbox checkbox-primary" ng-repeat="iso in fm.FixedIsoCodes| filter:fm.IsoSearch">
                                     <input id="iso{{$index}}" type="checkbox" ng-model="iso.checked">
                                     <label for="iso{{$index}}">
                                        {{iso.Name}} - {{iso.Iso2}}

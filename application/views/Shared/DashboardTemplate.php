@@ -18,21 +18,13 @@
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/CDN/resources/brand/favicon/apple-touch-icon-72x72-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/CDN/resources/brand/favicon/apple-touch-icon-114x114-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/CDN/resources/brand/favicon/apple-touch-icon-144x144-precomposed.png">
-
       <!--Core CSS -->
-
       <link href="/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
-
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="/CDN/bower_components/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" href="/CDN/bower_components/angular-toasty/dist/angular-toasty.min.css">
-
-
       <!-- Custom styles for this Dashboard -->
       <link href="/CDN/css/dashboard-sass2/assets/stylesheets/dashboard.css" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdn.rawgit.com/summernote/summernote/v0.7.0/dist/summernote.css">
-
-
-
+      <link rel="stylesheet" href="/CDN/bower_components/summernote/dist/summernote.css">
    </head>
 
    <body data-ng-controller="BMAppController">
@@ -42,33 +34,54 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <script src="assets/vendor/vendor.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-      <!--<script src="/CDN/bower_components/angular/angular.min.js"></script>
-      <script src="/CDN/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-      <script src="/CDN/bower_components/ngstorage/ngStorage.min.js"></script>
-      <script src="/CDN/bower_components/angular-resource/angular-resource.min.js"></script>
-      <script src="/CDN/bower_components/angular-ui-event/dist/event.min.js"></script>
-      <script src="/CDN/bower_components/angular-animate/angular-animate.min.js"></script>
-       common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version 
-      <script src="/CDN/bower_components/ng-file-upload-shim/ng-file-upload-all.min.js"></script>
-      <script src="/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.min.js"></script>
-      <script src="/CDN/bower_components/angular-summernote/dist/angular-summernote.min.js"></script>
-      <script src="/CDN/bower_components/summernote/dist/summernote.min.js"></script>
-      <script src="/CDN/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-      <script src="/CDN/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-      <script src="/CDN/bower_components/moment/min/moment-with-locales.min.js"></script>
-      <script src="/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-      <script src="/CDN/bower_components/angular-toasty/dist/angular-toasty.min.js"></script>
-      <script src="/CDN/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>-->
-
-
-
+      <?php
+      $AppLibs = [
+          'assets/js/ng/app.js',
+          'assets/js/ng/controllers.js',
+          'assets/js/ng/directives.js',
+          'assets/js/ng/services.js',
+          'assets/js/ng/validators.js',
+          'assets/js/ng/wrappers.js',
+      ];
+      $VendorLibs = [
+          '/CDN/bower_components/jquery/dist/jquery.js',
+          '/CDN/bower_components/angular/angular.js',
+          '/CDN/bower_components/angular-ui-router/release/angular-ui-router.js',
+          '/CDN/bower_components/ngstorage/ngStorage.js',
+          '/CDN/bower_components/angular-resource/angular-resource.js',
+          '/CDN/bower_components/angular-ui-event/dist/event.js',
+          '/CDN/bower_components/angular-animate/angular-animate.js',
+          '/CDN/bower_components/ng-file-upload/ng-file-upload-all.js',
+          '/CDN/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js',
+          '/CDN/bower_components/angular-summernote/dist/angular-summernote.js',
+          '/CDN/bower_components/summernote/dist/summernote.js',
+          '/CDN/bower_components/bootstrap/dist/js/bootstrap.js',
+          '/CDN/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+          '/CDN/bower_components/moment/min/moment-with-locales.js',
+          '/CDN/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+          '/CDN/bower_components/angular-toasty/dist/angular-toasty.js',
+          '/CDN/bower_components/jquery.nicescroll/jquery.nicescroll.js',
+          '/CDN/bower_components/ng-tasty/ng-tasty-tpls.js',
+      ];
+      if ($_SERVER['HTTP_HOST'] == '10.10.11.48') {
+         foreach ($VendorLibs as $value) {
+            echo "<script src=\"{$value}\"></script>\n";
+         }
+      } else {
+         echo "<script src=\"assets/vendor/vendor.min.js?cache=" . rand(1000, 9000) . "\"></script>";
+      }
+      ?>
       <!-- common app js -->
-      <script src="assets/js/ng/build/appbuild.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>
-      <!--<script src="assets/js/ng/build/appbuild.js?cache=<?php echo rand(1000, 9000); ?>"></script>-->
-
+      <?php
+      if ($_SERVER['HTTP_HOST'] == '10.10.11.48') {
+         foreach ($AppLibs as $value) {
+            echo "<script src=\"{$value}\"></script>\n";
+         }
+      } else {
+         echo "<script src=\"assets/js/ng/build/appbuild.min.js?cache=" . rand(1000, 9000) . "\"></script>";
+      }
+      ?>
       <!-- page specific libs -->
-
    <toasty></toasty>
 </body>
 </html>

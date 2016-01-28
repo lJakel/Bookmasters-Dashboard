@@ -9,10 +9,10 @@
                         <h1 ng-click="NTF.EmptyCache()">Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
-                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                              Drafts (AutoSave Enabled) <span class="badge">4</span>
-                           </button>
-                           <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>
+                           <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                              View Drafts <span class="badge">{{NTF.Drafts.Drafts.length}}</span>
+                           </button> 
+                           <button class="btn btn-primary pull-right" ng-click="NTF.Drafts.SaveDraft()">Save Draft</button>
                         </h4>
                      </div>
                   </div>
@@ -21,63 +21,47 @@
          </div>
       </div>
    </div>
-   <div class="collapse row" id="collapseExample">
+   <div class="collapse row" id="collapseExample" ng-repeat="d in [NTF.Drafts]">
       <div class="col-md-12">
          <div class="panel panel-default">
             <div class="panel-body">
-               <div class="row">
-                  <div class="col-md-8">
-                     <h4>Saved Drafts</h4>
-                     <div class="table-responsive">
-                        <table class="table">
-                           <thead>
-                              <tr>
-                                 <th>Title</th>
-                                 <th>Creation Date</th>
-                                 <th>Last Updated</th>
-                                 <th class='twobtn'>Action</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr ng-repeat="d in NTF.Drafts">
-                                 <td>{{d.form.BasicInfo.Title}}</td>
-                                 <td>{{d.created}}</td>
-                                 <td></td>
-                                 <td class="twobtn">
-                                    <button class="btn btn-primary"><span class="fa fa-fw fa-edit"></span></button>
-                                    <button class="btn btn-danger"><span class="fa fa-fw fa-minus"></span></button>
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                  </div>
-                  <div class="col-md-4">
-                     <h4>Draft Options</h4>
-                     <div class="form-group">
-                        <b>Auto Save</b>
-                        <br>
 
-                        <div class="radio radio-success radio-inline">
-                           <input type="radio" name="radio1" id="radio1" ng-model="fm.TerritoryRights" value="world">
-                           <label for="radio1">
-                              On
-                           </label>
-                        </div>
-                        <div class="radio radio-danger radio-inline">
-                           <input type="radio" name="radio1" id="radio2" ng-model="fm.TerritoryRights" value="individual">
-                           <label for="radio2">
-                              Off
-                           </label>
-                        </div>
-                     </div>
-                     <div class="form-group">
-                        <button class="btn btn-primary">Clear All</button>
-                     </div>
-                  </div>
-               </div>
-               <div class="">
-                  <pre>{{NTF.Debug|json}}</pre>
+               <h4>Saved Drafts</h4>
+               <div class="table-responsive">
+                  <table class="table">
+                     <thead>
+                        <tr>
+                           <th>Draft ID</th>
+                           <th>Title</th>
+                           <th>Creation Date</th>
+                           <th>Last Updated</th>
+                           <th class='twobtn'>Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="draft in d.Drafts">
+                           <td>{{draft.DraftId}}</td>
+                           <td>{{draft.Title}}</td>
+                           <td>{{draft.CreationDate}}</td>
+                           <td>{{draft.LastUpdated}}</td>
+                           <td class="twobtn">
+                              <button class="btn btn-primary btn-sm"><span class="fa fa-fw fa-edit"></span></button>
+                              <button class="btn btn-danger btn-sm"><span class="fa fa-fw fa-minus"></span></button>
+                           </td>
+                        </tr>
+                     </tbody>
+                     <tfoot>
+                        <tr>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td class="twobtn">
+                              <button class="btn btn-primary" ng-click="d.EmptyCache()">Clear All</button>
+                           </td>
+                        </tr>
+                     </tfoot>
+                  </table>
                </div>
             </div>
          </div>
@@ -858,6 +842,7 @@
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_contributors.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_covers.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_demographics.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_drafts.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_factory.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_formats.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_marketing.js?cache=<?= rand(1000, 9000); ?>"></script>

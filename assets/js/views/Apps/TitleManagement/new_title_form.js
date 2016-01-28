@@ -1,6 +1,6 @@
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage) {
               var vm = this;
 
               vm.Dependencies = {
@@ -10,37 +10,29 @@ BMApp.register.controller('NewTitleForm',
                  $timeout: $timeout,
                  FixedReferences: FixedReferences,
                  $stateParams: $stateParams,
+                 toasty: toasty,
+                 NewTitleDraftsFactory: NewTitleDraftsFactory,
                  Upload: Upload
               };
               function init() {
-                 vm.Form = {
-                    DraftId: GuidCreator.CreateGuid(),
-                    ProductGroupId: null,
-                 };
-
+                    
                  vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
                  vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
                  vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
                  vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
                  vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
                  vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
-                 vm.Debug = NewTitleDraftsFactory.Debug;
-                 vm.EmptyCache = function () {
-                    NewTitleDraftsFactory.EmptyCache();
+                 vm.Drafts = new Drafts(vm, vm.Dependencies);
+
+                 vm.Form = {
+                    DraftId: GuidCreator.CreateGuid(),
+                    ProductGroupId: null,
+                    CreationDate: moment().format('X')
                  };
-                 vm.SaveDraft = function () {
-                    NewTitleDraftsFactory.SaveDraft({
-                       "DraftId": vm.Form.DraftId,
-                       "ProductGroupId": vm.Form.ProductGroupId,
-                       "Content": {
-                          "BasicInfo": vm.BasicInfo.Model,
-                          "Contributors": vm.Contributors.Model,
-                          "Formats": vm.Formats.Model,
-                          "Demographics": vm.Demographics.Model,
-                          "Marketing": vm.Marketing.Model,
-                       }
-                    });
-                 };
+
+            
+
+
                  vm.RefreshJson = function () {
                     $('#jsonPre').text(JSON.stringify({
                        "Form": vm.Form,

@@ -38,7 +38,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
 
 
       function loadIsoCodes(get) {
-         return $http.post("api/IsoCodes/getAllCodes").then(function (response) {
+         return $http.post("API/ISOCodes/Get").then(function (response) {
             setReference(response.data.data, 'IsoCodes');
             if (get == true) {
                return self.factory.IsoCodes;
@@ -73,7 +73,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
       function loadReferences(get) {
 
-         return $http.post("api/FixedReferences", {withCredentials: false}).then(function (response) {
+         return $http.post("API/FixedReferences/GetAllReferences", {withCredentials: false}).then(function (response) {
 
             setReference({
                ContributorRoles: response.data.ContributorRoles,
@@ -101,7 +101,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function lookupBisac(group, success, error) {
-         $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
+         $http.post("API/BisacCodes/GetGroupCodes", {groupId: group}).then(function (response) {
             success(response.data);
          }, function (response) {
             $state.go('error', {
@@ -125,159 +125,160 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
    }]);
 BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
-      var self = this;
-      self.UserId = null;
-      self.Drafts = [];
-      self.Init = false;
-      self.User = {
-         Id: '',
-         Drafts: []
-      };
-      self.DraftLocation = '';
-      function User(data) {
-         var su = this;
-         su.UserId = data.UserId || self.UserId;
-         su.Drafts = data.Drafts || [];
-      }
-      function Draft(data) {
-         var sd = this;
-         sd.DraftId = data.DraftId || '';
-         sd.ProductGroupId = data.ProductGroupId || '';
-         sd.Title = data.Content.BasicInfo.Title || '';
-         sd.Content = JSON.stringify(data.Content) || '';
-         sd.CreationDate = Math.floor(Date.now() / 1000);
-
-      }
-
-      self.factory = {
-         "Users": [
-//            {
-//               "UserID": 1,
-//               "Drafts": [
-//                  {
-//                     "DraftId": "c0b589a1",
-//                     "Created": 1449687962,
-//                     "Data": "fdsfsdfsdfdsf"
+//      var self = this;
+//      self.UserId = null;
+//      self.Drafts = [];
+//      self.Init = false;
+//      self.User = {
+//         Id: '',
+//         Drafts: []
+//      };
+//      self.DraftLocation = '';
+//      function User(data) {
+//         var su = this;
+//         su.UserId = data.UserId || self.UserId;
+//         su.Drafts = data.Drafts || [];
+//      }
+//      function Draft(data) {
+//         var sd = this;
+//         sd.DraftId = data.DraftId || '';
+//         sd.ProductGroupId = data.ProductGroupId || '';
+//         sd.Title = data.Content.BasicInfo.Title || '';
+//         sd.Content = JSON.stringify(data.Content) || '';
+//         sd.CreationDate = Math.floor(Date.now() / 1000);
+//
+//      }
+//
+//      self.factory = {
+//         "Users": [
+////            {
+////               "UserID": 1,
+////               "Drafts": [
+////                  {
+////                     "DraftId": "c0b589a1",
+////                     "Created": 1449687962,
+////                     "Data": "fdsfsdfsdfdsf"
+////                  }
+////               ]
+////            },
+//         ],
+//         Cache: {},
+//         Debug: $localStorage.NewTitleDraftsFactory.Users,
+//         EmptyCache: EmptyCache,
+//         SaveDraft: SaveDraft,
+////         LoadDraft: LoadDraft,
+//         GetDrafts: GetDrafts,
+//      };
+//      function cacheInit() {
+//         return $q(function (resolve, reject) {
+//            if (self.Init) {
+//               resolve();
+//               return;
+//            }
+//            $timeout(function () {
+//               AuthFactory.getInfo().then(function (r) {
+//                  self.UserId = r.credentials.userid;
+//               });
+//            }).then(function () {
+//
+//               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
+//               $localStorage.NewTitleDraftsFactory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
+//               if ($localStorage.NewTitleDraftsFactory.Users.length == 0) {
+//                  $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
+//               }
+//
+//               var result = $localStorage.NewTitleDraftsFactory.Users.filter(function (item) {
+//                  return (item.UserId == self.UserId);
+//               });
+//               if (result.length) {
+//                  self.DraftLocation = result;
+//               } else {
+//                  self.DraftLocation = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User(''))];
+//               }
+//
+//               if (self.UserId != null) {
+//                  self.Init = true;
+//                  resolve();
+//               } else {
+//                  reject($state.go('error', {
+//                     code: '500',
+//                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
+//                  }));
+//               }
+//
+//            });
+//         });
+//      }
+//      function EmptyCache() {
+//         self.Init = false;
+//         $localStorage.NewTitleDraftsFactory = {};
+//      }
+//      function SetStorage() {
+//         return cacheInit().then(function () {
+//            $localStorage.NewTitleDraftsFactory = self.factory;
+//         });
+//      }
+//
+//      function GetDrafts() {
+//         return cacheInit().then(function () {
+//            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
+//
+//
+//            if (self.factory.Users.length != 0) {
+//               $.each(self.factory.Users, function (k, v) {
+//                  if (v.UserID == self.UserId) {
+//                     console.log(v);
+//                     self.factory.Users = [v.Drafts];
 //                  }
-//               ]
-//            },
-         ],
-         Cache: {},
-         Debug: $localStorage.NewTitleDraftsFactory.Users,
-         EmptyCache: EmptyCache,
-         SaveDraft: SaveDraft,
-//         LoadDraft: LoadDraft,
-         GetDrafts: GetDrafts,
-      };
-      function cacheInit() {
-         return $q(function (resolve, reject) {
-            if (self.Init) {
-               resolve();
-               return;
-            }
-            $timeout(function () {
-               AuthFactory.getInfo().then(function (r) {
-                  self.UserId = r.credentials.userid;
-               });
-            }).then(function () {
-
-               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
-               $localStorage.NewTitleDraftsFactory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-               if ($localStorage.NewTitleDraftsFactory.Users.length == 0) {
-                  $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
-               }
-
-               var result = $localStorage.NewTitleDraftsFactory.Users.filter(function (item) {
-                  return (item.UserId == self.UserId);
-               });
-               if (result.length) {
-                  self.DraftLocation = result;
-               } else {
-                  self.DraftLocation = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User(''))];
-               }
-
-               if (self.UserId != null) {
-                  self.Init = true;
-                  resolve();
-               } else {
-                  reject($state.go('error', {
-                     code: '500',
-                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
-                  }));
-               }
-
-            });
-         });
-      }
-      function EmptyCache() {
-         self.Init = false;
-         $localStorage.NewTitleDraftsFactory = {};
-      }
-      function SetStorage() {
-         return cacheInit().then(function () {
-            $localStorage.NewTitleDraftsFactory = self.factory;
-         });
-      }
-
-      function GetDrafts() {
-         return cacheInit().then(function () {
-            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-
-
-            if (self.factory.Users.length != 0) {
-               $.each(self.factory.Users, function (k, v) {
-                  if (v.UserID == self.UserId) {
-                     console.log(v);
-                     self.factory.Users = [v.Drafts];
-                  }
-               });
-            } else {
-               self.factory.Users = [];
-            }
-            console.log(typeof self.factory.Users, self.factory.Users);
-            return $q.when(self.factory.Users);
-         });
-      }
-
-      function ClearDrafts() {
-         return cacheInit().then(function () {
-            self.factory.Users[self.UserId] = [];
-            SetStorage();
-            return $q.when(self.factory.Users[self.UserId]);
-         });
-      }
-
-
-      function SaveDraft(data) {
-         data = JSON.stringify(data);
-         data = JSON.parse(data);
-         console.log(data);
-         return cacheInit().then(function () {
-            var draft = new Draft(data);
-
-            console.log(draft, self.DraftLocation[0], self.DraftLocation[0]['Drafts']);
-            self.DraftLocation[0]['Drafts'].unshift(draft);
-            console.log(draft, self.DraftLocation[0], self.DraftLocation[0]['Drafts']);
-
-
-            var result = self.DraftLocation[0]['Drafts'].filter(function (item) {
-               return (item.DraftId == draft.DraftId);
-            });
-            if (result.length) {
-               self.DraftLocation = result;
-            } else {
-               self.DraftLocation = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User(''))];
-            }
-
-
-
-            if (self.DraftLocation[0]['Drafts'].length >= 4) {
-               self.DraftLocation[0]['Drafts'].length = 4;
-            }
-         });
-
-
-
-      }
-      return self.factory;
+//               });
+//            } else {
+//               self.factory.Users = [];
+//            }
+//            console.log(typeof self.factory.Users, self.factory.Users);
+//            return $q.when(self.factory.Users);
+//         });
+//      }
+//
+//      function ClearDrafts() {
+//         return cacheInit().then(function () {
+//            self.factory.Users[self.UserId] = [];
+//            SetStorage();
+//            return $q.when(self.factory.Users[self.UserId]);
+//         });
+//      }
+//
+//
+//      function SaveDraft(data) {
+//         data = JSON.stringify(data);
+//         data = JSON.parse(data);
+//         console.log(data);
+//         return cacheInit().then(function () {
+//            var draft = new Draft(data);
+//
+//            console.log(draft, self.DraftLocation[0], self.DraftLocation[0]['Drafts']);
+//            self.DraftLocation[0]['Drafts'].unshift(draft);
+//            console.log(draft, self.DraftLocation[0], self.DraftLocation[0]['Drafts']);
+//
+//
+//            var result = self.DraftLocation[0]['Drafts'].filter(function (item) {
+//               return (item.DraftId == draft.DraftId);
+//            });
+//            if (result.length) {
+//               self.DraftLocation = result;
+//            } else {
+//               self.DraftLocation = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User(''))];
+//            }
+//
+//
+//
+//            if (self.DraftLocation[0]['Drafts'].length >= 4) {
+//               self.DraftLocation[0]['Drafts'].length = 4;
+//            }
+//         });
+//
+//
+//
+//      }
+//      return self.factory;
+return {};
    }]);

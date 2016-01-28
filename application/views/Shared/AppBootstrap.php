@@ -8,10 +8,10 @@
                <li>
                   <a class="submenu collapsed" data-target="#DashboardList" data-toggle="collapse" href="#"><span class="fa fa-globe fa-fw"></span>Dashboard<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="DashboardList" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({ 'app': 'main','page': 'index', child: null })">Dashboard</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'main', page: 'submit' })">Calendar</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'main', page: 'view' })">Notes</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'main', page: 'view' })">Settings</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Dashboard</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Calendar</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Notes</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Settings</a></li>
                   </ul>
                </li>
             </ul>
@@ -20,39 +20,38 @@
                <li>
                   <a class="submenu collapsed" data-target="#TitleManagementList" data-toggle="collapse" href="#"><span class="fa fa-globe fa-fw"></span>Title Management<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="TitleManagementList" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'index', child: null})">Title Submission Details</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'submit', child: null})">Submit New Title</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'submitexcel', child: null})">Submit Title Spreadsheet</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'view', child: null })">View Titles</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'TitleManagement', page: 'view', child: null })">Settings</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'TitleManagement', app:'NewTitleForm', page: 'Index'})">Title Submission Details</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'TitleManagement', app:'NewTitleForm', page: 'submit'})">Submit New Title</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'TitleManagement', app:'NewTitleForm', page: 'submitexcel'})">Submit Title Spreadsheet</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'TitleManagement', app:'NewTitleForm', page: 'view' })">View Titles</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'TitleManagement', app:'NewTitleForm', page: 'view' })">Settings</a></li>
                   </ul>
                </li>
                <li>
                   <a class="submenu collapsed" data-target="#MarketingUpdateList" data-toggle="collapse" href="#"><span class="fa fa-microphone fa-fw"></span>Marketing Update<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="MarketingUpdateList" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'index', child: null})">View All Entries</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'create', child: null})">Create Entry</a></li>
-                     <li><a data-ui-sref="bm.app.page({app:'marketingupdate', page: 'settings', child: null })">Settings</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'MarketingUpdate', page: 'Index'})">View All Entries</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'MarketingUpdate', page: 'create'})">Create Entry</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'MarketingUpdate', page: 'settings' })">Settings</a></li>
                   </ul>
                </li>
                <li>
                   <a class="submenu collapsed" data-target="#SalesToolsList" data-toggle="collapse" href="#"><span class="fa fa-bar-chart fa-fw"></span>Sales Tools<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="SalesToolsList" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({app:'sales', page: 'top100', child: null})">Top100</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Sales', app: 'SalesReports', page: 'top100'})">Top100</a></li>
 
                   </ul>
                </li>
             </ul>
             <span ng-if="user.roles[0] == 'Developer'" class="listheader">Developer Applications</span>
             <ul class="application-items" ng-if="user.roles[0] == 'Developer'">
-               <li><a data-ui-sref="bm.app.page({ 'app': 'devfeedback','page': 'home', child: null })"><span class="fa fa-comment fa-fw"></span>Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
-               <li><a data-ui-sref="bm.app.page({ 'app': 'devusermanagement','page': 'home', child: null })"><span class="fa fa-user fa-fw"></span>User Management</a></li>
-               <li><a data-ui-sref="bm.app.page({ 'app': 'devdebug','page': 'index', child: null })"><span class="fa fa-bug fa-fw"></span>Debug</a></li>
+               <li><a data-ui-sref="bm.app.page({folder: 'Developer', 'app': 'devfeedback','page': 'home' })"><span class="fa fa-comment fa-fw"></span>Site Feedback <span class="label label-default" style="color:white;">4</span></a></li>
+               <li><a data-ui-sref="bm.app.page({folder: 'Developer', 'app': 'devusermanagement','page': 'home' })"><span class="fa fa-user fa-fw"></span>User Management</a></li>
+               <li><a data-ui-sref="bm.app.page({folder: 'Developer', 'app': 'devdebug','page': 'Index' })"><span class="fa fa-bug fa-fw"></span>Debug</a></li>
                <li>
                   <a class="submenu collapsed" data-target="#DevUtilities" data-toggle="collapse" href=""><span class="fa fa-microphone fa-fw"></span>Utilities<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="DevUtilities" class="collapse">
-                     <li><a data-ui-sref="bm.app.page({app:'Utilities', page: 'ISBNConversion', child: null})">ISBN Conversion</a></li>
-
+                     <li><a data-ui-sref="bm.app.page({folder: 'Utilities',app:'Utilities', page: 'ISBNConversion'})">ISBN Conversion</a></li>
                   </ul>
                </li>
             </ul>

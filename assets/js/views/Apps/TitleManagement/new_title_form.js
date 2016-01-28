@@ -1,69 +1,87 @@
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload) {
-      var vm = this;
+BMApp.register.controller('NewTitleForm',
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory) {
+              var vm = this;
 
-      vm.Dependencies = {
-         scriptLoader: scriptLoader,
-         $scope: $scope,
-         $rootScope: $rootScope,
-         $timeout: $timeout,
-         FixedReferences: FixedReferences,
-         $stateParams: $stateParams,
-         Upload: Upload
-      }
-      function init() {
-         vm.Form = {
-            DraftId: GuidCreator.CreateGuid(),
-            ProductGroupId: null,
-         }
+              vm.Dependencies = {
+                 scriptLoader: scriptLoader,
+                 $scope: $scope,
+                 $rootScope: $rootScope,
+                 $timeout: $timeout,
+                 FixedReferences: FixedReferences,
+                 $stateParams: $stateParams,
+                 Upload: Upload
+              };
+              function init() {
+                 vm.Form = {
+                    DraftId: GuidCreator.CreateGuid(),
+                    ProductGroupId: null,
+                 };
 
-         vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
-         vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
-         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
-         vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
-         vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
-         vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
+                 vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
+                 vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
+                 vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
+                 vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
+                 vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
+                 vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
+                 vm.Debug = NewTitleDraftsFactory.Debug;
+                 vm.EmptyCache = function () {
+                    NewTitleDraftsFactory.EmptyCache();
+                 };
+                 vm.SaveDraft = function () {
+                    NewTitleDraftsFactory.SaveDraft({
+                       "DraftId": vm.Form.DraftId,
+                       "ProductGroupId": vm.Form.ProductGroupId,
+                       "Content": {
+                          "BasicInfo": vm.BasicInfo.Model,
+                          "Contributors": vm.Contributors.Model,
+                          "Formats": vm.Formats.Model,
+                          "Demographics": vm.Demographics.Model,
+                          "Marketing": vm.Marketing.Model,
+                       }
+                    });
+                 };
+                 vm.RefreshJson = function () {
+                    $('#jsonPre').text(JSON.stringify({
+                       "Form": vm.Form,
+                       "BasicInfo": vm.BasicInfo.Model,
+                       "Contributors": vm.Contributors.Model,
+                       "Formats": vm.Formats.Model,
+                       "Demographics": vm.Demographics.Model,
+                       "Marketing": vm.Marketing.Model,
+                       "Covers": vm.Covers.Model
+                    }));
+                 };
 
-         vm.RefreshJson = function () {
-            $('#jsonPre').text(JSON.stringify({
-               "BasicInfo": vm.BasicInfo.Model,
-               "Contributors": vm.Contributors.Model,
-               "Formats": vm.Formats.Model,
-               "Demographics": vm.Demographics.Model,
-               "Marketing": vm.Marketing.Model,
-               "Covers": vm.Covers.Model,
-            }));
 
-         };
+                 FixedReferences.getReferences().then(function (response) {
+                    vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
+                    vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
+                    vm.Formats.FormatModal.FixedProductForms = response.FixedProductForms;
+                    vm.Formats.FormatModal.FixedProductFormDetails = response.FixedProductFormDetails;
+                    vm.Formats.FormatModal.FixedProductFormDetailSpecifics = response.FixedProductFormDetailSpecifics;
+                    vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
+                    vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
+                    vm.Demographics.FixedList = response.BisacGroups;
+                 });
 
+                 FixedReferences.getIsoCodes().then(function (response) {
+                    vm.Formats.FormatModal.FixedIsoCodes = response.codes;
+                 });
+                 FixedReferences.getDiscountCodes().then(function (response) {
+                    vm.Formats.FormatModal.FixedDiscountCodes = response;
+                 });
 
-         FixedReferences.getReferences().then(function (response) {
-            vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
-            vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
-            vm.Formats.FormatModal.FixedProductForms = response.FixedProductForms;
-            vm.Formats.FormatModal.FixedProductFormDetails = response.FixedProductFormDetails;
-            vm.Formats.FormatModal.FixedProductFormDetailSpecifics = response.FixedProductFormDetailSpecifics;
-            vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
-            vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
-            vm.Demographics.FixedList = response.BisacGroups;
-         });
+                 $timeout(function () {
+                    $('[data-toggle="popover"]').popover();
+                 });
 
-         FixedReferences.getIsoCodes().then(function (response) {
-            vm.Formats.FormatModal.FixedIsoCodes = response.codes;
-         });
-         FixedReferences.getDiscountCodes().then(function (response) {
-            vm.Formats.FormatModal.FixedDiscountCodes = response;
-         });
+              }
+              $timeout(function () {
 
-         $timeout(function () {
-            $('[data-toggle="popover"]').popover();
-         });
+              }).then(init);
 
-      }
-      $timeout(function () {
-
-      }).then(init);
-
-   }]);
+           }]);
 
 //blank model
 var data = {
@@ -235,4 +253,4 @@ data = {
          ]
       }
    }
-}
+};

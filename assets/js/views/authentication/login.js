@@ -20,9 +20,9 @@ var login = function (Dependencies) {
                   var previousState = JSON.parse(Dependencies.$rootScope.redirectToStateAfterLogin);
                }
                if (!$.isEmptyObject(previousState)) {
-                  Dependencies.$state.go('bm.app.page', {app: previousState.app, page: previousState.page, child: previousState.child});
+                  Dependencies.$state.go('bm.app.page', previousState);
                } else {
-                  Dependencies.$state.go('bm.app.page', {app: 'main', page: 'index', child: null});
+                  Dependencies.$state.go('bm.app.page', {folder: 'Dashboard', app: 'Main', page: 'Index', child: null});
                }
             }, 2000);
 

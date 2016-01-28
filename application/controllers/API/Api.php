@@ -47,7 +47,7 @@ class Api extends CI_Controller {
       }
    }
 
-   public function test() {
+   public function FixedReferences() {
 
       $itemmaster = $this->load->database('itemmaster', TRUE);
 

@@ -170,48 +170,45 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
       AuthFactory.getInfo().then(function (response) {
          $scope.user = response;
       });
+      function Feedback(dep) {
+         var self = this;
+         self.FeedbackModalVisible = false;
+         self.feedback = {
+            username: '',
+            email: '',
+            url: '',
+            useragent: '',
+            platform: '',
+            contact: '',
+            message: ''
+         };
+
+         self.submitBtn = 'Submit';
+         self.success = false;
+
+         self.showFeedbackModal = function () {
+            self.feedback.message = '';
+            self.submitBtn = 'Submit';
+            self.success = false;
+
+            self.feedback.url = window.location.href;
+            self.feedback.useragent = navigator.userAgent;
+            self.feedback.platform = navigator.platform;
+            dep.AuthFactory.getInfo().then(function (response) {
+               self.feedback.username = response.credentials.username;
+               self.feedback.email = response.credentials.email;
+            });
+            self.FeedbackModalVisible = !self.FeedbackModalVisible;
+         };
+
+         self.submitFeedback = function () {
+            self.submitBtn = 'Submitting...';
+            dep.$http.post('Feedback/SubmitFeedback/Submit', self.feedback).then(function (success) {
+               self.submitBtn = 'Success!';
+               self.success = true;
+            }, function (fail) {
+               self.submitBtn = 'Failed';
+            });
+         };
+      }
    }]);
-var Feedback = function (dep) {
-   var self = this;
-
-   self.FeedbackModalVisible = false;
-
-   self.feedback = {
-      username: '',
-      email: '',
-      url: '',
-      useragent: '',
-      platform: '',
-      contact: '',
-      message: ''
-   };
-
-
-   self.submitBtn = 'Submit';
-   self.success = false;
-
-   self.showFeedbackModal = function () {
-      self.feedback.message = '';
-      self.submitBtn = 'Submit';
-      self.success = false;
-
-      self.feedback.url = window.location.href;
-      self.feedback.useragent = navigator.userAgent;
-      self.feedback.platform = navigator.platform;
-      dep.AuthFactory.getInfo().then(function (response) {
-         self.feedback.username = response.credentials.username;
-         self.feedback.email = response.credentials.email;
-      });
-      self.FeedbackModalVisible = !self.FeedbackModalVisible;
-   };
-
-   self.submitFeedback = function () {
-      self.submitBtn = 'Submitting...';
-      dep.$http.post('feedback/apisubmit', self.feedback).then(function (success) {
-         self.submitBtn = 'Success!';
-         self.success = true;
-      }, function (fail) {
-         self.submitBtn = 'Failed';
-      });
-   };
-};

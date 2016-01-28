@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Feedback extends Secure_Controller {
+class SubmitFeedback extends Secure_Controller {
 
    function __construct() {
       parent::__construct();
@@ -13,7 +13,7 @@ class Feedback extends Secure_Controller {
       $this->load->view('Apps/Main/index');
    }
 
-   public function APISubmit() {
+   public function Submit() {
 
       $result = $this->DevFeedback_Model->submitFeedback(
               $this->input->post('username'), $this->input->post('url'), $this->input->post('useragent'), $this->input->post('message'), $this->input->post('contact')

@@ -146,12 +146,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
    }]);
 
 BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootScope, $state, AuthFactory, $location) {
-      $rootScope.previousState;
-      $rootScope.previousStateParams;
-      $rootScope.$on('$stateChangeSuccess', function (from, fromParams) {
-         $rootScope.previousState = from.name;
-         $rootScope.previousStateParams = fromParams;
-      });
+      
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
          if (!$.isEmptyObject(toParams)) {
             $rootScope.redirectToStateAfterLogin = JSON.stringify(toParams);
@@ -361,51 +356,48 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
       AuthFactory.getInfo().then(function (response) {
          $scope.user = response;
       });
+      function Feedback(dep) {
+         var self = this;
+         self.FeedbackModalVisible = false;
+         self.feedback = {
+            username: '',
+            email: '',
+            url: '',
+            useragent: '',
+            platform: '',
+            contact: '',
+            message: ''
+         };
+
+         self.submitBtn = 'Submit';
+         self.success = false;
+
+         self.showFeedbackModal = function () {
+            self.feedback.message = '';
+            self.submitBtn = 'Submit';
+            self.success = false;
+
+            self.feedback.url = window.location.href;
+            self.feedback.useragent = navigator.userAgent;
+            self.feedback.platform = navigator.platform;
+            dep.AuthFactory.getInfo().then(function (response) {
+               self.feedback.username = response.credentials.username;
+               self.feedback.email = response.credentials.email;
+            });
+            self.FeedbackModalVisible = !self.FeedbackModalVisible;
+         };
+
+         self.submitFeedback = function () {
+            self.submitBtn = 'Submitting...';
+            dep.$http.post('feedback/apisubmit', self.feedback).then(function (success) {
+               self.submitBtn = 'Success!';
+               self.success = true;
+            }, function (fail) {
+               self.submitBtn = 'Failed';
+            });
+         };
+      }
    }]);
-var Feedback = function (dep) {
-   var self = this;
-
-   self.FeedbackModalVisible = false;
-
-   self.feedback = {
-      username: '',
-      email: '',
-      url: '',
-      useragent: '',
-      platform: '',
-      contact: '',
-      message: ''
-   };
-
-
-   self.submitBtn = 'Submit';
-   self.success = false;
-
-   self.showFeedbackModal = function () {
-      self.feedback.message = '';
-      self.submitBtn = 'Submit';
-      self.success = false;
-
-      self.feedback.url = window.location.href;
-      self.feedback.useragent = navigator.userAgent;
-      self.feedback.platform = navigator.platform;
-      dep.AuthFactory.getInfo().then(function (response) {
-         self.feedback.username = response.credentials.username;
-         self.feedback.email = response.credentials.email;
-      });
-      self.FeedbackModalVisible = !self.FeedbackModalVisible;
-   };
-
-   self.submitFeedback = function () {
-      self.submitBtn = 'Submitting...';
-      dep.$http.post('feedback/apisubmit', self.feedback).then(function (success) {
-         self.submitBtn = 'Success!';
-         self.success = true;
-      }, function (fail) {
-         self.submitBtn = 'Failed';
-      });
-   };
-};
 /**
  * Core Sign directives. Sing framework is built on top of them
  */
@@ -734,7 +726,7 @@ appServices.factory('GuidCreator', function () {
       }
 //      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 
-      return s4() + s4();
+      return s4() + s4() + '-' + s4() + s4();
    }
 });
 
@@ -824,7 +816,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
          }
       }
    }]);
-appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location) {
+appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', '$rootScope', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location, $rootScope) {
 
       var url = 'auth/';
 
@@ -852,6 +844,7 @@ appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$l
             $localStorage.$reset();
             $localStorage.user = null;
             changeUser(null);
+            $rootScope.redirectToStateAfterLogin = undefined;
             $location.path('/login');
          }, function (response) {
             $state.go('error');

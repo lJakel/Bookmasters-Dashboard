@@ -5,7 +5,7 @@ var Modals = {
       self.Method = '';
 
       Dependencies.$timeout(function () {
-         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContribModalForm.AdditionalTitleForm, function (newVal, oldVal) {
+         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContributorsModalForm.AdditionalTitleForm, function (newVal, oldVal) {
             console.log(newVal, oldVal);
          });
       });

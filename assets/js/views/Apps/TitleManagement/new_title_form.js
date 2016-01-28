@@ -15,7 +15,7 @@ BMApp.register.controller('NewTitleForm',
                  Upload: Upload
               };
               function init() {
-                    
+
                  vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
                  vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
                  vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
@@ -30,7 +30,7 @@ BMApp.register.controller('NewTitleForm',
                     CreationDate: moment().format('X')
                  };
 
-            
+
 
 
                  vm.RefreshJson = function () {

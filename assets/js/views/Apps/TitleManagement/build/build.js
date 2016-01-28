@@ -464,6 +464,11 @@ var Drafts = function (data, Dependencies) {
          self.Drafts = r.Drafts;
       });
    };
+
+   self.FormatDate = function (date,format) {
+      return moment(date, "X").format("dddd, MMMM Do YYYY, h:mm:ss a");
+
+   }
    self.GetDrafts();
    self.SaveDraft = function () {
       Dependencies.NewTitleDraftsFactory.SaveDraft(JSON.stringify({
@@ -737,7 +742,7 @@ BMApp.register.controller('NewTitleForm',
                  Upload: Upload
               };
               function init() {
-                    
+
                  vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
                  vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
                  vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
@@ -752,7 +757,7 @@ BMApp.register.controller('NewTitleForm',
                     CreationDate: moment().format('X')
                  };
 
-            
+
 
 
                  vm.RefreshJson = function () {

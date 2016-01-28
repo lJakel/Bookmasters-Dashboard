@@ -42,8 +42,8 @@
                         <tr ng-repeat="draft in d.Drafts">
                            <td>{{draft.DraftId}}</td>
                            <td>{{draft.Title}}</td>
-                           <td>{{draft.CreationDate}}</td>
-                           <td>{{draft.LastUpdated}}</td>
+                           <td>{{d.FormatDate(draft.CreationDate)}}</td>
+                           <td>{{d.FormatDate(draft.LastUpdated)}}</td>
                            <td class="twobtn">
                               <button class="btn btn-primary btn-sm"><span class="fa fa-fw fa-edit"></span></button>
                               <button class="btn btn-danger btn-sm"><span class="fa fa-fw fa-minus"></span></button>
@@ -835,7 +835,7 @@
 <link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="/cdn/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
 
-<?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+<?php if ($_SERVER['HTTP_HOST'] !== '10.10.11.48') { ?>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/modals/modals.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/share/components.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_basic.js?cache=<?= rand(1000, 9000); ?>"></script>

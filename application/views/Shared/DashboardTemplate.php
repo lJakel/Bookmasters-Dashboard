@@ -57,7 +57,7 @@
          <script src="assets/vendor/vendor.min.js?cache=<?= rand(1000, 9000); ?>"></script>
       <?php } ?>
       <!-- common app js -->
-      <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+      <?php if ($_SERVER['HTTP_HOST'] !== '10.10.11.48') { ?>
          <script src="assets/js/ng/app.js"></script>
          <script src="assets/js/ng/controllers.js"></script>
          <script src="assets/js/ng/directives.js"></script>

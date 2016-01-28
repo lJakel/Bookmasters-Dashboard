@@ -16,6 +16,10 @@ var Drafts = function (data, Dependencies) {
          self.Drafts = r.Drafts;
       });
    };
+
+   self.FormatDate = function (date,format) {
+      return moment(date, "X").format("dddd, MMMM Do YYYY, h:mm:ss a");
+   };
    self.GetDrafts();
    self.SaveDraft = function () {
       Dependencies.NewTitleDraftsFactory.SaveDraft(JSON.stringify({

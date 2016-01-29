@@ -2,16 +2,19 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Main extends Secure_Controller {
+class Debug extends Secure_Controller {
 
    var $app = [];
 
-   public function __construct() {
+   function __construct() {
       parent::__construct();
       $this->app['links'] = get_class_methods($this);
       $this->app['appName'] = get_class($this);
-      $this->app['viewFolder'] = 'Dashboard';
-      $this->app['folder'] = 'Dashboard';
+      $this->app['viewFolder'] = 'Developer';
+      $this->app['folder'] = 'Utilities';
+      $this->Auth_Model->authorizeApplication('Developer');
+
+//      $this->load->model('DevModels/DevFeedback_Model');
    }
 
    public function Index() {

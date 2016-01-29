@@ -10,14 +10,13 @@ class AccountSettings extends Secure_Controller {
       parent::__construct();
       $this->app['links'] = get_class_methods($this);
       $this->app['appName'] = get_class($this);
+      $this->app['viewFolder'] = 'Applications';
+      $this->app['folder'] = 'Account';
    }
 
    public function index() {
       $this->load->view('Apps/UserManagement/' . get_class($this) . '/' . __FUNCTION__);
    }
 
-   public function sidebar() {
-      $this->load->view('Apps/UserManagement/' . get_class($this) . '/' . __FUNCTION__, $this->app);
-   }
 
 }

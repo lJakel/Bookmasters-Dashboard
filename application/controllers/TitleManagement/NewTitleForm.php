@@ -4,23 +4,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class NewTitleForm extends Secure_Controller {
 
+   var $app = [];
+
    function __construct() {
       parent::__construct();
+      $this->app['links'] = get_class_methods($this);
+      $this->app['appName'] = get_class($this);
+      $this->app['viewFolder'] = 'Applications';
+      $this->app['folder'] = 'TitleManagement';
    }
 
-   public function index() {
-      $this->load->view('Apps/NewTitle/index');
+   public function Index() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
 
-   public function submit() {
-      $this->load->view('Apps/NewTitle/submit');
+   public function Submit() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
 
-   public function submitexcel() {
-      $this->load->view('Apps/NewTitle/submitexcel');
+   public function SubmitExcel() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
 
-   public function submitexcelupload() {
+   public function SubmitExcelUpload() {
       $this->output->set_header('Content-Type: application/json');
       $this->output->set_status_header('400');
 

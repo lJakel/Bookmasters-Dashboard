@@ -15,21 +15,9 @@ class FixedReferences extends CI_Controller {
       
       $itemmaster = $this->load->database('itemmaster', TRUE);
 
-      $refMediaTypesQuery = $itemmaster->select('Id, Name')->get('dbo.rfMediaTypes');
+      $refMediaTypesQuery = $itemmaster->get('dbo.refProductTypes');
       $output['MediaTypes'] = $refMediaTypesQuery->result_object();
       $refMediaTypesQuery->free_result();
-
-      $refPRoductFormsQuery = $itemmaster->select('Id, Name, MediaTypeId')->get('dbo.rfPRoductForms');
-      $output['ProductForms'] = $refPRoductFormsQuery->result_object();
-      $refPRoductFormsQuery->free_result();
-
-      $refProductFormDetailsQuery = $itemmaster->select('Id, Name, FormId')->get('dbo.rfProductFormDetails');
-      $output['ProductFormDetails'] = $refProductFormDetailsQuery->result_object();
-      $refProductFormDetailsQuery->free_result();
-
-      $refProductFormDetailSpecificsQuery = $itemmaster->select('Id, Name, FormDetailId')->get('dbo.rfProductFormDetailSpecifics');
-      $output['ProductFormDetailSpecifics'] = $refProductFormDetailSpecificsQuery->result_object();
-      $refProductFormDetailSpecificsQuery->free_result();
 
       $refContributorRolesQuery = $itemmaster->select('Id, Name')->get('dbo.rfContributorRoles');
       $output['ContributorRoles'] = $refContributorRolesQuery->result_object();

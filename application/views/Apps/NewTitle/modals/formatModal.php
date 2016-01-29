@@ -31,7 +31,7 @@
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-md-3 form-group required" data-show-errors>
+                     <div class="col-md-4 form-group required" data-show-errors>
                         <label for="ProductForm" class="control-label">Media Type</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form" data-placement="bottom" data-content="The broadest format category into which this book will fit. Print book = paper and ink, Multimedia = Audio or Video, and Digital = eBooks.">?</a>
                         <select name="ProductType"
@@ -39,11 +39,12 @@
                                 ng-required="true"
                                 ng-change="fm.GetDynamicProductForms()"
                                 ng-model="fm.ProductType"
-                                ng-options="type.Name for type in fm.FixedProductTypes track by type.Id" >
+                                ng-options="type.MediaType for type in fm.FixedProductTypesNew track by type.MediaType" >
                            <option value="">Choose...</option>
                         </select>
+
                      </div>
-                     <div class="col-md-3 form-group required" data-show-errors>
+                     <div class="col-md-4 form-group required" data-show-errors>
                         <label for="ProductForm" class="control-label">Product Form</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form" data-placement="bottom" data-content="The broadest format category into which this book will fit. Print book = paper and ink, Multimedia = Audio or Video, and Digital = eBooks.">?</a>
                         <select name="ProductForm"
@@ -51,11 +52,13 @@
                                 ng-required="true"
                                 ng-change="fm.GetDynamicProductDetails()"
                                 ng-model="fm.ProductForm"
-                                ng-options="form.Name for form in fm.DynamicProductForms track by form.Id" >
+                                ng-options="form.Form for form in fm.DynamicProductForms track by form.Form" >
                            <option value="">Choose...</option>
                         </select>
+
+
                      </div>
-                     <div class="col-md-3 form-group {{(fm.DynamicProductFormDetails.length > 1) ? 'required': ''}}" data-show-errors>
+                     <div class="col-md-4 form-group {{(fm.DynamicProductFormDetails.length > 1) ? 'required': ''}}" data-show-errors>
                         <label for="ProductDetail" class="control-label">Product Detail</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form Detail" data-placement="bottom" data-content="The more specific format category into which this book fits. This further explains how the book was made.">?</a>
                         <select name="ProductDetail"
@@ -64,22 +67,12 @@
                                 name="ProductDetail"
                                 ng-change="fm.GetDynamicProductFormDetailSpecifics()"
                                 ng-model="fm.ProductDetail"
-                                ng-options="detail.Name for detail in fm.DynamicProductFormDetails track by detail.Id" >
+                                ng-options="detail.Detail for detail in fm.DynamicProductFormDetails track by detail.Detail" >
                            <option value="">Choose...</option>
                         </select>
+
                      </div>
-                     <div class="col-md-3 form-group {{(fm.DynamicProductFormDetailSpecifics.length > 1) ? 'required': ''}}" data-show-errors>
-                        <label for="ProductBinding" class="control-label">Product Binding</label>
-                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Bind Type" data-placement="bottom" data-content="The most specific format category into which this book will fit. This even further explains how the book was made.">?</a>
-                        <select name="ProductBinding"
-                                class="form-control"
-                                ng-required="(fm.DynamicProductFormDetailSpecifics.length > 1)"
-                                name="ProductDetail"
-                                ng-model="fm.ProductBinding"
-                                ng-options="binding.Name for binding in fm.DynamicProductFormDetailSpecifics track by binding.Id" >
-                           <option value="">Choose...</option>
-                        </select>
-                     </div>
+                  
                   </div>
                   <div class="row">
                      <div class="col-md-3 form-group required" data-show-errors>

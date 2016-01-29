@@ -62,9 +62,7 @@ BMApp.register.controller('NewTitleForm',
                  FixedReferences.getReferences().then(function (response) {
                     vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
                     vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
-                    vm.Formats.FormatModal.FixedProductForms = response.FixedProductForms;
-                    vm.Formats.FormatModal.FixedProductFormDetails = response.FixedProductFormDetails;
-                    vm.Formats.FormatModal.FixedProductFormDetailSpecifics = response.FixedProductFormDetailSpecifics;
+                    console.log(response.FixedProductTypes);
                     vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
                     vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
                     vm.Demographics.FixedList = response.BisacGroups;

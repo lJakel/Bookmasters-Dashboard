@@ -71,6 +71,7 @@ var Modals = {
       self.ComparableTitles = data.ComparableTitles || [];
       self.Illustrations = data.Illustrations || [];
 
+      self.FixedProductTypesNew = [];
       self.FixedProductTypes = [];
       self.FixedProductForms = [];
       self.FixedProductFormDetails = [];
@@ -90,7 +91,7 @@ var Modals = {
       self.DynamicProductFormDetailSpecifics = [];
       self.GetDynamicProductForms = GetDynamicProductForms;
       self.GetDynamicProductDetails = GetDynamicProductDetails;
-      self.GetDynamicProductFormDetailSpecifics = GetDynamicProductFormDetailSpecifics;
+
       self.addIllustration = addIllustration;
       self.removeIllustration = removeIllustration;
       self.addComparableTitle = addComparableTitle;
@@ -122,47 +123,56 @@ var Modals = {
          });
       }
 
-      function GetDynamicProductForms() {
+      self.GetMediaTypes = function () {
+         var ar = [];
+         $.each(self.FixedProductTypes, function (k, item) {
+            var elementpos = ar.map(function (x) {
+               return x.MediaType;
+            }).indexOf(item.MediaType);
 
-         if (typeof self.ProductType != 'undefined' || self.ProductType == '' || self.ProductType == null) {
-            var SelectedProductType = self.ProductType;
-            var newdata = self.FixedProductForms;
-            self.DynamicProductForms = [];
-            self.DynamicProductFormDetails = [];
-            self.DynamicProductFormDetailSpecifics = [];
-            self.ProductForm = "";
-            self.ProductDetail = "";
-            self.ProductBinding = "";
-            self.DynamicProductForms = newdata.filter(function (el) {
-               return el.MediaTypeId == SelectedProductType.Id;
-            });
-         }
+            if (elementpos < 0) {
+               item.MediaType !== null && ar.push({MediaType: item.MediaType});
+            }
+         });
+         self.FixedProductTypesNew = ar;
+      };
+
+
+      function GetDynamicProductForms() {
+         var array = self.FixedProductTypes.filter(function (item) {
+            return self.ProductType && item.MediaType == self.ProductType.MediaType;
+         });
+         var newArray = [];
+
+         $.each(array, function (k, item) { //for each product type
+            var elementpos = newArray.map(function (x) {
+               return x.Form;
+            }).indexOf(item.Form);
+            if (elementpos < 0) {
+               item.Form !== null && newArray.push({Form: item.Form});
+            }
+         });
+         self.DynamicProductForms = newArray;
       }
 
       function GetDynamicProductDetails() {
-         if (typeof self.ProductForm != 'undefined' || self.ProductForm == '' || self.ProductForm == null) {
-            var SelectedProductForm = self.ProductForm;
-            var newdata = self.FixedProductFormDetails;
-            self.DynamicProductFormDetails = [];
-            self.DynamicProductFormDetailSpecifics = [];
-            self.ProductDetail = "";
-            self.ProductBinding = "";
-            self.DynamicProductFormDetails = newdata.filter(function (el) {
-               return el.FormId == SelectedProductForm.Id;
-            });
-         }
-      }
 
-      function GetDynamicProductFormDetailSpecifics() {
-         if (typeof self.ProductDetail != 'undefined' || self.ProductDetail == '' || self.ProductDetail == null) {
-            var SelectedProductFormDetail = self.ProductDetail;
-            var newdata = self.FixedProductFormDetailSpecifics;
-            self.DynamicProductFormDetailSpecifics = [];
-            self.ProductBinding = "";
-            self.DynamicProductFormDetailSpecifics = newdata.filter(function (el) {
-               return el.FormDetailId == SelectedProductFormDetail.Id;
-            });
-         }
+         var array = self.FixedProductTypes.filter(function (item) {
+            return self.ProductForm && item.Form == self.ProductForm.Form;
+         });
+         var newArray = [];
+
+         $.each(array, function (k, item) { //for each product type
+            var elementpos = newArray.map(function (x) {
+               return x.Form;
+            }).indexOf(item.Detail);
+            if (elementpos < 0) {
+               item.Detail !== null && newArray.push({Detail: item.Detail});
+            }
+         });
+         self.DynamicProductFormDetails = newArray;
+
+
       }
 
       function addIllustration() {

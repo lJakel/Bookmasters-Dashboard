@@ -11,6 +11,7 @@ var Formats = function (data, Dependencies) {
    self.showFormatModal = function (data, method) {
       Dependencies.$scope.$broadcast('show-errors-reset');
 
+      console.log(self.FormatModal.GetMediaTypes(),'lol');
       self.FormatModal.Method = method || 'edit';
       self.FormatModal.entryData = data;
       $.each(data, function (k, v) {
@@ -26,11 +27,7 @@ var Formats = function (data, Dependencies) {
       }).then(function () {
          self.FormatModal.ProductDetail = data.ProductDetail;
       });
-      Dependencies.$timeout(function () {
-         self.FormatModal.GetDynamicProductFormDetailSpecifics();
-      }).then(function () {
-         self.FormatModal.ProductBinding = data.ProductBinding;
-      });
+     
       self.showDialog = true;
    };
 
@@ -45,7 +42,7 @@ var Formats = function (data, Dependencies) {
    };
 
    self.addFormat = function () {
-      
+
       self.showFormatModal(new Components.Format(''), 'add');
    };
 

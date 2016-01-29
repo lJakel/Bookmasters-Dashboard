@@ -8,7 +8,7 @@
          <div class="modal-body">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-               <li role="presentation" class="active"><a href="#" data-target="#Specifications" aria-controls="Specifications" role="tab" data-toggle="tab">Specifications</a></li>
+               <li role="presentation" class="active"><a href="#" class="required" data-target="#Specifications" aria-controls="Specifications" role="tab" data-toggle="tab">Specifications</a></li>
                <li role="presentation"><a href="#" class="required" data-target="#Prices" aria-controls="Prices" role="tab" data-toggle="tab">Prices</a></li>
                <li role="presentation"><a href="#" class="required" data-target="#SalesRights" aria-controls="SalesRights" role="tab" data-toggle="tab">Sales Rights</a></li>
                <li role="presentation"><a href="#" class="" data-target="#ComparableTitles" aria-controls="ComparableTitles" role="tab" data-toggle="tab">Comparable Titles</a></li>

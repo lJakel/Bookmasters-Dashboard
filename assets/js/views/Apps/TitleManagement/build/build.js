@@ -5,7 +5,7 @@ var Modals = {
       self.Method = '';
 
       Dependencies.$timeout(function () {
-         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContribModalForm.AdditionalTitleForm, function (newVal, oldVal) {
+         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContributorsModalForm.AdditionalTitleForm, function (newVal, oldVal) {
             console.log(newVal, oldVal);
          });
       });
@@ -446,7 +446,8 @@ var Demographics = function (data, Dependencies) {
       }
    }
 };
-BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory', function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
+BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory',
+   function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
       self.factory = {
          getReferences: getReferences,
@@ -476,25 +477,22 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
 
-
-      function setReferences(references) {
-         self.factory.references = references;
-         $localStorage.FixedReferencesFactory.References = references;
+      function setReference(reference, name) {
+         self.factory[name] = reference;
+         $localStorage.FixedReferencesFactory[name] = reference;
       }
 
-      function setIsoCodes(IsoCodes) {
-         self.factory.IsoCodes = IsoCodes;
-         $localStorage.FixedReferencesFactory.IsoCodes = IsoCodes;
-      }
+
+
 
       function loadIsoCodes(get) {
          return $http.post("api/IsoCodes/getAllCodes").then(function (response) {
-            setIsoCodes(response.data.data);
+            setReference(response.data.data, 'IsoCodes');
             if (get == true) {
                return self.factory.IsoCodes;
             }
          }, function () {
-            setIsoCodes(null);
+            setIsoCodes(null, 'IsoCodes');
             $state.go('error', {
                code: '500',
                message: 'An error occured loading the Country ISO Codes.'
@@ -523,8 +521,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
       function loadReferences(get) {
 
-         return $http.post("api/test", {withCredentials: false}).then(function (response) {
-            setReferences({
+         return $http.post("api/FixedReferences", {withCredentials: false}).then(function (response) {
+
+            setReference({
                ContributorRoles: response.data.ContributorRoles,
                BisacGroups: response.data.BisacGroups,
                Editions: response.data.EditionTypes,
@@ -534,13 +533,13 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
                FixedProductFormDetails: response.data.ProductFormDetails,
                FixedProductFormDetailSpecifics: response.data.ProductFormDetailSpecifics,
                AudienceTypes: response.data.AudienceTypes,
-            });
+            }, 'References');
             if (get == true) {
-               return self.factory.references;
+               return self.factory.References;
             }
 
          }, function (response) {
-            setReferences(null);
+            setReference(null, 'References');
             $state.go('error', {
                code: '500',
                message: 'An error occured loading the fixed references.'
@@ -550,7 +549,6 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function lookupBisac(group, success, error) {
-
          $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
             success(response.data);
          }, function (response) {
@@ -562,16 +560,10 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          });
       }
 
-
-      function setDiscountCodes(DiscountCodes) {
-         self.factory.DiscountCodes = DiscountCodes;
-         $localStorage.FixedReferencesFactory.DiscountCodes = DiscountCodes;
-      }
-
       function getDiscountCodes() {
          if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
             return AuthFactory.getInfo().then(function (response) {
-               setDiscountCodes(response.clientinfo.DiscountCodes);
+               setReference(response.clientinfo.DiscountCodes, 'DiscountCodes');
                return $q.when(self.factory.DiscountCodes);
             });
          } else {
@@ -581,103 +573,143 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
    }]);
 BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
-//      var self = this;
-//      self.UserId = null;
-//      self.Drafts = [];
-//      self.Init = false;
-//
-//      self.factory = {
-//         "Users": [
-////            {
-////               "UserID": 1,
-////               "Drafts": [
-////                  {
-////                     "DraftId": "c0b589a1",
-////                     "Created": 1449687962,
-////                     "Data": "fdsfsdfsdfdsf"
-////                  }
-////               ]
-////            },
-//         ],
-//         Cache: {},
-//         SaveDraft: SaveDraft,
-////         LoadDraft: LoadDraft,
-//         GetDrafts: GetDrafts,
-//      };
-//      function cacheInit() {
-//         return $q(function (resolve, reject) {
-//            if (self.Init) {
-//               resolve();
-//               return;
-//            }
-//            $timeout(function () {
-//               AuthFactory.getInfo().then(function (r) {
-//                  self.UserId = r.credentials.userid;
-//               });
-//            }).then(function () {
-//               var Today = Math.floor(Date.now() / 1000);
-//               var Days = 5;
-//               var CacheTime = Days * 24 * 60 * 60;
-//               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
-//               $localStorage.NewTitleDraftsFactory.Cache = $localStorage.NewTitleDraftsFactory.Cache || null;
-//               if ($localStorage.NewTitleDraftsFactory.Cache == null || Today - $localStorage.NewTitleDraftsFactory.Cache >= CacheTime) {
-//                  $localStorage.NewTitleDraftsFactory = {
-//                     Users: [], Cache: Math.floor(Date.now() / 1000)
+      var self = this;
+      self.UserId = null;
+      self.Drafts = [];
+      self.Init = false;
+      self.User = {
+         Id: '',
+         Drafts: []
+      };
+      self.DraftLocation = '';
+      function User(data) {
+         var su = this;
+         su.UserId = data.UserId || self.UserId;
+         su.Drafts = data.Drafts || [];
+      }
+      function Draft(data) {
+         var sd = this;
+         sd.DraftId = data.DraftId || '';
+         sd.ProductGroupId = data.ProductGroupId || '';
+         sd.Content = JSON.stringify(data.Content) || '';
+         sd.CreationDate = Math.floor(Date.now() / 1000);
+
+      }
+
+      self.factory = {
+         "Users": [
+//            {
+//               "UserID": 1,
+//               "Drafts": [
+//                  {
+//                     "DraftId": "c0b589a1",
+//                     "Created": 1449687962,
+//                     "Data": "fdsfsdfsdfdsf"
 //                  }
-//               }
-//               if (self.UserId != null) {
-//                  self.Init = true;
-//                  resolve();
-//               } else {
-//                  reject($state.go('error', {
-//                     code: '500',
-//                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
-//                  }));
-//               }
-//            });
-//         });
-//      }
-//
-//
-//      function SetStorage() {
+//               ]
+//            },
+         ],
+         Cache: {},
+         SaveDraft: SaveDraft,
+//         LoadDraft: LoadDraft,
+         GetDrafts: GetDrafts,
+      };
+      function cacheInit() {
+         return $q(function (resolve, reject) {
+            if (self.Init) {
+               resolve();
+               return;
+            }
+            $timeout(function () {
+               AuthFactory.getInfo().then(function (r) {
+                  console.log(r.credentials.userid);
+                  self.UserId = r.credentials.userid;
+               });
+            }).then(function () {
+
+               $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
+
+               if ($.isEmptyObject($localStorage.NewTitleDraftsFactory.Users)) {
+                  $localStorage.NewTitleDraftsFactory.Users = [];
+                  $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
+               } else {
+                  $.each($localStorage.NewTitleDraftsFactory.Users, function (k, v) {
+                     if (v.Userid == self.UserId) {
+                        self.DraftLocation = k;
+                     } else {
+                        $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
+
+                     }
+                  });
+               }
+               console.log($localStorage.NewTitleDraftsFactory.Users);
+
+               if (self.UserId != null) {
+                  self.Init = true;
+                  resolve();
+               } else {
+                  reject($state.go('error', {
+                     code: '500',
+                     message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
+                  }));
+               }
+
+            });
+         });
+      }
+
+      function SetStorage() {
+         return cacheInit().then(function () {
+            $localStorage.NewTitleDraftsFactory = self.factory;
+         });
+      }
+
+      function GetDrafts() {
+         return cacheInit().then(function () {
+            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
+
+
+            if (self.factory.Users.length != 0) {
+               $.each(self.factory.Users, function (k, v) {
+                  if (v.UserID == self.UserId) {
+                     console.log(v);
+                     self.factory.Users = [v.Drafts];
+                  }
+               });
+            } else {
+               self.factory.Users = [];
+            }
+            console.log(typeof self.factory.Users, self.factory.Users);
+            return $q.when(self.factory.Users);
+         });
+      }
+
+      function ClearDrafts() {
+         return cacheInit().then(function () {
+            self.factory.Users[self.UserId] = [];
+            SetStorage();
+            return $q.when(self.factory.Users[self.UserId]);
+         });
+      }
+
+
+      function SaveDraft(data) {
+
+         console.log($localStorage.NewTitleDraftsFactory);
+         console.log(data);
+         data = JSON.stringify(data);
+         data = JSON.parse(data);
+         console.log(data);
+         return cacheInit().then(function () {
+            var draft = new Draft(data);
+            console.log(draft);
+         });
+
+
+
 //         return cacheInit().then(function () {
-//            $localStorage.NewTitleDraftsFactory = self.factory;
-//         })
-//      }
-//      function GetDrafts() {
-//         return cacheInit().then(function () {
-//            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-//            
-//            
-//            if (self.factory.Users.length != 0) {
-//               $.each(self.factory.Users, function (k, v) {
-//                  if (v.UserID == self.UserId) {
-//                     console.log(v)
-//                     self.factory.Users = [v.Drafts];
-//                  }
-//               });
-//            } else {
-//               self.factory.Users = [];
-//            }
-//            console.log(typeof self.factory.Users, self.factory.Users);
-//            return $q.when(self.factory.Users);
-//         })
-//      }
-//
-//      function ClearDrafts() {
-//         return cacheInit().then(function () {
-//            self.factory.Users[self.UserId] = [];
-//            SetStorage();
-//            return $q.when(self.factory.Users[self.UserId]);
-//         });
-//      }
-//
-//
-//      function SaveDraft(data) {
-//         return cacheInit().then(function () {
-//
 //            self.factory.Users = self.factory.Users || [];
-//console.log(self.factory.Users)
+//            console.log(self.factory.Users);
 //            var Draft = {
 //               "UserID": self.UserId,
 //               "Drafts": [
@@ -690,9 +722,8 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
 //                  }
 //               ]
 //            }
-//
 //            if (self.factory.Users.length == 0) {
-//               self.factory.Users.push(Draft)
+//               self.factory.Users.push(Draft);
 //            } else {
 //               $.each(self.factory.Users, function (k, v) {
 //                  if (v.UserID == self.UserId) {
@@ -702,84 +733,97 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
 //                  }
 //               });
 //            }
-//
-//
 ////            if (self.factory.Users[self.UserId].length >= 4) {
 ////               self.factory.Users[self.UserId].length = 4;
 ////            }
 //            SetStorage();
 //            return $q.when(GetDrafts());
-//         })
-//      }
-//      return self.factory;
+//         });
+      }
+      return self.factory;
    }]);
 
-BMApp.register.controller('NewTitleForm', ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload) {
-      var vm = this;
+BMApp.register.controller('NewTitleForm',
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory) {
+              var vm = this;
 
-      vm.Dependencies = {
-         scriptLoader: scriptLoader,
-         $scope: $scope,
-         $rootScope: $rootScope,
-         $timeout: $timeout,
-         FixedReferences: FixedReferences,
-         $stateParams: $stateParams,
-         Upload: Upload
-      }
-      function init() {
-         vm.Form = {
-            DraftId: GuidCreator.CreateGuid(),
-            ProductGroupId: null,
-         }
+              vm.Dependencies = {
+                 scriptLoader: scriptLoader,
+                 $scope: $scope,
+                 $rootScope: $rootScope,
+                 $timeout: $timeout,
+                 FixedReferences: FixedReferences,
+                 $stateParams: $stateParams,
+                 Upload: Upload
+              };
+              function init() {
+                 vm.Form = {
+                    DraftId: GuidCreator.CreateGuid(),
+                    ProductGroupId: null,
+                 };
 
-         vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
-         vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
-         vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
-         vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
-         vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
-         vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
+                 vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
+                 vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
+                 vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
+                 vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
+                 vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
+                 vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
 
-         vm.RefreshJson = function () {
-            $('#jsonPre').text(JSON.stringify({
-               "BasicInfo": vm.BasicInfo.Model,
-               "Contributors": vm.Contributors.Model,
-               "Formats": vm.Formats.Model,
-               "Demographics": vm.Demographics.Model,
-               "Marketing": vm.Marketing.Model,
-               "Covers": vm.Covers.Model,
-            }));
+                 vm.SaveDraft = function () {
+                    NewTitleDraftsFactory.SaveDraft({
+                       "DraftId": vm.Form.DraftId,
+                       "ProductGroupId": vm.Form.ProductGroupId,
+                       "Content": {
+                          "BasicInfo": vm.BasicInfo.Model,
+                          "Contributors": vm.Contributors.Model,
+                          "Formats": vm.Formats.Model,
+                          "Demographics": vm.Demographics.Model,
+                          "Marketing": vm.Marketing.Model,
+                       }
+                    });
+                 };
+                 vm.RefreshJson = function () {
+                    $('#jsonPre').text(JSON.stringify({
+                       "Form": vm.Form,
+                       "BasicInfo": vm.BasicInfo.Model,
+                       "Contributors": vm.Contributors.Model,
+                       "Formats": vm.Formats.Model,
+                       "Demographics": vm.Demographics.Model,
+                       "Marketing": vm.Marketing.Model,
+                       "Covers": vm.Covers.Model
+                    }));
+                 };
 
-         };
 
+                 FixedReferences.getReferences().then(function (response) {
+                    vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
+                    vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
+                    vm.Formats.FormatModal.FixedProductForms = response.FixedProductForms;
+                    vm.Formats.FormatModal.FixedProductFormDetails = response.FixedProductFormDetails;
+                    vm.Formats.FormatModal.FixedProductFormDetailSpecifics = response.FixedProductFormDetailSpecifics;
+                    vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
+                    vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
+                    vm.Demographics.FixedList = response.BisacGroups;
+                 });
 
-         FixedReferences.getReferences().then(function (response) {
-            vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
-            vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
-            vm.Formats.FormatModal.FixedProductForms = response.FixedProductForms;
-            vm.Formats.FormatModal.FixedProductFormDetails = response.FixedProductFormDetails;
-            vm.Formats.FormatModal.FixedProductFormDetailSpecifics = response.FixedProductFormDetailSpecifics;
-            vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
-            vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
-            vm.Demographics.FixedList = response.BisacGroups;
-         });
+                 FixedReferences.getIsoCodes().then(function (response) {
+                    vm.Formats.FormatModal.FixedIsoCodes = response.codes;
+                 });
+                 FixedReferences.getDiscountCodes().then(function (response) {
+                    vm.Formats.FormatModal.FixedDiscountCodes = response;
+                 });
 
-         FixedReferences.getIsoCodes().then(function (response) {
-            vm.Formats.FormatModal.FixedIsoCodes = response.codes;
-         });
-         FixedReferences.getDiscountCodes().then(function (response) {
-            vm.Formats.FormatModal.FixedDiscountCodes = response;
-         });
+                 $timeout(function () {
+                    $('[data-toggle="popover"]').popover();
+                 });
 
-         $timeout(function () {
-            $('[data-toggle="popover"]').popover();
-         });
+              }
+              $timeout(function () {
 
-      }
-      $timeout(function () {
+              }).then(init);
 
-      }).then(init);
-
-   }]);
+           }]);
 
 //blank model
 var data = {
@@ -951,8 +995,7 @@ data = {
          ]
       }
    }
-}
-
+};
 var Formats = function (data, Dependencies) {
 
    var self = this;

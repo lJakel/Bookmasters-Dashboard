@@ -6,13 +6,13 @@
                <div class="row">
                   <div class="container-fluid">
                      <div class="jumbotron" style="position: static; z-index: auto;">
-                        <h1 ng-click="NTF.load()">Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
+                        <h1 ng-click="NTF.EmptyCache()">Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
-                           <!--                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                         Drafts (AutoSave Enabled) <span class="badge">4</span>
-                                                      </button>
-                                                      <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>-->
+                           <button class="btn btn-default btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                              Drafts (AutoSave Enabled) <span class="badge">4</span>
+                           </button>
+                           <button class="btn btn-primary btn-sm pull-right" ng-click="NTF.SaveDraft()">Save Draft</button>
                         </h4>
                      </div>
                   </div>
@@ -76,6 +76,9 @@
                      </div>
                   </div>
                </div>
+               <div class="">
+                  <pre>{{NTF.Debug|json}}</pre>
+               </div>
             </div>
          </div>
       </div>
@@ -89,28 +92,43 @@
                      <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
                            <a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab"
-                              ng-style="!NTFNGForm.BasicInfoFormPanel.$pristine && NTFNGForm.BasicInfoFormPanel.$invalid ? {'background-color': '#f2dede'} : {'background-color': 'none'}">Basic Information</a>
+                              ng-class="{'has-error': !NTFNGForm.BasicInfoFormPanel.$pristine && NTFNGForm.BasicInfoFormPanel.$invalid}"                              
+                              >Basic Information</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab">Formats</a>
+                           <a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab"
+                              ng-class="{'has-error': !NTFNGForm.FormatsFormPanel.$pristine && NTFNGForm.FormatsFormPanel.$invalid}"                              
+                              >Formats</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab">Contributors</a>
+                           <a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab"
+                              ng-class="{'has-error': !NTFNGForm.ContributorsFormPanel.$pristine && NTFNGForm.ContributorsFormPanel.$invalid}"                              
+                              >Contributors</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab">Descriptions</a>
+                           <a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab"
+                              ng-class="{'has-error': !NTFNGForm.BasicInfoExtendedFormPanel.$pristine && NTFNGForm.BasicInfoExtendedFormPanel.$invalid}"                              
+                              >Descriptions</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab">Subject</a>
+                           <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab"
+                              ng-class="{'has-error': !NTFNGForm.DemographicsFormPanel.$pristine && NTFNGForm.DemographicsFormPanel.$invalid}"                              
+                              >Subject</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab">Marketing</a>
+                           <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab"
+                              ng-class="{'has-error': !NTFNGForm.MarketingFormPanel.$pristine && NTFNGForm.MarketingFormPanel.$invalid}"                              
+                              >Marketing</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#covers" aria-controls="covers" role="tab" data-toggle="tab">Covers</a>
+                           <a href="#" data-target="#covers" aria-controls="covers" role="tab" data-toggle="tab"
+                              ng-class="{'has-error': !NTFNGForm.CoversFormPanel.$pristine && NTFNGForm.CoversFormPanel.$invalid}"                              
+                              >Covers</a>
                         </li>
                         <li role="presentation">
-                           <a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab">JsonDebug</a>
+                           <a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab"
+
+                              >JSON & Debug</a>
                         </li>
                      </ul>
                      <div class="tab-content">
@@ -160,7 +178,7 @@
                         </div>
                         <!--end basic-->
                         <!--contributors-->
-                        <div role="tabpanel" class="tab-pane" id="contributors" ng-form="ContributorsPanel"  ng-repeat="c in [NTF.Contributors]">
+                        <div role="tabpanel" class="tab-pane" id="contributors" ng-form="ContributorsFormPanel" ng-form="ContributorsPanel"  ng-repeat="c in [NTF.Contributors]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Contributors</h3>
@@ -203,7 +221,7 @@
                         </div>
                         <!--end contributors-->
                         <!--subject-->
-                        <div role="tabpanel" class="tab-pane" id="subject" ng-repeat="dm in [NTF.Demographics]">
+                        <div role="tabpanel" class="tab-pane" id="subject" ng-form="DemographicsFormPanel" ng-repeat="dm in [NTF.Demographics]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Add Bisacs</h3>
@@ -222,28 +240,33 @@
                                           </th>
                                        </tr>
                                     </thead>
-                                    <tbody>
-                                       <tr ng-repeat="Bisac in dm.Model.Bisacs">
+                                    <tbody ng-form="AddBisacs">
+                                       <tr ng-repeat="Bisac in dm.Model.Bisacs" ng-form="AddBisacsRepeat">
                                           <td>{{$index + 1}}</td>
                                           <td>
-                                             <ol class="nya-bs-select form-control" ng-model="Bisac.BisacGroup" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
-                                                <li nya-bs-option="bis in dm.FixedList">
-                                                   <a>
-                                                      {{bis.Name}}
-                                                      <span class="fa fa-check check-mark"></span>
-                                                   </a>
-                                                </li>
-                                             </ol>
+                                             <div class="form-group" data-show-errors>
+                                                <ol class="nya-bs-select form-control" ng-required="true" name="BisacBisacGroup" ng-model="Bisac.BisacGroup" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
+                                                   <li nya-bs-option="bis in dm.FixedList">
+                                                      <a>
+                                                         {{bis.Name}}
+                                                         <span class="fa fa-check check-mark"></span>
+                                                      </a>
+                                                   </li>
+                                                </ol>
+                                             </div>
                                           </td>
                                           <td>
-                                             <ol class="nya-bs-select form-control" ng-model="Bisac.Code" data-size="6" data-live-search="true" ng-change="dm.UpdateBisacCodes($index)">
-                                                <li nya-bs-option="bis in dm.FixedBisacListContainer[$index]">
-                                                   <a>
-                                                      {{bis.Code}} - {{bis.Text}}
-                                                      <span class="fa fa-check check-mark"></span>
-                                                   </a>
-                                                </li>
-                                             </ol>
+                                             <div class="form-group" data-show-errors>
+                                                <ol class="nya-bs-select form-control" ng-required="true" name="BisacCode" ng-model="Bisac.Code" data-size="6" data-live-search="true">
+                                                   <li nya-bs-option="bis in dm.FixedBisacListContainer[$index]">
+                                                      <a>
+                                                         {{bis.Code}} - {{bis.Text}}
+                                                         <span class="fa fa-check check-mark"></span>
+                                                      </a>
+                                                   </li>
+                                                </ol>
+                                             </div>
+
                                           </td>
                                           <td class="onebtn">
                                              <button class="btn btn-danger btn-block" ng-click="dm.removeBisac($index)"><span class="fa fa-fw fa-minus"></span></button>
@@ -292,7 +315,7 @@
                         </div>
                         <!--end subject-->
                         <!--text-->
-                        <div role="tabpanel" class="tab-pane" id="text" ng-repeat="bi in [NTF.BasicInfo]">
+                        <div role="tabpanel" class="tab-pane" id="text" ng-form="BasicInfoExtendedFormPanel" ng-repeat="bi in [NTF.BasicInfo]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Descriptions</h3>
@@ -302,18 +325,18 @@
                               <div class="col-md-6 required form-group" data-show-errors>
                                  <label for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
-                                 <summernote class="form-control" name="bi.MainDescription" ng-model="bi.Model.MainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                                 <summernote class="form-control" ng-required="true" name="bi.MainDescription" ng-model="bi.Model.MainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                               <div class="col-md-6 form-group" data-show-errors>
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <summernote class="form-control" name="bi.ShortDescription" ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                                 <summernote class="form-control" ng-required="true" name="bi.ShortDescription" ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                            </div>
                         </div>
                         <!--end text-->
                         <!--formats-->
-                        <div role="tabpanel" class="tab-pane" id="formats">
+                        <div role="tabpanel" class="tab-pane" ng-form="FormatsFormPanel" id="formats">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Formats</h3>
@@ -355,7 +378,7 @@
                         </div>
                         <!--end formats-->
                         <!--marketing-->
-                        <div role="tabpanel" class="tab-pane" id="marketing" ng-repeat="m in [NTF.Marketing]">
+                        <div role="tabpanel" class="tab-pane" id="marketing" ng-form="MarketingFormPanel" ng-repeat="m in [NTF.Marketing]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Websites</h3>
@@ -370,25 +393,27 @@
                                              </th>
                                           </tr>
                                        </thead>
-                                       <tbody>
-                                          <tr ng-repeat="Website in m.Model.Websites" ng-form="WebsiteRepeat">
+                                       <tbody ng-form="MarketingWebsites">
+                                          <tr ng-repeat="Website in m.Model.Websites" ng-form="MarketingWebsiteRepeat">
                                              <td>
                                                 <div class="form-group" data-show-errors>
                                                    <input type="text" class="form-control" ng-required="true" name="websiteurl" ng-model="Website.URL" data-bm-validate data-bm-validate-options="['bmwebsite']" ng-model-options="{updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}">
                                                 </div>
                                              </td>
                                              <td>
-                                                <select name="" id="" class="form-control">
-                                                   <option value="">Choose...</option>
-                                                   <option value="1">Publisher Website</option>
-                                                   <option value="2">Book Website / Blog</option>
-                                                   <optgroup label="Social Media">
-                                                      <option value="3">Facebook</option>
-                                                      <option value="4">Twitter</option>
-                                                      <option value="5">YouTube</option>
-                                                      <option value="6">Other</option>
-                                                   </optgroup>
-                                                </select>
+                                                <div class="form-group" data-show-errors>
+                                                   <select name="websitetype" class="form-control" ng-model="Website.Type" ng-required="true">
+                                                      <option value="">Choose...</option>
+                                                      <option value="1">Publisher Website</option>
+                                                      <option value="2">Book Website / Blog</option>
+                                                      <optgroup label="Social Media">
+                                                         <option value="3">Facebook</option>
+                                                         <option value="4">Twitter</option>
+                                                         <option value="5">YouTube</option>
+                                                         <option value="6">Other</option>
+                                                      </optgroup>
+                                                   </select>
+                                                </div>
                                              </td>
                                              <td><button class="btn btn-danger" ng-click="m.removeMarketingItem('Website', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
@@ -482,19 +507,26 @@
                                              </th>
                                           </tr>
                                        </thead>
-                                       <tbody>
-                                          <tr ng-repeat="MarketingAndPublicity in m.Model.MarketingAndPublicitys">
+                                       <tbody ng-form="MarketingMarketingAndPublicity">
+                                          <tr ng-repeat="MarketingAndPublicity in m.Model.MarketingAndPublicitys" ng-form="MarketingAndPublicityRepeat">
                                              <td>
-                                                <select name="" id="" class="form-control" ng-model="MarketingAndPublicity.Type">
-                                                   <option value="1">Print</option>
-                                                   <option value="2">Radio</option>
-                                                   <option value="3">TV</option>
-                                                   <option value="4">Internet</option>
-                                                   <option value="5">Assisting Marketing, Advertising, or Publicity Firm</option>
-                                                   <option value="6">Other</option>
-                                                </select>
+                                                <div class="form-group" data-show-errors>
+                                                   <select name="MarketingAndPublicityType" ng-required="true" id="" class="form-control" ng-model="MarketingAndPublicity.Type">
+                                                      <option value="">Choose...</option>
+                                                      <option value="1">Print</option>
+                                                      <option value="2">Radio</option>
+                                                      <option value="3">TV</option>
+                                                      <option value="4">Internet</option>
+                                                      <option value="5">Assisting Marketing, Advertising, or Publicity Firm</option>
+                                                      <option value="6">Other</option>
+                                                   </select>
+                                                </div>
                                              </td>
-                                             <td><textarea name="" id="" cols="30" rows="3" class="form-control"  ng-model="MarketingAndPublicity.Description"></textarea></td>
+                                             <td>
+                                                <div class="form-group" data-show-errors>
+                                                   <textarea name="MarketingAndPublicityDescription" ng-required="true" id="" cols="30" rows="3" class="form-control"  ng-model="MarketingAndPublicity.Description"></textarea>
+                                                </div>
+                                             </td>
                                              <td><button class="btn btn-danger" ng-click="m.removeMarketingItem('MarketingAndPublicity', $index)"><span class="fa fa-fw fa-minus"></span></button></td>
                                           </tr>
                                        </tbody>
@@ -540,7 +572,7 @@
                         </div>
                         <!--end formats-->
                         <!--covers-->
-                        <div role="tabpanel" class="tab-pane" id="covers" ng-repeat="c in [NTF.Covers]">
+                        <div role="tabpanel" class="tab-pane" id="covers" ng-form="CoversFormPanel" ng-repeat="c in [NTF.Covers]">
                            <div class="row">
                               <div class="col-md-12">
                                  <h3>Cover Upload</h3>
@@ -622,6 +654,154 @@
                                  <button class="btn btn-primary btn-block" ng-click="NTF.RefreshJson()">Refresh</button>
                               </div>
                            </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <ul>
+                                    <li>NTFNGForm
+                                       <ul>
+                                          <li>
+                                             Valid: {{NTFNGForm.$valid}}
+                                          </li>
+                                          <li>
+                                             BasicInfo
+                                             <ul>
+                                                <li>
+                                                   BasicInfoFormPanel
+                                                   <ul>
+                                                      <li>
+                                                         Valid: {{NTFNGForm.BasicInfoFormPanel.$valid}}
+                                                      </li>  
+                                                   </ul>
+                                                </li>
+                                                <li>
+                                                   BasicInfoExtendedFormPanel
+                                                   <ul>
+                                                      <li>
+                                                         Valid: {{NTFNGForm.BasicInfoExtendedFormPanel.$valid}}
+                                                      </li>  
+                                                   </ul>
+                                                </li>
+                                             </ul>
+                                          </li>
+                                          <li>Formats
+                                             <ul>
+                                                <li>FormatsFormPanel
+                                                   <ul>
+                                                      <li>Valid: {{NTFNGForm.FormatsFormPanel.$valid}}</li>
+                                                      <li>Modals
+                                                         <ul>
+                                                            <li>
+                                                               FormatModalForm
+                                                               <ul>
+                                                                  <li>
+                                                                     Valid: {{NTFNGForm.FormatModalForm.$valid}}
+
+                                                                  </li>
+                                                               </ul>
+                                                            </li>
+                                                         </ul>
+                                                      </li>
+                                                   </ul>
+                                                </li>
+                                             </ul>
+                                          </li>
+                                          <li>Contributors
+                                             <ul>
+                                                <li>ContributorsFormPanel
+                                                   <ul>
+                                                      <li>Valid: {{NTFNGForm.ContributorsFormPanel.$valid}}</li>
+                                                      <li>Modals
+                                                         <ul>
+                                                            <li>
+                                                               ContributorsModalForm
+                                                               <ul>
+                                                                  <li>
+                                                                     Valid: {{NTFNGForm.ContributorsModalForm.$valid}}
+                                                                  </li>
+                                                               </ul>
+                                                            </li>
+                                                         </ul>
+                                                      </li>
+                                                   </ul>
+                                                </li>
+                                             </ul>
+                                          </li>
+                                          <li>
+                                             Marketing
+                                             <ul>
+                                                <li>
+                                                   MarketingFormPanel
+                                                   <ul>
+                                                      <li>MarketingWebsites
+                                                         <ul>
+                                                            <li>
+                                                               Valid: {{NTFNGForm.MarketingFormPanel.MarketingWebsites.$valid}}
+                                                            </li>
+                                                         </ul>
+                                                      </li>
+                                                      <li>Reviews
+                                                         <ul>
+                                                            <li>Modals
+                                                               <ul>
+                                                                  <li>ReviewModalForm
+                                                                     <ul>
+                                                                        <li>Valid: {{NTFNGForm.ReviewModalForm.$valid}}</li>
+                                                                     </ul>
+                                                                  </li>
+                                                               </ul>
+                                                            </li>
+                                                         </ul>
+                                                      </li>        
+                                                      <li>Endorsements
+                                                         <ul>
+                                                            <li>Modals
+                                                               <ul>
+                                                                  <li>EndorsementModalForm
+                                                                     <ul>
+                                                                        <li>Valid: {{NTFNGForm.EndorsementModalForm.$valid}}</li>
+                                                                     </ul>
+                                                                  </li>
+                                                               </ul>
+                                                            </li>
+                                                         </ul>
+                                                      </li>
+                                                      <li>Marketing and Publicity
+                                                         <ul>
+                                                            <li>Modals
+                                                               <ul>
+                                                                  <li>ReviewModalForm
+                                                                     <ul>
+                                                                        <li>Valid: {{NTFNGForm.ReviewModalForm.$valid}}</li>
+                                                                     </ul>
+                                                                  </li>
+                                                               </ul>
+                                                            </li>
+                                                         </ul>
+                                                      </li>
+                                                      <li>Appearances and Events
+                                                         <ul>
+                                                            <li>Modals
+                                                               <ul>
+                                                                  <li>AppearanceAndEventModalForm
+                                                                     <ul>
+                                                                        <li>Valid: {{NTFNGForm.AppearanceAndEventModalForm.$valid}}</li>
+                                                                     </ul>
+                                                                  </li>
+                                                               </ul>
+                                                            </li>
+                                                         </ul>
+                                                      </li>
+                                                   </ul>
+                                                </li>
+                                             </ul>
+                                          </li>
+                                       </ul> 
+                                    </li>  
+                                 </ul>             
+                    <!--<pre id="jsonPre">{{NTFNGForm}}</pre>-->
+
+                              </div>
+                           </div>
                         </div>
                         <!--end Json-->
                      </div>
@@ -670,4 +850,18 @@
 </style>
 <link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="/cdn/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
-<script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/build/build.min.js?cache=<?php echo rand(1000, 9000); ?>"></script>
+
+<?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/modals/modals.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/share/components.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_basic.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_contributors.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_covers.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_demographics.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_factory.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_formats.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_marketing.js?cache=<?= rand(1000, 9000); ?>"></script>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Apps/TitleManagement/new_title_form.js?cache=<?= rand(1000, 9000); ?>"></script>
+<?php } else { ?>
+   <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/apps/TitleManagement/build/build.min.js?cache=<?= rand(1000, 9000); ?>"></script>
+<?php } ?>

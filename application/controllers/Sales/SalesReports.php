@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Sales extends Secure_Controller {
+class SalesReports extends Secure_Controller {
 
    var $app = [];
    var $folder = 'Apps/';

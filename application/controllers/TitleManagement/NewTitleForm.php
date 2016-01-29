@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class TitleManagement extends Secure_Controller {
+class NewTitleForm extends Secure_Controller {
 
    function __construct() {
       parent::__construct();

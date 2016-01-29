@@ -17,7 +17,7 @@ appServices.factory('GuidCreator', function () {
       }
 //      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 
-      return s4() + s4();
+      return s4() + s4() + '-' + s4() + s4();
    }
 });
 
@@ -107,7 +107,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
          }
       }
    }]);
-appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location) {
+appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', '$rootScope', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location, $rootScope) {
 
       var url = 'auth/';
 
@@ -135,6 +135,7 @@ appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$l
             $localStorage.$reset();
             $localStorage.user = null;
             changeUser(null);
+            $rootScope.redirectToStateAfterLogin = undefined;
             $location.path('/login');
          }, function (response) {
             $state.go('error');

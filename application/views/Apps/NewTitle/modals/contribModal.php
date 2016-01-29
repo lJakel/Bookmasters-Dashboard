@@ -1,7 +1,7 @@
 <!-- Modal Start -->
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Contributors.showDialog" class="modal fade" data-backdrop="static">
    <div class="modal-dialog modal-lg">
-      <div class="modal-content" ng-form="ContribModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
+      <div class="modal-content" ng-form="ContributorsModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
          <div class="modal-header" modal-open="NTF.Contributors.showDialog" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add / Edit Format</h4>
@@ -76,7 +76,7 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-repeat="AdditionalTitles in cm.AdditionalTitles" ng-form="ContribModalForm.AdditionalTitleForm[{{$index}}]">
+                              <tr ng-repeat="AdditionalTitles in cm.AdditionalTitles" ng-form="ContributorsModalForm.AdditionalTitleForm[{{$index}}]">
                                  <td>
                                     <div class="form-group" data-show-errors>
                                        <input type="text" class="form-control" name="AdditionalTitleTitle" ng-required="true" ng-model="AdditionalTitles.Title">
@@ -105,7 +105,7 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-disabled="!ContribModalForm.$valid" ng-click="NTF.Contributors.onContributorModalAction()">
+            <button type="button" class="btn btn-primary" ng-disabled="!ContributorsModalForm.$valid" ng-click="NTF.Contributors.onContributorModalAction()">
                <span ng-if="cm.Method == 'edit'">Save</span>
                <span ng-if="cm.Method == 'add'">Add</span> 
                Contributor</button>

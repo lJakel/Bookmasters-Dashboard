@@ -446,8 +446,8 @@ var Demographics = function (data, Dependencies) {
       }
    }
 };
-var Drafts = function (data, Dependencies) {
-   console.log(data);
+var Drafts = function (parent, Dependencies) {
+   console.log(parent);
 
    var self = this;
    self.Drafts = [];
@@ -457,7 +457,13 @@ var Drafts = function (data, Dependencies) {
          self.Drafts = r.Drafts;
       });
    };
+   self.LoadDraft = function ($draft) {
+      parent.LoadDraft($draft);
+   }
 
+   self.RemoveDraft = function ($index) {
+      Dependencies.NewTitleDraftsFactory.RemoveDraft($index);
+   };
    self.GetDrafts = function () {
       Dependencies.NewTitleDraftsFactory.GetDrafts().then(function (r) {
          self.Drafts = [];
@@ -465,29 +471,26 @@ var Drafts = function (data, Dependencies) {
       });
    };
 
-   self.FormatDate = function (date,format) {
+   self.FormatDate = function (date, format) {
       return moment(date, "X").format("dddd, MMMM Do YYYY, h:mm:ss a");
-
-   }
+   };
    self.GetDrafts();
    self.SaveDraft = function () {
       Dependencies.NewTitleDraftsFactory.SaveDraft(JSON.stringify({
-         "DraftId": data.Form.DraftId,
-         "ProductGroupId": data.Form.ProductGroupId,
-         "CreationDate": data.Form.CreationDate,
+         "DraftId": parent.Form.DraftId,
+         "ProductGroupId": parent.Form.ProductGroupId,
+         "CreationDate": parent.Form.CreationDate,
          "Content": {
-            "BasicInfo": data.BasicInfo.Model,
-            "Contributors": data.Contributors.Model,
-            "Formats": data.Formats.Model,
-            "Demographics": data.Demographics.Model,
-            "Marketing": data.Marketing.Model,
+            "BasicInfo": parent.BasicInfo.Model,
+            "Contributors": parent.Contributors.Model,
+            "Formats": parent.Formats.Model,
+            "Demographics": parent.Demographics.Model,
+            "Marketing": parent.Marketing.Model,
          }
       })).then(function (r) {
          self.Drafts = r.Drafts;
       });
-
    };
-
 };
 BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory',
    function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
@@ -726,8 +729,8 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
    }]);
 
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty) {
               var vm = this;
 
               vm.Dependencies = {
@@ -741,24 +744,35 @@ BMApp.register.controller('NewTitleForm',
                  NewTitleDraftsFactory: NewTitleDraftsFactory,
                  Upload: Upload
               };
-              function init() {
 
-                 vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
-                 vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
-                 vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
-                 vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
-                 vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
-                 vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
+              vm.data = {
+                 "BasicInfo": {},
+                 "Contributors": {},
+                 "Demographics": {},
+                 "Formats": {},
+                 "Marketing": {}
+              };
+              vm.Form = {
+                 DraftId: GuidCreator.CreateGuid(),
+                 ProductGroupId: null,
+                 CreationDate: moment().format('X')
+              };
+              function init() {
+                 vm.BasicInfo = new BasicInfo(vm.data.BasicInfo || '', vm.Dependencies);
+                 vm.Contributors = new Contributors(vm.data.Contributors.Contributors || '', vm.Dependencies);
+                 vm.Formats = new Formats(vm.data.Formats.Formats || '', vm.Dependencies);
+                 vm.Demographics = new Demographics(vm.data.Demographics || '', vm.Dependencies);
+                 vm.Marketing = new Marketing(vm.data.Marketing || '', vm.Dependencies);
+                 vm.Covers = new Covers(vm.data.Covers || '', vm.Dependencies);
                  vm.Drafts = new Drafts(vm, vm.Dependencies);
 
-                 vm.Form = {
-                    DraftId: GuidCreator.CreateGuid(),
-                    ProductGroupId: null,
-                    CreationDate: moment().format('X')
+                 vm.LoadDraft = function (Draft) {
+                    vm.Form.DraftId = Draft.DraftId;
+                    vm.Form.ProductGroupId = Draft.ProductGroupId;
+                    vm.Form.CreationDate = Draft.CreationDate;
+                    vm.data = JSON.parse(Draft.Content);
+                    init();
                  };
-
-
-
 
                  vm.RefreshJson = function () {
                     $('#jsonPre').text(JSON.stringify({
@@ -801,178 +815,6 @@ BMApp.register.controller('NewTitleForm',
               }).then(init);
 
            }]);
-
-//blank model
-var data = {
-   "NewTitle": {
-      "BasicInfo": {
-         "Publisher": "Awesome Publications INC.",
-      },
-      "Contributors": {},
-      "Demographics": {},
-      "Formats": {},
-      "Marketing": {}
-   },
-};
-data = {
-   "NewTitle": {
-      "BasicInfo": {
-         "ProductGroupId": null,
-         "Title": "Jakes Book of Memes",
-         "Subtitle": "Test",
-         "Publisher": "Jake",
-         "Imprint": "Lol",
-         "ContentLanguage": "English",
-         "Series": "Starwars",
-         "NumberinSeries": "3",
-         "MainDescription": "hgfdsfdsf",
-         "ShortDescription": "hgfdsfdsfdsfsdfds"
-      },
-      "Contributors": {
-         "Contributors": [
-            {
-               "FirstName": "Jake",
-               "MiddleName": "A",
-               "LastName": "Ihasz",
-               "Prefix": "Mr",
-               "Suffix": "3rd",
-               "Hometown": "Ashland",
-               "Role": {
-                  "Id": "1",
-                  "Name": "Author"
-               },
-               "Biography": "sdfdsfdsfdsfdsfds",
-               "IsRolePrimary": true,
-               "IsTitlePrimary": true,
-               "AdditionalTitles": [
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "bv",
-                  }
-               ],
-            }
-         ]
-      },
-      "Formats": {
-         "Formats": [
-            {
-               "ProductType": {
-                  "Id": "3",
-                  "Name": "Print"
-               },
-               "ProductForm": {
-                  "Id": "12",
-                  "Name": "Hardback",
-                  "MediaTypeId": "3"
-               },
-               "ProductDetail": {
-                  "Id": "4",
-                  "Name": "Printed Case",
-                  "FormId": "12"
-               },
-               "ProductBinding": "",
-               "ISBN13": "9780000000002",
-               "Width": 59,
-               "Height": 59,
-               "Spine": 59,
-               "Weight": 59,
-               "PublicationDate": "01/27/2016",
-               "Copyright": "2012",
-               "StockDueDate": "01/19/2016",
-               "TradeSales": true,
-               "Pages": 158,
-               "CartonQuantity": 15,
-               "USPrice": "12.90",
-               "DiscountCode": null,
-               "CustomsValue": null,
-               "Edition": null,
-               "EditionNumber": "15",
-               "EditionType": {
-                  "Id": "2",
-                  "Name": "Revised"
-               },
-               "CountryofOrigin": "us",
-               "PublicationLocation": null,
-               "ComparableTitles": [
-               ],
-               "$$hashKey": "object:1132"
-            }
-         ]
-      },
-      "Demographics": {
-         "Audience": "",
-         "Bisacs": [
-            {
-               "FixedList": [
-               ],
-               "FixedList2": [
-               ],
-               "BisacGroup": {
-                  "Id": "2",
-                  "Prefix": "ARC",
-                  "Name": "ARCHITECTURE",
-                  "YearVersion": "2014",
-                  "$$hashKey": 2
-               },
-               "Code": {
-                  "Id": "48",
-                  "Code": "ARC001000",
-                  "Text": "ARCHITECTURE / Criticism",
-                  "GroupId": "2",
-                  "$$hashKey": 54
-               },
-               "Text": "",
-               "Group": "",
-               "LongName": "",
-               "BisacID": "",
-               "$$hashKey": "object:1078"
-            }
-         ],
-         "AgeRange": ""
-      },
-      "Marketing": {
-         "Websites": [
-            {
-               "URL": "http://google.com/",
-               "Type": "",
-               "$$hashKey": "object:219"
-            }
-         ],
-         "MarketingAndPublicitys": [
-            {
-               "Type": "2",
-               "Description": "jhl",
-               "$$hashKey": "object:243"
-            }
-         ],
-         "Reviews": [
-            {
-               "Name": "rev",
-               "Publication": "fdsf",
-               "Text": "sdfdsfsdfdsfdsf",
-               "$$hashKey": "object:227"
-            }
-         ],
-         "Endorsements": [
-            {
-               "Name": "fds",
-               "Affiliation": "null894",
-               "Text": "sdfdsfs",
-               "$$hashKey": "object:235"
-            }
-         ],
-         "AppearanceAndEvents": [
-            {
-               "Name": "fdsafdsa",
-               "Date": "fsasdfs",
-               "Location": "fdsadsa",
-               "Description": null,
-               "$$hashKey": "object:250"
-            }
-         ]
-      }
-   }
-};
 var Formats = function (data, Dependencies) {
 
    var self = this;

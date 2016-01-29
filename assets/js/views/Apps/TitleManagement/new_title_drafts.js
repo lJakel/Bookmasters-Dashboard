@@ -1,5 +1,5 @@
-var Drafts = function (data, Dependencies) {
-   console.log(data);
+var Drafts = function (parent, Dependencies) {
+   console.log(parent);
 
    var self = this;
    self.Drafts = [];
@@ -9,7 +9,13 @@ var Drafts = function (data, Dependencies) {
          self.Drafts = r.Drafts;
       });
    };
+   self.LoadDraft = function ($draft) {
+      parent.LoadDraft($draft);
+   }
 
+   self.RemoveDraft = function ($index) {
+      Dependencies.NewTitleDraftsFactory.RemoveDraft($index);
+   };
    self.GetDrafts = function () {
       Dependencies.NewTitleDraftsFactory.GetDrafts().then(function (r) {
          self.Drafts = [];
@@ -17,26 +23,24 @@ var Drafts = function (data, Dependencies) {
       });
    };
 
-   self.FormatDate = function (date,format) {
+   self.FormatDate = function (date, format) {
       return moment(date, "X").format("dddd, MMMM Do YYYY, h:mm:ss a");
    };
    self.GetDrafts();
    self.SaveDraft = function () {
       Dependencies.NewTitleDraftsFactory.SaveDraft(JSON.stringify({
-         "DraftId": data.Form.DraftId,
-         "ProductGroupId": data.Form.ProductGroupId,
-         "CreationDate": data.Form.CreationDate,
+         "DraftId": parent.Form.DraftId,
+         "ProductGroupId": parent.Form.ProductGroupId,
+         "CreationDate": parent.Form.CreationDate,
          "Content": {
-            "BasicInfo": data.BasicInfo.Model,
-            "Contributors": data.Contributors.Model,
-            "Formats": data.Formats.Model,
-            "Demographics": data.Demographics.Model,
-            "Marketing": data.Marketing.Model,
+            "BasicInfo": parent.BasicInfo.Model,
+            "Contributors": parent.Contributors.Model,
+            "Formats": parent.Formats.Model,
+            "Demographics": parent.Demographics.Model,
+            "Marketing": parent.Marketing.Model,
          }
       })).then(function (r) {
          self.Drafts = r.Drafts;
       });
-
    };
-
 };

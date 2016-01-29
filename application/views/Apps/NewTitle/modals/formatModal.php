@@ -42,7 +42,6 @@
                                 ng-options="type.MediaType for type in fm.FixedProductTypesNew track by type.MediaType" >
                            <option value="">Choose...</option>
                         </select>
-
                      </div>
                      <div class="col-md-4 form-group required" data-show-errors>
                         <label for="ProductForm" class="control-label">Product Form</label>
@@ -55,8 +54,6 @@
                                 ng-options="form.Form for form in fm.DynamicProductForms track by form.Form" >
                            <option value="">Choose...</option>
                         </select>
-
-
                      </div>
                      <div class="col-md-4 form-group {{(fm.DynamicProductFormDetails.length > 1) ? 'required': ''}}" data-show-errors>
                         <label for="ProductDetail" class="control-label">Product Detail</label>
@@ -70,7 +67,6 @@
                                 ng-options="detail.Detail for detail in fm.DynamicProductFormDetails track by detail.Detail" >
                            <option value="">Choose...</option>
                         </select>
-
                      </div>
                   
                   </div>
@@ -108,7 +104,6 @@
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="PublicationDate" class="control-label">Publication Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Date" data-placement="top" data-content="The date that you consider to be the official release date for the book. This must be at least 30 days AFTER the arrival of stock in Bookmasters' warehouse for print books. In addition, to be included in the buying cycles of the print book trade, this date must also be at least 180 days AFTER the day you submit this form.">?</a>
-
                         <input type="text" class="form-control" 
                                name='PublicationDate'
                                ng-required='true' 
@@ -116,19 +111,15 @@
                                datetimepicker 
                                placeholder="mm/dd/yyyy" 
                                ng-model="fm.PublicationDate">
-
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="CopyrightYear" class="control-label">Copyright Year</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Copyright Date (year)" data-placement="top" data-content="The year in which the initial copyright for the material was filed.">?</a>
-
                         <input name='CopyrightYear' type="text" class="form-control" ng-required='true' datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.Copyright">
-
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="StockDueDate" class="control-label">Stock Due Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Warehouse/Stock Due Date" data-placement="top" data-content="This is the date when you expect stock to arrive at Bookmasters' warehouse. This date must be at least 30 days before the publication date.">?</a>
-
                         <input type="text" class="form-control" 
                                name='StockDueDate'
                                ng-required='true' 
@@ -136,7 +127,6 @@
                                datetimepicker 
                                placeholder="mm/dd/yyyy" 
                                ng-model="fm.StockDueDate">
-
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="">Trade Sales</label>
@@ -158,7 +148,6 @@
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Carton Quantity " data-placement="top" data-content="The number of books contained in a full carton. Your printer can give you this information.">?</a>
                         <input name="CartonQuantity" type="number" class="form-control" ng-required="true" min="0" ng-model="fm.CartonQuantity">
                      </div>
-
                      <div class="form-group col-md-3">
                         <label for="" class="control-label">Edition Number</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Edition Number" data-placement="top" data-content="Indicates that the version of content in this book differs from the previously numbered edition's content. Numbers only, no letters. If the book is a first edition, you are not required to put that here.">?</a>
@@ -174,7 +163,6 @@
                      <div class="form-group col-md-6 required">
                         <label for="" class="control-label">Country of Origin</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Country of Origin" data-placement="top" data-content="The country in which the book was printed.">?</a>
-
                         <ol class="nya-bs-select dropup form-control" ng-required="true" ng-model="fm.CountryofOrigin" data-size="6" data-live-search="true">
                            <li nya-bs-option="iso in fm.FixedIsoCodes">
                               <a>
@@ -183,13 +171,11 @@
                               </a>
                            </li>
                         </ol>
-
                      </div>
                      <div class="form-group col-md-6">
                         <label for="" class="control-label">Publication Location</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Publication Location" data-placement="top" data-content="The country in which the publisher of the book is located.">?</a>
-
-                        <ol class="nya-bs-select dropup form-control" ng-required="true" ng-model="fm.PublicationLocation" data-size="6" data-live-search="true">
+                        <ol class="nya-bs-select dropup form-control" ng-model="fm.PublicationLocation" data-size="6" data-live-search="true">
                            <li nya-bs-option="iso in fm.FixedIsoCodes">
                               <a>
                                  {{iso.Name}} - {{iso.Iso2}}
@@ -197,7 +183,6 @@
                               </a>
                            </li>
                         </ol>
-
                      </div>
                   </div>
                </div>
@@ -223,7 +208,6 @@
                            <input name="CustomsValue" type="text" class="form-control" data-bm-validate-options="['price']" ng-model="fm.CustomsValue">
                         </div>
                      </div>
-
                   </div>
                   <div class="row" ng-show="fm.ProductForm == '3 - Electronic Print'">
                      <div class="col-md-4">
@@ -250,7 +234,6 @@
                                  </tr>
                               </thead>
                               <tbody>
-
                                  <tr ng-repeat="CTitle in fm.ComparableTitles" ng-form="FormatModalForm.ComparableTitlesForm[{{$index}}]">
                                     <td>
                                        <div class="form-group" data-show-errors>
@@ -292,7 +275,6 @@
                               </tr>
                            </thead>
                            <tbody>
-
                               <tr ng-repeat="illus in fm.Illustrations" ng-form="FormatModalForm.IllustrationsForm[{{$index}}]">
                                  <td>
                                     <div class="form-group" data-show-errors>
@@ -340,7 +322,6 @@
                               <p>Select the territories for which you hold rights.</p>
                            </div>
                         </div>
-
                         <div class="row">
                            <div class="col-md-12">
                               <div class="bs-radio radio-primary" id="TerritoryRights1" model="fm.TerritoryRights" value="world" label="World"></div>
@@ -379,7 +360,6 @@
                      </div>
                   </div>
                </div>
-
             </div>
          </div>
          <div class="modal-footer">            

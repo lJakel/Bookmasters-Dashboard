@@ -131,7 +131,7 @@ var Modals = {
             }).indexOf(item.MediaType);
 
             if (elementpos < 0) {
-               item.MediaType != null && ar.push({MediaType: item.MediaType});
+               item.MediaType !== null && ar.push({MediaType: item.MediaType});
             }
          });
          self.FixedProductTypesNew = ar;

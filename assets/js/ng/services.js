@@ -109,7 +109,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
    }]);
 appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', '$rootScope', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location, $rootScope) {
 
-      var url = 'auth/';
+      var url = 'Authentication/Auth/';
 
       var factory = {
          user: null,

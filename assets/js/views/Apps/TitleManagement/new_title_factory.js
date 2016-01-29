@@ -38,7 +38,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
 
 
       function loadIsoCodes(get) {
-         return $http.post("api/IsoCodes/getAllCodes").then(function (response) {
+         return $http.post("API/ISOCodes/Get").then(function (response) {
             setReference(response.data.data, 'IsoCodes');
             if (get == true) {
                return self.factory.IsoCodes;
@@ -73,7 +73,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
       function loadReferences(get) {
 
-         return $http.post("api/FixedReferences", {withCredentials: false}).then(function (response) {
+         return $http.post("API/FixedReferences/GetAllReferences", {withCredentials: false}).then(function (response) {
 
             setReference({
                ContributorRoles: response.data.ContributorRoles,
@@ -101,7 +101,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function lookupBisac(group, success, error) {
-         $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
+         $http.post("API/BisacCodes/GetGroupCodes", {groupId: group}).then(function (response) {
             success(response.data);
          }, function (response) {
             $state.go('error', {
@@ -124,15 +124,11 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          }
       }
    }]);
-BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
+BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', 'toasty', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout, toasty) {
       var self = this;
       self.UserId = null;
       self.Drafts = [];
       self.Init = false;
-      self.User = {
-         Id: '',
-         Drafts: []
-      };
       self.DraftLocation = '';
       function User(data) {
          var su = this;
@@ -144,26 +140,14 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
          sd.DraftId = data.DraftId || '';
          sd.ProductGroupId = data.ProductGroupId || '';
          sd.Title = data.Content.BasicInfo.Title || '';
+         sd.CreationDate = data.CreationDate || moment().format('X');
+         sd.LastUpdated = data.LastUpdated || moment().format('X');
          sd.Content = JSON.stringify(data.Content) || '';
-         sd.CreationDate = Math.floor(Date.now() / 1000);
-
       }
 
       self.factory = {
-         "Users": [
-//            {
-//               "UserID": 1,
-//               "Drafts": [
-//                  {
-//                     "DraftId": "c0b589a1",
-//                     "Created": 1449687962,
-//                     "Data": "fdsfsdfsdfdsf"
-//                  }
-//               ]
-//            },
-         ],
+         User: {},
          Cache: {},
-         Debug: $localStorage.NewTitleDraftsFactory.Users,
          EmptyCache: EmptyCache,
          SaveDraft: SaveDraft,
 //         LoadDraft: LoadDraft,
@@ -180,20 +164,15 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
                   self.UserId = r.credentials.userid;
                });
             }).then(function () {
-
                $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
                $localStorage.NewTitleDraftsFactory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-               if ($localStorage.NewTitleDraftsFactory.Users.length == 0) {
-                  $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
-               }
-
                var result = $localStorage.NewTitleDraftsFactory.Users.filter(function (item) {
                   return (item.UserId == self.UserId);
                });
                if (result.length) {
-                  self.DraftLocation = result;
+                  self.factory.User = result[0];
                } else {
-                  self.DraftLocation = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User(''))];
+                  self.factory.User = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User('')) - 1];
                }
 
                if (self.UserId != null) {
@@ -205,79 +184,52 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
                      message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
                   }));
                }
-
             });
          });
       }
       function EmptyCache() {
          self.Init = false;
+         self.factory.User = {};
          $localStorage.NewTitleDraftsFactory = {};
+         return $q.when(self.factory.User);
       }
-      function SetStorage() {
-         return cacheInit().then(function () {
-            $localStorage.NewTitleDraftsFactory = self.factory;
-         });
-      }
+
 
       function GetDrafts() {
          return cacheInit().then(function () {
-            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-
-
-            if (self.factory.Users.length != 0) {
-               $.each(self.factory.Users, function (k, v) {
-                  if (v.UserID == self.UserId) {
-                     console.log(v);
-                     self.factory.Users = [v.Drafts];
-                  }
-               });
-            } else {
-               self.factory.Users = [];
-            }
-            console.log(typeof self.factory.Users, self.factory.Users);
-            return $q.when(self.factory.Users);
+            return $q.when(self.factory.User);
          });
       }
 
       function ClearDrafts() {
          return cacheInit().then(function () {
-            self.factory.Users[self.UserId] = [];
-            SetStorage();
-            return $q.when(self.factory.Users[self.UserId]);
+            self.factory.User['Drafts'] = [];
+            return $q.when(self.factory.User);
          });
       }
-
-
       function SaveDraft(data) {
-         data = JSON.stringify(data);
-         data = JSON.parse(data);
-         console.log(data);
          return cacheInit().then(function () {
-            var draft = new Draft(data);
+            var draft = new Draft(JSON.parse(data));
 
-            console.log(draft, self.DraftLocation[0], self.DraftLocation[0]['Drafts']);
-            self.DraftLocation[0]['Drafts'].unshift(draft);
-            console.log(draft, self.DraftLocation[0], self.DraftLocation[0]['Drafts']);
+            var elementpos = self.factory.User['Drafts'].map(function (x) {
+               return x.DraftId;
+            }).indexOf(draft.DraftId);
 
-
-            var result = self.DraftLocation[0]['Drafts'].filter(function (item) {
-               return (item.DraftId == draft.DraftId);
-            });
-            if (result.length) {
-               self.DraftLocation = result;
+            if (elementpos < 0) {
+               self.factory.User['Drafts'].unshift(draft);
+               toasty.success({title: 'Saved Draft!', msg: 'Your draft has been saved to your computer.', theme: 'bootstrap', timeout: 5000});
             } else {
-               self.DraftLocation = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User(''))];
+               draft.LastUpdated = moment().format('X');
+               self.factory.User['Drafts'][elementpos] = draft;
+               toasty.info({title: 'Saved Draft!', msg: 'Your draft has been updated.', theme: 'bootstrap', timeout: 5000});
             }
 
-
-
-            if (self.DraftLocation[0]['Drafts'].length >= 4) {
-               self.DraftLocation[0]['Drafts'].length = 4;
+            if (self.factory.User['Drafts'].length >= 4) {
+               self.factory.User['Drafts'].length = 4;
             }
+
+            return GetDrafts();
          });
-
-
-
       }
       return self.factory;
    }]);

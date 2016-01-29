@@ -446,6 +446,52 @@ var Demographics = function (data, Dependencies) {
       }
    }
 };
+var Drafts = function (parent, Dependencies) {
+   console.log(parent);
+
+   var self = this;
+   self.Drafts = [];
+   self.EmptyCache = function () {
+      Dependencies.NewTitleDraftsFactory.EmptyCache().then(function (r) {
+         self.Drafts = [];
+         self.Drafts = r.Drafts;
+      });
+   };
+   self.LoadDraft = function ($draft) {
+      parent.LoadDraft($draft);
+   }
+
+   self.RemoveDraft = function ($index) {
+      Dependencies.NewTitleDraftsFactory.RemoveDraft($index);
+   };
+   self.GetDrafts = function () {
+      Dependencies.NewTitleDraftsFactory.GetDrafts().then(function (r) {
+         self.Drafts = [];
+         self.Drafts = r.Drafts;
+      });
+   };
+
+   self.FormatDate = function (date, format) {
+      return moment(date, "X").format("dddd, MMMM Do YYYY, h:mm:ss a");
+   };
+   self.GetDrafts();
+   self.SaveDraft = function () {
+      Dependencies.NewTitleDraftsFactory.SaveDraft(JSON.stringify({
+         "DraftId": parent.Form.DraftId,
+         "ProductGroupId": parent.Form.ProductGroupId,
+         "CreationDate": parent.Form.CreationDate,
+         "Content": {
+            "BasicInfo": parent.BasicInfo.Model,
+            "Contributors": parent.Contributors.Model,
+            "Formats": parent.Formats.Model,
+            "Demographics": parent.Demographics.Model,
+            "Marketing": parent.Marketing.Model,
+         }
+      })).then(function (r) {
+         self.Drafts = r.Drafts;
+      });
+   };
+};
 BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', '$localStorage', 'AuthFactory',
    function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
@@ -486,7 +532,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
 
 
       function loadIsoCodes(get) {
-         return $http.post("api/IsoCodes/getAllCodes").then(function (response) {
+         return $http.post("API/ISOCodes/Get").then(function (response) {
             setReference(response.data.data, 'IsoCodes');
             if (get == true) {
                return self.factory.IsoCodes;
@@ -521,7 +567,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
       function loadReferences(get) {
 
-         return $http.post("api/FixedReferences", {withCredentials: false}).then(function (response) {
+         return $http.post("API/FixedReferences/GetAllReferences", {withCredentials: false}).then(function (response) {
 
             setReference({
                ContributorRoles: response.data.ContributorRoles,
@@ -549,7 +595,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function lookupBisac(group, success, error) {
-         $http.post("api/bisacs/getGroupCodes", {groupId: group}).then(function (response) {
+         $http.post("API/BisacCodes/GetGroupCodes", {groupId: group}).then(function (response) {
             success(response.data);
          }, function (response) {
             $state.go('error', {
@@ -572,15 +618,11 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          }
       }
    }]);
-BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout) {
+BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', 'toasty', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout, toasty) {
       var self = this;
       self.UserId = null;
       self.Drafts = [];
       self.Init = false;
-      self.User = {
-         Id: '',
-         Drafts: []
-      };
       self.DraftLocation = '';
       function User(data) {
          var su = this;
@@ -591,25 +633,16 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
          var sd = this;
          sd.DraftId = data.DraftId || '';
          sd.ProductGroupId = data.ProductGroupId || '';
+         sd.Title = data.Content.BasicInfo.Title || '';
+         sd.CreationDate = data.CreationDate || moment().format('X');
+         sd.LastUpdated = data.LastUpdated || moment().format('X');
          sd.Content = JSON.stringify(data.Content) || '';
-         sd.CreationDate = Math.floor(Date.now() / 1000);
-
       }
 
       self.factory = {
-         "Users": [
-//            {
-//               "UserID": 1,
-//               "Drafts": [
-//                  {
-//                     "DraftId": "c0b589a1",
-//                     "Created": 1449687962,
-//                     "Data": "fdsfsdfsdfdsf"
-//                  }
-//               ]
-//            },
-         ],
+         User: {},
          Cache: {},
+         EmptyCache: EmptyCache,
          SaveDraft: SaveDraft,
 //         LoadDraft: LoadDraft,
          GetDrafts: GetDrafts,
@@ -622,27 +655,19 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
             }
             $timeout(function () {
                AuthFactory.getInfo().then(function (r) {
-                  console.log(r.credentials.userid);
                   self.UserId = r.credentials.userid;
                });
             }).then(function () {
-
                $localStorage.NewTitleDraftsFactory = $localStorage.NewTitleDraftsFactory || {};
-
-               if ($.isEmptyObject($localStorage.NewTitleDraftsFactory.Users)) {
-                  $localStorage.NewTitleDraftsFactory.Users = [];
-                  $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
+               $localStorage.NewTitleDraftsFactory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
+               var result = $localStorage.NewTitleDraftsFactory.Users.filter(function (item) {
+                  return (item.UserId == self.UserId);
+               });
+               if (result.length) {
+                  self.factory.User = result[0];
                } else {
-                  $.each($localStorage.NewTitleDraftsFactory.Users, function (k, v) {
-                     if (v.Userid == self.UserId) {
-                        self.DraftLocation = k;
-                     } else {
-                        $localStorage.NewTitleDraftsFactory.Users.push(new User(''));
-
-                     }
-                  });
+                  self.factory.User = $localStorage.NewTitleDraftsFactory.Users[$localStorage.NewTitleDraftsFactory.Users.push(new User('')) - 1];
                }
-               console.log($localStorage.NewTitleDraftsFactory.Users);
 
                if (self.UserId != null) {
                   self.Init = true;
@@ -653,99 +678,59 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
                      message: 'An unknown error occured in NewTitleDraftsFactory. (Reject cacheInit() UserID was not returned)'
                   }));
                }
-
             });
          });
       }
-
-      function SetStorage() {
-         return cacheInit().then(function () {
-            $localStorage.NewTitleDraftsFactory = self.factory;
-         });
+      function EmptyCache() {
+         self.Init = false;
+         self.factory.User = {};
+         $localStorage.NewTitleDraftsFactory = {};
+         return $q.when(self.factory.User);
       }
+
 
       function GetDrafts() {
          return cacheInit().then(function () {
-            self.factory.Users = $localStorage.NewTitleDraftsFactory.Users || [];
-
-
-            if (self.factory.Users.length != 0) {
-               $.each(self.factory.Users, function (k, v) {
-                  if (v.UserID == self.UserId) {
-                     console.log(v);
-                     self.factory.Users = [v.Drafts];
-                  }
-               });
-            } else {
-               self.factory.Users = [];
-            }
-            console.log(typeof self.factory.Users, self.factory.Users);
-            return $q.when(self.factory.Users);
+            return $q.when(self.factory.User);
          });
       }
 
       function ClearDrafts() {
          return cacheInit().then(function () {
-            self.factory.Users[self.UserId] = [];
-            SetStorage();
-            return $q.when(self.factory.Users[self.UserId]);
+            self.factory.User['Drafts'] = [];
+            return $q.when(self.factory.User);
          });
       }
-
-
       function SaveDraft(data) {
-
-         console.log($localStorage.NewTitleDraftsFactory);
-         console.log(data);
-         data = JSON.stringify(data);
-         data = JSON.parse(data);
-         console.log(data);
          return cacheInit().then(function () {
-            var draft = new Draft(data);
-            console.log(draft);
+            var draft = new Draft(JSON.parse(data));
+
+            var elementpos = self.factory.User['Drafts'].map(function (x) {
+               return x.DraftId;
+            }).indexOf(draft.DraftId);
+
+            if (elementpos < 0) {
+               self.factory.User['Drafts'].unshift(draft);
+               toasty.success({title: 'Saved Draft!', msg: 'Your draft has been saved to your computer.', theme: 'bootstrap', timeout: 5000});
+            } else {
+               draft.LastUpdated = moment().format('X');
+               self.factory.User['Drafts'][elementpos] = draft;
+               toasty.info({title: 'Saved Draft!', msg: 'Your draft has been updated.', theme: 'bootstrap', timeout: 5000});
+            }
+
+            if (self.factory.User['Drafts'].length >= 4) {
+               self.factory.User['Drafts'].length = 4;
+            }
+
+            return GetDrafts();
          });
-
-
-
-//         return cacheInit().then(function () {
-//            self.factory.Users = self.factory.Users || [];
-//            console.log(self.factory.Users);
-//            var Draft = {
-//               "UserID": self.UserId,
-//               "Drafts": [
-//                  {
-//                     "DraftId": data.Form.DraftId,
-//                     "Created": Math.floor(Date.now() / 1000),
-//                     "Data": angular.toJson({
-//                        form: data,
-//                     })
-//                  }
-//               ]
-//            }
-//            if (self.factory.Users.length == 0) {
-//               self.factory.Users.push(Draft);
-//            } else {
-//               $.each(self.factory.Users, function (k, v) {
-//                  if (v.UserID == self.UserId) {
-//                     v.Drafts.unshift(Draft.Drafts[0]);
-//                  } else {
-//                     self.factory.Users.push(Draft)
-//                  }
-//               });
-//            }
-////            if (self.factory.Users[self.UserId].length >= 4) {
-////               self.factory.Users[self.UserId].length = 4;
-////            }
-//            SetStorage();
-//            return $q.when(GetDrafts());
-//         });
       }
       return self.factory;
    }]);
 
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty) {
               var vm = this;
 
               vm.Dependencies = {
@@ -755,34 +740,42 @@ BMApp.register.controller('NewTitleForm',
                  $timeout: $timeout,
                  FixedReferences: FixedReferences,
                  $stateParams: $stateParams,
+                 toasty: toasty,
+                 NewTitleDraftsFactory: NewTitleDraftsFactory,
                  Upload: Upload
               };
+
+              vm.data = {
+                 "BasicInfo": {
+                    Publisher: 'h.f.ullmann'
+                 },
+                 "Contributors": {},
+                 "Demographics": {},
+                 "Formats": {},
+                 "Marketing": {}
+              };
+              vm.Form = {
+                 DraftId: GuidCreator.CreateGuid(),
+                 ProductGroupId: null,
+                 CreationDate: moment().format('X')
+              };
               function init() {
-                 vm.Form = {
-                    DraftId: GuidCreator.CreateGuid(),
-                    ProductGroupId: null,
+                 vm.BasicInfo = new BasicInfo(vm.data.BasicInfo || '', vm.Dependencies);
+                 vm.Contributors = new Contributors(vm.data.Contributors.Contributors || '', vm.Dependencies);
+                 vm.Formats = new Formats(vm.data.Formats.Formats || '', vm.Dependencies);
+                 vm.Demographics = new Demographics(vm.data.Demographics || '', vm.Dependencies);
+                 vm.Marketing = new Marketing(vm.data.Marketing || '', vm.Dependencies);
+                 vm.Covers = new Covers(vm.data.Covers || '', vm.Dependencies);
+                 vm.Drafts = new Drafts(vm, vm.Dependencies);
+
+                 vm.LoadDraft = function (Draft) {
+                    vm.Form.DraftId = Draft.DraftId;
+                    vm.Form.ProductGroupId = Draft.ProductGroupId;
+                    vm.Form.CreationDate = Draft.CreationDate;
+                    vm.data = JSON.parse(Draft.Content);
+                    init();
                  };
 
-                 vm.BasicInfo = new BasicInfo(data.NewTitle.BasicInfo || '', vm.Dependencies);
-                 vm.Contributors = new Contributors(data.NewTitle.Contributors.Contributors || '', vm.Dependencies);
-                 vm.Formats = new Formats(data.NewTitle.Formats.Formats || '', vm.Dependencies);
-                 vm.Demographics = new Demographics(data.NewTitle.Demographics || '', vm.Dependencies);
-                 vm.Marketing = new Marketing(data.NewTitle.Marketing || '', vm.Dependencies);
-                 vm.Covers = new Covers(data.Covers || '', vm.Dependencies);
-
-                 vm.SaveDraft = function () {
-                    NewTitleDraftsFactory.SaveDraft({
-                       "DraftId": vm.Form.DraftId,
-                       "ProductGroupId": vm.Form.ProductGroupId,
-                       "Content": {
-                          "BasicInfo": vm.BasicInfo.Model,
-                          "Contributors": vm.Contributors.Model,
-                          "Formats": vm.Formats.Model,
-                          "Demographics": vm.Demographics.Model,
-                          "Marketing": vm.Marketing.Model,
-                       }
-                    });
-                 };
                  vm.RefreshJson = function () {
                     $('#jsonPre').text(JSON.stringify({
                        "Form": vm.Form,
@@ -824,178 +817,6 @@ BMApp.register.controller('NewTitleForm',
               }).then(init);
 
            }]);
-
-//blank model
-var data = {
-   "NewTitle": {
-      "BasicInfo": {
-         "Publisher": "Awesome Publications INC.",
-      },
-      "Contributors": {},
-      "Demographics": {},
-      "Formats": {},
-      "Marketing": {}
-   },
-};
-data = {
-   "NewTitle": {
-      "BasicInfo": {
-         "ProductGroupId": null,
-         "Title": "Jakes Book of Memes",
-         "Subtitle": "Test",
-         "Publisher": "Jake",
-         "Imprint": "Lol",
-         "ContentLanguage": "English",
-         "Series": "Starwars",
-         "NumberinSeries": "3",
-         "MainDescription": "hgfdsfdsf",
-         "ShortDescription": "hgfdsfdsfdsfsdfds"
-      },
-      "Contributors": {
-         "Contributors": [
-            {
-               "FirstName": "Jake",
-               "MiddleName": "A",
-               "LastName": "Ihasz",
-               "Prefix": "Mr",
-               "Suffix": "3rd",
-               "Hometown": "Ashland",
-               "Role": {
-                  "Id": "1",
-                  "Name": "Author"
-               },
-               "Biography": "sdfdsfdsfdsfdsfds",
-               "IsRolePrimary": true,
-               "IsTitlePrimary": true,
-               "AdditionalTitles": [
-                  {
-                     "ISBN": "9780000000002",
-                     "Title": "bv",
-                  }
-               ],
-            }
-         ]
-      },
-      "Formats": {
-         "Formats": [
-            {
-               "ProductType": {
-                  "Id": "3",
-                  "Name": "Print"
-               },
-               "ProductForm": {
-                  "Id": "12",
-                  "Name": "Hardback",
-                  "MediaTypeId": "3"
-               },
-               "ProductDetail": {
-                  "Id": "4",
-                  "Name": "Printed Case",
-                  "FormId": "12"
-               },
-               "ProductBinding": "",
-               "ISBN13": "9780000000002",
-               "Width": 59,
-               "Height": 59,
-               "Spine": 59,
-               "Weight": 59,
-               "PublicationDate": "01/27/2016",
-               "Copyright": "2012",
-               "StockDueDate": "01/19/2016",
-               "TradeSales": true,
-               "Pages": 158,
-               "CartonQuantity": 15,
-               "USPrice": "12.90",
-               "DiscountCode": null,
-               "CustomsValue": null,
-               "Edition": null,
-               "EditionNumber": "15",
-               "EditionType": {
-                  "Id": "2",
-                  "Name": "Revised"
-               },
-               "CountryofOrigin": "us",
-               "PublicationLocation": null,
-               "ComparableTitles": [
-               ],
-               "$$hashKey": "object:1132"
-            }
-         ]
-      },
-      "Demographics": {
-         "Audience": "",
-         "Bisacs": [
-            {
-               "FixedList": [
-               ],
-               "FixedList2": [
-               ],
-               "BisacGroup": {
-                  "Id": "2",
-                  "Prefix": "ARC",
-                  "Name": "ARCHITECTURE",
-                  "YearVersion": "2014",
-                  "$$hashKey": 2
-               },
-               "Code": {
-                  "Id": "48",
-                  "Code": "ARC001000",
-                  "Text": "ARCHITECTURE / Criticism",
-                  "GroupId": "2",
-                  "$$hashKey": 54
-               },
-               "Text": "",
-               "Group": "",
-               "LongName": "",
-               "BisacID": "",
-               "$$hashKey": "object:1078"
-            }
-         ],
-         "AgeRange": ""
-      },
-      "Marketing": {
-         "Websites": [
-            {
-               "URL": "http://google.com/",
-               "Type": "",
-               "$$hashKey": "object:219"
-            }
-         ],
-         "MarketingAndPublicitys": [
-            {
-               "Type": "2",
-               "Description": "jhl",
-               "$$hashKey": "object:243"
-            }
-         ],
-         "Reviews": [
-            {
-               "Name": "rev",
-               "Publication": "fdsf",
-               "Text": "sdfdsfsdfdsfdsf",
-               "$$hashKey": "object:227"
-            }
-         ],
-         "Endorsements": [
-            {
-               "Name": "fds",
-               "Affiliation": "null894",
-               "Text": "sdfdsfs",
-               "$$hashKey": "object:235"
-            }
-         ],
-         "AppearanceAndEvents": [
-            {
-               "Name": "fdsafdsa",
-               "Date": "fsasdfs",
-               "Location": "fdsadsa",
-               "Description": null,
-               "$$hashKey": "object:250"
-            }
-         ]
-      }
-   }
-};
 var Formats = function (data, Dependencies) {
 
    var self = this;

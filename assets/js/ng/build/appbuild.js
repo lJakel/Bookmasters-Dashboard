@@ -73,9 +73,9 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
       var templateProvider = ['$http', '$stateParams', '$state', 'scriptLoader', 'AuthFactory', function ($http, $stateParams, $state, scriptLoader, AuthFactory) {
             var url = '';
             if ($stateParams.page == "home") {
-               url = $stateParams.app + '/' + 'index';
+               url = $stateParams.folder + '/' + $stateParams.app + '/' + 'index';
             } else {
-               url = $stateParams.app + '/' + $stateParams.page;
+               url = $stateParams.folder + '/' + $stateParams.app + '/' + $stateParams.page;
             }
             return $http.get(url).then(function (response) {
                return scriptLoader.loadScriptTagsFromData(response.data);
@@ -84,13 +84,13 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
             });
          }];
 
-      $urlRouterProvider.otherwise("/bm/main/index/");
+      $urlRouterProvider.otherwise("/bm/Dashboard/Main/Index/");
       $stateProvider.state('bm', {url: '/bm', abstract: true, templateUrl: 'Shared/appBootstrap'});
       $stateProvider.state('bm.app', {
          abstract: true,
-         url: '/:app',
+         url: '/:folder',
          params: {
-            app: 'main',
+            folder: 'titlemanagementt/newci',
          },
          views: {
 //         'appItems': {
@@ -101,7 +101,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
          },
       });
       $stateProvider.state('bm.app.page', {
-         url: '/:page/:child',
+         url: '/:app/:page/:child',
          params: {
             app: '',
             page: '',
@@ -146,10 +146,11 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
    }]);
 
 BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootScope, $state, AuthFactory, $location) {
-      
+
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
          if (!$.isEmptyObject(toParams)) {
             $rootScope.redirectToStateAfterLogin = JSON.stringify(toParams);
+            console.log($rootScope.redirectToStateAfterLogin);
          }
          AuthFactory.getInfo().then(function (response) {
             if (!response) {
@@ -389,7 +390,7 @@ appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFa
 
          self.submitFeedback = function () {
             self.submitBtn = 'Submitting...';
-            dep.$http.post('feedback/apisubmit', self.feedback).then(function (success) {
+            dep.$http.post('Feedback/SubmitFeedback/Submit', self.feedback).then(function (success) {
                self.submitBtn = 'Success!';
                self.success = true;
             }, function (fail) {
@@ -818,7 +819,7 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
    }]);
 appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', '$rootScope', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location, $rootScope) {
 
-      var url = 'auth/';
+      var url = 'Authentication/Auth/';
 
       var factory = {
          user: null,

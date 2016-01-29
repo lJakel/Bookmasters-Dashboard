@@ -34,7 +34,7 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <?php if ($_SERVER['HTTP_HOST'] !== '10.10.11.48') { ?>
+      <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
          <script src="/CDN/bower_components/jquery/dist/jquery.js"></script>
          <script src="/CDN/bower_components/angular/angular.js"></script>
          <script src="/CDN/bower_components/angular-ui-router/release/angular-ui-router.js"></script>

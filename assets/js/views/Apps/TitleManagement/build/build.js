@@ -746,7 +746,9 @@ BMApp.register.controller('NewTitleForm',
               };
 
               vm.data = {
-                 "BasicInfo": {},
+                 "BasicInfo": {
+                    Publisher: 'h.f.ullmann'
+                 },
                  "Contributors": {},
                  "Demographics": {},
                  "Formats": {},

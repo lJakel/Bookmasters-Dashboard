@@ -23,12 +23,17 @@ class Secure_Controller extends CI_Controller {
          if ($value == 'get_instance' || $value == '__construct' || $value == 'ClassInit') {
             
          } else {
-      
+
             $AssetFolder = "assets/js/views/{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}";
             if (!is_dir($AssetFolder)) {
                mkdir($AssetFolder, 0777, TRUE);
             }
-            
+            $jsTemplate = "BMApp.register.controller('{$this->app['appName']}Controller', [function () {\nvar vm = this;\n}]);";
+
+            if (!file_exists($AssetFolder . "/{$this->app['appName']}.js")) {
+               file_put_contents($AssetFolder . "/{$this->app['appName']}.js", $jsTemplate);
+            }
+
             $ViewFolder = "application/views/{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}";
             if (!is_dir($ViewFolder)) {
                mkdir($ViewFolder, 0777, TRUE);

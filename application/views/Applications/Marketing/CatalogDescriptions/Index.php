@@ -14,19 +14,19 @@
                      <div class="row">
                         <div class="col-md-12 form-group required">
                            <label for="" class="control-label">Main Description</label>
-                           <p>{{t.MainDescription}}</p>                        
+                           <div ng-bind-html="t.MainDescriptionSafe"></div>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-12 form-group required">
                            <label for="" class="control-label">Author Bios</label>
-                           <p>{{t.AuthorBios}}</p>
+                           <div ng-bind-html="t.AuthorBiosSafe"></div>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-12">
                            <button class="btn btn-primary" ng-click="cd.showItemModal(t, 'Title', 'edit')">Edit</button>
-                           <button class="btn btn-danger">Delete</button>
+                           <button class="btn btn-danger" ng-click="cd.DeleteItem(t)">Delete</button>
                         </div>
                      </div>
                   </div>
@@ -68,7 +68,7 @@
                         </span>
                      </li>
                   </ul>
-                  <button class="btn btn-primary btn-block">Mark All Complete</button>
+                  <button class="btn btn-primary btn-block" ng-click="cd.AddTitle('Title')">Create Title</button>
                </div>
             </div>
          </div>

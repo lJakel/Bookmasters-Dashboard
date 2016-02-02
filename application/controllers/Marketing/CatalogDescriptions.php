@@ -24,6 +24,7 @@ class CatalogDescriptions extends Secure_Controller {
    }
 
    public function GetAll() {
+      $this->output->set_content_type('application/json');
       echo json_encode($this->cd_model->GetAll());
    }
    public function Create() {
@@ -33,6 +34,10 @@ class CatalogDescriptions extends Secure_Controller {
    public function Update() {
       $this->output->set_content_type('application/json');
       echo json_encode($this->cd_model->Update());
+   }
+   public function Delete() {
+      $this->output->set_content_type('application/json');
+      echo json_encode($this->cd_model->Delete());
    }
 
 }

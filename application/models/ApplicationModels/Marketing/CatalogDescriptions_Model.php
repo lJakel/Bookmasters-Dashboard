@@ -12,7 +12,7 @@ class CatalogDescriptions_Model extends ESM {
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
          return $this->generateResponse($queryResult);
       }
-      $this->newError("0000", "There was a problem with the username you supplied or your account has been disabled.", $this, __FUNCTION__, "danger", null, false);
+      $this->newError("0000", "There are no titles in the database. Please create a title or import.", $this, __FUNCTION__, "danger", null, false);
       return $this->generateResponse();
    }
 
@@ -36,14 +36,15 @@ class CatalogDescriptions_Model extends ESM {
       $query = $cdDB->select('*')->from('title')->where('ISBN', $data['ISBN'])->get();
 
       if ($query && $query->num_rows()) {
-         $this->newError("0000", "This record already exists in the table.", $this, __FUNCTION__, "danger", null, false);
+         $this->newError("0000", "This title already exists.", $this, __FUNCTION__, "danger", null, false);
       } else {
          $newQuery = $cdDB->insert('title', $data);
          if ($cdDB->affected_rows() <= 0) {
             $this->newError("0000", "A database error has occured.", $this, __FUNCTION__, "danger", null, false);
          }
       }
-      return $this->generateResponse();
+
+      return $this->GetAll();
    }
 
    public function Update() {
@@ -66,7 +67,19 @@ class CatalogDescriptions_Model extends ESM {
          $this->newError("0000", "A database error has occured.", $this, __FUNCTION__, "danger", null, false);
       }
 
-      return $this->generateResponse();
+      return $this->GetAll();
+   }
+
+   public function Delete() {
+      $cdDB = $this->load->database('JakeComputer', TRUE);
+
+      $cdDB->where('ID', $this->input->post('ID'));
+      $cdDB->delete('title');
+
+      if ($cdDB->affected_rows() <= 0) {
+         $this->newError("0000", "A database error has occured.", $this, __FUNCTION__, "danger", null, false);
+      }
+      return $this->GetAll();
    }
 
 }

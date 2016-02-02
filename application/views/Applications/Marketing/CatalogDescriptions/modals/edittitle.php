@@ -7,14 +7,14 @@
          </div>
          <div class="modal-body"> 
             <div class="row">
-               <div class="col-md-2 form-group required" data-show-errors>
+               <div class="col-md-2 form-group" data-show-errors>
                   <label for="mID" class="control-label">ID</label>
-                  <input type="text" class="form-control" disabled="" name="mID" ng-model="m.ID" ng-required="true">
+                  <input type="text" class="form-control" disabled="" name="mID" ng-model="m.ID" >
                </div>
                <div class="col-md-6 form-group required" data-show-errors>
                   <label for="mISBN" class="control-label">ISBN</label>
                   <div class="input-group">
-                     <input type="text" data-bm-validate-options="['isbn']" class="form-control" name="mISBN" ng-model="m.ISBN" ng-required="true">
+                     <input type="text" data-bm-validate-options="['isbn']" class="form-control" name="mISBN" ng-model="m.ISBN" ng-required="true" ng-model-options="{ updateOn: 'blur' }">
                      <span class="input-group-addon">
                         <i class="fa fa-question fa-fw"></i>
                      </span>
@@ -33,9 +33,9 @@
                   <label for="mTitle" class="control-label">Title</label>
                   <input type="text" class="form-control" name="mTitle" ng-model="m.Title" ng-required="true">
                </div>
-               <div class="col-md-6 form-group required" data-show-errors>
+               <div class="col-md-6 form-group" data-show-errors>
                   <label for="mSubTitle" class="control-label">SubTitle</label>
-                  <input type="text" class="form-control" name="mSubTitle" ng-model="m.SubTitle" ng-required="true">
+                  <input type="text" class="form-control" name="mSubTitle" ng-model="m.SubTitle">
                </div>
             </div>
             <div class="row">
@@ -47,13 +47,13 @@
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mMainDescription" class="control-label">MainDescription</label>
-                  <summernote class="form-control" name="mMainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="m.MainDescription"></summernote>
+                  <summernote ng-model="m.MainDescription" class="form-control" name="mMainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                </div>
             </div>
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mAuthorBios" class="control-label">AuthorBios</label>
-                  <summernote class="form-control" name="mAuthorBios" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="m.AuthorBios"></summernote>
+                  <summernote ng-model="m.AuthorBios" class="form-control" name="mAuthorBios" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                </div>
             </div>
          </div>

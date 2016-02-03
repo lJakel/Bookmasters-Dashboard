@@ -54,21 +54,27 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
       $httpProvider.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
 
 
-      // For any unmatched url, send to /dashboard
 
+      $httpProvider.interceptors.push(['$q', 'toasty', function ($q, toasty) {
+            return {
+               request: function (request) {
+//               request.headers.authorization = userService.getAuthorization();
+                  return request;
+               },
+               // This is the responseError interceptor
+               responseError: function (rejection) {
 
-      var authenticated = ['$q', 'AuthFactory', function ($q, AuthFactory) {
-            var deferred = $q.defer();
-            AuthFactory.getInfo().then(function (response) {
-               if (response != null) {
-                  deferred.resolve();
-               } else {
-                  deferred.reject('Not logged in');
-                  console.log('Not logged in');
+                  if (rejection.status === 401 && rejection.config.url != "Authentication/Auth/getuser") {
+                     toasty.error({title: 'Error!', msg: 'Your session has expired.', html: true, theme: 'bootstrap', timeout: 8000});
+                  }
+
+                  return $q.reject(rejection);
                }
-            });
-            return deferred.promise;
-         }];
+            };
+         }]);
+
+
+      // For any unmatched url, send to /dashboard
 
       var templateProvider = ['$http', '$stateParams', '$state', 'scriptLoader', 'AuthFactory', function ($http, $stateParams, $state, scriptLoader, AuthFactory) {
             var url = '';
@@ -109,7 +115,6 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
             id: {value: null}
          },
          resolve: {
-//            authenticated: authenticated,
             deps: ['scriptLoader', function (scriptLoader) {
                   return scriptLoader;
                }]

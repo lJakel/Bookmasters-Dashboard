@@ -1,5 +1,5 @@
 var Modals = {
-   ContributorBSModal: function (data, Dependencies) {
+   ContributorBSModal: function (data, Dependencies, References) {
       var self = this;
       self.entryData = undefined;
       self.Method = '';
@@ -20,7 +20,7 @@ var Modals = {
       self.Role = '';
       self.Biography = '';
 
-      self.FixedAuthorRoles = [];
+      self.FixedAuthorRoles = References.FixedAuthorRoles;
 
       self.IsRolePrimary = false;
       self.IsTitlePrimary = false;
@@ -37,7 +37,7 @@ var Modals = {
       }
 
    },
-   FormatBSModal: function (data, $scope) {
+   FormatBSModal: function (data, $scope, References) {
       var self = this;
       self.entryData = undefined;
 
@@ -72,15 +72,13 @@ var Modals = {
       self.Illustrations = data.Illustrations || [];
 
       self.FixedProductTypesNew = [];
-      self.FixedProductTypes = [];
+      self.FixedProductTypes = References.FixedProductTypes;
       self.FixedProductForms = [];
       self.FixedProductFormDetails = [];
       self.FixedProductFormDetailSpecifics = [];
 
-      self.FixedIsoCodes = [];
-      self.FixedIsoCodesPoop = [];
-
-      self.FixedDiscountCodes = [];
+      self.FixedIsoCodes = References.FixedISOCountryCodes;
+      self.FixedDiscountCodes = References.FixedDiscountCodes
 
 
       self.FixedEditionTypes = [];
@@ -171,8 +169,6 @@ var Modals = {
             }
          });
          self.DynamicProductFormDetails = newArray;
-
-
       }
 
       function addIllustration() {

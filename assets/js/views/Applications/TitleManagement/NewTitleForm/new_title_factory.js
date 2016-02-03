@@ -3,11 +3,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       var self = this;
       self.factory = {
          getReferences: getReferences,
-         getIsoCodes: getIsoCodes,
          getDiscountCodes: getDiscountCodes,
          lookupBisac: lookupBisac,
          References: undefined,
-         IsoCodes: undefined,
          DiscountCodes: undefined,
       };
       return self.factory;
@@ -24,7 +22,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
             $localStorage.FixedReferencesFactory = {
                Cache: Math.floor(Date.now() / 1000), IsoCodes: null,
                References: null, DiscountCodes: null,
-            }
+            };
          }
       }
 
@@ -32,34 +30,6 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       function setReference(reference, name) {
          self.factory[name] = reference;
          $localStorage.FixedReferencesFactory[name] = reference;
-      }
-
-
-
-
-      function loadIsoCodes(get) {
-         return $http.post("API/ISOCodes/Get").then(function (response) {
-            setReference(response.data.data, 'IsoCodes');
-            if (get == true) {
-               return self.factory.IsoCodes;
-            }
-         }, function () {
-            setIsoCodes(null, 'IsoCodes');
-            $state.go('error', {
-               code: '500',
-               message: 'An error occured loading the Country ISO Codes.'
-            });
-         });
-      }
-
-      function getIsoCodes() {
-         cacheInit();
-         if ($localStorage.FixedReferencesFactory.IsoCodes == null) {
-            return loadIsoCodes(true);
-         } else {
-            self.factory.IsoCodes = $localStorage.FixedReferencesFactory.IsoCodes
-            return $q.when(self.factory.IsoCodes);
-         }
       }
 
       function getReferences() {
@@ -72,19 +42,16 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          }
       }
       function loadReferences(get) {
-
          return $http.post("API/FixedReferences/GetAllReferences", {withCredentials: false}).then(function (response) {
-
             setReference({
-               ContributorRoles: response.data.ContributorRoles,
-               BisacGroups: response.data.BisacGroups,
-               Editions: response.data.EditionTypes,
-               PublicationStatuses: response.data.PublicationStatuses,
-               FixedProductTypes: response.data.MediaTypes,
-               FixedProductForms: response.data.ProductForms,
-               FixedProductFormDetails: response.data.ProductFormDetails,
-               FixedProductFormDetailSpecifics: response.data.ProductFormDetailSpecifics,
-               AudienceTypes: response.data.AudienceTypes,
+               FixedAuthorRoles: response.data.data.FixedAuthorRoles,
+               FixedBisacGroups: response.data.data.FixedBisacGroups,
+               FixedEditionTypes: response.data.data.FixedEditionTypes,
+               FixedPublicationStatuses: response.data.data.FixedPublicationStatuses,
+               FixedProductTypes: response.data.data.FixedProductTypes,
+               FixedAudienceTypes: response.data.data.FixedAudienceTypes,
+               FixedISOCountryCodes: response.data.data.FixedISOCountryCodes,
+               FixedISOLanguageCodes: response.data.data.FixedISOLanguageCodes,
             }, 'References');
             if (get == true) {
                return self.factory.References;

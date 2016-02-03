@@ -1,10 +1,10 @@
-var Contributors = function (data, Dependencies) {
+var Contributors = function (data, Dependencies, References) {
    var vm = this;
    vm.Model = {
       Contributors: data || []
    };
 
-   vm.ContributorModal = new Modals.ContributorBSModal('', Dependencies);
+   vm.ContributorModal = new Modals.ContributorBSModal('', Dependencies, References);
 
    vm.showDialog = false;
 
@@ -15,7 +15,7 @@ var Contributors = function (data, Dependencies) {
 
 
    function showContributorModal(data, method) {
-      
+
       vm.ContributorModal.Method = method || 'edit';
       vm.ContributorModal.entryData = data;
       $.each(data, function (k, v) {

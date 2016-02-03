@@ -1,4 +1,4 @@
-var Demographics = function (data, Dependencies) {
+var Demographics = function (data, Dependencies,References) {
 
    var self = this;
 
@@ -17,9 +17,9 @@ var Demographics = function (data, Dependencies) {
    self.AudienceRequired = false;
    self.AudienceDisabled = false;
 
-   self.FixedList = [];
-   self.FixedAudienceTypes = [];
-   self.FixedIsoCodesPoop = [];
+   self.FixedList = References.FixedBisacGroups;
+   self.FixedAudienceTypes = References.FixedAudienceTypes;
+   
 
 
    Dependencies.$scope.$watchCollection(function () {

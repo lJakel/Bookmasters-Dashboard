@@ -107,13 +107,15 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function ($q, $timeout) {
          }
       }
    }]);
-appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$localStorage', '$timeout', '$location', '$rootScope', function ($http, $stateParams, $state, $q, $localStorage, $timeout, $location, $rootScope) {
+appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$location', '$rootScope',
+   function ($http, $state, $q, $localStorage, $location, $rootScope) {
 
       var url = 'Authentication/Auth/';
 
       var factory = {
          user: null,
          isLoggedIn: isLoggedIn,
+         
          getInfo: getInfo,
          logout: logout,
          forgot: forgot,
@@ -124,6 +126,7 @@ appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$l
 
 
       return factory;
+
 
 
       function changeUser(user) {
@@ -142,6 +145,7 @@ appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$l
          });
       }
 
+    
       function login(user, success, error) {
 
          $http.post(url + 'login', user).then(function (response) {
@@ -186,4 +190,8 @@ appServices.factory('AuthFactory', ['$http', '$stateParams', '$state', '$q', '$l
             return $q.when(factory.user);
          }
       }
+   }]);
+
+appServices.factory('StorageFactory', ['$localStorage', function ($localStorage) {
+
    }]);

@@ -8,7 +8,7 @@ class CatalogDescriptions_Model extends ESM {
 
    public function GetAll() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
-      $query = $cdDB->query('SELECT * FROM title WHERE Complete = 0');
+      $query = $cdDB->query('SELECT * FROM title');
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
          return $this->generateResponse($queryResult);
       }

@@ -1,8 +1,7 @@
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage) {
               var vm = this;
-
               vm.Dependencies = {
                  scriptLoader: scriptLoader,
                  $scope: $scope,
@@ -15,6 +14,32 @@ BMApp.register.controller('NewTitleForm',
                  Upload: Upload
               };
 
+              vm.References = {
+                 FixedAuthorRoles: [],
+                 FixedProductTypes: [],
+                 FixedEditionTypes: [],
+                 FixedAudienceTypes: [],
+                 FixedBisacGroups: [],
+                 FixedISOCountryCodes: [],
+                 FixedISOLanguageCodes: [],
+                 FixedDiscountCodes: []
+              };
+              FixedReferences.getReferences().then(function (response) {
+                 vm.References.FixedAuthorRoles = response.FixedAuthorRoles;
+                 vm.References.FixedProductTypes = response.FixedProductTypes;
+                 vm.References.FixedEditionTypes = response.FixedEditionTypes;
+                 vm.References.FixedAudienceTypes = response.FixedAudienceTypes;
+                 vm.References.FixedBisacGroups = response.FixedBisacGroups;
+                 vm.References.FixedISOCountryCodes = response.FixedISOCountryCodes;
+                 vm.References.FixedISOLanguageCodes = response.FixedISOLanguageCodes;
+              });
+              FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
+                 vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
+              });
+
+              vm.EmptyCache = function () {
+                 $localStorage.FixedReferencesFactory = {};
+              };
               vm.data = {
                  "BasicInfo": {
                     Publisher: 'h.f.ullmann'
@@ -30,13 +55,13 @@ BMApp.register.controller('NewTitleForm',
                  CreationDate: moment().format('X')
               };
               function init() {
-                 vm.BasicInfo = new BasicInfo(vm.data.BasicInfo || '', vm.Dependencies);
-                 vm.Contributors = new Contributors(vm.data.Contributors.Contributors || '', vm.Dependencies);
-                 vm.Formats = new Formats(vm.data.Formats.Formats || '', vm.Dependencies);
-                 vm.Demographics = new Demographics(vm.data.Demographics || '', vm.Dependencies);
-                 vm.Marketing = new Marketing(vm.data.Marketing || '', vm.Dependencies);
-                 vm.Covers = new Covers(vm.data.Covers || '', vm.Dependencies);
-                 vm.Drafts = new Drafts(vm, vm.Dependencies);
+                 vm.BasicInfo = /******/new BasicInfo /******/(vm.data.BasicInfo || '', vm.Dependencies, vm.References);
+                 vm.Contributors = /***/new Contributors /***/(vm.data.Contributors.Contributors || '', vm.Dependencies, vm.References);
+                 vm.Formats = /********/new Formats /********/(vm.data.Formats.Formats || '', vm.Dependencies, vm.References);
+                 vm.Demographics = /***/new Demographics /***/(vm.data.Demographics || '', vm.Dependencies, vm.References);
+                 vm.Marketing = /******/new Marketing /******/(vm.data.Marketing || '', vm.Dependencies, vm.References);
+                 vm.Covers = /*********/new Covers /*********/(vm.data.Covers || '', vm.Dependencies, vm.References);
+                 vm.Drafts = /*********/new Drafts /*********/(vm, vm.Dependencies);
 
                  vm.LoadDraft = function (Draft) {
                     vm.Form.DraftId = Draft.DraftId;
@@ -57,23 +82,6 @@ BMApp.register.controller('NewTitleForm',
                        "Covers": vm.Covers.Model
                     }));
                  };
-
-
-                 FixedReferences.getReferences().then(function (response) {
-                    vm.Contributors.ContributorModal.FixedAuthorRoles = response.ContributorRoles;
-                    vm.Formats.FormatModal.FixedProductTypes = response.FixedProductTypes;
-                    console.log(response.FixedProductTypes);
-                    vm.Formats.FormatModal.FixedEditionTypes = response.Editions;
-                    vm.Demographics.FixedAudienceTypes = response.AudienceTypes;
-                    vm.Demographics.FixedList = response.BisacGroups;
-                 });
-
-                 FixedReferences.getIsoCodes().then(function (response) {
-                    vm.Formats.FormatModal.FixedIsoCodes = response.codes;
-                 });
-                 FixedReferences.getDiscountCodes().then(function (response) {
-                    vm.Formats.FormatModal.FixedDiscountCodes = response;
-                 });
 
                  $timeout(function () {
                     $('[data-toggle="popover"]').popover();

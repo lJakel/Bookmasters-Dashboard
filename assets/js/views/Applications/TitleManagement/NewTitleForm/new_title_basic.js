@@ -1,4 +1,4 @@
-function BasicInfo(data) {
+function BasicInfo(data,Dependencies,References) {
    var self = this;
    self.Model = {
       ProductGroupId: data.ProductGroupId || null,
@@ -11,6 +11,8 @@ function BasicInfo(data) {
       NumberinSeries: data.NumberinSeries || '',
       MainDescription: data.MainDescription || '',
       ShortDescription: data.ShortDescription || '',
-   }
+   };
+   
+   self.FixedLanguageCodes = References.FixedISOLanguageCodes;
 
 }

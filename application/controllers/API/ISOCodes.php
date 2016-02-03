@@ -12,7 +12,13 @@ class ISOCodes extends CI_Controller {
    }
 
    public function Get() {
-      echo json_encode($this->API_Model->getAllIsoCodes($this->input->post('cache')));
+      $this->output->set_content_type('application/json')
+              ->set_output(json_encode($this->API_Model->getAllIsoCodes()));
+   }
+
+   public function GetLanguageIsoCodes() {
+      $this->output->set_content_type('application/json')
+              ->set_output(json_encode($this->API_Model->getAllLanguageIsoCodes()));
    }
 
 }

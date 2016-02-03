@@ -131,27 +131,40 @@
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Subtitle" data-placement="top" data-content="A subtitle should further explain your book's title. It should not include words that explain the format or edition. Not all books have subtitles, so if this book doesn't have one, leave this blank.">?</a>
                                     <input name="Subtitle" type="text" class="form-control" ng-model="bi.Model.Subtitle">
                                  </div>
-                                 <div class="form-group required" data-show-errors>
-                                    <label for="publisher" class="control-label">Publisher</label>
-                                    <input name="Publisher" type="text" class="form-control" readonly ng-model="bi.Model.Publisher">
-                                 </div>
-                                 <div class="form-group required" data-show-errors>
-                                    <label for="imprint" class="control-label">Imprint</label>
-                                    <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Imprint" data-placement="top" data-content="The name under which this book will be distributed. An imprint is a specific brand managed by the publisher and can be the same as the publisher name.">?</a>
-                                    <input name="Imprint" type="text" class="form-control" ng-required="true" ng-model="bi.Model.Imprint">
-                                 </div>
-                                 <div class="form-group required" data-show-errors>
-                                    <label for="" class="control-label">Content Language</label>
-                                    <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Content language" data-placement="top" data-content="The primary language in which the book is written.">?</a>
-                                    <input name="ContentLanguage" type="text" class="form-control" ng-required="true" ng-model="bi.Model.ContentLanguage">
+                                 <div class="row">
+                                    <div class="col-md-6">
+                                       <div class="form-group required" data-show-errors>
+                                          <label for="publisher" class="control-label">Publisher</label>
+                                          <input name="Publisher" type="text" class="form-control" disabled ng-model="bi.Model.Publisher">
+                                       </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                       <div class="form-group required" data-show-errors>
+                                          <label for="imprint" class="control-label">Imprint</label>
+                                          <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Imprint" data-placement="top" data-content="The name under which this book will be distributed. An imprint is a specific brand managed by the publisher and can be the same as the publisher name.">?</a>
+                                          <input name="Imprint" type="text" class="form-control" ng-required="true" ng-model="bi.Model.Imprint">
+                                       </div>
+                                    </div>
                                  </div>
                                  <div class="row">
-                                    <div class="form-group col-md-6" data-show-errors>
+                                    <div class="form-group col-md-4 required" data-show-errors>
+                                       <label for="" class="control-label">Content Language</label>
+                                       <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Content language" data-placement="top" data-content="The primary language in which the book is written.">?</a>
+                                       <ol class="nya-bs-select dropup form-control" name="ContentLanguage" ng-required="true" ng-model="bi.Model.ContentLanguage" data-size="6" data-live-search="true">
+                                          <li nya-bs-option="iso in bi.FixedLanguageCodes">
+                                             <a>
+                                                {{iso.Name}} - {{iso.Iso3}}
+                                                <span class="fa fa-check check-mark"></span>
+                                             </a>
+                                          </li>
+                                       </ol>
+                                    </div>
+                                    <div class="form-group col-md-4" data-show-errors>
                                        <label for="" class="control-label">Series Name</label>
                                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Series" data-placement="top" data-content="An indefinite number of titles, published over an indefinite time period, and grouped together under a series title. Primarily for marketing purposes. ">?</a>
                                        <input name="SeriesName" type="text" class="form-control" ng-model="bi.Model.Series">
                                     </div>
-                                    <div class="form-group col-md-6" data-show-errors>
+                                    <div class="form-group col-md-4" data-show-errors>
                                        <label for="" class="control-label">Number in Series</label>
                                        <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Number in Series" data-placement="top" data-content="The number of this particular book within the series. Numbers only.">?</a>
                                        <input name="NumberinSeries" type="text" class="form-control" ng-model="bi.Model.NumberinSeries">
@@ -833,7 +846,7 @@
    }
 </style>
 <link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
-<link rel="stylesheet" href="/cdn/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
+<link rel="stylesheet" href="/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
 
 <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Applications/TitleManagement/NewTitleForm/modals/modals.js?cache=<?= rand(1000, 9000); ?>"></script>

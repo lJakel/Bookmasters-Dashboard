@@ -47,13 +47,13 @@
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mMainDescription" class="control-label">MainDescription</label>
-                  <summernote ng-model="m.MainDescription" class="form-control" name="mMainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                  <summernote ng-model="m.MainDescription" class="form-control" name="mMainDescription" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
                </div>
             </div>
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mAuthorBios" class="control-label">AuthorBios</label>
-                  <summernote ng-model="m.AuthorBios" class="form-control" name="mAuthorBios" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                  <summernote ng-model="m.AuthorBios" class="form-control" name="mAuthorBios" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
                </div>
             </div>
          </div>

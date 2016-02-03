@@ -6,6 +6,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
       console.log(this);
       self.TitleModal = new modal('');
       self.PerPage = 12;
+      self.ShowComplete = true;
 
       self.showItemModal = function (entryDataViewModel, Component, Method) {
          self[Component + 'Modal'].Method = Method || 'edit';
@@ -65,6 +66,9 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
             return new Title(item);
          });
       };
+      self.FormatDate = function () {
+
+      }
       self.LoadTitles = function () {
          $http.post('./Marketing/CatalogDescriptions/GetAll').then(function (response) {
             self.MapTitles(response.data.data);
@@ -91,9 +95,10 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          t.MainDescriptionSafe = $sce.trustAsHtml(data.MainDescription || '');
          t.AuthorBiosSafe = $sce.trustAsHtml(data.AuthorBios || '');
 
-         t.Complete = (data.Complete ? data.Complete : false);
+         t.Complete = (data.Complete == 0 ? false : true);
          t.Catalog = (data.Catalog ? data.Complete : false);
          t.Updated = data.Updated || 0;
+         t.UpdatedDisplay = moment(data.Updated, "YYYY-MM-DD hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
       }
 
       function modal(data) {

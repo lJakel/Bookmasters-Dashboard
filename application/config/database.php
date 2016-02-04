@@ -167,9 +167,9 @@ $db['marketingUpdate'] = array(
 
 $db['JakeComputer'] = array(
     'dsn' => '',
-    'hostname' => '127.0.0.1',
-    'username' => 'root',
-    'password' => '',
+    'hostname' => '10.10.11.48',
+    'username' => 'JakeTables',
+    'password' => 'mvJsnQQHpNj2rDhv',
     'database' => 'catalog_descriptions',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',

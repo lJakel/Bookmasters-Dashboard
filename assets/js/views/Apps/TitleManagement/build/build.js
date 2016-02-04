@@ -132,7 +132,7 @@ var Modals = {
       $scope.$watch(function () {
          return self.ProductType
       }, function (newVal, oldVal) {
-         
+
          if (newVal && newVal.MediaType == 'eBook') {
             self.isEbook = true;
          } else {
@@ -354,8 +354,27 @@ function Covers(data, Dependencies) {
 
 }
 var Demographics = function (data, Dependencies, References) {
-   
+
    var self = this;
+   self.ValidSubject = false;
+
+   self.ValidWatch = [
+      'NTFNGForm.DemographicsFormPanel.$valid',
+      'NTFNGForm.DemographicsFormPanel.AddBisacs.$valid',
+      'NTFNGForm.DemographicsFormPanel.AddBisacs.AddBisacsRepeat.$valid',
+      function () {
+         return(self.Model.Bisacs.length > 0);
+      },
+   ];
+
+
+   Dependencies.$scope.$watchGroup(self.ValidWatch, function (newValues) {
+      if (newValues.indexOf(false) == -1) {
+         self.ValidSubject = true;
+      } else {
+         self.ValidSubject = false;
+      }
+   });
 
    self.Model = {
       Audience: data.Audience || '',
@@ -717,6 +736,7 @@ BMApp.register.controller('NewTitleForm',
                  Upload: Upload
               };
 
+
               vm.References = {
                  FixedAuthorRoles: [],
                  FixedProductTypes: [],
@@ -747,6 +767,35 @@ BMApp.register.controller('NewTitleForm',
                  CreationDate: moment().format('X')
               };
               function init() {
+                 vm.isValid = false;
+                 vm.ValidSubject = false;
+                 vm.ValidFormWatch = [
+                    'NTFNGForm.BasicInfoFormPanel.$valid',
+                    function () {
+                       return (vm.Formats.Model.Formats.length > 0);
+                    },
+                    function () {
+                       return (vm.Contributors.Model.Contributors.length > 0);
+                    },
+                    function () {
+                       return (vm.Demographics.Model.Bisacs.length > 0);
+                    },
+                    'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
+                    'NTFNGForm.DemographicsFormPanel.$valid',
+                    'NTFNGForm.MarketingFormPanel.$valid',
+                    'NTFNGForm.CoversFormPanel.$valid',
+                 ];
+                 $scope.$watchGroup(vm.ValidFormWatch, function (newValues) {
+                    if (newValues.indexOf(false) == -1) {
+                       vm.isValid = true;
+                    }
+                    if (newValues[3] == true) {
+                       vm.ValidSubject = true;
+                    } else {
+                       vm.ValidSubject = false;
+                    }
+                    console.log(vm.isValid, newValues);
+                 });
 
                  vm.BasicInfo = /******/new BasicInfo /******/(vm.data.BasicInfo || '', vm.Dependencies, vm.References);
                  vm.Contributors = /***/new Contributors /***/(vm.data.Contributors.Contributors || '', vm.Dependencies, vm.References);
@@ -820,7 +869,7 @@ var Formats = function (data, Dependencies, References) {
       $.each(data, function (k, v) {
          self.FormatModal[k] = data[k] || null;
       });
-      
+
       Dependencies.$timeout(function () {
          self.FormatModal.GetMediaTypes();
       }).then(function () {

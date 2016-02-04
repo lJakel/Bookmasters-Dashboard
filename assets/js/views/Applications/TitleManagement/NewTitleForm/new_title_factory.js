@@ -2,9 +2,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
    function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
       self.factory = {
-         getReferences: getReferences,
          getDiscountCodes: getDiscountCodes,
          lookupBisac: lookupBisac,
+         GetFixedReferences: GetFixedReferences,
          References: undefined,
          DiscountCodes: undefined,
       };
@@ -17,7 +17,10 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          var Days = 5;
          var CacheTime = Days * 24 * 60 * 60;
          $localStorage.FixedReferencesFactory = $localStorage.FixedReferencesFactory || {};
-         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || null;
+         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || Math.floor(Date.now() / 1000);
+         $localStorage.FixedReferencesFactory.References = $localStorage.FixedReferencesFactory.References || null;
+
+
          if ($localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
             $localStorage.FixedReferencesFactory = {
                Cache: Math.floor(Date.now() / 1000), IsoCodes: null,
@@ -31,41 +34,25 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          self.factory[name] = reference;
          $localStorage.FixedReferencesFactory[name] = reference;
       }
+      
+      function GetFixedReferences(successCallback, errorCallback) {
+         if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
+            $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
+               $localStorage.FixedReferencesFactory.References = successResponse.data.data;
+               successCallback($localStorage.FixedReferencesFactory.References);
+            }, function (errorResponse) {
 
-      function getReferences() {
-         cacheInit();
-         if ($localStorage.FixedReferencesFactory.References == null) {
-            return loadReferences(true);
+               $state.go('error', {
+                  code: '500',
+                  message: 'An error occured loading the fixed references.'
+               });
+            });
          } else {
-            self.factory.references = $localStorage.FixedReferencesFactory.References
-            return $q.when(self.factory.references);
+            successCallback($localStorage.FixedReferencesFactory.References);
          }
       }
-      function loadReferences(get) {
-         return $http.post("API/FixedReferences/GetAllReferences", {withCredentials: false}).then(function (response) {
-            setReference({
-               FixedAuthorRoles: response.data.data.FixedAuthorRoles,
-               FixedBisacGroups: response.data.data.FixedBisacGroups,
-               FixedEditionTypes: response.data.data.FixedEditionTypes,
-               FixedPublicationStatuses: response.data.data.FixedPublicationStatuses,
-               FixedProductTypes: response.data.data.FixedProductTypes,
-               FixedAudienceTypes: response.data.data.FixedAudienceTypes,
-               FixedISOCountryCodes: response.data.data.FixedISOCountryCodes,
-               FixedISOLanguageCodes: response.data.data.FixedISOLanguageCodes,
-            }, 'References');
-            if (get == true) {
-               return self.factory.References;
-            }
 
-         }, function (response) {
-            setReference(null, 'References');
-            $state.go('error', {
-               code: '500',
-               message: 'An error occured loading the fixed references.'
-            });
-            return;
-         });
-      }
+
 
       function lookupBisac(group, success, error) {
          $http.post("API/BisacCodes/GetGroupCodes", {groupId: group}).then(function (response) {

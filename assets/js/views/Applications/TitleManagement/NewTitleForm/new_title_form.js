@@ -1,6 +1,6 @@
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage', '$q', 'toasty',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage, $q, toasty) {
               var vm = this;
               vm.Dependencies = {
                  scriptLoader: scriptLoader,
@@ -24,18 +24,6 @@ BMApp.register.controller('NewTitleForm',
                  FixedISOLanguageCodes: [],
                  FixedDiscountCodes: []
               };
-              FixedReferences.getReferences().then(function (response) {
-                 vm.References.FixedAuthorRoles = response.FixedAuthorRoles;
-                 vm.References.FixedProductTypes = response.FixedProductTypes;
-                 vm.References.FixedEditionTypes = response.FixedEditionTypes;
-                 vm.References.FixedAudienceTypes = response.FixedAudienceTypes;
-                 vm.References.FixedBisacGroups = response.FixedBisacGroups;
-                 vm.References.FixedISOCountryCodes = response.FixedISOCountryCodes;
-                 vm.References.FixedISOLanguageCodes = response.FixedISOLanguageCodes;
-              });
-              FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
-                 vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
-              });
 
               vm.EmptyCache = function () {
                  $localStorage.FixedReferencesFactory = {};
@@ -55,6 +43,7 @@ BMApp.register.controller('NewTitleForm',
                  CreationDate: moment().format('X')
               };
               function init() {
+
                  vm.BasicInfo = /******/new BasicInfo /******/(vm.data.BasicInfo || '', vm.Dependencies, vm.References);
                  vm.Contributors = /***/new Contributors /***/(vm.data.Contributors.Contributors || '', vm.Dependencies, vm.References);
                  vm.Formats = /********/new Formats /********/(vm.data.Formats.Formats || '', vm.Dependencies, vm.References);
@@ -82,14 +71,29 @@ BMApp.register.controller('NewTitleForm',
                        "Covers": vm.Covers.Model
                     }));
                  };
-
                  $timeout(function () {
                     $('[data-toggle="popover"]').popover();
                  });
-
               }
-              $timeout(function () {
 
-              }).then(init);
+              FixedReferences.GetFixedReferences(function (successResponse) {
+                 vm.References.FixedAuthorRoles = successResponse.FixedAuthorRoles;
+                 vm.References.FixedProductTypes = successResponse.FixedProductTypes;
+                 vm.References.FixedEditionTypes = successResponse.FixedEditionTypes;
+                 vm.References.FixedAudienceTypes = successResponse.FixedAudienceTypes;
+                 vm.References.FixedBisacGroups = successResponse.FixedBisacGroups;
+                 vm.References.FixedISOCountryCodes = successResponse.FixedISOCountryCodes;
+                 vm.References.FixedISOLanguageCodes = successResponse.FixedISOLanguageCodes;
+                 init();
+              }, function (errorResponse) {
+
+              });
+
+
+
+//                 FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
+//                    vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
+//                 });
+
 
            }]);

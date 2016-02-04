@@ -34,7 +34,7 @@
       <div data-ui-view></div>
 
       <!-- common libraries. required for every page-->
-      <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+      <?php if ($_SERVER['HTTP_HOST'] !== '10.10.11.48') { ?>
          <script src="/CDN/bower_components/jquery/dist/jquery.js"></script>
          <script src="/CDN/bower_components/angular/angular.js"></script>
          <script src="/CDN/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -57,7 +57,7 @@
          <script src="assets/vendor/vendor.min.js?cache=<?= rand(1000, 9000); ?>"></script>
       <?php } ?>
       <!-- common app js -->
-      <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
+      <?php if ($_SERVER['HTTP_HOST'] !== '10.10.11.48') { ?>
          <script src="assets/js/ng/app.js"></script>
          <script src="assets/js/ng/controllers.js"></script>
          <script src="assets/js/ng/directives.js"></script>

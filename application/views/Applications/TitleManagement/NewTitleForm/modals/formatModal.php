@@ -3,7 +3,10 @@
       <div class="modal-content"  ng-form="FormatModalForm" ng-repeat="fm in [NTF.Formats.FormatModal]">
          <div class="modal-header" modal-open="NTF.Formats.showDialog" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add / Edit Format</h4>
+            <h4 class="modal-title">
+               <span ng-if="fm.Method == 'edit'">Edit</span>
+               <span ng-if="fm.Method == 'add'">Add</span>  Format
+            </h4>
          </div>
          <div class="modal-body">
             <!-- Nav tabs -->
@@ -68,7 +71,7 @@
                            <option value="">Choose...</option>
                         </select>
                      </div>
-                  
+
                   </div>
                   <div class="row">
                      <div class="col-md-3 form-group required" data-show-errors>

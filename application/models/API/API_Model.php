@@ -23,9 +23,13 @@ class API_Model extends ESM {
       $output['FixedAuthorRoles'] = $refContributorRolesQuery->result_object();
       $refContributorRolesQuery->free_result();
 
-      $refAudienceTypesQuery = $itemmaster->select('Id, FormEnabled, Name')->get('dbo.rfAudienceTypes');
+      $refAudienceTypesQuery = $itemmaster->query('exec AudienceType_Get');
       $output['FixedAudienceTypes'] = $refAudienceTypesQuery->result_object();
       $refAudienceTypesQuery->free_result();
+
+      $refAgeRangeQuery = $itemmaster->query('exec AgeRange_Get');
+      $output['FixedAgeRanges'] = $refAgeRangeQuery->result_object();
+      $refAgeRangeQuery->free_result();
 
       $refEditionTypesQuery = $itemmaster->select('Id, Name')->get('dbo.rfEditionTypes');
       $output['FixedEditionTypes'] = $refEditionTypesQuery->result_object();
@@ -38,18 +42,16 @@ class API_Model extends ESM {
       $refBisacGroupsQuery = $itemmaster->select('Id, Prefix, Name, YearVersion')->get('dbo.BisacGroups');
       $output['FixedBisacGroups'] = $refBisacGroupsQuery->result_object();
       $refBisacGroupsQuery->free_result();
-      
+
       $refISOCountryCodesQuery = $itemmaster->query('exec ISO3166Country_Get');
       $output['FixedISOCountryCodes'] = $refISOCountryCodesQuery->result_object();
       $refISOCountryCodesQuery->free_result();
-           
-      
+
       $refISOLanguageCodesQuery = $itemmaster->query('exec ISOLanguages_Get');
       $output['FixedISOLanguageCodes'] = $refISOLanguageCodesQuery->result_object();
       $refISOLanguageCodesQuery->free_result();
-      
-      
-      
+
+
       return $this->generateResponse($output);
    }
 

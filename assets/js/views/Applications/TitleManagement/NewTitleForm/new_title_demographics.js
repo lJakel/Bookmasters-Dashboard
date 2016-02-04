@@ -1,5 +1,5 @@
-var Demographics = function (data, Dependencies,References) {
-
+var Demographics = function (data, Dependencies, References) {
+   console.log(References);
    var self = this;
 
    self.Model = {
@@ -19,7 +19,7 @@ var Demographics = function (data, Dependencies,References) {
 
    self.FixedList = References.FixedBisacGroups;
    self.FixedAudienceTypes = References.FixedAudienceTypes;
-   
+
 
 
    Dependencies.$scope.$watchCollection(function () {

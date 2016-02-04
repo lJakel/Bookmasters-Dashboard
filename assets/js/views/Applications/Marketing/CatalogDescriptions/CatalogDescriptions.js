@@ -3,9 +3,8 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
       self.LoadedTitle = {};
       self.Titles = [];
       self.showTitleDialog = false;
-      console.log(this);
+      
       self.TitleModal = new modal('');
-      self.PerPage = 12;
       self.ShowComplete = true;
 
       self.showItemModal = function (entryDataViewModel, Component, Method) {

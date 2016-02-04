@@ -21,23 +21,7 @@
                         <label for="ShowComplete"> Show Complete? </label>
                      </div>
                   </div>
-                  <div class="col-md-6">
-                     <label for="" class="control-label">Titles Per Row</label>
-                     <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                        <div class="btn-group" role="group">
-                           <button type="button" class="btn btn-default" ng-click="cd.PerPage = 3">4</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                           <button type="button" class="btn btn-default" ng-click="cd.PerPage = 4">3</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                           <button type="button" class="btn btn-default" ng-click="cd.PerPage = 6">2</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                           <button type="button" class="btn btn-default" ng-click="cd.PerPage = 12">1</button>
-                        </div>
-                     </div>
-                  </div>
+                  
                </div>
             </div>
          </div>
@@ -46,7 +30,7 @@
    <div class="row">
       <div class="col-md-9">
          <div class="row">
-            <div ng-attr-class="{{'col-md-' + cd.PerPage}}" ng-repeat="t in cd.Titles| filter:SearchFilter" ng-hide="cd.ShowComplete == false && t.Complete == true">
+            <div class="col-md-12" ng-repeat="t in cd.Titles| filter:SearchFilter" ng-hide="cd.ShowComplete == false && t.Complete == true">
                <div class="panel panel-default">
 
                   <div class="panel-body">

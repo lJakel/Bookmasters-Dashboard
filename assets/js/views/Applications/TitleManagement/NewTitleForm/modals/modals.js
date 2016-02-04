@@ -132,7 +132,7 @@ var Modals = {
       $scope.$watch(function () {
          return self.ProductType
       }, function (newVal, oldVal) {
-         
+
          if (newVal && newVal.MediaType == 'eBook') {
             self.isEbook = true;
          } else {

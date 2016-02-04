@@ -1,6 +1,25 @@
 var Demographics = function (data, Dependencies, References) {
-   console.log(References);
+
    var self = this;
+   self.ValidSubject = false;
+
+   self.ValidWatch = [
+      'NTFNGForm.DemographicsFormPanel.$valid',
+      'NTFNGForm.DemographicsFormPanel.AddBisacs.$valid',
+      'NTFNGForm.DemographicsFormPanel.AddBisacs.AddBisacsRepeat.$valid',
+      function () {
+         return(self.Model.Bisacs.length > 0);
+      },
+   ];
+
+
+   Dependencies.$scope.$watchGroup(self.ValidWatch, function (newValues) {
+      if (newValues.indexOf(false) == -1) {
+         self.ValidSubject = true;
+      } else {
+         self.ValidSubject = false;
+      }
+   });
 
    self.Model = {
       Audience: data.Audience || '',
@@ -9,32 +28,37 @@ var Demographics = function (data, Dependencies, References) {
    };
    self.FixedBisacListContainer = [];
 
-
    self.AgeRangeRequired = false;
    self.AgeRangeDisabled = true;
-
 
    self.AudienceRequired = false;
    self.AudienceDisabled = false;
 
    self.FixedList = References.FixedBisacGroups;
    self.FixedAudienceTypes = References.FixedAudienceTypes;
-
-
+   self.FixedAgeRanges = References.FixedAgeRanges;
 
    Dependencies.$scope.$watchCollection(function () {
       return self.Model.Audience;
    }, function (newVal, oldVal) {
-      if (newVal.Name == "Children/juvenile") {
-         self.AgeRangeRequired = true;
-         self.AgeRangeDisabled = false;
-
-      } else {
-         self.AgeRangeRequired = false;
-         self.AgeRangeDisabled = true;
-
-
+      switch (newVal.Name) {
+         case "Children/juvenile":
+            self.AgeRangeRequired = true;
+            self.AgeRangeDisabled = false;
+            break;
+         case "Young adult":
+            self.AgeRangeRequired = true;
+            self.AgeRangeDisabled = false;
+            break;
+         default :
+            self.AgeRangeRequired = false;
+            self.AgeRangeDisabled = true;
+            break;
       }
+      self.DynamicAgeRanges = self.FixedAgeRanges.filter(function (item) {
+         console.log(self.Model.Audience, item);
+         return self.Model.Audience && item.AudienceTypeId == self.Model.Audience.Id;
+      });
 
    });
    Dependencies.$scope.$watchCollection(function () {
@@ -64,9 +88,6 @@ var Demographics = function (data, Dependencies, References) {
             alert();
          });
       });
-
-
-
    };
 
    //init values

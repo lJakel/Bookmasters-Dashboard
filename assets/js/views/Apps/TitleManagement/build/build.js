@@ -4,13 +4,6 @@ var Modals = {
       self.entryData = undefined;
       self.Method = '';
 
-      Dependencies.$timeout(function () {
-         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContributorsModalForm.AdditionalTitleForm, function (newVal, oldVal) {
-            console.log(newVal, oldVal);
-         });
-      });
-
-
       self.FirstName = '';
       self.MiddleName = '';
       self.LastName = '';
@@ -40,6 +33,8 @@ var Modals = {
    FormatBSModal: function (data, $scope, References) {
       var self = this;
       self.entryData = undefined;
+
+      self.isEbook = false;
 
       self.Method = '';
       self.ProductType = data.ProductType || '';
@@ -78,7 +73,7 @@ var Modals = {
       self.FixedProductFormDetailSpecifics = [];
 
       self.FixedIsoCodes = References.FixedISOCountryCodes;
-      self.FixedDiscountCodes = References.FixedDiscountCodes
+      self.FixedDiscountCodes = References.FixedDiscountCodes;
 
 
       self.FixedEditionTypes = [];
@@ -134,9 +129,21 @@ var Modals = {
          });
          self.FixedProductTypesNew = ar;
       };
+      $scope.$watch(function () {
+         return self.ProductType
+      }, function (newVal, oldVal) {
+         
+         if (newVal && newVal.MediaType == 'eBook') {
+            self.isEbook = true;
+         } else {
+            self.isEbook = false;
 
+         }
+      })
 
       function GetDynamicProductForms() {
+
+
          var array = self.FixedProductTypes.filter(function (item) {
             return self.ProductType && item.MediaType == self.ProductType.MediaType;
          });
@@ -219,7 +226,7 @@ var Modals = {
       self.Text = '';
    }
 };
-function BasicInfo(data,Dependencies,References) {
+function BasicInfo(data, Dependencies, References) {
    var self = this;
    self.Model = {
       ProductGroupId: data.ProductGroupId || null,
@@ -346,8 +353,8 @@ function Covers(data, Dependencies) {
    };
 
 }
-var Demographics = function (data, Dependencies,References) {
-
+var Demographics = function (data, Dependencies, References) {
+   
    var self = this;
 
    self.Model = {
@@ -357,32 +364,37 @@ var Demographics = function (data, Dependencies,References) {
    };
    self.FixedBisacListContainer = [];
 
-
    self.AgeRangeRequired = false;
    self.AgeRangeDisabled = true;
-
 
    self.AudienceRequired = false;
    self.AudienceDisabled = false;
 
    self.FixedList = References.FixedBisacGroups;
    self.FixedAudienceTypes = References.FixedAudienceTypes;
-   
-
+   self.FixedAgeRanges = References.FixedAgeRanges;
 
    Dependencies.$scope.$watchCollection(function () {
       return self.Model.Audience;
    }, function (newVal, oldVal) {
-      if (newVal.Name == "Children/juvenile") {
-         self.AgeRangeRequired = true;
-         self.AgeRangeDisabled = false;
-
-      } else {
-         self.AgeRangeRequired = false;
-         self.AgeRangeDisabled = true;
-
-
+      switch (newVal.Name) {
+         case "Children/juvenile":
+            self.AgeRangeRequired = true;
+            self.AgeRangeDisabled = false;
+            break;
+         case "Young adult":
+            self.AgeRangeRequired = true;
+            self.AgeRangeDisabled = false;
+            break;
+         default :
+            self.AgeRangeRequired = false;
+            self.AgeRangeDisabled = true;
+            break;
       }
+      self.DynamicAgeRanges = self.FixedAgeRanges.filter(function (item) {
+         console.log(self.Model.Audience, item);
+         return self.Model.Audience && item.AudienceTypeId == self.Model.Audience.Id;
+      });
 
    });
    Dependencies.$scope.$watchCollection(function () {
@@ -412,9 +424,6 @@ var Demographics = function (data, Dependencies,References) {
             alert();
          });
       });
-
-
-
    };
 
    //init values
@@ -455,19 +464,21 @@ var Demographics = function (data, Dependencies,References) {
    }
 };
 var Drafts = function (parent, Dependencies) {
-   console.log(parent);
+   
 
    var self = this;
    self.Drafts = [];
    self.EmptyCache = function () {
-      Dependencies.NewTitleDraftsFactory.EmptyCache().then(function (r) {
-         self.Drafts = [];
-         self.Drafts = r.Drafts;
-      });
+      if (confirm('Are you sure you want to delete all your saved drafts?')) {
+         Dependencies.NewTitleDraftsFactory.EmptyCache().then(function (r) {
+            self.Drafts = [];
+            self.Drafts = r.Drafts;
+         });
+      }
    };
    self.LoadDraft = function ($draft) {
       parent.LoadDraft($draft);
-   }
+   };
 
    self.RemoveDraft = function ($index) {
       Dependencies.NewTitleDraftsFactory.RemoveDraft($index);
@@ -504,9 +515,9 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
    function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
       self.factory = {
-         getReferences: getReferences,
          getDiscountCodes: getDiscountCodes,
          lookupBisac: lookupBisac,
+         GetFixedReferences: GetFixedReferences,
          References: undefined,
          DiscountCodes: undefined,
       };
@@ -519,7 +530,10 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          var Days = 5;
          var CacheTime = Days * 24 * 60 * 60;
          $localStorage.FixedReferencesFactory = $localStorage.FixedReferencesFactory || {};
-         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || null;
+         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || Math.floor(Date.now() / 1000);
+         $localStorage.FixedReferencesFactory.References = $localStorage.FixedReferencesFactory.References || null;
+
+
          if ($localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
             $localStorage.FixedReferencesFactory = {
                Cache: Math.floor(Date.now() / 1000), IsoCodes: null,
@@ -533,41 +547,25 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          self.factory[name] = reference;
          $localStorage.FixedReferencesFactory[name] = reference;
       }
+      
+      function GetFixedReferences(successCallback, errorCallback) {
+         if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
+            $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
+               $localStorage.FixedReferencesFactory.References = successResponse.data.data;
+               successCallback($localStorage.FixedReferencesFactory.References);
+            }, function (errorResponse) {
 
-      function getReferences() {
-         cacheInit();
-         if ($localStorage.FixedReferencesFactory.References == null) {
-            return loadReferences(true);
+               $state.go('error', {
+                  code: '500',
+                  message: 'An error occured loading the fixed references.'
+               });
+            });
          } else {
-            self.factory.references = $localStorage.FixedReferencesFactory.References
-            return $q.when(self.factory.references);
+            successCallback($localStorage.FixedReferencesFactory.References);
          }
       }
-      function loadReferences(get) {
-         return $http.post("API/FixedReferences/GetAllReferences", {withCredentials: false}).then(function (response) {
-            setReference({
-               FixedAuthorRoles: response.data.data.FixedAuthorRoles,
-               FixedBisacGroups: response.data.data.FixedBisacGroups,
-               FixedEditionTypes: response.data.data.FixedEditionTypes,
-               FixedPublicationStatuses: response.data.data.FixedPublicationStatuses,
-               FixedProductTypes: response.data.data.FixedProductTypes,
-               FixedAudienceTypes: response.data.data.FixedAudienceTypes,
-               FixedISOCountryCodes: response.data.data.FixedISOCountryCodes,
-               FixedISOLanguageCodes: response.data.data.FixedISOLanguageCodes,
-            }, 'References');
-            if (get == true) {
-               return self.factory.References;
-            }
 
-         }, function (response) {
-            setReference(null, 'References');
-            $state.go('error', {
-               code: '500',
-               message: 'An error occured loading the fixed references.'
-            });
-            return;
-         });
-      }
+
 
       function lookupBisac(group, success, error) {
          $http.post("API/BisacCodes/GetGroupCodes", {groupId: group}).then(function (response) {
@@ -704,8 +702,8 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
    }]);
 
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage', '$q', 'toasty',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage, $q, toasty) {
               var vm = this;
               vm.Dependencies = {
                  scriptLoader: scriptLoader,
@@ -724,23 +722,12 @@ BMApp.register.controller('NewTitleForm',
                  FixedProductTypes: [],
                  FixedEditionTypes: [],
                  FixedAudienceTypes: [],
+                 FixedAgeRanges: [],
                  FixedBisacGroups: [],
                  FixedISOCountryCodes: [],
                  FixedISOLanguageCodes: [],
                  FixedDiscountCodes: []
               };
-              FixedReferences.getReferences().then(function (response) {
-                 vm.References.FixedAuthorRoles = response.FixedAuthorRoles;
-                 vm.References.FixedProductTypes = response.FixedProductTypes;
-                 vm.References.FixedEditionTypes = response.FixedEditionTypes;
-                 vm.References.FixedAudienceTypes = response.FixedAudienceTypes;
-                 vm.References.FixedBisacGroups = response.FixedBisacGroups;
-                 vm.References.FixedISOCountryCodes = response.FixedISOCountryCodes;
-                 vm.References.FixedISOLanguageCodes = response.FixedISOLanguageCodes;
-              });
-              FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
-                 vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
-              });
 
               vm.EmptyCache = function () {
                  $localStorage.FixedReferencesFactory = {};
@@ -760,6 +747,7 @@ BMApp.register.controller('NewTitleForm',
                  CreationDate: moment().format('X')
               };
               function init() {
+
                  vm.BasicInfo = /******/new BasicInfo /******/(vm.data.BasicInfo || '', vm.Dependencies, vm.References);
                  vm.Contributors = /***/new Contributors /***/(vm.data.Contributors.Contributors || '', vm.Dependencies, vm.References);
                  vm.Formats = /********/new Formats /********/(vm.data.Formats.Formats || '', vm.Dependencies, vm.References);
@@ -787,15 +775,31 @@ BMApp.register.controller('NewTitleForm',
                        "Covers": vm.Covers.Model
                     }));
                  };
-
                  $timeout(function () {
                     $('[data-toggle="popover"]').popover();
                  });
-
               }
-              $timeout(function () {
 
-              }).then(init);
+              FixedReferences.GetFixedReferences(function (successResponse) {
+                 vm.References.FixedAuthorRoles = successResponse.FixedAuthorRoles;
+                 vm.References.FixedProductTypes = successResponse.FixedProductTypes;
+                 vm.References.FixedEditionTypes = successResponse.FixedEditionTypes;
+                 vm.References.FixedAudienceTypes = successResponse.FixedAudienceTypes;
+                 vm.References.FixedAgeRanges = successResponse.FixedAgeRanges;
+                 vm.References.FixedBisacGroups = successResponse.FixedBisacGroups;
+                 vm.References.FixedISOCountryCodes = successResponse.FixedISOCountryCodes;
+                 vm.References.FixedISOLanguageCodes = successResponse.FixedISOLanguageCodes;
+                 init();
+              }, function (errorResponse) {
+
+              });
+
+
+
+//                 FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
+//                    vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
+//                 });
+
 
            }]);
 var Formats = function (data, Dependencies, References) {

@@ -862,8 +862,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
 
     
       function login(user, success, error) {
-
-         $http.post(url + 'login', user).then(function (response) {
+return $http.post(url + 'login', user).then(function (response) {
             changeUser(response.data.data.user.user); // get user block
             success(response.data); //get parent userblock and message block
          }, function (response) {

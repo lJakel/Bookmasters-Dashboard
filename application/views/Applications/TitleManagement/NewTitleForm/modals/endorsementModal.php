@@ -3,7 +3,11 @@
       <div class="modal-content" ng-form="EndorsementModalForm" ng-repeat="em in [NTF.Marketing.EndorsementModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showEndorsementDialog" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add / Edit Endorsement</h4>
+            
+            <h4 class="modal-title">
+               <span ng-if="em.Method == 'edit'">Edit</span>
+               <span ng-if="em.Method == 'add'">Add</span>  Endorsement
+            </h4>
          </div>
          <div class="modal-body">
             <div class="row">

@@ -3,7 +3,10 @@
       <div class="modal-content" ng-form="ReviewModalForm" ng-repeat="rm in [NTF.Marketing.ReviewModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showReviewDialog" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add / Edit Reviews</h4>
+            <h4 class="modal-title">
+               <span ng-if="rm.Method == 'edit'">Edit</span>
+               <span ng-if="rm.Method == 'add'">Add</span>  Review
+            </h4>
          </div>
          <div class="modal-body"> 
             <div class="row">

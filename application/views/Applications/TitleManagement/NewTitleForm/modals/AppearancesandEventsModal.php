@@ -1,10 +1,12 @@
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showAppearanceAndEventDialog" class="modal fade"  data-backdrop="static"> 
-
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="AppearanceAndEventModalForm" ng-repeat="am in [NTF.Marketing.AppearanceAndEventModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showAppearanceAndEventDialog" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add / Edit Format</h4>
+            <h4 class="modal-title">
+               <span ng-if="am.Method == 'edit'">Edit</span>
+               <span ng-if="am.Method == 'add'">Add</span>  Appearance and Event
+            </h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -39,7 +41,5 @@
             <button type="button" class="btn btn-primary" ng-disabled="!AppearanceAndEventModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('AppearanceAndEvent')" id="save-changes">Add Event</button>
          </div>
       </div>
-      <!-- /.modal-content -->
    </div>
-   <!-- /.modal-dialog -->
 </div>

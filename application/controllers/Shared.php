@@ -25,16 +25,20 @@ class Shared extends CI_Controller {
 
    public function appBootstrap() {
       $this->load->view('Shared/AppBootstrap');
-   }   
+      $this->output->cache(10);
+   }
+
    public function error() {
       $this->load->view('Shared/Error');
    }
+
    public function appNavbar() {
       $this->load->view('Shared/AppNavbar');
+      $this->output->cache(10);
    }
+
    public function login() {
       $this->load->view('Authentication/login');
    }
-   
 
 }

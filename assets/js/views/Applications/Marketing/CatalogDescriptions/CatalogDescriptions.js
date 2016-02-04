@@ -65,9 +65,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
             return new Title(item);
          });
       };
-      self.FormatDate = function () {
-
-      }
+     
       self.LoadTitles = function () {
          $http.post('./Marketing/CatalogDescriptions/GetAll').then(function (response) {
             self.MapTitles(response.data.data);

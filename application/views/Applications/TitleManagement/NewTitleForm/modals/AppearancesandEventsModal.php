@@ -1,5 +1,4 @@
 <div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showAppearanceAndEventDialog" class="modal fade"  data-backdrop="static"> 
-
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="AppearanceAndEventModalForm" ng-repeat="am in [NTF.Marketing.AppearanceAndEventModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showAppearanceAndEventDialog" data-draggable>
@@ -42,7 +41,5 @@
             <button type="button" class="btn btn-primary" ng-disabled="!AppearanceAndEventModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('AppearanceAndEvent')" id="save-changes">Add Event</button>
          </div>
       </div>
-      <!-- /.modal-content -->
    </div>
-   <!-- /.modal-dialog -->
 </div>

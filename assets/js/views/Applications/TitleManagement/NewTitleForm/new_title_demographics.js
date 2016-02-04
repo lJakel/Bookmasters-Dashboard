@@ -1,6 +1,25 @@
 var Demographics = function (data, Dependencies, References) {
-   
+
    var self = this;
+   self.ValidSubject = false;
+
+   self.ValidWatch = [
+      'NTFNGForm.DemographicsFormPanel.$valid',
+      'NTFNGForm.DemographicsFormPanel.AddBisacs.$valid',
+      'NTFNGForm.DemographicsFormPanel.AddBisacs.AddBisacsRepeat.$valid',
+      function () {
+         return(self.Model.Bisacs.length > 0);
+      },
+   ];
+
+
+   Dependencies.$scope.$watchGroup(self.ValidWatch, function (newValues) {
+      if (newValues.indexOf(false) == -1) {
+         self.ValidSubject = true;
+      } else {
+         self.ValidSubject = false;
+      }
+   });
 
    self.Model = {
       Audience: data.Audience || '',

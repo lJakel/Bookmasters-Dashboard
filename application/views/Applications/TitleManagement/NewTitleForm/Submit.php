@@ -6,7 +6,7 @@
                <div class="row">
                   <div class="container-fluid">
                      <div class="jumbotron">
-                        <h1 ng-click="NTF.EmptyCache()">Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
+                        <h1 ng-click="NTF.EmptyCache()">Submit New Title <i class="fa fa-fw fa-check-circle" ng-if="NTF.isValid" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
                            <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -96,8 +96,8 @@
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab"
-                              ng-class="{'has-error': !NTFNGForm.DemographicsFormPanel.$pristine && NTFNGForm.DemographicsFormPanel.$invalid}"                              
-                              >Subject</a>
+                              ng-class="{'has-error': !NTFNGForm.DemographicsFormPanel.$pristine && NTFNGForm.DemographicsFormPanel.$invalid && NTF.ValidSubject}"                              
+                              >Subject  {{NTF.ValidSubject}}</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab"
@@ -122,9 +122,9 @@
                            <div class="row">
                               <div class="col-md-12">
                                  <div class="form-group required" data-show-errors>
-                                    <label for="title" class="control-label">Title</label>
+                                    <label for="Title" class="control-label">Title</label>
                                     <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Title" data-placement="top" data-content="The unique name for your book. The subtitle (if applicable) should be given separately.">?</a>
-                                    <input type="text" name="title" class="form-control" ng-required="true" ng-model="bi.Model.Title">
+                                    <input type="text" name="Title" class="form-control" ng-required="true" ng-model="bi.Model.Title">
                                  </div>
                                  <div class="form-group " data-show-errors>
                                     <label for="subtitle" class="control-label">Subtitle</label>
@@ -221,7 +221,7 @@
                         <div role="tabpanel" class="tab-pane" id="subject" ng-form="DemographicsFormPanel" ng-repeat="dm in [NTF.Demographics]">
                            <div class="row">
                               <div class="col-md-12">
-                                 <h3>Add Bisacs</h3>
+                                 <h3>Add Bisacs</h3> {{dm.ValidSubject}}
                               </div>
                            </div>
                            <div class="row">
@@ -239,6 +239,7 @@
                                     </thead>
                                     <tbody ng-form="AddBisacs">
                                        <tr ng-repeat="Bisac in dm.Model.Bisacs" ng-form="AddBisacsRepeat">
+
                                           <td>{{$index + 1}}</td>
                                           <td>
                                              <div class="form-group" data-show-errors>

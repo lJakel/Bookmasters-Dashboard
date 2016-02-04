@@ -4,7 +4,7 @@
          <div class="panel panel-default">
             <div class="panel-body">
                <div class="row">
-                  <div class="col-md-5">
+                  <div class="col-md-4">
                      <label for="" class="control-label">Search</label>
                      <div class="input-group form-group">
                         <span class="input-group-addon">
@@ -13,7 +13,7 @@
                         <input type="text" class="form-control" ng-model="SearchFilter">
                      </div>
                   </div>
-                  <div class="col-md-5">
+                  <div class="col-md-4">
                      <label for="" class="label-control">Sort By</label>
                      <select name="" id="" class="form-control" ng-model="cd.SortBy">
                         <option value="Title" selected>Title</option>
@@ -31,8 +31,6 @@
                         <label for="ShowComplete"> Show Complete? </label>
                      </div>
                   </div>
-
-
                </div>
             </div>
          </div>

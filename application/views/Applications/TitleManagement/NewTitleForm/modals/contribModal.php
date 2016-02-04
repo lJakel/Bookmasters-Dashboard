@@ -4,7 +4,10 @@
       <div class="modal-content" ng-form="ContributorsModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
          <div class="modal-header" modal-open="NTF.Contributors.showDialog" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add / Edit Format</h4>
+            <h4 class="modal-title">
+               <span ng-if="cm.Method == 'edit'">Edit</span>
+               <span ng-if="cm.Method == 'add'">Add</span>  Contributor
+            </h4>
          </div>
          <div class="modal-body" >
             <form action="" id="contribModalID">

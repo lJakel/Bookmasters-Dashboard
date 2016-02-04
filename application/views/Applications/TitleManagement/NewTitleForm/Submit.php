@@ -297,15 +297,9 @@
                               <div class="col-md-6 form-group" data-show-errors ng-class="{'required': dm.AgeRangeRequired}">
                                  <label for="" class="control-label">Age Range From / To</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Age Range " data-placement="top" data-content="If you've added Juvenile BISACs, the Audience must be Children and you must provide an Age Range. This tells book buyers, retailers, and librarians the level at which this book is written so they can make an informed purchasing decision.">?</a>
-                                 <select name="AgeRange" id="" class="form-control" ng-model="dm.Model.AgeRange" ng-required="dm.AgeRangeRequired" ng-disabled="dm.AgeRangeDisabled">
+                                 <select name="AgeRange" id="" class="form-control" ng-model="dm.Model.AgeRange" ng-required="dm.AgeRangeRequired" ng-disabled="dm.AgeRangeDisabled"
+                                         ng-options="age.AgeFrom + ' - ' + age.AgeTo + ' - ' + age.Name for age in dm.DynamicAgeRanges track by age.Id">
                                     <option value="">Choose...</option>
-                                    <option value="2">&nbsp;&nbsp;0 — &nbsp;&nbsp;2 &nbsp;&nbsp;Infant</option>
-                                    <option value="3">&nbsp;&nbsp;2 — &nbsp;&nbsp;4 &nbsp;&nbsp;Toddler</option>
-                                    <option value="4">&nbsp;&nbsp;4 — &nbsp;&nbsp;6 &nbsp;&nbsp;Emergent Reader</option>
-                                    <option value="5">&nbsp;&nbsp;6 — &nbsp;&nbsp;8 &nbsp;&nbsp;Early Reader</option>
-                                    <option value="6">&nbsp;&nbsp;8 — 10 &nbsp;&nbsp;Reader</option>
-                                    <option value="7">10 — 14 &nbsp;&nbsp;Early Teen</option>
-                                    <option value="8">14 — 18 &nbsp;&nbsp;Young Adult</option>
                                  </select>
                               </div>
                            </div>

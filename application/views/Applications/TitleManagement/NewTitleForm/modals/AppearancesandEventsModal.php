@@ -4,7 +4,10 @@
       <div class="modal-content" ng-form="AppearanceAndEventModalForm" ng-repeat="am in [NTF.Marketing.AppearanceAndEventModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showAppearanceAndEventDialog" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add / Edit Format</h4>
+            <h4 class="modal-title">
+               <span ng-if="am.Method == 'edit'">Edit</span>
+               <span ng-if="am.Method == 'add'">Add</span>  Appearance and Event
+            </h4>
          </div>
          <div class="modal-body">
             <div class="row">

@@ -16,7 +16,7 @@
                <li role="presentation"><a href="#" class="required" data-target="#SalesRights" aria-controls="SalesRights" role="tab" data-toggle="tab">Sales Rights</a></li>
                <li role="presentation"><a href="#" class="" data-target="#ComparableTitles" aria-controls="ComparableTitles" role="tab" data-toggle="tab">Comparable Titles</a></li>
                <li role="presentation"><a href="#" class="" data-target="#Illustrations" aria-controls="Illustrations" role="tab" data-toggle="tab">Illustrations</a></li>
-               <li role="presentation" ng-show="fm.ProductForm == '3 - Electronic Print'"><a href="#" data-target="#RelatedProduct" aria-controls="RelatedProduct" role="tab" data-toggle="tab">Related Product</a></li>
+               <li role="presentation" ng-show="fm.isEbook"><a href="#" data-target="#RelatedProduct" aria-controls="RelatedProduct" role="tab" data-toggle="tab">Related Product</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -73,19 +73,19 @@
                      </div>
 
                   </div>
-                  <div class="row">
+                  <div class="row" ng-hide="fm.isEbook">
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Width</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Width" data-placement="top" data-content="The measurement from spine to cut edge of the book. The horizontal measure. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Width" name="Width">
+                           <input type="number" class="form-control" ng-required="!fm.isEbook" min="0" max="99" ng-model="fm.Width" name="Width">
                            <span class="input-group-addon">in</span> </div>
                      </div>
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="" class="control-label">Height</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Height" data-placement="top" data-content="The measurement from top to bottom of spine. The vertical measure. Given in inches.">?</a>
                         <div class="input-group">
-                           <input type="number" class="form-control" ng-required="true" min="0" max="99" ng-model="fm.Height" name="Height">
+                           <input type="number" class="form-control" ng-required="!fm.isEbook" min="0" max="99" ng-model="fm.Height" name="Height">
                            <span class="input-group-addon">in</span> </div>
                      </div>
                      <div class="col-md-3 form-group" data-show-errors>

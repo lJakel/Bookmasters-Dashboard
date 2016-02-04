@@ -19,6 +19,7 @@ BMApp.register.controller('NewTitleForm',
                  FixedProductTypes: [],
                  FixedEditionTypes: [],
                  FixedAudienceTypes: [],
+                 FixedAgeRanges: [],
                  FixedBisacGroups: [],
                  FixedISOCountryCodes: [],
                  FixedISOLanguageCodes: [],
@@ -81,6 +82,7 @@ BMApp.register.controller('NewTitleForm',
                  vm.References.FixedProductTypes = successResponse.FixedProductTypes;
                  vm.References.FixedEditionTypes = successResponse.FixedEditionTypes;
                  vm.References.FixedAudienceTypes = successResponse.FixedAudienceTypes;
+                 vm.References.FixedAgeRanges = successResponse.FixedAgeRanges;
                  vm.References.FixedBisacGroups = successResponse.FixedBisacGroups;
                  vm.References.FixedISOCountryCodes = successResponse.FixedISOCountryCodes;
                  vm.References.FixedISOLanguageCodes = successResponse.FixedISOLanguageCodes;

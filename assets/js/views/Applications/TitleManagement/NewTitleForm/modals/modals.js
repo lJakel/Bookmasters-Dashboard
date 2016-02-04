@@ -3,7 +3,7 @@ var Modals = {
       var self = this;
       self.entryData = undefined;
       self.Method = '';
-     
+
       self.FirstName = '';
       self.MiddleName = '';
       self.LastName = '';
@@ -33,6 +33,8 @@ var Modals = {
    FormatBSModal: function (data, $scope, References) {
       var self = this;
       self.entryData = undefined;
+
+      self.isEbook = false;
 
       self.Method = '';
       self.ProductType = data.ProductType || '';
@@ -127,9 +129,21 @@ var Modals = {
          });
          self.FixedProductTypesNew = ar;
       };
+      $scope.$watch(function () {
+         return self.ProductType
+      }, function (newVal, oldVal) {
+         
+         if (newVal && newVal.MediaType == 'eBook') {
+            self.isEbook = true;
+         } else {
+            self.isEbook = false;
 
+         }
+      })
 
       function GetDynamicProductForms() {
+
+
          var array = self.FixedProductTypes.filter(function (item) {
             return self.ProductType && item.MediaType == self.ProductType.MediaType;
          });

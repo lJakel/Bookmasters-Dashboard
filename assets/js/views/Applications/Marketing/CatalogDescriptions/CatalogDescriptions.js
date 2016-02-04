@@ -89,6 +89,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          t.SubTitle = data.SubTitle || '';
          t.ISBN = data.ISBN || '';
          t.Authors = data.Authors || '';
+         t.Publisher = data.Publisher || '';
          t.MainDescription = data.MainDescription || '';
          t.AuthorBios = data.AuthorBios || '';
          t.MainDescriptionSafe = $sce.trustAsHtml(data.MainDescription || '');
@@ -109,6 +110,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          self.SubTitle = data.SubTitle || '';
          self.ISBN = data.ISBN || '';
          self.Authors = data.Authors || '';
+         self.Publisher = data.Publisher || '';
          self.MainDescription = data.MainDescription || '';
          self.AuthorBios = data.AuthorBios || '';
          self.Complete = data.Complete || 0;

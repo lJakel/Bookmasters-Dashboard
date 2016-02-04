@@ -21,7 +21,7 @@
                         <label for="ShowComplete"> Show Complete? </label>
                      </div>
                   </div>
-                  
+
                </div>
             </div>
          </div>
@@ -36,6 +36,7 @@
                   <div class="panel-body">
                      <h2>{{t.Title}} <i class="fa fa-fw fa-check-circle" ng-if="t.Complete == 1" style="color: #5cb85c;"></i></h2>
                      <h4>{{t.SubTitle}}</h4>
+                     <h4><i>{{t.Publisher}}</i></h4>
                      <h5><i>{{t.Authors}}</i></h5>
                      <h5>{{t.ISBN}}</h5>
                      <hr>

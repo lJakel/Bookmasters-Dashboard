@@ -46,6 +46,12 @@
             </div>
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
+                  <label for="mPublisher" class="control-label">Publisher</label>
+                  <input type="text" class="form-control" name="mPublisher" ng-model="m.Publisher" ng-required="true">
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mMainDescription" class="control-label">MainDescription</label>
                   <summernote ng-model="m.MainDescription" class="form-control" name="mMainDescription" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
                </div>

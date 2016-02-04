@@ -16,7 +16,7 @@ var Formats = function (data, Dependencies, References) {
       $.each(data, function (k, v) {
          self.FormatModal[k] = data[k] || null;
       });
-      
+
       Dependencies.$timeout(function () {
          self.FormatModal.GetMediaTypes();
       }).then(function () {

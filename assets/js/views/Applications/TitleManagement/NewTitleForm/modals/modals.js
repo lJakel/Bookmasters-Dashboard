@@ -3,14 +3,7 @@ var Modals = {
       var self = this;
       self.entryData = undefined;
       self.Method = '';
-
-      Dependencies.$timeout(function () {
-         Dependencies.$scope.$watch(Dependencies.$scope.NTFNGForm.ContributorsModalForm.AdditionalTitleForm, function (newVal, oldVal) {
-            console.log(newVal, oldVal);
-         });
-      });
-
-
+     
       self.FirstName = '';
       self.MiddleName = '';
       self.LastName = '';
@@ -78,7 +71,7 @@ var Modals = {
       self.FixedProductFormDetailSpecifics = [];
 
       self.FixedIsoCodes = References.FixedISOCountryCodes;
-      self.FixedDiscountCodes = References.FixedDiscountCodes
+      self.FixedDiscountCodes = References.FixedDiscountCodes;
 
 
       self.FixedEditionTypes = [];

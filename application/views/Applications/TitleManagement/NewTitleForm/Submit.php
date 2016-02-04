@@ -5,7 +5,7 @@
             <div class="panel-body">
                <div class="row">
                   <div class="container-fluid">
-                     <div class="jumbotron" style="position: static; z-index: auto;">
+                     <div class="jumbotron">
                         <h1 ng-click="NTF.EmptyCache()">Submit New Title <i class="fa fa-fw fa-check-circle" style="color: #5cb85c;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>

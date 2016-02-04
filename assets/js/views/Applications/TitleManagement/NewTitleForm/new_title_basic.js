@@ -1,4 +1,4 @@
-function BasicInfo(data,Dependencies,References) {
+function BasicInfo(data, Dependencies, References) {
    var self = this;
    self.Model = {
       ProductGroupId: data.ProductGroupId || null,

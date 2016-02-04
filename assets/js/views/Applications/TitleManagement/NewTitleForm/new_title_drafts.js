@@ -1,17 +1,19 @@
 var Drafts = function (parent, Dependencies) {
-   console.log(parent);
+   
 
    var self = this;
    self.Drafts = [];
    self.EmptyCache = function () {
-      Dependencies.NewTitleDraftsFactory.EmptyCache().then(function (r) {
-         self.Drafts = [];
-         self.Drafts = r.Drafts;
-      });
+      if (confirm('Are you sure you want to delete all your saved drafts?')) {
+         Dependencies.NewTitleDraftsFactory.EmptyCache().then(function (r) {
+            self.Drafts = [];
+            self.Drafts = r.Drafts;
+         });
+      }
    };
    self.LoadDraft = function ($draft) {
       parent.LoadDraft($draft);
-   }
+   };
 
    self.RemoveDraft = function ($index) {
       Dependencies.NewTitleDraftsFactory.RemoveDraft($index);

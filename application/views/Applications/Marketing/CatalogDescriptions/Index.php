@@ -16,7 +16,7 @@
                   <div class="col-md-5">
                      <label for="" class="label-control">Sort By</label>
                      <select name="" id="" class="form-control" ng-model="cd.SortBy">
-                        <option value="Title">Title</option>
+                        <option value="Title" selected>Title</option>
                         <option value="SubTitle">SubTitle</option>
                         <option value="Publisher">Publisher</option>
                         <option value="ISBN">ISBN</option>

@@ -56,7 +56,6 @@ var Demographics = function (data, Dependencies, References) {
             break;
       }
       self.DynamicAgeRanges = self.FixedAgeRanges.filter(function (item) {
-         console.log(self.Model.Audience, item);
          return self.Model.Audience && item.AudienceTypeId == self.Model.Audience.Id;
       });
 

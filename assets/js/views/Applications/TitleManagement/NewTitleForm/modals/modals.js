@@ -76,7 +76,7 @@ var Modals = {
       self.FixedDiscountCodes = References.FixedDiscountCodes;
 
 
-      self.FixedEditionTypes = [];
+      self.FixedEditionTypes = References.FixedEditionTypes;
 
       self.DynamicProductTypes = [];
       self.DynamicProductForms = [];

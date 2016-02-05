@@ -76,7 +76,7 @@ var Modals = {
       self.FixedDiscountCodes = References.FixedDiscountCodes;
 
 
-      self.FixedEditionTypes = [];
+      self.FixedEditionTypes = References.FixedEditionTypes;
 
       self.DynamicProductTypes = [];
       self.DynamicProductForms = [];
@@ -534,7 +534,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
    function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
       self.factory = {
-         getDiscountCodes: getDiscountCodes,
+         GetDiscountCodes: GetDiscountCodes,
          lookupBisac: lookupBisac,
          GetFixedReferences: GetFixedReferences,
          References: undefined,
@@ -566,7 +566,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          self.factory[name] = reference;
          $localStorage.FixedReferencesFactory[name] = reference;
       }
-      
+
       function GetFixedReferences(successCallback, errorCallback) {
          if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
             $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
@@ -598,15 +598,36 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          });
       }
 
-      function getDiscountCodes() {
-         if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
-            return AuthFactory.getInfo().then(function (response) {
-               setReference(response.clientinfo.DiscountCodes, 'DiscountCodes');
-               return $q.when(self.factory.DiscountCodes);
+
+
+      function GetFixedReferences(successCallback, errorCallback) {
+         if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
+            $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
+               $localStorage.FixedReferencesFactory.References = successResponse.data.data;
+               successCallback($localStorage.FixedReferencesFactory.References);
+            }, function (errorResponse) {
+
+               $state.go('error', {
+                  code: '500',
+                  message: 'An error occured loading the fixed references.'
+               });
             });
          } else {
-            self.factory.DiscountCodes = $localStorage.FixedReferencesFactory.DiscountCodes
-            return $q.when(self.factory.DiscountCodes);
+            successCallback($localStorage.FixedReferencesFactory.References);
+         }
+      }
+
+
+
+
+      function GetDiscountCodes(successCallback, errorCallback) {
+         if ($localStorage.FixedReferencesFactory.DiscountCodes == null || $localStorage.FixedReferencesFactory.DiscountCodes) {
+            AuthFactory.getInfo().then(function (response) {
+               $localStorage.FixedReferencesFactory.DiscountCodes = response.clientinfo.DiscountCodes;
+               successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
+            });
+         } else {
+            successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
          }
       }
    }]);
@@ -778,7 +799,7 @@ BMApp.register.controller('NewTitleForm',
                        return (vm.Contributors.Model.Contributors.length > 0);
                     },
                     function () {
-                       return (vm.Demographics.Model.Bisacs.length > 0);
+                       return (vm.Demographics.ValidSubject);
                     },
                     'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
                     'NTFNGForm.DemographicsFormPanel.$valid',
@@ -829,6 +850,9 @@ BMApp.register.controller('NewTitleForm',
                  });
               }
 
+              FixedReferences.GetDiscountCodes(function (successResponse) {
+                 vm.References.FixedDiscountCodes = successResponse;
+              });
               FixedReferences.GetFixedReferences(function (successResponse) {
                  vm.References.FixedAuthorRoles = successResponse.FixedAuthorRoles;
                  vm.References.FixedProductTypes = successResponse.FixedProductTypes;
@@ -839,17 +863,7 @@ BMApp.register.controller('NewTitleForm',
                  vm.References.FixedISOCountryCodes = successResponse.FixedISOCountryCodes;
                  vm.References.FixedISOLanguageCodes = successResponse.FixedISOLanguageCodes;
                  init();
-              }, function (errorResponse) {
-
               });
-
-
-
-//                 FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
-//                    vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
-//                 });
-
-
            }]);
 var Formats = function (data, Dependencies, References) {
 

@@ -30,7 +30,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!EndorsementModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Endorsement')">Add Endorsement</button>
          </div>
       </div>

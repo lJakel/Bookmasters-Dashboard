@@ -321,14 +321,16 @@
                      <div class="col-md-12">
                         <div class="row">
                            <div class="col-md-12">
-                              <h3>Verify Your Publishing Territories</h3>
-                              <p>Select the territories for which you hold rights.</p>
+                              <h3>Tell us where we can sell your book 
+                                 <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Sales Rights" data-placement="right" data-content='The publisher has a right to publish content in specified geographical territories. That may be the WORLD or a list of specific countries. What we need to know, is where do you expect Bookmasters to facilitate sales of your content? Many times this is the entire World; however, sometimes, you may wish for Bookmasters to concentrate efforts on a specific list of countries because you have other existing relationships with suppliers around the world. Choose either "World" or the list of specific countries from the list. Know that eBooks are generally given World sales rights.'>?</a>
+                              </h3>
+                              <p>Select the areas in which you hold sales rights for the title and where you would like Bookmasters to manage sales.</p>
                            </div>
                         </div>
                         <div class="row">
                            <div class="col-md-12">
                               <div class="bs-radio radio-primary" id="TerritoryRights1" model="fm.TerritoryRights" value="world" label="World"></div>
-                              <div class="bs-radio radio-primary" id="TerritoryRights2" model="fm.TerritoryRights" value="individual" label="Individial"></div>
+                              <div class="bs-radio radio-primary" id="TerritoryRights2" model="fm.TerritoryRights" value="individual" label="Only specific countries"></div>
                            </div>
                         </div>
                         <div class="row" ng-show="fm.TerritoryRights == 'individual'">
@@ -366,7 +368,7 @@
             </div>
          </div>
          <div class="modal-footer">            
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!FormatModalForm.$valid" ng-click="NTF.Formats.onFormatModalAction()">
                <span ng-if="fm.Method == 'edit'">Save</span>
                <span ng-if="fm.Method == 'add'">Add</span> 

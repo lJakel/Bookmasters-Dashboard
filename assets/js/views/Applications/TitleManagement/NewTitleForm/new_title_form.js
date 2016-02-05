@@ -56,7 +56,7 @@ BMApp.register.controller('NewTitleForm',
                        return (vm.Contributors.Model.Contributors.length > 0);
                     },
                     function () {
-                       return (vm.Demographics.Model.Bisacs.length > 0);
+                       return (vm.Demographics.ValidSubject);
                     },
                     'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
                     'NTFNGForm.DemographicsFormPanel.$valid',
@@ -107,6 +107,9 @@ BMApp.register.controller('NewTitleForm',
                  });
               }
 
+              FixedReferences.GetDiscountCodes(function (successResponse) {
+                 vm.References.FixedDiscountCodes = successResponse;
+              });
               FixedReferences.GetFixedReferences(function (successResponse) {
                  vm.References.FixedAuthorRoles = successResponse.FixedAuthorRoles;
                  vm.References.FixedProductTypes = successResponse.FixedProductTypes;
@@ -117,15 +120,5 @@ BMApp.register.controller('NewTitleForm',
                  vm.References.FixedISOCountryCodes = successResponse.FixedISOCountryCodes;
                  vm.References.FixedISOLanguageCodes = successResponse.FixedISOLanguageCodes;
                  init();
-              }, function (errorResponse) {
-
               });
-
-
-
-//                 FixedReferences.getDiscountCodes().then(function (FixedDiscountCodesResponse) {
-//                    vm.References.FixedDiscountCodes = FixedDiscountCodesResponse;
-//                 });
-
-
            }]);

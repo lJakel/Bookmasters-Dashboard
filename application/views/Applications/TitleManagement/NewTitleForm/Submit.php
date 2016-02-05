@@ -96,8 +96,8 @@
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab"
-                              ng-class="{'has-error': !NTFNGForm.DemographicsFormPanel.$pristine && NTFNGForm.DemographicsFormPanel.$invalid && NTF.ValidSubject}"                              
-                              >Subject  {{NTF.ValidSubject}}</a>
+                              ng-class="{'has-error': !NTFNGForm.DemographicsFormPanel.$pristine && NTFNGForm.DemographicsFormPanel.$invalid && !NTF.ValidSubject}"                              
+                              >Subject</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab"
@@ -221,7 +221,7 @@
                         <div role="tabpanel" class="tab-pane" id="subject" ng-form="DemographicsFormPanel" ng-repeat="dm in [NTF.Demographics]">
                            <div class="row">
                               <div class="col-md-12">
-                                 <h3>Add Bisacs</h3> {{dm.ValidSubject}}
+                                 <h3>Add Bisacs</h3>
                               </div>
                            </div>
                            <div class="row">
@@ -239,7 +239,6 @@
                                     </thead>
                                     <tbody ng-form="AddBisacs">
                                        <tr ng-repeat="Bisac in dm.Model.Bisacs" ng-form="AddBisacsRepeat">
-
                                           <td>{{$index + 1}}</td>
                                           <td>
                                              <div class="form-group" data-show-errors>
@@ -348,14 +347,19 @@
                                        <tbody>
                                           <tr ng-repeat="Format in NTF.Formats.Model.Formats">
                                              <td>
-                                                {{Format.ProductType.Name}} / 
-                                                {{Format.ProductForm.Name}} / 
-                                                {{Format.ProductDetail.Name}} / 
-                                                {{Format.ProductBinding.Name}}
+                                                <span ng-if='Format.ProductType.MediaType'>
+                                                   {{Format.ProductType.MediaType}}
+                                                </span>
+                                                <span ng-if='Format.ProductForm.Form'>
+                                                   / {{Format.ProductForm.Form}}
+                                                </span>
+                                                <span ng-if='Format.ProductDetail.Detail'>
+                                                   / {{Format.ProductDetail.Detail}}
+                                                </span>
                                              </td>
                                              <td>{{Format.ISBN13}}</td>
                                              <td>{{Format.PublicationDate}}</td>
-                                             <td>{{Format.USPrice}}</td>
+                                             <td>${{Format.USPrice}}</td>
                                              <td class="twobtn">
                                                 <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-fw fa-edit fa-fw"></span></button>
                                                 <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-fw fa-minus fa-fw"></span></button>

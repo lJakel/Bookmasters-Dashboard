@@ -2,7 +2,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
    function ($http, $q, $state, $timeout, $localStorage, AuthFactory) {
       var self = this;
       self.factory = {
-         getDiscountCodes: getDiscountCodes,
+         GetDiscountCodes: GetDiscountCodes,
          lookupBisac: lookupBisac,
          GetFixedReferences: GetFixedReferences,
          References: undefined,
@@ -34,7 +34,7 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          self.factory[name] = reference;
          $localStorage.FixedReferencesFactory[name] = reference;
       }
-      
+
       function GetFixedReferences(successCallback, errorCallback) {
          if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
             $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
@@ -66,15 +66,36 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          });
       }
 
-      function getDiscountCodes() {
-         if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
-            return AuthFactory.getInfo().then(function (response) {
-               setReference(response.clientinfo.DiscountCodes, 'DiscountCodes');
-               return $q.when(self.factory.DiscountCodes);
+
+
+      function GetFixedReferences(successCallback, errorCallback) {
+         if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
+            $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
+               $localStorage.FixedReferencesFactory.References = successResponse.data.data;
+               successCallback($localStorage.FixedReferencesFactory.References);
+            }, function (errorResponse) {
+
+               $state.go('error', {
+                  code: '500',
+                  message: 'An error occured loading the fixed references.'
+               });
             });
          } else {
-            self.factory.DiscountCodes = $localStorage.FixedReferencesFactory.DiscountCodes
-            return $q.when(self.factory.DiscountCodes);
+            successCallback($localStorage.FixedReferencesFactory.References);
+         }
+      }
+
+
+
+
+      function GetDiscountCodes(successCallback, errorCallback) {
+         if ($localStorage.FixedReferencesFactory.DiscountCodes == null || $localStorage.FixedReferencesFactory.DiscountCodes) {
+            AuthFactory.getInfo().then(function (response) {
+               $localStorage.FixedReferencesFactory.DiscountCodes = response.clientinfo.DiscountCodes;
+               successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
+            });
+         } else {
+            successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
          }
       }
    }]);

@@ -28,7 +28,6 @@ var Modals = {
       function removeAdditionalTitle(index) {
          self.AdditionalTitles.splice(index, 1);
       }
-
    },
    FormatBSModal: function (data, $scope, References) {
       var self = this;

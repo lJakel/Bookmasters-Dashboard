@@ -149,7 +149,7 @@
                      <div class="col-md-3 form-group" data-show-errors>
                         <label for="CartonQuantity" class="control-label">Carton Quantity</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Carton Quantity " data-placement="top" data-content="The number of books contained in a full carton. Your printer can give you this information.">?</a>
-                        <input name="CartonQuantity" type="number" class="form-control" ng-required="true" min="0" ng-model="fm.CartonQuantity">
+                        <input name="CartonQuantity" type="number" class="form-control" min="0" ng-model="fm.CartonQuantity">
                      </div>
                      <div class="form-group col-md-3">
                         <label for="" class="control-label">Edition Number</label>

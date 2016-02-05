@@ -46,7 +46,7 @@ BMApp.register.controller('NewTitleForm',
               };
               function init() {
                  vm.isValid = false;
-                 vm.ValidSubject = false;
+                 vm.Notified = false;
                  vm.ValidFormWatch = [
                     'NTFNGForm.BasicInfoFormPanel.$valid',
                     function () {
@@ -59,19 +59,21 @@ BMApp.register.controller('NewTitleForm',
                        return (vm.Demographics.ValidSubject);
                     },
                     'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
-                    'NTFNGForm.DemographicsFormPanel.$valid',
                     'NTFNGForm.MarketingFormPanel.$valid',
                     'NTFNGForm.CoversFormPanel.$valid',
                  ];
                  $scope.$watchGroup(vm.ValidFormWatch, function (newValues) {
                     if (newValues.indexOf(false) == -1) {
                        vm.isValid = true;
-                    }
-                    if (newValues[3] == true) {
-                       vm.ValidSubject = true;
+                       if (!vm.Notified) {
+                          toasty.info({title: 'Well Done!', msg: 'You have completed the minimum specifications to submit your new title!', theme: 'bootstrap', timeout: 8000});
+                          vm.Notified = true;
+                       }
+
                     } else {
-                       vm.ValidSubject = false;
+                       vm.isValid = false;
                     }
+
                     console.log(vm.isValid, newValues);
                  });
 
@@ -110,7 +112,7 @@ BMApp.register.controller('NewTitleForm',
               FixedReferences.GetDiscountCodes(function (successResponse) {
                  vm.References.FixedDiscountCodes = successResponse;
               });
-              FixedReferences.GetFixedReferences(function (successResponse) {
+              FixedReferences.GetFixedReferences().then(function (successResponse) {
                  vm.References.FixedAuthorRoles = successResponse.FixedAuthorRoles;
                  vm.References.FixedProductTypes = successResponse.FixedProductTypes;
                  vm.References.FixedEditionTypes = successResponse.FixedEditionTypes;

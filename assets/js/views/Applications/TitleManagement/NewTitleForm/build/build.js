@@ -410,7 +410,6 @@ var Demographics = function (data, Dependencies, References) {
             break;
       }
       self.DynamicAgeRanges = self.FixedAgeRanges.filter(function (item) {
-         console.log(self.Model.Audience, item);
          return self.Model.Audience && item.AudienceTypeId == self.Model.Audience.Id;
       });
 
@@ -536,54 +535,63 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          GetDiscountCodes: GetDiscountCodes,
          lookupBisac: lookupBisac,
          GetFixedReferences: GetFixedReferences,
-         References: undefined,
-         DiscountCodes: undefined,
       };
       return self.factory;
 
 
       function cacheInit() {
-
-         var Today = Math.floor(Date.now() / 1000);
-         var Days = 5;
-         var CacheTime = Days * 24 * 60 * 60;
-         $localStorage.FixedReferencesFactory = $localStorage.FixedReferencesFactory || {};
-         $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || Math.floor(Date.now() / 1000);
-         $localStorage.FixedReferencesFactory.References = $localStorage.FixedReferencesFactory.References || null;
-
-
-         if ($localStorage.FixedReferencesFactory.Cache == null || Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
-            $localStorage.FixedReferencesFactory = {
-               Cache: Math.floor(Date.now() / 1000), IsoCodes: null,
-               References: null, DiscountCodes: null,
-            };
-         }
+         return $q(function (resolve, reject) {
+            try {
+               var Today = Math.floor(Date.now() / 1000);
+               var Days = 2;
+               var CacheTime = Days * 24 * 60 * 60;
+               $localStorage.FixedReferencesFactory = $localStorage.FixedReferencesFactory || {};
+               $localStorage.FixedReferencesFactory.Cache = $localStorage.FixedReferencesFactory.Cache || Math.floor(Date.now() / 1000);
+               $localStorage.FixedReferencesFactory.References = $localStorage.FixedReferencesFactory.References || null;
+               if (Today - $localStorage.FixedReferencesFactory.Cache >= CacheTime) {
+                  $localStorage.FixedReferencesFactory = {
+                     Cache: Math.floor(Date.now() / 1000),
+                     References: null,
+                     DiscountCodes: null,
+                  };
+               }
+               resolve();
+            } catch (err) {
+               reject(err.message);
+            }
+         });
       }
 
+      function GetFixedReferences() {
+         return $q(function (resolve, reject) {
+            cacheInit().then(function () {
+               if ($localStorage.FixedReferencesFactory.References == null) {
+                  $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
+                     $localStorage.FixedReferencesFactory.References = successResponse.data.data;
+                     resolve($localStorage.FixedReferencesFactory.References);
+                  }, function (errorResponse) {
+                     reject(errorResponse);
+                     $state.go('error', {
+                        code: '500',
+                        message: 'An error occured loading the fixed references. '
+                     });
+                  });
+               } else {
+                  resolve($localStorage.FixedReferencesFactory.References);
+               }
 
-      function setReference(reference, name) {
-         self.factory[name] = reference;
-         $localStorage.FixedReferencesFactory[name] = reference;
-      }
-
-      function GetFixedReferences(successCallback, errorCallback) {
-         if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
-            $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
-               $localStorage.FixedReferencesFactory.References = successResponse.data.data;
-               successCallback($localStorage.FixedReferencesFactory.References);
             }, function (errorResponse) {
-
+               reject(errorResponse);
                $state.go('error', {
                   code: '500',
-                  message: 'An error occured loading the fixed references.'
+                  message: 'An error occured loading the fixed references. ' + errorResponse
                });
+
             });
-         } else {
-            successCallback($localStorage.FixedReferencesFactory.References);
-         }
+         });
+
+
       }
-
-
 
       function lookupBisac(group, success, error) {
          $http.post("API/BisacCodes/GetGroupCodes", {groupId: group}).then(function (response) {
@@ -597,39 +605,23 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
          });
       }
 
-
-
-      function GetFixedReferences(successCallback, errorCallback) {
-         if ($localStorage.FixedReferencesFactory.References == null || $localStorage.FixedReferencesFactory.References) {
-            $http.post("API/FixedReferences/GetAllReferences").then(function (successResponse) {
-               $localStorage.FixedReferencesFactory.References = successResponse.data.data;
-               successCallback($localStorage.FixedReferencesFactory.References);
-            }, function (errorResponse) {
-
-               $state.go('error', {
-                  code: '500',
-                  message: 'An error occured loading the fixed references.'
-               });
-            });
-         } else {
-            successCallback($localStorage.FixedReferencesFactory.References);
-         }
-      }
-
-
-
-
       function GetDiscountCodes(successCallback, errorCallback) {
-         if ($localStorage.FixedReferencesFactory.DiscountCodes == null || $localStorage.FixedReferencesFactory.DiscountCodes) {
-            AuthFactory.getInfo().then(function (response) {
-               $localStorage.FixedReferencesFactory.DiscountCodes = response.clientinfo.DiscountCodes;
-               successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
-            });
-         } else {
-            successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
-         }
+//         cacheInit(function () {
+//            if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
+//               AuthFactory.getInfo().then(function (response) {
+//                  $localStorage.FixedReferencesFactory.DiscountCodes = response.clientinfo.DiscountCodes;
+//                  successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
+//               });
+//            } else {
+//               console.log('cache');
+//               successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
+//            }
+//         });
       }
+
    }]);
+
+
 BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage', 'AuthFactory', 'GuidCreator', '$timeout', 'toasty', function ($q, $state, $localStorage, AuthFactory, GuidCreator, $timeout, toasty) {
       var self = this;
       self.UserId = null;
@@ -788,7 +780,7 @@ BMApp.register.controller('NewTitleForm',
               };
               function init() {
                  vm.isValid = false;
-                 vm.ValidSubject = false;
+                 vm.Notified = false;
                  vm.ValidFormWatch = [
                     'NTFNGForm.BasicInfoFormPanel.$valid',
                     function () {
@@ -801,19 +793,21 @@ BMApp.register.controller('NewTitleForm',
                        return (vm.Demographics.ValidSubject);
                     },
                     'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
-                    'NTFNGForm.DemographicsFormPanel.$valid',
                     'NTFNGForm.MarketingFormPanel.$valid',
                     'NTFNGForm.CoversFormPanel.$valid',
                  ];
                  $scope.$watchGroup(vm.ValidFormWatch, function (newValues) {
                     if (newValues.indexOf(false) == -1) {
                        vm.isValid = true;
-                    }
-                    if (newValues[3] == true) {
-                       vm.ValidSubject = true;
+                       if (!vm.Notified) {
+                          toasty.info({title: 'Well Done!', msg: 'You have completed the minimum specifications to submit your new title!', theme: 'bootstrap', timeout: 8000});
+                          vm.Notified = true;
+                       }
+
                     } else {
-                       vm.ValidSubject = false;
+                       vm.isValid = false;
                     }
+
                     console.log(vm.isValid, newValues);
                  });
 
@@ -852,7 +846,7 @@ BMApp.register.controller('NewTitleForm',
               FixedReferences.GetDiscountCodes(function (successResponse) {
                  vm.References.FixedDiscountCodes = successResponse;
               });
-              FixedReferences.GetFixedReferences(function (successResponse) {
+              FixedReferences.GetFixedReferences().then(function (successResponse) {
                  vm.References.FixedAuthorRoles = successResponse.FixedAuthorRoles;
                  vm.References.FixedProductTypes = successResponse.FixedProductTypes;
                  vm.References.FixedEditionTypes = successResponse.FixedEditionTypes;

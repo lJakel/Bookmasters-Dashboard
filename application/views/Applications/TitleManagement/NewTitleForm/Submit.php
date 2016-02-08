@@ -6,11 +6,20 @@
                <div class="row">
                   <div class="container-fluid form-group">
                      <div class="jumbotron">
-                        <h1>Submit New Title <i class="fa fa-fw fa-check" ng-if="NTF.isValid" style="text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);color: #5cb85c;"></i> </h1>
+                        <h1>Submit New Title <i class="fa fa-fw fa-check" ng-if="NTF.isValid" style="text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 6px;color: #5CB85C;font-size: 70px;line-height: 69.3px;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
                         </h4>
                      </div>
+                  </div>
+               </div>
+               <div class="row" ng-show="NTF.isValid" ng-repeat="d in [NTF.Drafts]">
+                  <div class="col-md-12 form-group">
+                     <h1 style="font-family: 'Lobster', cursive;">Congratulations!</h1>
+                     <p>Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
+                     <button class="btn btn-success btn-block" ng-click="d.Submit()">
+                        Submit!
+                     </button>
                   </div>
                </div>
                <div class="row">
@@ -23,6 +32,8 @@
                      </button> 
                   </div>
                </div>
+
+
                <div class="collapse row" id="collapseExample" ng-repeat="d in [NTF.Drafts]">
                   <div class="col-md-12">
                      <div class="table-responsive">
@@ -64,16 +75,7 @@
                   </div>
                </div>
 
-               <div class="row" ng-if="NTF.isValid" ng-repeat="d in [NTF.Drafts]">
-                  <div class="col-md-12">
-                     <hr>
-                     <h3>Congratulations!</h3>
-                     <p>Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
-                     <button class="btn btn-success btn-block" ng-click="d.Submit()">
-                        Submit!
-                     </button>
-                  </div>
-               </div>
+
 
 
             </div>
@@ -847,6 +849,9 @@
    .jumbotron h2,.jumbotron h3,.jumbotron h4,.jumbotron h5,.jumbotron h6 {
       color: #e8e8e8;
    }
+   .jumbotron h1, .jumbotron h2,.jumbotron h3,.jumbotron h4,.jumbotron h5,.jumbotron h6 {
+      text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 4x;
+   }
    .jumbotron div h4 strong {
       color: white;
    }
@@ -857,7 +862,7 @@
 </style>
 <link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
-
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Applications/TitleManagement/NewTitleForm/modals/modals.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Applications/TitleManagement/NewTitleForm/share/components.js?cache=<?= rand(1000, 9000); ?>"></script>

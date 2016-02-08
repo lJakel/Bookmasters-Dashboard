@@ -612,7 +612,6 @@
                                                    {{Format.ISBN13}}
                                                 </td>
                                                 <td>
-
                                                    <span ng-if='Format.ProductType.MediaType'>
                                                       {{Format.ProductType.MediaType}}
                                                    </span>
@@ -622,7 +621,6 @@
                                                    <span ng-if='Format.ProductDetail.Detail'>
                                                       / {{Format.ProductDetail.Detail}}
                                                    </span>
-
                                                 </td>
                                                 <td>
                                                    {{c.files[Format.ISBN13]['name']}}

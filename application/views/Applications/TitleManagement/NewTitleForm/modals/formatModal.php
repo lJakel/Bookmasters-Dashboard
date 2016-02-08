@@ -118,7 +118,12 @@
                      <div class="col-md-3 form-group required" data-show-errors>
                         <label for="CopyrightYear" class="control-label">Copyright Year</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Copyright Date (year)" data-placement="top" data-content="The year in which the initial copyright for the material was filed.">?</a>
-                        <input name='CopyrightYear' type="text" class="form-control" ng-required='true' datetimepicker-options="{viewMode:'years',format: 'YYYY',useCurrent:'year'}" datetimepicker ng-model="fm.Copyright">
+                        <input name='CopyrightYear' type="text" class="form-control"
+                               ng-required='true'
+                               datetimepicker-options="{viewMode:'years',format: 'YYYY'}" 
+                               datetimepicker 
+                               placeholder="yyyy" 
+                               ng-model="fm.Copyright">
                      </div>
                      <div class="col-md-3 form-group">
                         <label for="StockDueDate" class="control-label">Stock Due Date</label>

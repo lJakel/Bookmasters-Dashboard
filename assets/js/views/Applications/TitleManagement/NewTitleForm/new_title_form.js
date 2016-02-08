@@ -1,6 +1,6 @@
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', '$localStorage', '$q', 'toasty',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, $localStorage, $q, toasty) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', 'toasty',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, toasty) {
               var vm = this;
               vm.Dependencies = {
                  scriptLoader: scriptLoader,
@@ -42,6 +42,8 @@ BMApp.register.controller('NewTitleForm',
                  CreationDate: moment().format('X')
               };
               function init() {
+
+                 $('a[data-target="#basic"]').tab('show');
                  vm.isValid = false;
                  vm.Notified = false;
                  $timeout(function () {

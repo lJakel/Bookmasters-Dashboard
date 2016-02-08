@@ -4,69 +4,82 @@
          <div class="panel panel-default">
             <div class="panel-body">
                <div class="row">
-                  <div class="container-fluid">
+                  <div class="container-fluid form-group">
                      <div class="jumbotron">
-                        <h1 ng-click="NTF.EmptyCache()">Submit New Title <i class="fa fa-fw fa-check-circle" ng-if="NTF.isValid" style="color: #5cb85c;"></i> </h1>
+                        <h1>Submit New Title <i class="fa fa-fw fa-check" ng-if="NTF.isValid" style="text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);color: #5cb85c;"></i> </h1>
                         <h4>
-                           <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span style="color: #a8a8a8;"> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
-                           <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                              View Drafts <span class="badge">{{NTF.Drafts.Drafts.length}}</span>
-                           </button> 
-                           <button class="btn btn-primary pull-right" ng-click="NTF.Drafts.SaveDraft()">Save Draft</button>
+                           <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
                         </h4>
                      </div>
                   </div>
                </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="collapse row" id="collapseExample" ng-repeat="d in [NTF.Drafts]">
-      <div class="col-md-12">
-         <div class="panel panel-default">
-            <div class="panel-body">
-
-               <h4>Saved Drafts</h4>
-               <div class="table-responsive">
-                  <table class="table">
-                     <thead>
-                        <tr>
-                           <th>Draft ID</th>
-                           <th>Title</th>
-                           <th>Creation Date</th>
-                           <th>Last Updated</th>
-                           <th class='twobtn'>Action</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr ng-repeat="draft in d.Drafts">
-                           <td>{{draft.DraftId}}</td>
-                           <td>{{draft.Title}}</td>
-                           <td>{{d.FormatDate(draft.CreationDate)}}</td>
-                           <td>{{d.FormatDate(draft.LastUpdated)}}</td>
-                           <td class="twobtn">
-                              <button class="btn btn-primary btn-sm" ng-click="d.LoadDraft(draft)"><span class="fa fa-fw fa-edit"></span></button>
-                              <button class="btn btn-danger btn-sm"><span class="fa fa-fw fa-minus"></span></button>
-                           </td>
-                        </tr>
-                     </tbody>
-                     <tfoot>
-                        <tr>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td class="twobtn">
-                              <button class="btn btn-primary" ng-click="d.EmptyCache()">Clear All</button>
-                           </td>
-                        </tr>
-                     </tfoot>
-                  </table>
+               <div class="row">
+                  <div class="col-md-6 form-group">
+                     <button class="btn btn-block btn-primary" ng-click="NTF.Drafts.SaveDraft()">Save Draft</button>
+                  </div>
+                  <div class="col-md-6 form-group">
+                     <button class="btn btn-block btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        View Drafts <span class="badge">{{NTF.Drafts.Drafts.length}}</span>
+                     </button> 
+                  </div>
                </div>
+               <div class="collapse row" id="collapseExample" ng-repeat="d in [NTF.Drafts]">
+                  <div class="col-md-12">
+                     <div class="table-responsive">
+                        <table class="table" style="margin:0px;">
+                           <thead>
+                              <tr>
+                                 <th>Draft ID</th>
+                                 <th>Title</th>
+                                 <th>Creation Date</th>
+                                 <th>Last Updated</th>
+                                 <th class='twobtn'>Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr ng-repeat="draft in d.Drafts">
+                                 <td>{{draft.DraftId}}</td>
+                                 <td>{{draft.Title}}</td>
+                                 <td>{{d.FormatDate(draft.CreationDate)}}</td>
+                                 <td>{{d.FormatDate(draft.LastUpdated)}}</td>
+                                 <td class="twobtn">
+                                    <button class="btn btn-primary btn-sm" ng-click="d.LoadDraft(draft)"><span class="fa fa-fw fa-edit"></span></button>
+                                    <button class="btn btn-danger btn-sm" ng-click="d.RemoveDraft($index)"><span class="fa fa-fw fa-minus"></span></button>
+                                 </td>
+                              </tr>
+                           </tbody>
+                           <tfoot>
+                              <tr>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td class="twobtn">
+                                    <button class="btn btn-primary" ng-click="d.EmptyCache()">Clear All</button>
+                                 </td>
+                              </tr>
+                           </tfoot>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row" ng-if="NTF.isValid" ng-repeat="d in [NTF.Drafts]">
+                  <div class="col-md-12">
+                     <hr>
+                     <h3>Congratulations!</h3>
+                     <p>Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
+                     <button class="btn btn-success btn-block" ng-click="d.Submit()">
+                        Submit!
+                     </button>
+                  </div>
+               </div>
+
+
             </div>
          </div>
       </div>
-   </div>
+   </div>   
    <div class="row">
       <div class="col-md-12">
          <div class="panel panel-default">
@@ -321,7 +334,7 @@
                               <div class="col-md-6 form-group" data-show-errors>
                                  <label for="">Short Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Short Description" data-placement="top" data-content="The Short Description is a more concise summary of your book. It is generally used for sales catalogs and some promotional material. Must be no more than 800 characters (including spaces).">?</a>
-                                 <summernote class="form-control" ng-required="true" name="bi.ShortDescription" ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
+                                 <summernote class="form-control" name="bi.ShortDescription" ng-model="bi.Model.ShortDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>
                            </div>
                         </div>
@@ -652,6 +665,11 @@
                            </div>
                            <div class="row">
                               <div class="col-md-12">
+                                 {{NTF.ValidFormWatch|json}}
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-md-12">
                                  <ul>
                                     <li>NTFNGForm
                                        <ul>
@@ -803,21 +821,13 @@
                      </div>
                   </div>
                </div>
-               <hr>
-               <div class="row">
-                  <div class="col-md-4 col-md-offset-4">
-                     <div class="row">
-                        <div class="col-md-6 col-md-offset-3">
-                           <!--                           <button class="btn btn-block" ng-click="NTF.save()">Submit</button>
-                                                      <button class="btn btn-primary btn-block" ng-click="NTF.LoadDraft()">Load Draft</button>-->
-                        </div>
-                     </div>
-                  </div>
-               </div>
+
             </div>
          </div>
       </div>
    </div>
+
+
    <?php
    $this->load->view('Applications/TitleManagement/NewTitleForm/modals/AppearancesandEventsModal');
    $this->load->view('Applications/TitleManagement/NewTitleForm/modals/contribModal');
@@ -834,15 +844,16 @@
    .jumbotron h1 {
       color: white;
    }
+   .jumbotron h2,.jumbotron h3,.jumbotron h4,.jumbotron h5,.jumbotron h6 {
+      color: #e8e8e8;
+   }
    .jumbotron div h4 strong {
       color: white;
    }
    .jumbotron div h4 em {
       color: white;
    }
-   .jumbotron div h4 span {
-      color: #f2f2f2;
-   }
+
 </style>
 <link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">

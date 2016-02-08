@@ -1,6 +1,4 @@
 var Drafts = function (parent, Dependencies) {
-   
-
    var self = this;
    self.Drafts = [];
    self.EmptyCache = function () {
@@ -17,6 +15,9 @@ var Drafts = function (parent, Dependencies) {
 
    self.RemoveDraft = function ($index) {
       Dependencies.NewTitleDraftsFactory.RemoveDraft($index);
+   };
+   self.Submit = function ($index) {
+      Dependencies.toasty.success({title: 'Success!', msg: 'Thank you for submitting yout title data. We will email you a receipt.', theme: 'bootstrap', timeout: 8000});
    };
    self.GetDrafts = function () {
       Dependencies.NewTitleDraftsFactory.GetDrafts().then(function (r) {

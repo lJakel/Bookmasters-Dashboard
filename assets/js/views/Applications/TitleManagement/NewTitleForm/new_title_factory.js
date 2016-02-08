@@ -118,6 +118,7 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
          Cache: {},
          EmptyCache: EmptyCache,
          SaveDraft: SaveDraft,
+         RemoveDraft: RemoveDraft,
 //         LoadDraft: LoadDraft,
          GetDrafts: GetDrafts,
       };
@@ -164,6 +165,13 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
 
 
       function GetDrafts() {
+         return cacheInit().then(function () {
+            return $q.when(self.factory.User);
+         });
+      }
+      function RemoveDraft() {
+          toasty.error({title: 'Error!', msg: 'This feature is not yet implemented', theme: 'bootstrap', timeout: 8000});
+         
          return cacheInit().then(function () {
             return $q.when(self.factory.User);
          });

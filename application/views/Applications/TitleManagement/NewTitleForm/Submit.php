@@ -6,7 +6,7 @@
                <div class="row">
                   <div class="container-fluid form-group">
                      <div class="jumbotron">
-                        <h1>Submit New Title <i class="fa fa-fw fa-check" ng-if="NTF.isValid" style="text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);color: #5cb85c;"></i> </h1>
+                        <h1>Submit New Title <i class="fa fa-fw fa-check" ng-if="NTF.isValid" style="text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 6px;color: #5CB85C;font-size: 70px;line-height: 69.3px;"></i> </h1>
                         <h4>
                            <strong>{{NTF.BasicInfo.Model.Title}}</strong><strong style="display: none;">:</strong> <em>{{NTF.BasicInfo.Model.Subtitle}}</em> <span> - Publisher: {{NTF.BasicInfo.Model.Publisher}}</span>
                         </h4>
@@ -846,6 +846,9 @@
    }
    .jumbotron h2,.jumbotron h3,.jumbotron h4,.jumbotron h5,.jumbotron h6 {
       color: #e8e8e8;
+   }
+   .jumbotron h1, .jumbotron h2,.jumbotron h3,.jumbotron h4,.jumbotron h5,.jumbotron h6 {
+      text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 4x;
    }
    .jumbotron div h4 strong {
       color: white;

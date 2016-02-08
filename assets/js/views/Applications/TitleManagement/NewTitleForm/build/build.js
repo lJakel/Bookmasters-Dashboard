@@ -770,9 +770,6 @@ BMApp.register.controller('NewTitleForm',
                  FixedDiscountCodes: []
               };
 
-              vm.EmptyCache = function () {
-                 $localStorage.FixedReferencesFactory = {};
-              };
               vm.data = {
                  "BasicInfo": {
                     Publisher: 'h.f.ullmann'
@@ -790,33 +787,37 @@ BMApp.register.controller('NewTitleForm',
               function init() {
                  vm.isValid = false;
                  vm.Notified = false;
-                 vm.ValidFormWatch = [
-                    'NTFNGForm.BasicInfoFormPanel.$valid',
-                    function () {
-                       return (vm.Formats.Model.Formats.length > 0);
-                    },
-                    function () {
-                       return (vm.Contributors.Model.Contributors.length > 0);
-                    },
-                    function () {
-                       return (vm.Demographics.ValidSubject);
-                    },
-                    'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
-                    'NTFNGForm.MarketingFormPanel.$valid',
-                    'NTFNGForm.CoversFormPanel.$valid',
-                 ];
-                 $scope.$watchGroup(vm.ValidFormWatch, function (newValues) {
-                    if (newValues.indexOf(false) == -1) {
-                       vm.isValid = true;
-                       if (!vm.Notified) {
-                          toasty.info({title: 'Well Done!', msg: 'You have completed the minimum specifications to submit your new title!', theme: 'bootstrap', timeout: 8000});
-                          vm.Notified = true;
+                 $timeout(function () {
+
+                    vm.ValidFormWatch = [
+                       'NTFNGForm.BasicInfoFormPanel.$valid',
+                       function () {
+                          return (vm.Formats.Model.Formats.length > 0);
+                       },
+                       function () {
+                          return (vm.Contributors.Model.Contributors.length > 0);
+                       },
+                       function () {
+                          return (vm.Demographics.ValidSubject);
+                       },
+                       'NTFNGForm.BasicInfoExtendedFormPanel.$valid',
+                       'NTFNGForm.MarketingFormPanel.$valid',
+                       'NTFNGForm.CoversFormPanel.$valid',
+                    ];
+                    $scope.$watchGroup(vm.ValidFormWatch, function (newValues) {
+                       if (newValues.indexOf(false) == -1) {
+                          vm.isValid = true;
+                          if (!vm.Notified) {
+                             toasty.info({title: 'Well Done!', msg: 'You have completed the minimum specifications to submit your new title!', theme: 'bootstrap', timeout: 8000});
+                             vm.Notified = true;
+                          }
+                       } else {
+                          vm.isValid = false;
                        }
-                    } else {
-                       vm.isValid = false;
-                    }
-                    console.log(vm.isValid, newValues);
+
+                    });
                  });
+
 
                  vm.BasicInfo = /******/new BasicInfo /******/(vm.data.BasicInfo || '', vm.Dependencies, vm.References);
                  vm.Contributors = /***/new Contributors /***/(vm.data.Contributors.Contributors || '', vm.Dependencies, vm.References);

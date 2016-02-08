@@ -43,10 +43,10 @@ BMApp.register.controller('NewTitleForm',
               };
               function init() {
 
-                 $('a[data-target="#basic"]').tab('show');
                  vm.isValid = false;
                  vm.Notified = false;
                  $timeout(function () {
+                    $('a[data-target="#basic"]').tab('show');
 
                     vm.ValidFormWatch = [
                        'NTFNGForm.BasicInfoFormPanel.$valid',

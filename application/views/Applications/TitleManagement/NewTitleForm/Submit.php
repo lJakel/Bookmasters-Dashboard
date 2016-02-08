@@ -13,6 +13,15 @@
                      </div>
                   </div>
                </div>
+               <div class="row" ng-show="NTF.isValid" ng-repeat="d in [NTF.Drafts]">
+                  <div class="col-md-12 form-group">
+                     <h1 style="font-family: 'Lobster', cursive;">Congratulations!</h1>
+                     <p>Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
+                     <button class="btn btn-success btn-block" ng-click="d.Submit()">
+                        Submit!
+                     </button>
+                  </div>
+               </div>
                <div class="row">
                   <div class="col-md-6 form-group">
                      <button class="btn btn-block btn-primary" ng-click="NTF.Drafts.SaveDraft()">Save Draft</button>
@@ -23,6 +32,8 @@
                      </button> 
                   </div>
                </div>
+
+
                <div class="collapse row" id="collapseExample" ng-repeat="d in [NTF.Drafts]">
                   <div class="col-md-12">
                      <div class="table-responsive">
@@ -64,16 +75,7 @@
                   </div>
                </div>
 
-               <div class="row" ng-if="NTF.isValid" ng-repeat="d in [NTF.Drafts]">
-                  <div class="col-md-12">
-                     <hr>
-                     <h3>Congratulations!</h3>
-                     <p>Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
-                     <button class="btn btn-success btn-block" ng-click="d.Submit()">
-                        Submit!
-                     </button>
-                  </div>
-               </div>
+
 
 
             </div>
@@ -860,7 +862,7 @@
 </style>
 <link rel="stylesheet" href="/cdn/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" href="/CDN/bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
-
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Applications/TitleManagement/NewTitleForm/modals/modals.js?cache=<?= rand(1000, 9000); ?>"></script>
    <script type="text/javascript-lazy" data-append="partial" data-src="assets/js/views/Applications/TitleManagement/NewTitleForm/share/components.js?cache=<?= rand(1000, 9000); ?>"></script>

@@ -124,8 +124,7 @@
                         <label for="StockDueDate" class="control-label">Stock Due Date</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Warehouse/Stock Due Date" data-placement="top" data-content="This is the date when you expect stock to arrive at Bookmasters' warehouse. This date must be at least 30 days before the publication date.">?</a>
                         <input type="text" class="form-control" 
-                               name='StockDueDate'
-                               ng-required='true' 
+                               name='StockDueDate' 
                                datetimepicker-options="{format:'MM/DD/YYYY'}"
                                datetimepicker 
                                placeholder="mm/dd/yyyy" 

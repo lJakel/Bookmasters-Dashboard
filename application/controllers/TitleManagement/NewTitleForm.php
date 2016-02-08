@@ -19,7 +19,7 @@ class NewTitleForm extends Secure_Controller {
    }
 
    public function Submit() {
-//      $this->output->cache(10);
+      $this->output->cache(10);
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
 

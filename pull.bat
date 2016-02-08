@@ -1,0 +1,1 @@
+"C:\Program Files\Git\bin\git.exe" pull --progress "origin" +refs/heads/master

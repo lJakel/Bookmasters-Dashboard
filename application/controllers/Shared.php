@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Shared extends CI_Controller {
+class Shared extends Secure_Controller {
 
    /**
     * Index Page for this controller.
@@ -24,8 +24,7 @@ class Shared extends CI_Controller {
    }
 
    public function appBootstrap() {
-      $this->load->view('Shared/AppBootstrap');
-      $this->output->cache(10);
+      $this->load->view('Shared/AppBootstrap', ['roles' => $this->session->user['roles'], 'flags' => $this->session->user['flags']]);
    }
 
    public function error() {
@@ -34,7 +33,6 @@ class Shared extends CI_Controller {
 
    public function appNavbar() {
       $this->load->view('Shared/AppNavbar');
-      $this->output->cache(10);
    }
 
    public function login() {

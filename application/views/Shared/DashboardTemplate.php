@@ -19,11 +19,11 @@
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/CDN/resources/brand/favicon/apple-touch-icon-114x114-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/CDN/resources/brand/favicon/apple-touch-icon-144x144-precomposed.png">
       <!--Core CSS -->
-      <link href="/CDN/css/bootstrap-reset/bootstrap-reset.css" rel="stylesheet">
+      <link href="/CDN/css/bootstrap-reset/bootstrap-reset.min.css" rel="stylesheet">
       <link rel="stylesheet" href="/CDN/bower_components/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" href="/CDN/bower_components/angular-toasty/dist/angular-toasty.min.css">
       <!-- Custom styles for this Dashboard -->
-      <link href="/CDN/css/dashboard-sass2/assets/stylesheets/dashboard.css" rel="stylesheet">
+      <link href="/CDN/css/dashboard-sass2/assets/stylesheets/dashboard.min.css" rel="stylesheet">
       <link rel="stylesheet" href="/CDN/bower_components/summernote/dist/summernote.css">
    </head>
 

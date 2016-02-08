@@ -481,8 +481,6 @@ var Demographics = function (data, Dependencies, References) {
    }
 };
 var Drafts = function (parent, Dependencies) {
-   
-
    var self = this;
    self.Drafts = [];
    self.EmptyCache = function () {
@@ -499,6 +497,9 @@ var Drafts = function (parent, Dependencies) {
 
    self.RemoveDraft = function ($index) {
       Dependencies.NewTitleDraftsFactory.RemoveDraft($index);
+   };
+   self.Submit = function ($index) {
+      Dependencies.toasty.success({title: 'Success!', msg: 'Thank you for submitting yout title data. We will email you a receipt.', theme: 'bootstrap', timeout: 8000});
    };
    self.GetDrafts = function () {
       Dependencies.NewTitleDraftsFactory.GetDrafts().then(function (r) {
@@ -648,6 +649,7 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
          Cache: {},
          EmptyCache: EmptyCache,
          SaveDraft: SaveDraft,
+         RemoveDraft: RemoveDraft,
 //         LoadDraft: LoadDraft,
          GetDrafts: GetDrafts,
       };
@@ -694,6 +696,13 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
 
 
       function GetDrafts() {
+         return cacheInit().then(function () {
+            return $q.when(self.factory.User);
+         });
+      }
+      function RemoveDraft() {
+          toasty.error({title: 'Error!', msg: 'This feature is not yet implemented', theme: 'bootstrap', timeout: 8000});
+         
          return cacheInit().then(function () {
             return $q.when(self.factory.User);
          });
@@ -803,11 +812,9 @@ BMApp.register.controller('NewTitleForm',
                           toasty.info({title: 'Well Done!', msg: 'You have completed the minimum specifications to submit your new title!', theme: 'bootstrap', timeout: 8000});
                           vm.Notified = true;
                        }
-
                     } else {
                        vm.isValid = false;
                     }
-
                     console.log(vm.isValid, newValues);
                  });
 

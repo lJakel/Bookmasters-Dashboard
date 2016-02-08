@@ -61,7 +61,7 @@
                   <div class="col-md-12 form-group required">
                      <label for="" class="control-label">Biography</label>
                      <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Contributor Bio" data-placement="top" data-content='Gives more information about the book&apos;s contributors. Must be written in the third person ("she" instead of "I") and give a short introduction to the contributor&apos;s life and credentials. Must be be no more than 2,000 characters (including spaces) and written in the primary language of the book.'>?</a>
-                     <summernote class="form-control" name="cm.Biography" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="cm.Biography"></summernote>
+                     <summernote class="form-control" ng-required="true" name="cm.Biography" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180" ng-model="cm.Biography"></summernote>
                   </div>
                </div>
                <div class="row">

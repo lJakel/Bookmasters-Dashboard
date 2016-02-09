@@ -58,7 +58,7 @@
                            <option value="">Choose...</option>
                         </select>
                      </div>
-                     <div class="col-md-4 form-group {{(fm.DynamicProductFormDetails.length > 1) ? 'required': ''}}" data-show-errors>
+                     <div class="col-md-4 form-group" ng-class="{'required' :fm.DynamicProductFormDetails.length > 1 }" data-show-errors>
                         <label for="ProductDetail" class="control-label">Product Detail</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Product Form Detail" data-placement="bottom" data-content="The more specific format category into which this book fits. This further explains how the book was made.">?</a>
                         <select name="ProductDetail"
@@ -74,14 +74,14 @@
 
                   </div>
                   <div class="row">
-                     <div class="col-md-3 form-group required" data-show-errors>
+                     <div class="col-md-3 form-group" ng-class="{'required': !fm.isEbook}" data-show-errors>
                         <label for="" class="control-label">Width</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Width" data-placement="top" data-content="The measurement from spine to cut edge of the book. The horizontal measure. Given in inches.">?</a>
                         <div class="input-group">
                            <input type="number" class="form-control" ng-required="!fm.isEbook" min="0" max="99" ng-model="fm.Width" name="Width" ng-disabled="fm.isEbook">
                            <span class="input-group-addon">in</span> </div>
                      </div>
-                     <div class="col-md-3 form-group required" data-show-errors>
+                     <div class="col-md-3 form-group" ng-class="{'required': !fm.isEbook}" data-show-errors>
                         <label for="" class="control-label">Height</label>
                         <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Trim Height" data-placement="top" data-content="The measurement from top to bottom of spine. The vertical measure. Given in inches.">?</a>
                         <div class="input-group">

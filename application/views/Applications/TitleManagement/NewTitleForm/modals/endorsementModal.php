@@ -3,7 +3,7 @@
       <div class="modal-content" ng-form="EndorsementModalForm" ng-repeat="em in [NTF.Marketing.EndorsementModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showEndorsementDialog" data-draggable>
             <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-            
+
             <h4 class="modal-title">
                <span ng-if="em.Method == 'edit'">Edit</span>
                <span ng-if="em.Method == 'add'">Add</span>  Endorsement
@@ -31,7 +31,11 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!EndorsementModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Endorsement')">Add Endorsement</button>
+            <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!EndorsementModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Endorsement')">
+               <span ng-if="em.Method == 'edit'">Save</span>
+               <span ng-if="em.Method == 'add'">Add</span> 
+
+               Endorsement</button>
          </div>
       </div>
       <!-- /.modal-content -->

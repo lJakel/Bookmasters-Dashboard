@@ -13,27 +13,18 @@
                      </div>
                   </div>
                </div>
-               <div class="row" ng-show="NTF.isValid" ng-repeat="d in [NTF.Drafts]">
-                  <div class="col-md-12 form-group">
-                     <h1 style="font-family: 'Lobster', cursive;">Congratulations!</h1>
-                     <p>Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
-                     <button class="btn btn-success btn-block" ng-click="d.Submit()">
-                        Submit!
-                     </button>
-                  </div>
-               </div>
                <div class="row">
                   <div class="col-md-6 form-group">
-                     <button class="btn btn-block btn-primary" ng-click="NTF.Drafts.SaveDraft()">Save Draft</button>
-                  </div>
-                  <div class="col-md-6 form-group">
-                     <button class="btn btn-block btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                     <button class="btn btn-primary" ng-click="NTF.Drafts.SaveDraft()">
+                        <span class="fa fa-floppy-o fa-fw"></span>
+                        Save Draft
+                     </button>
+                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <span class="fa fa-archive fa-fw"></span>
                         View Drafts <span class="badge">{{NTF.Drafts.Drafts.length}}</span>
                      </button> 
                   </div>
                </div>
-
-
                <div class="collapse row" id="collapseExample" ng-repeat="d in [NTF.Drafts]">
                   <div class="col-md-12">
                      <div class="table-responsive">
@@ -445,9 +436,9 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
-                                             <th style="width:25%">Name</th>
-                                             <th style="width:25%">Publication</th>
-                                             <th>Text</th>
+                                             <th>Name</th>
+                                             <th>Publication</th>
+
                                              <th class="twobtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="m.addMarketingItem('Review')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
@@ -457,7 +448,7 @@
                                           <tr ng-repeat="Review in m.Model.Reviews">
                                              <td>{{Review.Name}}</td>
                                              <td>{{Review.Publication}}</td>
-                                             <td>{{Review.Text}}</td>
+
                                              <td>
                                                 <button class="btn btn-primary" ng-click="m.showMarketingItemModal(Review, 'Review', 'edit')"><span class="fa fa-fw fa-edit"></span></button>
                                                 <button class="btn btn-danger" ng-click="m.removeMarketingItem('Review', $index)"><span class="fa fa-fw fa-minus"></span></button>
@@ -476,9 +467,9 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
-                                             <th style="width:25%">Name</th>
-                                             <th style="width:25%">Affiliation</th>
-                                             <th>Text</th>
+                                             <th>Name</th>
+                                             <th>Affiliation</th>
+
                                              <th class="twobtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="m.addMarketingItem('Endorsement')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
@@ -488,7 +479,7 @@
                                           <tr ng-repeat="Endorsement in m.Model.Endorsements">
                                              <td>{{Endorsement.Name}}</td>
                                              <td>{{Endorsement.Affiliation}}</td>
-                                             <td>{{Endorsement.Text}}</td>
+
                                              <td>
                                                 <button class="btn btn-primary" ng-click="m.showMarketingItemModal(Endorsement, 'Endorsement', 'edit')"><span class="fa fa-fw fa-edit"></span></button>
                                                 <button class="btn btn-danger" ng-click="m.removeMarketingItem('Endorsement', $index)"><span class="fa fa-fw fa-minus"></span></button>
@@ -598,9 +589,12 @@
                                              <tr>
                                                 <th>ISBN</th>
                                                 <th>Format</th>
-                                                <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Size</th>
+                                                <th>Trim</th>
+                                                <th>File Requirements
+                                                   <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="File Requirements" data-placement="top" 
+                                                      data-content="Based on your supplied format. Your cover file needs to meet these requirements.">?</a>
+                                                </th>
+                                              
                                                 <th style="width:105px;">Upload</th>
                                                 <th style="width:200px;">Progress</th>
                                                 <th style="width:60px; text-align: center;">Status</th>
@@ -623,19 +617,20 @@
                                                    </span>
                                                 </td>
                                                 <td>
-                                                   {{c.files[Format.ISBN13]['name']}}
+                                                   Width: {{Format.Width}}in, Height: {{Format.Height}}in
                                                 </td>
+                                            
                                                 <td>
-                                                   <span ng-if="c.files[Format.ISBN13]['type'] == 'application/pdf'">Type: <i class="fa fa-file-pdf-o"></i> ({{c.files[Format.ISBN13]['type']}})</span>
-                                                   <span ng-if="c.files[Format.ISBN13]['type'] == 'image/jpeg'">Type: <i class="fa fa-file-image-o"></i> ({{c.files[Format.ISBN13]['type']}})</span>
+                                                   Width: {{Format.Width * 300}}px, Height: {{Format.Height * 300}}px, Resolution: 300dpi
                                                 </td>
+                                            
+                                               
                                                 <td>
-                                                   <span ng-if="c.files[Format.ISBN13]['name']">
-                                                      {{c.formatBytes(c.files[Format.ISBN13]['size'], 2)}}
-                                                   </span>
-                                                </td>
-                                                <td>
-                                                   <div class="btn btn-primary" ngf-pattern="'.pdf,.jpg'" accept=".pdf,.jpg" ngf-select="c.upload($file,{{Format.ISBN13}})">
+                                                   <div class="btn btn-primary"
+                                                        ngf-pattern="'.pdf,.jpg'" 
+                                                        accept=".pdf,.jpg" 
+                                                        ngf-select="c.upload($file,{{Format.ISBN13}})"
+                                                        ngf-dimensions="$width = {{Format.Width * 300}} && $height = {{Format.Height * 300}}" >
                                                       <i class="fa fa-upload"></i> Browse...
                                                    </div>        
                                                 </td>
@@ -672,155 +667,9 @@
                            </div>
                            <div class="row">
                               <div class="col-md-12">
+                                 <pre>
                                  {{NTF.ValidFormWatch|json}}
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col-md-12">
-                                 <ul>
-                                    <li>NTFNGForm
-                                       <ul>
-                                          <li>
-                                             Valid: {{NTFNGForm.$valid}}
-                                          </li>
-                                          <li>
-                                             BasicInfo
-                                             <ul>
-                                                <li>
-                                                   BasicInfoFormPanel
-                                                   <ul>
-                                                      <li>
-                                                         Valid: {{NTFNGForm.BasicInfoFormPanel.$valid}}
-                                                      </li>  
-                                                   </ul>
-                                                </li>
-                                                <li>
-                                                   BasicInfoExtendedFormPanel
-                                                   <ul>
-                                                      <li>
-                                                         Valid: {{NTFNGForm.BasicInfoExtendedFormPanel.$valid}}
-                                                      </li>  
-                                                   </ul>
-                                                </li>
-                                             </ul>
-                                          </li>
-                                          <li>Formats
-                                             <ul>
-                                                <li>FormatsFormPanel
-                                                   <ul>
-                                                      <li>Valid: {{NTFNGForm.FormatsFormPanel.$valid}}</li>
-                                                      <li>Modals
-                                                         <ul>
-                                                            <li>
-                                                               FormatModalForm
-                                                               <ul>
-                                                                  <li>
-                                                                     Valid: {{NTFNGForm.FormatModalForm.$valid}}
-
-                                                                  </li>
-                                                               </ul>
-                                                            </li>
-                                                         </ul>
-                                                      </li>
-                                                   </ul>
-                                                </li>
-                                             </ul>
-                                          </li>
-                                          <li>Contributors
-                                             <ul>
-                                                <li>ContributorsFormPanel
-                                                   <ul>
-                                                      <li>Valid: {{NTFNGForm.ContributorsFormPanel.$valid}}</li>
-                                                      <li>Modals
-                                                         <ul>
-                                                            <li>
-                                                               ContributorsModalForm
-                                                               <ul>
-                                                                  <li>
-                                                                     Valid: {{NTFNGForm.ContributorsModalForm.$valid}}
-                                                                  </li>
-                                                               </ul>
-                                                            </li>
-                                                         </ul>
-                                                      </li>
-                                                   </ul>
-                                                </li>
-                                             </ul>
-                                          </li>
-                                          <li>
-                                             Marketing
-                                             <ul>
-                                                <li>
-                                                   MarketingFormPanel
-                                                   <ul>
-                                                      <li>MarketingWebsites
-                                                         <ul>
-                                                            <li>
-                                                               Valid: {{NTFNGForm.MarketingFormPanel.MarketingWebsites.$valid}}
-                                                            </li>
-                                                         </ul>
-                                                      </li>
-                                                      <li>Reviews
-                                                         <ul>
-                                                            <li>Modals
-                                                               <ul>
-                                                                  <li>ReviewModalForm
-                                                                     <ul>
-                                                                        <li>Valid: {{NTFNGForm.ReviewModalForm.$valid}}</li>
-                                                                     </ul>
-                                                                  </li>
-                                                               </ul>
-                                                            </li>
-                                                         </ul>
-                                                      </li>        
-                                                      <li>Endorsements
-                                                         <ul>
-                                                            <li>Modals
-                                                               <ul>
-                                                                  <li>EndorsementModalForm
-                                                                     <ul>
-                                                                        <li>Valid: {{NTFNGForm.EndorsementModalForm.$valid}}</li>
-                                                                     </ul>
-                                                                  </li>
-                                                               </ul>
-                                                            </li>
-                                                         </ul>
-                                                      </li>
-                                                      <li>Marketing and Publicity
-                                                         <ul>
-                                                            <li>Modals
-                                                               <ul>
-                                                                  <li>ReviewModalForm
-                                                                     <ul>
-                                                                        <li>Valid: {{NTFNGForm.ReviewModalForm.$valid}}</li>
-                                                                     </ul>
-                                                                  </li>
-                                                               </ul>
-                                                            </li>
-                                                         </ul>
-                                                      </li>
-                                                      <li>Appearances and Events
-                                                         <ul>
-                                                            <li>Modals
-                                                               <ul>
-                                                                  <li>AppearanceAndEventModalForm
-                                                                     <ul>
-                                                                        <li>Valid: {{NTFNGForm.AppearanceAndEventModalForm.$valid}}</li>
-                                                                     </ul>
-                                                                  </li>
-                                                               </ul>
-                                                            </li>
-                                                         </ul>
-                                                      </li>
-                                                   </ul>
-                                                </li>
-                                             </ul>
-                                          </li>
-                                       </ul> 
-                                    </li>  
-                                 </ul>             
-                    <!--<pre id="jsonPre">{{NTFNGForm}}</pre>-->
-
+                                 </pre>
                               </div>
                            </div>
                         </div>
@@ -828,13 +677,25 @@
                      </div>
                   </div>
                </div>
-
             </div>
          </div>
       </div>
    </div>
-
-
+   <div class="row" ng-repeat="d in [NTF.Drafts]">
+      <div class="col-md-12">
+         <div class="panel panel-default">
+            <div class="panel-body">
+               <h1 style="font-family: 'Lobster', cursive;" ng-show="NTF.isValid">Congratulations!</h1>
+               <p ng-show="!NTF.isValid">Your New Title Data does not pass the minimum requirements to submit..</p>
+               <p ng-show="NTF.isValid">Your New Title Data passes minimum requirements to be submitted to Bookmasters.</p>
+               <button class="btn btn-success btn-lg" ng-disabled="!NTF.isValid" ng-click="d.Submit()">
+                  <span class="fa fa-fw fa-upload"></span>
+                  Submit!
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
    <?php
    $this->load->view('Applications/TitleManagement/NewTitleForm/modals/AppearancesandEventsModal');
    $this->load->view('Applications/TitleManagement/NewTitleForm/modals/contribModal');

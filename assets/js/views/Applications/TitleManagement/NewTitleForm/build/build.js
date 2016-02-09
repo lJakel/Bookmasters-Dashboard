@@ -816,7 +816,6 @@ BMApp.register.controller('NewTitleForm',
                        } else {
                           vm.isValid = false;
                        }
-
                     });
                  });
 

@@ -402,7 +402,7 @@
                                              <th class="onebtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="m.addSingleMarketingItem('Website')"><span class="fa fa-fw fa-plus"></span></button>
                                              </th>
-                                          </tr>
+                                          </tr> 
                                        </thead>
                                        <tbody ng-form="MarketingWebsites">
                                           <tr ng-repeat="Website in m.Model.Websites" ng-form="MarketingWebsiteRepeat">

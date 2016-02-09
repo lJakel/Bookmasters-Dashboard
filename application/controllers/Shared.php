@@ -24,7 +24,7 @@ class Shared extends CI_Controller {
    }
 
    public function appBootstrap() {
-      $this->load->view('Shared/AppBootstrap', ['roles' => $this->session->user['roles'], 'flags' => $this->session->user['flags']]);
+      $this->load->view('Shared/AppBootstrap');
    }
 
    public function error() {

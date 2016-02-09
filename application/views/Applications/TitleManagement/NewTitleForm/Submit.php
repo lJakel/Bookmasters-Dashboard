@@ -65,10 +65,6 @@
                      </div>
                   </div>
                </div>
-
-
-
-
             </div>
          </div>
       </div>
@@ -82,26 +78,31 @@
                      <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
                            <a href="#" data-target="#basic" aria-controls="basic" role="tab" data-toggle="tab"
+                              class="required"
                               ng-class="{'has-error': !NTFNGForm.BasicInfoFormPanel.$pristine && NTFNGForm.BasicInfoFormPanel.$invalid}"                              
                               >Basic Information</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#formats" aria-controls="formats" role="tab" data-toggle="tab"
+                              class="required"
                               ng-class="{'has-error': !NTFNGForm.FormatsFormPanel.$pristine && NTFNGForm.FormatsFormPanel.$invalid}"                              
                               >Formats</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#contributors" aria-controls="contributors" role="tab" data-toggle="tab"
+                              class="required"
                               ng-class="{'has-error': !NTFNGForm.ContributorsFormPanel.$pristine && NTFNGForm.ContributorsFormPanel.$invalid}"                              
                               >Contributors</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#text" aria-controls="text" role="tab" data-toggle="tab"
+                              class="required"
                               ng-class="{'has-error': !NTFNGForm.BasicInfoExtendedFormPanel.$pristine && NTFNGForm.BasicInfoExtendedFormPanel.$invalid}"                              
                               >Descriptions</a>
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#subject" aria-controls="subject" role="tab" data-toggle="tab"
+                              class="required"
                               ng-class="{'has-error': !NTFNGForm.DemographicsFormPanel.$pristine && NTFNGForm.DemographicsFormPanel.$invalid && !NTF.ValidSubject}"                              
                               >Subject</a>
                         </li>
@@ -117,7 +118,6 @@
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab"
-
                               >JSON & Debug</a>
                         </li>
                      </ul>
@@ -594,7 +594,7 @@
                                                    <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="File Requirements" data-placement="top" 
                                                       data-content="Based on your supplied format. Your cover file needs to meet these requirements.">?</a>
                                                 </th>
-                                              
+
                                                 <th style="width:105px;">Upload</th>
                                                 <th style="width:200px;">Progress</th>
                                                 <th style="width:60px; text-align: center;">Status</th>
@@ -619,12 +619,12 @@
                                                 <td>
                                                    Width: {{Format.Width}}in, Height: {{Format.Height}}in
                                                 </td>
-                                            
+
                                                 <td>
                                                    Width: {{Format.Width * 300}}px, Height: {{Format.Height * 300}}px, Resolution: 300dpi
                                                 </td>
-                                            
-                                               
+
+
                                                 <td>
                                                    <div class="btn btn-primary"
                                                         ngf-pattern="'.pdf,.jpg'" 

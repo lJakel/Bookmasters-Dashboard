@@ -178,6 +178,15 @@
                                  </div>
                               </div>
                            </div>
+<!--                           <ul ng-repeat="b in [BasicInfoFormPanel]" ng-show="BasicInfoFormPanel.$dirty">
+                              <li ng-show="b.Title.$invalid">{{b.Title.$name}}</li>
+                              <li ng-show="b.Subtitle.$invalid">{{b.Subtitle.$name}}</li>
+                              <li ng-show="b.Publisher.$invalid">{{b.Publisher.$name}}</li>
+                              <li ng-show="b.Imprint.$invalid">{{b.Imprint.$name}}</li>
+                              <li ng-show="b.ContentLanguage.$invalid">{{b.ContentLanguage.$name}}</li>
+                              <li ng-show="b.SeriesName.$invalid">{{b.SeriesName.$name}}</li>
+                              <li ng-show="b.NumberinSeries.$invalid">{{b.NumberinSeries.$name}}</li>
+                           </ul>-->
                         </div>
                         <!--end basic-->
                         <!--contributors-->
@@ -320,7 +329,7 @@
                            </div>
                            <div class="row">
                               <div class="col-md-6 required form-group" data-show-errors>
-                                 <label for="">Main Description</label>
+                                 <label class="control-label" for="">Main Description</label>
                                  <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="Main Title Description" data-placement="top" data-content="The Main Description is the primary summary of your book. It should tell the reader what your book is about and why they should read your book. This text will be shown to potential readers and book buyers, so double (and triple) check your spelling! Must be between 350 - 2,000 characters (including spaces) and written in the primary language of the book.">?</a>
                                  <summernote class="form-control" ng-required="true" name="bi.MainDescription" ng-model="bi.Model.MainDescription" config="{toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],['para', ['ul', 'ol']]]}" height="180"></summernote>
                               </div>

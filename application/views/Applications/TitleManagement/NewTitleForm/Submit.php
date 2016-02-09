@@ -116,7 +116,7 @@
                               ng-class="{'has-error': !NTFNGForm.CoversFormPanel.$pristine && NTFNGForm.CoversFormPanel.$invalid}"                              
                               >Covers</a>
                         </li>
-                        <li role="presentation">
+                        <li role="presentation" ng-if="user.roles[0] == 'Developer'">
                            <a href="#" data-target="#json" aria-controls="json" role="tab" data-toggle="tab"
                               >JSON & Debug</a>
                         </li>
@@ -178,15 +178,15 @@
                                  </div>
                               </div>
                            </div>
-<!--                           <ul ng-repeat="b in [BasicInfoFormPanel]" ng-show="BasicInfoFormPanel.$dirty">
-                              <li ng-show="b.Title.$invalid">{{b.Title.$name}}</li>
-                              <li ng-show="b.Subtitle.$invalid">{{b.Subtitle.$name}}</li>
-                              <li ng-show="b.Publisher.$invalid">{{b.Publisher.$name}}</li>
-                              <li ng-show="b.Imprint.$invalid">{{b.Imprint.$name}}</li>
-                              <li ng-show="b.ContentLanguage.$invalid">{{b.ContentLanguage.$name}}</li>
-                              <li ng-show="b.SeriesName.$invalid">{{b.SeriesName.$name}}</li>
-                              <li ng-show="b.NumberinSeries.$invalid">{{b.NumberinSeries.$name}}</li>
-                           </ul>-->
+                           <!--                           <ul ng-repeat="b in [BasicInfoFormPanel]" ng-show="BasicInfoFormPanel.$dirty">
+                                                         <li ng-show="b.Title.$invalid">{{b.Title.$name}}</li>
+                                                         <li ng-show="b.Subtitle.$invalid">{{b.Subtitle.$name}}</li>
+                                                         <li ng-show="b.Publisher.$invalid">{{b.Publisher.$name}}</li>
+                                                         <li ng-show="b.Imprint.$invalid">{{b.Imprint.$name}}</li>
+                                                         <li ng-show="b.ContentLanguage.$invalid">{{b.ContentLanguage.$name}}</li>
+                                                         <li ng-show="b.SeriesName.$invalid">{{b.SeriesName.$name}}</li>
+                                                         <li ng-show="b.NumberinSeries.$invalid">{{b.NumberinSeries.$name}}</li>
+                                                      </ul>-->
                         </div>
                         <!--end basic-->
                         <!--contributors-->
@@ -690,7 +690,7 @@
          </div>
       </div>
    </div>
-   <div class="row" ng-repeat="d in [NTF.Drafts]">
+   <div class="row" ng-repeat="d in [NTF.Drafts]" ng-show="NTF.isValid">
       <div class="col-md-12">
          <div class="panel panel-default">
             <div class="panel-body">

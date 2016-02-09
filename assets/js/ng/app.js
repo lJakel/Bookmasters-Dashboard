@@ -63,8 +63,8 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
                },
                // This is the responseError interceptor
                responseError: function (rejection) {
-
-                  if (rejection.status === 401 && rejection.config.url != "Authentication/Auth/getuser") {
+                  console.log(rejection);
+                  if (rejection.status === 401 && rejection.config.url != "Authentication/Auth/getuser" && rejection.config.url != 'Dashboard/Main/Index') {
                      toasty.error({title: 'Error!', msg: 'Your session has expired.', html: true, theme: 'bootstrap', timeout: 8000});
                   }
 

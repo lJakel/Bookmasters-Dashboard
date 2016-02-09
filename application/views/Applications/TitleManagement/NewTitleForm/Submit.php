@@ -436,8 +436,8 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
-                                             <th style="width:25%">Name</th>
-                                             <th style="width:25%">Publication</th>
+                                             <th>Name</th>
+                                             <th>Publication</th>
 
                                              <th class="twobtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="m.addMarketingItem('Review')"><span class="fa fa-fw fa-plus"></span></button>
@@ -467,8 +467,8 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
-                                             <th style="width:25%">Name</th>
-                                             <th style="width:25%">Affiliation</th>
+                                             <th>Name</th>
+                                             <th>Affiliation</th>
 
                                              <th class="twobtn">
                                                 <button class="btn btn-primary pull-right btn-block" ng-click="m.addMarketingItem('Endorsement')"><span class="fa fa-fw fa-plus"></span></button>
@@ -589,9 +589,12 @@
                                              <tr>
                                                 <th>ISBN</th>
                                                 <th>Format</th>
-                                                <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Size</th>
+                                                <th>Trim</th>
+                                                <th>File Requirements
+                                                   <a tabindex="-1" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" title="File Requirements" data-placement="top" 
+                                                      data-content="Based on your supplied format. Your cover file needs to meet these requirements.">?</a>
+                                                </th>
+                                              
                                                 <th style="width:105px;">Upload</th>
                                                 <th style="width:200px;">Progress</th>
                                                 <th style="width:60px; text-align: center;">Status</th>
@@ -614,19 +617,20 @@
                                                    </span>
                                                 </td>
                                                 <td>
-                                                   {{c.files[Format.ISBN13]['name']}}
+                                                   Width: {{Format.Width}}in, Height: {{Format.Height}}in
                                                 </td>
+                                            
                                                 <td>
-                                                   <span ng-if="c.files[Format.ISBN13]['type'] == 'application/pdf'">Type: <i class="fa fa-file-pdf-o"></i> ({{c.files[Format.ISBN13]['type']}})</span>
-                                                   <span ng-if="c.files[Format.ISBN13]['type'] == 'image/jpeg'">Type: <i class="fa fa-file-image-o"></i> ({{c.files[Format.ISBN13]['type']}})</span>
+                                                   Width: {{Format.Width * 300}}px, Height: {{Format.Height * 300}}px, Resolution: 300dpi
                                                 </td>
+                                            
+                                               
                                                 <td>
-                                                   <span ng-if="c.files[Format.ISBN13]['name']">
-                                                      {{c.formatBytes(c.files[Format.ISBN13]['size'], 2)}}
-                                                   </span>
-                                                </td>
-                                                <td>
-                                                   <div class="btn btn-primary" ngf-pattern="'.pdf,.jpg'" accept=".pdf,.jpg" ngf-select="c.upload($file,{{Format.ISBN13}})">
+                                                   <div class="btn btn-primary"
+                                                        ngf-pattern="'.pdf,.jpg'" 
+                                                        accept=".pdf,.jpg" 
+                                                        ngf-select="c.upload($file,{{Format.ISBN13}})"
+                                                        ngf-dimensions="$width = {{Format.Width * 300}} && $height = {{Format.Height * 300}}" >
                                                       <i class="fa fa-upload"></i> Browse...
                                                    </div>        
                                                 </td>

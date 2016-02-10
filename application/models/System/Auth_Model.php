@@ -43,6 +43,7 @@ class Auth_Model extends ESM {
    }
 
    public function login($username, $password) {
+
       if (!$this->enabled['login']['state']) {
          $this->newError("0000", $this->enabled['login']['message'], $this, __FUNCTION__, "danger", null, false);
          return $this->generateResponse();
@@ -54,7 +55,7 @@ class Auth_Model extends ESM {
 
          $queryResult->free_result();
 
-         if ($user->IsActive !== '1') {
+         if ($user->IsActive != '1') {
             $this->newError("0000", "Your account is disabled", $this, __FUNCTION__, "danger", null, false);
             return $this->generateResponse();
          }
@@ -71,6 +72,22 @@ class Auth_Model extends ESM {
                $clientGetResult = $clientGet;
             }
 
+
+            $AuthMaster = $this->load->database('default', TRUE);
+            $claimGetQuery = $AuthMaster->query("exec SecurityClaim_GetForUser @userid=?", [$user->Id]);
+            if ($claimGetQuery && $claimGetQuery->num_rows() && $claimGet = $claimGetQuery->result_object()) {
+               $claims = [];
+               foreach ($claimGet as $value) {
+                  $claims[$value->Area][str_replace(" ", "", $value->Application)][] = [
+                      "Application" => $value->Application,
+                      "Claim" => $value->Claim,
+                      "Created" => $value->Created,
+                  ];
+               }
+            }
+
+
+
             $this->UserId = (isset($user->Id) ? $user->Id : null);
             $this->Username = (isset($user->Username) ? $user->Username : null);
             $this->Email = (isset($user->Email) ? $user->Email : null);
@@ -79,7 +96,7 @@ class Auth_Model extends ESM {
             $this->MiddleName = (isset($user->MiddleName) ? $user->MiddleName : null);
             $this->LastName = (isset($user->LastName) ? $user->LastName : null);
             $this->Roles = (isset($user->Role) ? $user->Role : null);
-            $this->Flags = (isset($user->Flags) ? $user->Flags : null);
+            $this->Flags = (isset($claims) ? $claims : null);
             $this->Created = (isset($user->created) ? $user->created : null);
             $this->LastModified = (isset($user->lastmodified) ? $user->lastmodified : null);
             $this->IsActive = (isset($user->IsActive) ? $user->IsActive : null);
@@ -89,8 +106,8 @@ class Auth_Model extends ESM {
 
             $this->set_session();
 
-            $data = ['user' => $this->session->userdata];
-            return $this->generateResponse($data, "Welcome!");
+            $data = $this->session->user;
+            return $this->generateResponse($data, "Welcome {$this->Username}!");
          } else {
             $this->newError("0000", "There was a problem with the username and/or password you supplied.", $this, __FUNCTION__, "danger", null, false);
             return $this->generateResponse();

@@ -187,3 +187,75 @@ $db['JakeComputer'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
+
+
+if (phpversion() == "7.0.2") {
+   $db['default'] = array(
+       'hostname' => '10.10.10.10,1433',
+       'username' => 'bmi_connect',
+       'password' => 'automated',
+       'database' => 'AuthenticationMaster',
+       'dbdriver' => 'sqlsrv',
+       'dbprefix' => '',
+       'pconnect' => FALSE,
+       'db_debug' => TRUE,
+       'cache_on' => FALSE,
+       'cachedir' => '',
+       'char_set' => 'utf8',
+       'dbcollat' => 'utf8_general_ci',
+       'swap_pre' => '',
+       'autoinit' => TRUE,
+       'encrypt' => FALSE,
+       'compress' => FALSE,
+       'stricton' => FALSE,
+       'failover' => array(),
+       'save_queries' => TRUE
+   );
+
+
+   $db['itemmaster'] = array(
+       'hostname' => '10.10.10.10,1433',
+       'username' => 'bmi_connect',
+       'password' => 'automated',
+       'database' => 'ItemMasterData',
+       'dbdriver' => 'sqlsrv',
+       'dbprefix' => '',
+       'pconnect' => FALSE,
+       'db_debug' => TRUE,
+       'cache_on' => FALSE,
+       'cachedir' => '',
+       'char_set' => 'utf8',
+       'dbcollat' => 'utf8_general_ci',
+       'swap_pre' => '',
+       'autoinit' => FALSE,
+       'encrypt' => FALSE,
+       'compress' => FALSE,
+       'stricton' => FALSE,
+       'failover' => array(),
+       'save_queries' => TRUE
+   );
+   $db['DataImports'] = array(
+       'hostname' => '10.10.10.10,1433',
+       'username' => 'bmi_connect',
+       'password' => 'automated',
+       'database' => 'DataImports',
+       'dbdriver' => 'sqlsrv',
+       'dbprefix' => '',
+       'pconnect' => FALSE,
+       'db_debug' => TRUE,
+       'cache_on' => FALSE,
+       'cachedir' => '',
+       'char_set' => 'utf8',
+       'dbcollat' => 'utf8_general_ci',
+       'swap_pre' => '',
+       'autoinit' => FALSE,
+       'encrypt' => FALSE,
+       'compress' => FALSE,
+       'stricton' => FALSE,
+       'failover' => array(),
+       'save_queries' => TRUE
+   );
+}
+
+
+

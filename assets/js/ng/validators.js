@@ -119,9 +119,7 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
             /*using push() here to run it as the last parser, after we are sure that other validators were run*/
             var ValidateOptions = $parse($attrs.bmValidateOptions);
             $.each(ValidateOptions(), function (k, value) {
-
                switch (value) {
-
                   case 'isbn':
                      ngModel.$parsers.push(function (viewValue) {
                         var formGroup = $element.parent().parent();

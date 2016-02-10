@@ -830,7 +830,6 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
       var factory = {
          user: null,
          isLoggedIn: isLoggedIn,
-         
          getInfo: getInfo,
          logout: logout,
          forgot: forgot,
@@ -860,10 +859,10 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
          });
       }
 
-    
+
       function login(user, success, error) {
-return $http.post(url + 'login', user).then(function (response) {
-            changeUser(response.data.data.user.user); // get user block
+         return $http.post(url + 'login', user).then(function (response) {
+            changeUser(response.data.data); // get user block
             success(response.data); //get parent userblock and message block
          }, function (response) {
             changeUser(null);
@@ -1030,9 +1029,7 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
             /*using push() here to run it as the last parser, after we are sure that other validators were run*/
             var ValidateOptions = $parse($attrs.bmValidateOptions);
             $.each(ValidateOptions(), function (k, value) {
-
                switch (value) {
-
                   case 'isbn':
                      ngModel.$parsers.push(function (viewValue) {
                         var formGroup = $element.parent().parent();

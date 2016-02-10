@@ -11,7 +11,7 @@ var login = function (Dependencies) {
 
             Dependencies.toasty.success({
                title: 'Authentication Successful!',
-               msg: 'Welcome Jake!',
+               msg: 'Welcome!',
                theme: 'bootstrap',
                timeout: 5000,
             });

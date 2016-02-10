@@ -84,7 +84,6 @@ class Auth_Model extends ESM {
                       "Created" => $value->Created,
                   ];
                }
-               file_put_contents('lol.txt', json_encode($claims));
             }
 
 

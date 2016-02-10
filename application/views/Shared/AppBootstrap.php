@@ -9,9 +9,6 @@
                   <a class="submenu collapsed" data-target="#DashboardList" data-toggle="collapse" href="#"><span class="fa fa-globe fa-fw"></span>Dashboard<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="DashboardList" class="collapse">
                      <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Dashboard</a></li>
-                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Calendar</a></li>
-                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Notes</a></li>
-                     <li><a data-ui-sref="bm.app.page({folder: 'Dashboard', app: 'Main', page: 'Index'})">Settings</a></li>
                   </ul>
                </li>
             </ul>

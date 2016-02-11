@@ -32,9 +32,7 @@
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" ng-disabled="!ReviewModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('Review')">
-               <span ng-if="rm.Method == 'edit'">Save</span>
-               <span ng-if="rm.Method == 'add'">Add</span> 
-               Review</button>
+             Save Review</button>
          </div>
       </div>
       <!-- /.modal-content -->

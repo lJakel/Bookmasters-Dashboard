@@ -2,8 +2,11 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
       var self = this;
       self.LoadedTitle = {};
       self.Titles = [];
+      self.DescriptionSets = [];
       self.showTitleDialog = false;
-      
+
+      self.Set = {"ID": "1", "Year": "2016", "Name": "Christian Catalog"};
+
       self.TitleModal = new modal('');
       self.ShowComplete = true;
 
@@ -39,6 +42,8 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
             $.each(response.data.errors, function (k, v) {
                toasty.error({title: 'Error!', msg: v.message, theme: 'bootstrap', timeout: 8000});
             });
+         }).then(function () {
+            self.LoadTitles();
          });
       };
 
@@ -51,6 +56,8 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
                });
             }, function (response) {
                toasty.error({title: 'Error!', msg: 'A database error has occured.', theme: 'bootstrap', timeout: 8000});
+            }).then(function () {
+               self.LoadTitles();
             });
          }
       };
@@ -65,9 +72,22 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
             return new Title(item);
          });
       };
-     
+
+
+      self.LoadSets = function () {
+         return $http.post('./Marketing/CatalogDescriptions/GetAllSets').then(function (response) {
+            self.DescriptionSets = response.data.data;
+            console.log(response.data.data);
+         }, function (response) {
+
+            $.each(response.data.errors, function (k, v) {
+               toasty.error({title: 'Error!', msg: v.message, theme: 'bootstrap', timeout: 8000});
+            });
+
+         });
+      }
       self.LoadTitles = function () {
-         $http.post('./Marketing/CatalogDescriptions/GetAll').then(function (response) {
+         $http.post('./Marketing/CatalogDescriptions/GetAll', {Set: self.Set.ID}).then(function (response) {
             self.MapTitles(response.data.data);
          }, function (response) {
 
@@ -77,7 +97,10 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
 
          });
       };
-      self.LoadTitles();
+      self.LoadSets().then(function () {
+         self.LoadTitles();
+
+      });
 
       function Title(data) {
          data = data || '';
@@ -94,7 +117,9 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          t.AuthorBiosSafe = $sce.trustAsHtml(data.AuthorBios || '');
 
          t.Complete = (data.Complete == 0 ? false : true);
-         t.Catalog = (data.Catalog ? data.Complete : false);
+         t.Catalog = self.DescriptionSets.filter(function (item) {
+            return (item.ID == data.Catalog);
+         })[0];
          t.Updated = data.Updated || 0;
          t.UpdatedDisplay = moment(data.Updated, "YYYY-MM-DD hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
       }
@@ -112,7 +137,8 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          self.MainDescription = data.MainDescription || '';
          self.AuthorBios = data.AuthorBios || '';
          self.Complete = data.Complete || 0;
-         self.Catalog = data.Catalog || 0;
+         self.Catalog = data.Catalog || {"ID": "", "Year": "", "Name": ""};
+
          self.Updated = data.Updated || 0;
       }
 

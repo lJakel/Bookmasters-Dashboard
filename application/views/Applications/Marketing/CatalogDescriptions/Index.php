@@ -4,7 +4,8 @@
          <div class="panel panel-default">
             <div class="panel-body">
                <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
+
                      <label for="" class="control-label">Search</label>
                      <div class="input-group form-group">
                         <span class="input-group-addon">
@@ -13,7 +14,11 @@
                         <input type="text" class="form-control" ng-model="SearchFilter">
                      </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
+                     <label for="" class="label-control">Description Set</label>
+                     <select name="" id="" class="form-control" ng-model="cd.Set" ng-change="cd.LoadTitles()" ng-options="set.Year + ' ' + set.Name for set in cd.DescriptionSets track by set.ID"></select>
+                  </div>
+                  <div class="col-md-3">
                      <label for="" class="label-control">Sort By</label>
                      <select name="" id="" class="form-control" ng-model="cd.SortBy">
                         <option value="Title" selected>Title</option>
@@ -23,7 +28,7 @@
                         <option value="Complete">Completed</option>
                      </select>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                      <label for="" class="label-control">
                      </label>
                      <div class="checkbox checkbox-primary">

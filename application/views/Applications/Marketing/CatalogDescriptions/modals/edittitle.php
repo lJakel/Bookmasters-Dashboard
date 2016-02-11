@@ -11,7 +11,7 @@
                   <label for="mID" class="control-label">ID</label>
                   <input type="text" class="form-control" disabled="" name="mID" ng-model="m.ID" >
                </div>
-               <div class="col-md-6 form-group required" data-show-errors>
+               <div class="col-md-3 form-group required" data-show-errors>
                   <label for="mISBN" class="control-label">ISBN</label>
                   <div class="input-group">
                      <input type="text" data-bm-validate-options="['isbn']" class="form-control" name="mISBN" ng-model="m.ISBN" ng-required="true" ng-model-options="{ updateOn: 'blur' }">
@@ -20,7 +20,12 @@
                      </span>
                   </div>
                </div>
-               <div class="col-md-3 form-group">
+               <div class="col-md-4 form-group required" data-show-errors>
+                  <label class="control-label" for="">Description Set</label>
+                  <select name="mSet" class='form-control' ng-model="m.Catalog" id="mSet" ng-required='true'
+                          ng-options="set.Year + ' ' + set.Name for set in cd.DescriptionSets track by set.ID"></select>
+               </div>
+               <div class="col-md-2 form-group">
                   <label class="control-label" for=""> </label>
                   <div class="checkbox checkbox-primary">
                      <input id="mComplete" type="checkbox" ng-model="m.Complete">

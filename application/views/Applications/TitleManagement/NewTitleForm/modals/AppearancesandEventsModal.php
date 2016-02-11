@@ -39,10 +39,7 @@
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" ng-disabled="!AppearanceAndEventModalForm.$valid" ng-click="NTF.Marketing.onMarketingItemModalAction('AppearanceAndEvent')" id="save-changes">
-               <span ng-if="am.Method == 'edit'">Save</span>
-               <span ng-if="am.Method == 'add'">Add</span> 
-
-               Event</button>
+              Save Event</button>
          </div>
       </div>
    </div>

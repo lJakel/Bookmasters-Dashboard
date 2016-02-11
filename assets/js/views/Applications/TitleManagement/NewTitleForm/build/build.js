@@ -607,17 +607,17 @@ BMApp.register.factory('FixedReferences', ['$http', '$q', '$state', '$timeout', 
       }
 
       function GetDiscountCodes(successCallback, errorCallback) {
-//         cacheInit(function () {
-//            if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
-//               AuthFactory.getInfo().then(function (response) {
-//                  $localStorage.FixedReferencesFactory.DiscountCodes = response.clientinfo.DiscountCodes;
-//                  successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
-//               });
-//            } else {
-//               console.log('cache');
-//               successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
-//            }
-//         });
+         cacheInit().then(function () {
+            if ($localStorage.FixedReferencesFactory.DiscountCodes == null) {
+               AuthFactory.getInfo().then(function (response) {
+                  $localStorage.FixedReferencesFactory.DiscountCodes = response.clientinfo.DiscountCodes;
+                  successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
+               });
+            } else {
+               console.log('cache');
+               successCallback($localStorage.FixedReferencesFactory.DiscountCodes);
+            }
+         });
       }
 
    }]);
@@ -701,8 +701,8 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
          });
       }
       function RemoveDraft() {
-          toasty.error({title: 'Error!', msg: 'This feature is not yet implemented', theme: 'bootstrap', timeout: 8000});
-         
+         toasty.error({title: 'Error!', msg: 'This feature is not yet implemented', theme: 'bootstrap', timeout: 8000});
+
          return cacheInit().then(function () {
             return $q.when(self.factory.User);
          });
@@ -742,8 +742,8 @@ BMApp.register.factory('NewTitleDraftsFactory', ['$q', '$state', '$localStorage'
    }]);
 
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', 'toasty',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, toasty) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', 'toasty', '$localStorage',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, toasty, $localStorage) {
               var vm = this;
               vm.Dependencies = {
                  scriptLoader: scriptLoader,
@@ -757,7 +757,7 @@ BMApp.register.controller('NewTitleForm',
                  Upload: Upload
               };
 
-
+              
               vm.References = {
                  FixedAuthorRoles: [],
                  FixedProductTypes: [],
@@ -853,6 +853,7 @@ BMApp.register.controller('NewTitleForm',
               }
 
               FixedReferences.GetDiscountCodes(function (successResponse) {
+                 console.log(successResponse);
                  vm.References.FixedDiscountCodes = successResponse;
               });
               FixedReferences.GetFixedReferences().then(function (successResponse) {

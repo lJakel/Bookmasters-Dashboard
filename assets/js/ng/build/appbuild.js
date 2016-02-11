@@ -922,6 +922,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
          email: 'Your email address is invalid',
          number: 'Your input is not a number',
          price: 'The given amount is invalid. Ex 125,944.10',
+         bmCompareTo: 'Your input does not match',
       };
       getTrigger = function (options) {
          var trigger;
@@ -1025,7 +1026,10 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
       return {
          restrict: 'A',
          require: 'ngModel',
-         link: function ($scope, $element, $attrs, ngModel) {
+         scope: {
+            compareTo: "=compareTo"
+         },
+         link: function (scope, $element, $attrs, ngModel) {
             /*using push() here to run it as the last parser, after we are sure that other validators were run*/
             var ValidateOptions = $parse($attrs.bmValidateOptions);
             $.each(ValidateOptions(), function (k, value) {
@@ -1060,6 +1064,18 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
                            ngModel.$setValidity("bmPassword", true);
                         } else {
                            ngModel.$setValidity("bmPassword", false);
+                        }
+                        return viewValue;
+                     });
+
+                     break;
+                  case 'compareto':
+                     ngModel.$parsers.push(function (viewValue) {
+                        console.log(viewValue === scope.compareTo);
+                        if (viewValue === scope.compareTo) {
+                           ngModel.$setValidity("bmCompareTo", true);
+                        } else {
+                           ngModel.$setValidity("bmCompareTo", false);
                         }
                         return viewValue;
                      });

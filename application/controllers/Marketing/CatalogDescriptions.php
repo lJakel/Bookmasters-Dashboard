@@ -27,6 +27,10 @@ class CatalogDescriptions extends Secure_Controller {
       $this->output->set_content_type('application/json');
       echo json_encode($this->cd_model->GetAll());
    }
+   public function GetAllSets() {
+      $this->output->set_content_type('application/json');
+      echo json_encode($this->cd_model->GetAllSets());
+   }
    public function Create() {
       $this->output->set_content_type('application/json');
       echo json_encode($this->cd_model->Insert());

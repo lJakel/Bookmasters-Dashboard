@@ -1,6 +1,6 @@
 BMApp.register.controller('NewTitleForm',
-        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', 'toasty',
-           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, toasty) {
+        ['scriptLoader', '$scope', '$rootScope', '$timeout', 'FixedReferences', '$stateParams', 'GuidCreator', 'Upload', 'NewTitleDraftsFactory', 'toasty', 'toasty', '$localStorage',
+           function (scriptLoader, $scope, $rootScope, $timeout, FixedReferences, $stateParams, GuidCreator, Upload, NewTitleDraftsFactory, toasty, toasty, $localStorage) {
               var vm = this;
               vm.Dependencies = {
                  scriptLoader: scriptLoader,
@@ -14,7 +14,7 @@ BMApp.register.controller('NewTitleForm',
                  Upload: Upload
               };
 
-
+              
               vm.References = {
                  FixedAuthorRoles: [],
                  FixedProductTypes: [],
@@ -110,6 +110,7 @@ BMApp.register.controller('NewTitleForm',
               }
 
               FixedReferences.GetDiscountCodes(function (successResponse) {
+                 console.log(successResponse);
                  vm.References.FixedDiscountCodes = successResponse;
               });
               FixedReferences.GetFixedReferences().then(function (successResponse) {

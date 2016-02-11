@@ -32,13 +32,15 @@
                      </form>
                   </div>
                   <div class="tab-pane fade" id="register" ng-form="registerNgForm" ng-repeat="RC in [L.registerCtrl]">
-                                                         
+
                      <div class="row">
-                        <div class="col-md-6 form-group required" data-show-errors>
+                        <div class="col-md-12 form-group required" data-show-errors>
                            <label for="RCRegKey" class="control-label">Registration Key</label>
                            <input type="text" class="form-control input-sm" id="RCRegKey" name="RCRegKey" autocomplete="off" ng-model="RC.Model.Regkey" ng-required="true" ng-minlength="8">
                         </div>
-                        <div class="col-md-6 form-group required" data-show-errors>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12 form-group required" data-show-errors>
                            <label for="RCUsername" class="control-label">Username</label>
                            <input type="text" class="form-control input-sm" id="RCUsername" name="RCUsername" autocomplete="off" ng-model="RC.Model.Username" ng-required="true" ng-minlength="6">
                         </div>

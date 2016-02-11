@@ -198,7 +198,9 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
-                                             <th class='twobtn'>Action</th>
+                                             <th class='twobtn'>
+                                                <button class="btn btn-primary pull-right btn-block" id="btnlol" ng-click="c.addContributor()"><span class="fa fa-fw fa-plus"></span></button>                                             
+                                             </th>
                                              <th>Prefix</th>
                                              <th>First Name</th>
                                              <th>Middle Name</th>
@@ -206,7 +208,6 @@
                                              <th>Suffix</th>
                                              <th>Hometown</th>
                                              <th>Role</th>
-
                                           </tr>
                                        </thead>
                                        <tbody>
@@ -222,17 +223,8 @@
                                              <td>{{contributor.Suffix}}</td>
                                              <td>{{contributor.Hometown}}</td>
                                              <td>{{contributor.Role.Name}}</td>
-
                                           </tr>
                                        </tbody>
-                                       <tfoot>
-                                          <tr>
-                                             <td class='twobtn'>
-                                                <button class="btn btn-primary pull-right btn-block" id="btnlol" ng-click="c.addContributor()"><span class="fa fa-fw fa-plus"></span></button>                                             
-                                             </td>
-                                             <td colspan="20"></td>
-                                          </tr>
-                                       </tfoot>
                                     </table>
                                  </div>
                                  <hr>
@@ -365,7 +357,7 @@
                                              <th>ISBN13</th>
                                              <th>Pub Date</th>
                                              <th>US Price</th>
-                                             
+
                                           </tr>
                                        </thead>
                                        <tbody>
@@ -388,7 +380,7 @@
                                              <td>{{Format.ISBN13}}</td>
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>${{Format.USPrice}}</td>
-                                             
+
                                           </tr>
                                        </tbody>
                                     </table>

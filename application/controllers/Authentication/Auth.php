@@ -11,8 +11,8 @@ class Auth extends CI_Controller {
 
    function login() {
 
-      $username = trim($this->input->post('username'));
-      $password = trim($this->input->post('password'));
+      $username = trim($this->input->post('Username'));
+      $password = trim($this->input->post('Password'));
       $result = $this->Auth_Model->login($username, $password);
 
       if (isset($result['message']['error'])) {
@@ -53,7 +53,7 @@ class Auth extends CI_Controller {
 
       $this->output->set_header('Content-Type: application/json');
 
-      $result = $this->Auth_Model->create_new_user($this->input->post('username'), $this->input->post('password'), $this->input->post('email'), $this->input->post('regkey'));
+      $result = $this->Auth_Model->create_new_user($this->input->post('Username'), $this->input->post('Password'), $this->input->post('Email'), $this->input->post('Regkey'));
       if (isset($result['message']['error'])) {
          $this->output->set_status_header('400');
       }
@@ -63,7 +63,7 @@ class Auth extends CI_Controller {
    function forgot() {
       $this->output->set_header('Content-Type: application/json');
 
-      $result = $this->Auth_Model->reset_password($this->input->post('username'), $this->input->post('email'));
+      $result = $this->Auth_Model->reset_password($this->input->post('Username'), $this->input->post('Email'));
 
       echo json_encode($result);
    }

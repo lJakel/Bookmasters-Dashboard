@@ -1,13 +1,16 @@
 var login = function (Dependencies) {
    var self = this;
-   self.username = '';
-   self.password = '';
+
+   self.Model = {
+      Username: "",
+      Password: "",
+   };
 
    self.login = function (redirect) {
 
       Dependencies.$timeout(function () {
       }).then(function () {
-         Dependencies.AuthFactory.login({username: self.username, password: self.password}, function (res) {
+         Dependencies.AuthFactory.login(self.Model, function (res) {
 
             Dependencies.toasty.success({
                title: 'Authentication Successful!',
@@ -43,22 +46,19 @@ var login = function (Dependencies) {
 };
 var register = function (Dependencies) {
    var self = this;
-   self.regkey = '';
-   self.username = '';
-   self.password = '';
-   self.email = '';
+   self.Model = {
+      Email: "",
+      EmailVerify: "",
+      Regkey: "",
+      Username: "",
+      Password: "",
+      PasswordVerify: ""
+   };
 
 
    self.register = function () {
 
-      Dependencies.AuthFactory.register({
-         email: self.email,
-         regkey: self.regkey,
-         username: self.username,
-         password: self.password
-      }, function (successResponse) {
-
-
+      Dependencies.AuthFactory.register(self.Model, function (successResponse) {
          Dependencies.toasty.success({
             title: 'Registration Successful!',
             msg: successResponse.response,
@@ -66,7 +66,7 @@ var register = function (Dependencies) {
             timeout: 5000,
          });
          $('#authmodal a[data-target="#login"]').tab('show');
-         Dependencies.vm.loginCtrl.username = self.username;
+         Dependencies.vm.loginCtrl.username = self.Model.Username;
 
       }, function (err) {
          $.each(err.errors, function (k, v) {
@@ -118,8 +118,7 @@ var forgot = function (Dependencies) {
 };
 BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$timeout', '$q', 'toasty', '$rootScope', function ($scope, AuthFactory, $state, $timeout, $q, toasty, $rootScope) {
       var vm = this;
-      vm.error = undefined;
-      vm.success = undefined;
+
 
       vm.Dependencies = {
          $scope: $scope,
@@ -133,8 +132,7 @@ BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$time
 
       vm.forgotPassword = function () {
          $('#authmodal a[data-target="#forgot"]').tab('show');
-
-      }
+      };
 
       vm.loginCtrl = new login(vm.Dependencies);
       vm.registerCtrl = new register(vm.Dependencies);

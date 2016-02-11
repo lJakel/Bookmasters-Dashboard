@@ -241,7 +241,7 @@ class Auth_Model extends ESM {
       $this->email->to([$email]);
 
       $this->email->subject('Bookmasters - Forgotten Password');
-      $this->email->message("Hello {$username}, It appears you have forgotten your password. Your temporary password is <i>{$newPassword}</i>?");
+      $this->email->message("Hello {$username}, It appears you have forgotten your password. Your temporary password is <i>{$newPassword}</i>.");
 
       $this->email->send();
 
@@ -271,5 +271,4 @@ class Auth_Model extends ESM {
           'combined' => $baseSalt . '_' . $finalpass
       ];
    }
-
 }

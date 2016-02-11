@@ -8,7 +8,7 @@ class CatalogDescriptions_Model extends ESM {
 
    public function GetAll() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
-      $query = $cdDB->query('SELECT * FROM title');
+      $query = $cdDB->query('SELECT * FROM title WHERE catalog = ? ORDER BY `Title` ASC',[$this->input->post('Set')]);
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
          return $this->generateResponse($queryResult);
       }
@@ -29,7 +29,7 @@ class CatalogDescriptions_Model extends ESM {
           'MainDescription' => $this->input->post('MainDescription'),
           'AuthorBios' => $this->input->post('AuthorBios'),
           'Complete' => $this->input->post('Complete'),
-          'Catalog' => $this->input->post('Catalog'),
+          'Catalog' => $this->input->post('Catalog')['ID'],
           'Updated' => date("Y-m-d H:i:s"),
       ];
 
@@ -45,7 +45,6 @@ class CatalogDescriptions_Model extends ESM {
          }
       }
 
-      return $this->GetAll();
    }
 
    public function Update() {
@@ -59,7 +58,7 @@ class CatalogDescriptions_Model extends ESM {
           'MainDescription' => $this->input->post('MainDescription'),
           'AuthorBios' => $this->input->post('AuthorBios'),
           'Complete' => $this->input->post('Complete'),
-          'Catalog' => $this->input->post('Catalog'),
+          'Catalog' => $this->input->post('Catalog')['ID'],
           'Updated' => date("Y-m-d H:i:s"),
       ];
       $cdDB->where('ID', $this->input->post('ID'));
@@ -68,8 +67,6 @@ class CatalogDescriptions_Model extends ESM {
       if ($cdDB->affected_rows() <= 0) {
          $this->newError("0000", "A database error has occured.", $this, __FUNCTION__, "danger", null, false);
       }
-
-      return $this->GetAll();
    }
 
    public function Delete() {
@@ -81,7 +78,16 @@ class CatalogDescriptions_Model extends ESM {
       if ($cdDB->affected_rows() <= 0) {
          $this->newError("0000", "A database error has occured.", $this, __FUNCTION__, "danger", null, false);
       }
-      return $this->GetAll();
+   }
+
+   public function GetAllSets() {
+      $cdDB = $this->load->database('JakeComputer', TRUE);
+      $query = $cdDB->query('SELECT * FROM catalog');
+      if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
+         return $this->generateResponse($queryResult);
+      }
+      $this->newError("0000", "There was an error retrieving Description Sets.", $this, __FUNCTION__, "danger", null, false);
+      return $this->generateResponse();
    }
 
 }

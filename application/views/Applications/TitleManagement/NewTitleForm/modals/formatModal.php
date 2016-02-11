@@ -374,9 +374,7 @@
          <div class="modal-footer">            
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" id="save-changes" ng-disabled="!FormatModalForm.$valid" ng-click="NTF.Formats.onFormatModalAction()">
-               <span ng-if="fm.Method == 'edit'">Save</span>
-               <span ng-if="fm.Method == 'add'">Add</span> 
-               Format</button>
+              Save Format</button>
          </div>
       </div>
       <!-- /.modal-content -->

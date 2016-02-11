@@ -108,7 +108,7 @@
                         </li>
                         <li role="presentation">
                            <a href="#" data-target="#marketing" aria-controls="marketing" role="tab" data-toggle="tab"
-                              ng-class="{'has-error': !NTFNGForm.MarketingFormPanel.$pristine && NTFNGForm.MarketingFormPanel.$invalid}"                              
+                              ng-class="{'has-error': NTFNGForm.MarketingFormPanel.$invalid}"                              
                               >Marketing</a>
                         </li>
                         <li role="presentation">
@@ -198,6 +198,7 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
+                                             <th class='twobtn'>Action</th>
                                              <th>Prefix</th>
                                              <th>First Name</th>
                                              <th>Middle Name</th>
@@ -205,13 +206,15 @@
                                              <th>Suffix</th>
                                              <th>Hometown</th>
                                              <th>Role</th>
-                                             <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" id="btnlol" ng-click="c.addContributor()"><span class="fa fa-fw fa-plus"></span></button>
-                                             </th>
+
                                           </tr>
                                        </thead>
                                        <tbody>
                                           <tr ng-repeat="contributor in c.Model.Contributors">
+                                             <td class="twobtn">
+                                                <button class="btn btn-primary" ng-click="c.showContributorModal(contributor, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
+                                                <button class="btn btn-danger" ng-click="c.removeContributor($index)"><span class="fa fa-fw fa-minus"></span></button>
+                                             </td>
                                              <td>{{contributor.Prefix}}</td>
                                              <td>{{contributor.FirstName}}</td>
                                              <td>{{contributor.MiddleName}}</td>
@@ -219,12 +222,17 @@
                                              <td>{{contributor.Suffix}}</td>
                                              <td>{{contributor.Hometown}}</td>
                                              <td>{{contributor.Role.Name}}</td>
-                                             <td class="twobtn">
-                                                <button class="btn btn-primary" ng-click="c.showContributorModal(contributor, 'edit')"><span class="fa fa-fw fa-edit"></span></button>
-                                                <button class="btn btn-danger" ng-click="c.removeContributor($index)"><span class="fa fa-fw fa-minus"></span></button>
-                                             </td>
+
                                           </tr>
                                        </tbody>
+                                       <tfoot>
+                                          <tr>
+                                             <td class='twobtn'>
+                                                <button class="btn btn-primary pull-right btn-block" id="btnlol" ng-click="c.addContributor()"><span class="fa fa-fw fa-plus"></span></button>                                             
+                                             </td>
+                                             <td colspan="20"></td>
+                                          </tr>
+                                       </tfoot>
                                     </table>
                                  </div>
                                  <hr>
@@ -350,17 +358,22 @@
                                     <table class="table table-bordered">
                                        <thead>
                                           <tr>
+                                             <th class="twobtn">
+                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Formats.addFormat()"><span class="fa fa-fw fa-plus"></span></button>
+                                             </th>
                                              <th>Binding</th>
                                              <th>ISBN13</th>
                                              <th>Pub Date</th>
                                              <th>US Price</th>
-                                             <th class="twobtn">
-                                                <button class="btn btn-primary pull-right btn-block" ng-click="NTF.Formats.addFormat()"><span class="fa fa-fw fa-plus"></span></button>
-                                             </th>
+                                             
                                           </tr>
                                        </thead>
                                        <tbody>
                                           <tr ng-repeat="Format in NTF.Formats.Model.Formats">
+                                             <td class="twobtn">
+                                                <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-fw fa-edit fa-fw"></span></button>
+                                                <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-fw fa-minus fa-fw"></span></button>
+                                             </td>
                                              <td>
                                                 <span ng-if='Format.ProductType.MediaType'>
                                                    {{Format.ProductType.MediaType}}
@@ -375,10 +388,7 @@
                                              <td>{{Format.ISBN13}}</td>
                                              <td>{{Format.PublicationDate}}</td>
                                              <td>${{Format.USPrice}}</td>
-                                             <td class="twobtn">
-                                                <button class="btn btn-primary" ng-click="NTF.Formats.showFormatModal(Format, 'edit')"><span class="fa fa-fw fa-edit fa-fw"></span></button>
-                                                <button class="btn btn-danger" ng-click="NTF.Formats.removeFormat($index)"><span class="fa fa-fw fa-minus fa-fw"></span></button>
-                                             </td>
+                                             
                                           </tr>
                                        </tbody>
                                     </table>

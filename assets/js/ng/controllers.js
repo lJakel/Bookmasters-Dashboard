@@ -161,8 +161,9 @@ Helpers.prototype = {
 
 app.helpers = new Helpers();
 
-appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', function ($scope, $localStorage, AuthFactory, $q, $http) {
+appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', '$state', function ($scope, $localStorage, AuthFactory, $q, $http, $state) {
       var self = this;
+      $scope.$state = $state;
       self.Feedback = new Feedback({'$http': $http, 'AuthFactory': AuthFactory});
       //fix below for self
       $scope.app = app;

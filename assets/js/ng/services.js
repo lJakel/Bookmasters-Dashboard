@@ -138,7 +138,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
             $localStorage.user = null;
             changeUser(null);
             $rootScope.redirectToStateAfterLogin = undefined;
-            $location.path('/login');
+            $location.path('/Login');
          }, function (response) {
             $state.go('error');
          });

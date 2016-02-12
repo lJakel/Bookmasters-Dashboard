@@ -35,8 +35,15 @@ class Shared extends CI_Controller {
       $this->load->view('Shared/AppNavbar');
    }
 
-   public function login() {
-      $this->load->view('Authentication/login');
+   public function Login() {
+      $this->load->view('Authentication/login2');
+   }
+
+   public function Register() {
+      $this->load->view('Authentication/register');
+   }
+   public function Forgot() {
+      $this->load->view('Authentication/forgot');
    }
 
 }

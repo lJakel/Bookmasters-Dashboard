@@ -1,0 +1,53 @@
+
+.center{
+   text-align: center;
+   height: 100%;
+   /* May want to do this if there is risk the container may be narrower than the element inside */
+   white-space: nowrap;  
+   &:before{
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+   }
+   .form{
+      text-align: left;
+      display: inline-block;
+      vertical-align: middle;
+      width:420px;
+
+
+      &.loginFrm{
+
+
+      }
+      &.registerFrm{
+
+      }
+
+      >img{
+         margin-bottom: 15px;
+      }
+      >div,>form{
+         background-color: rgba(255, 255, 255, 0.9);
+         border-radius: 5px;
+         padding: 20px;
+         box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3);
+      }
+      >p{
+         padding-top:20px;
+         color:white;
+         text-align: center;
+         font-size: 16px;
+         line-height: 30px;
+         a{
+            color:darken(white, 10%);
+            text-decoration: underline;
+         }
+      }
+
+   }
+
+}
+
+

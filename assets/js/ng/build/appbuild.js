@@ -126,15 +126,24 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
          }
       });
 
-
-
-
-
       //separate state for login & error pages
       $stateProvider
               .state('login', {
-                 url: '/login',
-                 templateUrl: 'Shared/login'
+                 url: '/Login',
+                 templateUrl: 'Shared/Login',
+                 public: true
+              })
+              .state('register', {
+                 url: '/Register',
+                 templateUrl: 'Shared/Register',
+                 public: true
+
+              })
+              .state('forgot', {
+                 url: '/Forgot',
+                 templateUrl: 'Shared/Forgot',
+                 public: true
+
               })
               .state('error', {
                  url: '/error',
@@ -153,20 +162,24 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
 BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootScope, $state, AuthFactory, $location) {
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
          if (!$.isEmptyObject(toParams)) {
             $rootScope.redirectToStateAfterLogin = JSON.stringify(toParams);
             console.log($rootScope.redirectToStateAfterLogin);
          }
-         AuthFactory.getInfo().then(function (response) {
-            if (!response) {
-               $rootScope.returnToState = toState.url;
-               $rootScope.returnToStateParams = toParams.Id;
-               $location.path('/login');
-            }
-         });
+
+         if (!toState.public) {
+            AuthFactory.getInfo().then(function (response) {
+               if (!response) {
+                  $rootScope.returnToState = toState.url;
+                  $rootScope.returnToStateParams = toParams.Id;
+                  $location.path('/Login');
+               }
+            });
+         }
       });
 
-      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error, $location) {
+      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
          switch (error.status) {
             case 200:
             default:
@@ -175,7 +188,7 @@ BMApp.run(['$rootScope', '$state', 'AuthFactory', '$location', function ($rootSc
                $state.go('error', {code: '400', message: 'Bad request. The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.'});
                break;
             case 401:
-               $location.path('/login');
+               $location.path('/Login');
                break;
             case 403:
                $state.go('error', {code: '403', message: 'You do not have privileges to access this application.'});
@@ -353,8 +366,9 @@ Helpers.prototype = {
 
 app.helpers = new Helpers();
 
-appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', function ($scope, $localStorage, AuthFactory, $q, $http) {
+appControllers.controller('BMAppController', ['$scope', '$localStorage', 'AuthFactory', '$q', '$http', '$state', function ($scope, $localStorage, AuthFactory, $q, $http, $state) {
       var self = this;
+      $scope.$state = $state;
       self.Feedback = new Feedback({'$http': $http, 'AuthFactory': AuthFactory});
       //fix below for self
       $scope.app = app;
@@ -853,7 +867,7 @@ appServices.factory('AuthFactory', ['$http', '$state', '$q', '$localStorage', '$
             $localStorage.user = null;
             changeUser(null);
             $rootScope.redirectToStateAfterLogin = undefined;
-            $location.path('/login');
+            $location.path('/Login');
          }, function (response) {
             $state.go('error');
          });

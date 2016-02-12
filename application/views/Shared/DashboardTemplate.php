@@ -27,11 +27,11 @@
       <link rel="stylesheet" href="/CDN/bower_components/summernote/dist/summernote.css">
    </head>
 
-   <body data-ng-controller="BMAppController">
+   <body data-ng-controller="BMAppController" ng-class="{'isAuth': $state.is('login') || $state.is('forgot') || $state.is('register') }">
       <!--[if lt IE 10]><div class="lt-ie10-bg"><p class="browsehappy">You are using an <strong>outdated</strong> browser.</p><p>Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p</div><![endif]-->
 
       <!--App Bootstrap-->
-      <div data-ui-view></div>
+      <div data-ui-view id="bmuiview"></div>
 
       <!-- common libraries. required for every page-->
       <?php if ($_SERVER['HTTP_HOST'] == '10.10.11.48') { ?>

@@ -30,7 +30,6 @@ var login = function (Dependencies) {
             }, 2000);
 
          }, function (err) {
-
             $.each(err.errors, function (k, v) {
                Dependencies.toasty.error({
                   title: 'Authentication Error',
@@ -57,7 +56,7 @@ var register = function (Dependencies) {
 
 
    self.register = function () {
-
+      console.log('lol');
       Dependencies.AuthFactory.register(self.Model, function (successResponse) {
          Dependencies.toasty.success({
             title: 'Registration Successful!',
@@ -65,9 +64,9 @@ var register = function (Dependencies) {
             theme: 'bootstrap',
             timeout: 5000,
          });
-         $('#authmodal a[data-target="#login"]').tab('show');
-         Dependencies.vm.loginCtrl.username = self.Model.Username;
-
+         Dependencies.$timeout(function () {
+            Dependencies.$state.go('login');
+         });
       }, function (err) {
          $.each(err.errors, function (k, v) {
             Dependencies.toasty.error({
@@ -130,9 +129,6 @@ BMApp.register.controller('AuthCtrl', ['$scope', 'AuthFactory', '$state', '$time
          $rootScope: $rootScope
       };
 
-      vm.forgotPassword = function () {
-         $('#authmodal a[data-target="#forgot"]').tab('show');
-      };
 
       vm.loginCtrl = new login(vm.Dependencies);
       vm.registerCtrl = new register(vm.Dependencies);

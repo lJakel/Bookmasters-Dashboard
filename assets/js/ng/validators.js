@@ -200,5 +200,5 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
                }
             });
          }
-      }
+      };
    }]);

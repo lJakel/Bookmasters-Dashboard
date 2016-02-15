@@ -1124,7 +1124,7 @@ appValidators.directive('bmValidateOptions', ['$http', '$parse', '$timeout', fun
                }
             });
          }
-      }
+      };
    }]);
 var appWrappers = angular.module('app.wrappers', []);
 appWrappers.directive('datetimepicker', ['$timeout', '$parse', function ($timeout, $parse) {

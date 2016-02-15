@@ -36,11 +36,21 @@
             <div class="row">
                <div class="col-md-6 form-group required" data-show-errors>
                   <label for="mTitle" class="control-label">Title</label>
-                  <input type="text" class="form-control" name="mTitle" ng-model="m.Title" ng-required="true">
+                  <div class="input-group">
+                     <input type="text" class="form-control" name="mTitle" ng-model="m.Title" ng-required="true">   
+                     <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="m.ToTitleCase('Title')"><i class="fa fa-text-height fa-fw"></i></button>
+                     </span>
+                  </div>
                </div>
                <div class="col-md-6 form-group" data-show-errors>
                   <label for="mSubTitle" class="control-label">SubTitle</label>
-                  <input type="text" class="form-control" name="mSubTitle" ng-model="m.SubTitle">
+                  <div class="input-group">
+                     <input type="text" class="form-control" name="mSubTitle" ng-model="m.SubTitle">
+                     <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="m.ToTitleCase('SubTitle')"><i class="fa fa-text-height fa-fw"></i></button>
+                     </span>
+                  </div>
                </div>
             </div>
             <div class="row">

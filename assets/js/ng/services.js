@@ -20,6 +20,42 @@ appServices.factory('GuidCreator', function () {
       return s4() + s4() + '-' + s4() + s4();
    }
 });
+appServices.factory('TitleCase', function () {
+   return{
+      ToTitleCase: ToTitleCase
+   }
+   function ToTitleCase(StringToCase) {
+      StringToCase = StringToCase || '';
+      var i, j, str, lowers, uppers;
+
+      str = StringToCase.replace(/([^\W_]+[^\s-]*) */g, function (txt) {
+         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
+
+      // Certain minor words should be left lowercase unless 
+      // they are the first or last words in the string
+      lowers = ['A', 'Abaft', 'About', 'Above', 'Afore', 'After', 'Along', 'Amid',
+         'Among', 'An', 'And', 'Apud', 'As', 'Aside', 'At', 'Atop', 'Below', 'But',
+         'By', 'Circa', 'Down', 'For', 'From', 'Given', 'In', 'Into', 'Lest',
+         'Like', 'Mid', 'Midst', 'Minus', 'Near', 'Next', 'Nor', 'Of', 'Off',
+         'On', 'Onto', 'Or', 'Out', 'Over', 'Pace', 'Past', 'Per', 'Plus',
+         'Pro', 'Qua', 'Round', 'Sans', 'Save', 'Since', 'So', 'Than', 'The',
+         'Thru', 'Till', 'Times', 'To', 'Under', 'Until', 'Unto', 'Up', 'Upon',
+         'Via', 'Vice', 'With', 'Worth', 'Yet', ];
+      for (i = 0, j = lowers.length; i < j; i++) {
+         str = str.replace(new RegExp('\\s' + lowers[i] + '\\s', 'g'), function (txt) {
+            return txt.toLowerCase();
+         });
+      }
+      // Certain words such as initialisms or acronyms should be left uppercase
+      uppers = ['Id', 'Tv'];
+      for (i = 0, j = uppers.length; i < j; i++) {
+         str = str.replace(new RegExp('\\b' + uppers[i] + '\\b', 'g'), uppers[i].toUpperCase());
+      }
+
+      return str;
+   }
+});
 
 
 /**

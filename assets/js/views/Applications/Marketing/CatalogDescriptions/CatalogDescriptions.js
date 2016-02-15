@@ -1,4 +1,4 @@
-BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '$timeout', '$sce', function (toasty, $http, $timeout, $sce) {
+BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '$timeout', '$sce', 'TitleCase', function (toasty, $http, $timeout, $sce, TitleCase) {
       var self = this;
       self.LoadedTitle = {};
       self.Titles = [];
@@ -7,8 +7,12 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
 
       self.Set = {"ID": "1", "Year": "2016", "Name": "Christian Catalog"};
 
-      self.TitleModal = new modal('');
-      self.ShowComplete = true;
+      self.TitleModal = new modal('', TitleCase);
+      self.ShowComplete = false;
+
+
+
+
 
       self.showItemModal = function (entryDataViewModel, Component, Method) {
          self[Component + 'Modal'].Method = Method || 'edit';
@@ -124,7 +128,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          t.UpdatedDisplay = moment(data.Updated, "YYYY-MM-DD hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
       }
 
-      function modal(data) {
+      function modal(data, TitleCase) {
          var self = this;
          self.entryData = undefined;
          self.Method = '';
@@ -140,6 +144,12 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          self.Catalog = data.Catalog || {"ID": "", "Year": "", "Name": ""};
 
          self.Updated = data.Updated || 0;
+
+
+
+         self.ToTitleCase = function (model) {
+            self[model] = TitleCase.ToTitleCase(self[model]);
+         };
       }
 
    }]);

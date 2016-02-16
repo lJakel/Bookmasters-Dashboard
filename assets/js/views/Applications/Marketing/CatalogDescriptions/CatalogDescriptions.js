@@ -11,9 +11,6 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
       self.ShowComplete = false;
 
 
-
-
-
       self.showItemModal = function (entryDataViewModel, Component, Method) {
          self[Component + 'Modal'].Method = Method || 'edit';
          self[Component + 'Modal'].entryData = entryDataViewModel;

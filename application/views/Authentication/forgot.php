@@ -1,6 +1,6 @@
 <div class="container">
    <div id="main-content" class="merge-left">
-      <div class="wrapper content view-animate fade-up" style="margin:0px;">
+      <div class="wrapper content view-animate fade-up" style="margin:0px;padding:0px;height:100%;">
          <div class="center">
             <div class="loginFrm form animated fadeInUp" ng-controller="AuthCtrl as L">
 

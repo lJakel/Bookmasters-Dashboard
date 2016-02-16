@@ -10,7 +10,7 @@ class MY_Model extends CI_Model {
 
 class ESM extends MY_Model {
 
-   var $errors = [];
+   public $errors = [];
    var $errorDoc = "http://dashboard.bookmsaters.com/errors/";
    var $errorModel = [
        "message" => "",

@@ -39,16 +39,18 @@ BMApp.register.controller('GeneratedController', [function () {
             } else if (cents >= 46 && cents <= 100) {
                cents = 95;
             }
-            t.CANPrice= '\$' + dollar + "." + cents;
+            t.CANPrice = '\$' + dollar + "." + cents;
 
          };
          t.CANPrice = data.Price || '';
+         t.Illlustrations = data.Illlustrations || '';
+         t.AgeRange = data.AgeRange || '';
 
-         t.ExtraSpecs = data.Specs || [new self.Node('')];
+         t.ExtraSpecs = data.ExtraSpecs || [new self.Node('')];
          t.Cover = data.Cover || 'http://bonniemeadowpublishing.com/images/themurder.svg';
 
          t.AddSpec = function () {
-            t.Specs.push(new self.Node(''));
+            t.ExtraSpecs.push(new self.Node(''));
          };
       };
       self.Author = function (data) {

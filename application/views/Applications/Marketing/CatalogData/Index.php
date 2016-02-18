@@ -33,8 +33,24 @@
                <div class="row" ng-repeat="t in p.Titles">
                   <div class="col-xs-4">
                      <div class="specblock">
-                        <img src="Storage/9780692483619.jpg" width="100%" onerror="this.onerror=null;this.src='http://10.10.11.48/AtlasBooks/ebooks/images/nocover.jpg';" alt="">
-                        <span class="spec" ng-repeat="n in t.Specs">{{n|json}}</span>
+                        <img src="{{t.Cover}}" width="100%"  alt="">
+                        <span class="spec"> <input type="text" ng-model="t.Publisher" placeholder="Publisher" class="ghost"></span>
+                        <span class="spec"> <input type="text" ng-model="t.ISBN" placeholder="ISBN" class="ghost"></span>
+                        <span class="spec"> <input type="text" ng-model="t.Format" placeholder="Format" class="ghost"></span>
+                        <span class="spec"> 
+                           USD <input type="text" ng-model="t.USPrice" ng-change="t.CalcPrice()" ng-model-options="{ updateOn: 'blur' }" placeholder="Price" style="width: 70px;" class="ghost">
+                           (CAN <input type="text" ng-model="t.CANPrice" placeholder="Price" style="width: 70px;" class="ghost">)
+                        </span>
+                        <span class="spec"> 
+                           <input type="text" ng-model="t.TrimWidth" placeholder="6" style="width: 30px;" class="ghost"> x 
+                           <input type="text" ng-model="t.TrimHeight" placeholder="9" style="width:30px;" class="ghost">
+                        </span>
+                        <span class="spec"> <input type="text" ng-model="t.Pages" placeholder="Pages" class="ghost"></span>
+                        <span class="spec"> <input type="text" ng-model="t.Bisac" placeholder="Bisac" class="ghost"></span>
+                        <span class="spec"> <input type="text" ng-model="t.PublicationDate" placeholder="PublicationDate" class="ghost"></span>
+                        <span class="spec"> <input type="text" ng-model="t.Discount" placeholder="Discount" class="ghost"></span>
+
+                        <span class="spec" ng-repeat="n in t.ExtraSpecs"> <input type="text" ng-model="n.Value" class="ghost"> {{n|json}}</span>
                         <button class="btn btn-sm btn-primary" ng-click="t.AddSpec();"><i class="fa fa-fw fa-plus"></i></button>
                      </div>
                   </div>
@@ -61,7 +77,7 @@
             </div>
          </div>
       </div>
-      <pre>{{page|json}}</pre>
+      <pre>{{p|json}}</pre>
       <link rel="stylesheet" href="assets/js/views/Applications/Marketing/CatalogData/style.css">
    </div>
 </div>

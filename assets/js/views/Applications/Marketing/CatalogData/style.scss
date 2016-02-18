@@ -131,6 +131,7 @@
       }
    }
 }
+
 input.ghost{
    color:inherit;
    font-family: inherit;
@@ -143,7 +144,7 @@ input.ghost{
    font-variant: inherit;
    font-weight: inherit;
    width:100%;
-   border:solid 1px rgba(0,255,162,0.05);
+   border:solid 1px rgba(0,255,162,0.1);
    &:focus,&:active,&:visited{
       border:solid 1px rgba(0,255,162,0.2);   
    }

@@ -12,8 +12,40 @@ BMApp.register.controller('GeneratedController', [function () {
          t.Subtitle = data.Subtitle || '';
          t.Authors = data.Authors || [new self.Author('')];
          t.MainDesc = data.MainDesc || '';
-         t.Specs = data.Specs || [new self.Node('')];
-         t.Cover = data.Cover || '';
+
+         t.Publisher = data.Publisher || '';
+         t.ISBN = data.ISBN || '';
+         t.Imprint = data.Imprint || '';
+         t.Format = data.Format || '';
+         t.Trim = data.Trim || '';
+         t.USPrice = data.Price || '';
+         t.CalcPrice = function () {
+
+            var newPrice = t.USPrice;
+            newPrice = newPrice.replace(/[^.0-9]+/g, "");
+            newPrice = newPrice * 1.3;
+            var locale = 'en';
+            var options = {minimumFractionDigits: 2, maximumFractionDigits: 2};
+            var formatter = new Intl.NumberFormat(locale, options);
+            newPrice = formatter.format(newPrice);
+            var priceArray, dollar, cents;
+            priceArray = newPrice.split(".");
+            dollar = priceArray[0];
+            cents = priceArray[1];
+            dollar = dollar.replace(/,/g, "");
+            if (cents <= 45) {
+               cents = 95;
+               dollar = dollar - 1;
+            } else if (cents >= 46 && cents <= 100) {
+               cents = 95;
+            }
+            t.CANPrice= '\$' + dollar + "." + cents;
+
+         };
+         t.CANPrice = data.Price || '';
+
+         t.ExtraSpecs = data.Specs || [new self.Node('')];
+         t.Cover = data.Cover || 'http://bonniemeadowpublishing.com/images/themurder.svg';
 
          t.AddSpec = function () {
             t.Specs.push(new self.Node(''));

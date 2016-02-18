@@ -6,7 +6,7 @@ BMApp.register.controller('GeneratedController', [function () {
          self.Pages.push(new self.Page(''));
       };
       self.RefreshJSON = function () {
-         self.JSON= JSON.stringify(self.Pages);
+         self.JSON = JSON.stringify(self.Pages);
       };
 
       self.Title = function (data) {
@@ -14,7 +14,7 @@ BMApp.register.controller('GeneratedController', [function () {
          t.Title = data.Title || '';
          t.Subtitle = data.Subtitle || '';
          t.Authors = data.Authors || [new self.Author('')];
-         t.MainDesc = data.MainDesc || '';
+         t.MainDesc = data.MainDesc || 'BlankDes';
 
          t.Publisher = data.Publisher || '';
          t.ISBN = data.ISBN || '';
@@ -49,11 +49,14 @@ BMApp.register.controller('GeneratedController', [function () {
          t.Illlustrations = data.Illlustrations || '';
          t.AgeRange = data.AgeRange || '';
 
-         t.ExtraSpecs = data.ExtraSpecs || [new self.Node('')];
+         t.ExtraSpecs = data.ExtraSpecs || [];
          t.Cover = data.Cover || 'http://bonniemeadowpublishing.com/images/themurder.svg';
 
          t.AddSpec = function () {
             t.ExtraSpecs.push(new self.Node(''));
+         };
+         t.AddAuthor = function () {
+            t.Authors.push(new self.Author(''));
          };
       };
       self.Author = function (data) {
@@ -63,7 +66,7 @@ BMApp.register.controller('GeneratedController', [function () {
          a.FirstName = data.FirstName || '';
          a.LastName = data.LastName || '';
          a.MiddleName = data.MiddleName || '';
-         a.Description = data.Description || '';
+         a.Description = data.Description || 'BlankBio';
          a.Role = data.Role || '';
       };
       self.Node = function (data) {
@@ -75,6 +78,7 @@ BMApp.register.controller('GeneratedController', [function () {
       self.Page = function (data) {
 
          var p = this;
+         p.PageClass = 'cat-page-twoper';
          p.PageHeader = data.PageHeader || '';
          p.PageNumber = data.PageNumber || 0;
          p.PageFooter = data.PageFooter || '';
@@ -83,35 +87,46 @@ BMApp.register.controller('GeneratedController', [function () {
          p.CalcPerPage = 0;
          p.Tab = data.Tab || '';
 
-         switch (p.PerPage) {
-            case 1:
-               p.CalcPerPage = 12;
-               break;
-            case 2:
-               p.CalcPerPage = 6;
-               break;
-            case 3:
+         p.AddTitle = function () {
+            p.Titles.push(new self.Title(''));
+            p.calc();
 
-               break;
-            case 4:
+         };
+         p.calc = function () {
+            switch (p.Titles.length) {
+               case 1:
 
-               break;
-            case 6:
+                  p.PerPage = 1;
+                  break;
+               case 2:
 
-               break;
-            case 8:
+                  p.PerPage = 2;
+                  break;
+               case 3:
 
-               break;
-            case 10:
+                  p.PerPage = 3;
+                  break;
+               case 4:
 
-               break;
-            case 12:
+                  break;
+               case 6:
 
-               break;
-            default:
+                  break;
+               case 8:
 
-               break;
+                  break;
+               case 10:
+
+                  break;
+               case 12:
+
+                  break;
+               default:
+
+                  break;
+            }
          }
+         p.calc();
 
       };
    }]);

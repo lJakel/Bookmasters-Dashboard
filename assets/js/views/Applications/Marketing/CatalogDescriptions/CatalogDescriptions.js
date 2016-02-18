@@ -35,9 +35,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
 
          $http.post(url, self[Component + 'Modal'].entryData).then(function (response) {
             toasty.success({title: 'Success!', msg: 'Title updated successfully.', theme: 'bootstrap', timeout: 5000});
-            self.Titles = $.map(response.data.data, function (item) {
-               return new Title(item);
-            });
+            
          }, function (response) {
             self.MapTitles(response.data.data);
             $.each(response.data.errors, function (k, v) {
@@ -52,9 +50,7 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          if (confirm('Are you sure you want to delete this title?')) {
             $http.post('./Marketing/CatalogDescriptions/Delete', data).then(function (response) {
                toasty.success({title: 'Success!', msg: 'Title deleted successfully', theme: 'bootstrap', timeout: 5000});
-               self.Titles = $.map(response.data.data, function (item) {
-                  return new Title(item);
-               });
+              
             }, function (response) {
                toasty.error({title: 'Error!', msg: 'A database error has occured.', theme: 'bootstrap', timeout: 8000});
             }).then(function () {

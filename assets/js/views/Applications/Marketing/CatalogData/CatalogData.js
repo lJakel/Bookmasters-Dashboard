@@ -78,7 +78,7 @@ BMApp.register.controller('GeneratedController', [function () {
          p.Titles = data.Titles || [new self.Title('')];
          p.PerPage = data.PerPage || 1;
          p.CalcPerPage = 0;
-         p.Tab = data.Tab || 'Test';
+         p.Tab = data.Tab || '';
 
          switch (p.PerPage) {
             case 1:

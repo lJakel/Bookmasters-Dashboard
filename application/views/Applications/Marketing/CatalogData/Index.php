@@ -15,12 +15,12 @@
                <div class="row cat-page-header">
                   <div class="col-xs-4">
                      <div class="tab">
-                        <h1><input type="text" ng-model="p.Tab" class="ghost"></h1>
+                        <h1><input type="text" ng-model="p.Tab" placeholder="Tab Text" class="ghost"></h1>
                      </div>
                   </div>
                   <div class="col-xs-8">
                      <div class="header">
-                        <h1><input type="text" ng-model="p.PageHeader" class="ghost"></h1>
+                        <h1><input type="text" ng-model="p.PageHeader" placeholder="Page Header" class="ghost"></h1>
                      </div>
                   </div>
                </div>
@@ -29,7 +29,7 @@
                      <hr>
                   </div>
                </div>
-               <div class="row" ng-repeat="t in p.Titles">
+               <div class="row cat-page-oneper" ng-repeat="t in p.Titles">
                   <div class="col-xs-4">
                      <div class="specblock">
                         <img src="{{t.Cover}}" width="100%" alt="">
@@ -41,8 +41,8 @@
                            (CAN <input type="text" ng-model="t.CANPrice" placeholder="$" ng-style="{'width': t.CANPrice.length * 8 + 'px' }" style="width:auto;min-width:10px;" class="ghost">)
                         </span>
                         <span class="spec">
-                           <input type="text" ng-model="t.TrimWidth" placeholder="6" ng-style="{'width': t.TrimWidth.length * 8 + 'px' }" style="width:auto;min-width:10px;" class="ghost"> x
-                           <input type="text" ng-model="t.TrimHeight" placeholder="9" ng-style="{'width': t.TrimHeight.length * 8 + 'px' }" style="width:auto;min-width:10px;" class="ghost">
+                           <input type="text" ng-model="t.TrimWidth" placeholder="6" ng-style="{'width': t.TrimWidth.length * 8 + 'px' }" style="width:10px;min-width:10px;" class="ghost"> x
+                           <input type="text" ng-model="t.TrimHeight" placeholder="9" ng-style="{'width': t.TrimHeight.length * 8 + 'px' }" style="width:10px;min-width:10px;" class="ghost">
                         </span>
                         <span class="spec"> <input type="text" ng-model="t.Pages" placeholder="Pages" class="ghost"></span>
                         <span class="spec"> <input type="text" ng-model="t.Bisac" placeholder="Bisac" class="ghost"></span>

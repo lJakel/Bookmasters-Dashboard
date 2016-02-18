@@ -5,6 +5,7 @@
             <div class="panel panel-default">
                <div class="panel-body">
                   <button class="btn btn-primary" ng-click="gc.AddPage()">Add New Page</button>
+                  <button class="btn btn-primary" ng-click="gc.RefreshJSON()">Refresh JSON</button>
                </div>
             </div>
          </div>
@@ -87,7 +88,7 @@
             </div>
          </div>
       </div>
-      <pre>{{p|json}}</pre>
+      <pre>{{gc.JSON}}</pre>
       <link rel="stylesheet" href="assets/js/views/Applications/Marketing/CatalogData/style.css">
    </div>
 </div>

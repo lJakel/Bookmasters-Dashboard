@@ -1,27 +1,80 @@
 BMApp.register.controller('GeneratedController', [function () {
       var self = this;
+      self.Pages = [];
       self.Titles = [0, 102, 30];
+      self.AddPage = function () {
+         self.Pages.push(new self.Page(''));
+      };
 
       self.Title = function (data) {
          var t = this;
          t.Title = data.Title || '';
          t.Subtitle = data.Subtitle || '';
-         t.Authors = data.Authors || [];
-         t.Publisher = data.Publisher || '';
-         t.Imprint = data.Imprint || '';
-         t.ISBN = data.ISBN || '';
-         t.Format = data.Format || '';
-         t.USPrice = data.USPrice || '';
-         t.CANPrice = data.CANPrice || '';
-         t.Trim = data.Trim || '';
-         t.Pages = data.Pages || '';
-         t.Bisac = data.Bisac || '';
-         t.Discount = data.Discount || '';
-         t.Ages = data.Ages || '';
-         t.PublicationDate = data.PublicationDate || '';
-         t.Illustrations = data.Illustrations || '';
+         t.Authors = data.Authors || [new self.Author('')];
          t.MainDesc = data.MainDesc || '';
+         t.Specs = data.Specs || [new self.Node('')];
+         t.Cover = data.Cover || '';
+
+         t.AddSpec = function () {
+            t.Specs.push(new self.Node(''));
+         };
       };
+      self.Author = function (data) {
+         var a = this;
+         a.Prefix = data.Prefix || '';
+         a.Suffix = data.Suffix || '';
+         a.FirstName = data.FirstName || '';
+         a.LastName = data.LastName || '';
+         a.MiddleName = data.MiddleName || '';
+         a.Description = data.Description || '';
+         a.Role = data.Role || '';
+      };
+      self.Node = function (data) {
+         var n = this;
+         n.Order = data.Order || 0;
+         n.Key = data.Key || '';
+         n.Value = data.Value || '';
+      };
+      self.Page = function (data) {
 
+         var p = this;
+         p.PageHeader = data.PageHeader || '';
+         p.PageNumber = data.PageNumber || 0;
+         p.PageFooter = data.PageFooter || '';
+         p.Titles = data.Titles || [new self.Title('')];
+         p.PerPage = data.PerPage || 1;
+         p.CalcPerPage = 0;
+         p.Tab = data.Tab || 'Test';
 
+         switch (p.PerPage) {
+            case 1:
+               p.CalcPerPage = 12;
+               break;
+            case 2:
+               p.CalcPerPage = 6;
+               break;
+            case 3:
+
+               break;
+            case 4:
+
+               break;
+            case 6:
+
+               break;
+            case 8:
+
+               break;
+            case 10:
+
+               break;
+            case 12:
+
+               break;
+            default:
+
+               break;
+         }
+
+      };
    }]);

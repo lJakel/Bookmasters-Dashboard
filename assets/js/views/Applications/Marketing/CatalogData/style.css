@@ -17,7 +17,7 @@
       font-variant: normal;
       line-height: 26.4px;
       text-transform: uppercase;
-      font-family: 'Helvetica Neue LT Std';
+      font-family: 'Helvetica Neue LT Std', sans-serif;
       font-size: 20.4px;
       font-weight: 500;
       font-stretch: condensed;
@@ -27,7 +27,6 @@
     color: rgba(0, 0, 0, 0.7);
     padding: 25px 0px 5px 0px; }
     .page .header h1 {
-      font-family: 'Arial Narrow', Arial, sans-serif;
       font-size: 24px;
       font-style: normal;
       font-variant: normal;
@@ -40,7 +39,7 @@
       line-height: 26.4px;
       margin: 0px;
       text-transform: uppercase;
-      font-family: 'Helvetica Neue LT Std';
+      font-family: 'Helvetica Neue LT Std', sans-serif;
       font-size: 20.4px;
       font-weight: 500;
       font-stretch: condensed; }
@@ -51,7 +50,7 @@
     border: none; }
   .page .specblock .spec {
     display: block;
-    font-family: 'Helvetica Neue LT Std';
+    font-family: 'Helvetica Neue LT Std', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-variant: normal;
@@ -67,7 +66,7 @@
     text-align: justify; }
   .page .body .title {
     display: block;
-    font-family: 'Helvetica Neue LT Std';
+    font-family: 'Helvetica Neue LT Std', sans-serif;
     font-size: 34px;
     font-weight: 700;
     font-stretch: condensed;
@@ -75,7 +74,7 @@
     line-height: 35px; }
   .page .body .subtitle {
     display: block;
-    font-family: 'Helvetica Neue LT Std';
+    font-family: 'Helvetica Neue LT Std', sans-serif;
     font-size: 24px;
     font-weight: 500;
     font-stretch: condensed;
@@ -94,9 +93,17 @@
     float: left; }
   .page.left-page .row.cat-page-header .col-xs-8 {
     float: right; }
+  .page.left-page .row.cat-page-oneper .col-xs-4 {
+    float: left; }
+  .page.left-page .row.cat-page-oneper .col-xs-8 {
+    float: right; }
   .page.right-page .row.cat-page-header .col-xs-4 {
     float: right; }
   .page.right-page .row.cat-page-header .col-xs-8 {
+    float: left; }
+  .page.right-page .row.cat-page-oneper .col-xs-4 {
+    float: right; }
+  .page.right-page .row.cat-page-oneper .col-xs-8 {
     float: left; }
 
 input.ghost {

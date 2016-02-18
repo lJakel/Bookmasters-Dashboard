@@ -15,12 +15,12 @@
                <div class="row cat-page-header">
                   <div class="col-xs-4">
                      <div class="tab">
-                        <h1><input type="text" ng-model="p.Tab" class="ghost"></h1>
+                        <h1><input type="text" ng-model="p.Tab" placeholder="Tab Text" class="ghost"></h1>
                      </div>
                   </div>
                   <div class="col-xs-8">
                      <div class="header">
-                        <h1><input type="text" ng-model="p.PageHeader" class="ghost"></h1>
+                        <h1><input type="text" ng-model="p.PageHeader" placeholder="Page Header" class="ghost"></h1>
                      </div>
                   </div>
                </div>
@@ -29,7 +29,7 @@
                      <hr>
                   </div>
                </div>
-               <div class="row" ng-repeat="t in p.Titles">
+               <div class="row cat-page-oneper" ng-repeat="t in p.Titles">
                   <div class="col-xs-4">
                      <div class="specblock">
                         <img src="{{t.Cover}}" width="100%" alt="">

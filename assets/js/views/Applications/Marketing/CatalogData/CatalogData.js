@@ -5,6 +5,9 @@ BMApp.register.controller('GeneratedController', [function () {
       self.AddPage = function () {
          self.Pages.push(new self.Page(''));
       };
+      self.RefreshJSON = function () {
+         self.JSON= JSON.stringify(self.Pages);
+      };
 
       self.Title = function (data) {
          var t = this;

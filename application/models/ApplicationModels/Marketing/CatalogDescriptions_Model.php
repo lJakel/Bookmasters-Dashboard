@@ -8,7 +8,7 @@ class CatalogDescriptions_Model extends ESM {
 
    public function GetAll() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
-      $query = $cdDB->query('SELECT * FROM title WHERE catalog = ? ORDER BY `Title` ASC',[$this->input->post('Set')]);
+      $query = $cdDB->query('SELECT * FROM title WHERE catalog = ? ORDER BY `Title` ASC', [$this->input->post('Set')]);
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
          return $this->generateResponse($queryResult);
       }
@@ -18,6 +18,8 @@ class CatalogDescriptions_Model extends ESM {
 
    public function Insert() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
+
+
 
       $data = [
           'ID' => NULL,
@@ -44,7 +46,6 @@ class CatalogDescriptions_Model extends ESM {
             $this->newError("0000", "A database error has occured.", $this, __FUNCTION__, "danger", null, false);
          }
       }
-
    }
 
    public function Update() {

@@ -18,4 +18,23 @@ class CatalogData extends Secure_Controller {
    public function Index() {
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
+   public function OnePer() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   }
+   public function TwoPer() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   }
+   public function ThreePer() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   }
+   public function FourPer() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   }
+   public function SixPer() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   }
+   public function EightPer() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   }
+   
 }

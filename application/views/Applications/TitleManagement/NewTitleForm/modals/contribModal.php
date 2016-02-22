@@ -1,5 +1,5 @@
 <!-- Modal Start -->
-<div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Contributors.showDialog" class="modal fade" data-backdrop="static">
+<div style="z-index: 90; height:100%;" modal-show modal-visible="NTF.Contributors.showDialog" class="modal fade" data-backdrop="static">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ContributorsModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
          <div class="modal-header" modal-open="NTF.Contributors.showDialog" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>

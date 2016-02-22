@@ -28,6 +28,13 @@
                      <li><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'MarketingUpdate', page: 'Settings' })">Settings</a></li>
                   </ul>
                </li>
+               <li>
+                  <a class="submenu collapsed" data-target="#MarketingTools" data-toggle="collapse" href="#"><span class="fa fa-microphone fa-fw"></span>Marketing Tools<span class="fa fa-angle-down plusmin"></span></a>
+                  <ul id="MarketingTools" class="collapse">
+                     <li><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'CatalogData', page: 'Index'})">Catalog Data</a></li>
+                     <li><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'CatalogDescriptions', page: 'Index'})">Catalog Descriptions</a></li>
+                  </ul>
+               </li>
                <li ng-if="user.roles[0] == 'Developer'">
                   <a class="submenu collapsed" data-target="#SalesToolsList" data-toggle="collapse" href="#"><span class="fa fa-bar-chart fa-fw"></span>Sales Tools<span class="fa fa-angle-down plusmin"></span></a>
                   <ul id="SalesToolsList" class="collapse">

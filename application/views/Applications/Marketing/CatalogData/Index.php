@@ -1,72 +1,44 @@
 <div class="row" ng-controller="GeneratedController as gc">
-   <div class="col-xs-12">
-      <div class="row">
-         <div class="col-md-12">
-            <div class="panel panel-default">
-               <div class="panel-body">
-                  <button class="btn btn-primary" ng-click="gc.AddPage()">Add New Page</button>
-                  <button class="btn btn-primary" ng-click="gc.RefreshJSON()">Refresh JSON</button>
-               </div>
+   <div class="col-md-12">
+      <div class="panel panel-default">
+         <div class="panel-body">
+            <div class="row">
+               <div class="col-md-12">
+                  <?php foreach ($Catalogs as $key => $value) { ?>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <h1><?= $key ?></h1>
+                           <div class="row">
+                              <?php foreach ($value as $key => $value) { ?>
+                                 <div class="col-md-3">
+                                    <span style="border: solid thin rgba(0,0,0,0.1); display: block; padding:5px; box-shadow: 0px 2px 2px rgba(0,0,0,0.1);    background-color: rgb(244, 244, 244);">
+                                       <h3><?= $key ?></h3>
+                                       <div class="row">
+                                          <?php foreach ($value as $key => $value) { ?>
+                                             <div class="col-md-6">
+                                                <div class="thumbnail" style="background-color: #fff;">
+                                                   <img src="http://10.10.11.48/AtlasBooks/marktplc/images/nocover.jpg" style="border:solid thin rgba(0,0,0,0.2);">
+                                                   <div class="caption">
+                                                      <h5><?= $value ?></h5>
+                                                      <p>...</p>
+                                                      <p><a data-ui-sref="bm.app.page({folder: 'Marketing', app:'CatalogData', child: null, page: 'View', params: {'Year':2016,'Season':'Spring','Division':'AtlasBooks'}})" class="btn btn-primary btn-sm" role="button">Load</a></p>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          <?php } ?>
+                                       </div>
+                                    </span>
+                                 </div>
+                              <?php } ?>
+                           </div>
+                           <hr>
+                        </div>
+                     </div>
+                  <?php } ?>
+               </div>   
             </div>
          </div>
       </div>
-      <div class="row">
-         <div class="col-xs-12">
-            <div class="page" ng-repeat="p in gc.Pages" ng-class-even="'right-page'" ng-class-odd="'left-page'">
-               <div class="row cat-page-header">
-                  <div class="col-xs-4">
-                     <div class="tab">
-                        <h1><input type="text" ng-model="p.Tab" placeholder="Tab Text" class="ghost"></h1>
-                     </div>
-                  </div>
-                  <div class="col-xs-8">
-                     <div class="header">
-                        <h1><input type="text" ng-model="p.PageHeader" placeholder="Page Header" class="ghost"></h1>
-                     </div>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-xs-12">
-                     <hr>
-                  </div>
-               </div>
-               <div class="wrap" ng-switch on="p.PerPage">
-                  <div ng-switch-when="1">
-                     <ng-include src="'Marketing/CatalogData/OnePer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="2">
-                     <ng-include src="'Marketing/CatalogData/TwoPer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="3">
-                     <ng-include src="'Marketing/CatalogData/ThreePer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="4">
-                     <ng-include src="'Marketing/CatalogData/FourPer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="6">
-                     <ng-include src="'Marketing/CatalogData/SixPer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="8">
-                     <ng-include src="'Marketing/CatalogData/EightPer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="10">
-                     <ng-include src="'Marketing/CatalogData/TenPer'"></ng-include>
-                  </div>
-                  <div ng-switch-when="12">
-                     <ng-include src="'Marketing/CatalogData/TwelvePer'"></ng-include>
-                  </div>
-               </div>
-
-               <div class="row">
-                  <div class="col-xs-12">
-                     <hr>
-                     
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <pre>{{gc.JSON}}</pre>
       <link rel="stylesheet" href="assets/js/views/Applications/Marketing/CatalogData/style.css">
    </div>
 </div>

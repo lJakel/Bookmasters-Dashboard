@@ -1,5 +1,5 @@
 /*!
- * jQuery JavaScript Library v2.2.0
+ * jQuery JavaScript Library v2.2.1
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -9,7 +9,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-01-08T20:02Z
+ * Date: 2016-02-22T19:11Z
  */
 
 (function( global, factory ) {
@@ -65,7 +65,7 @@ var support = {};
 
 
 var
-	version = "2.2.0",
+	version = "2.2.1",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -4479,7 +4479,7 @@ function on( elem, types, selector, data, fn, one ) {
 	if ( fn === false ) {
 		fn = returnFalse;
 	} else if ( !fn ) {
-		return this;
+		return elem;
 	}
 
 	if ( one === 1 ) {
@@ -5128,14 +5128,14 @@ var
 	rscriptTypeMasked = /^true\/(.*)/,
 	rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g;
 
+// Manipulating tables requires a tbody
 function manipulationTarget( elem, content ) {
-	if ( jQuery.nodeName( elem, "table" ) &&
-		jQuery.nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ) {
+	return jQuery.nodeName( elem, "table" ) &&
+		jQuery.nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ?
 
-		return elem.getElementsByTagName( "tbody" )[ 0 ] || elem;
-	}
-
-	return elem;
+		elem.getElementsByTagName( "tbody" )[ 0 ] ||
+			elem.appendChild( elem.ownerDocument.createElement( "tbody" ) ) :
+		elem;
 }
 
 // Replace/restore the type attribute of script elements for safe DOM manipulation
@@ -5642,7 +5642,7 @@ var getStyles = function( elem ) {
 		// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
 		var view = elem.ownerDocument.defaultView;
 
-		if ( !view.opener ) {
+		if ( !view || !view.opener ) {
 			view = window;
 		}
 
@@ -5791,15 +5791,18 @@ function curCSS( elem, name, computed ) {
 		style = elem.style;
 
 	computed = computed || getStyles( elem );
+	ret = computed ? computed.getPropertyValue( name ) || computed[ name ] : undefined;
+
+	// Support: Opera 12.1x only
+	// Fall back to style even without computed
+	// computed is undefined for elems on document fragments
+	if ( ( ret === "" || ret === undefined ) && !jQuery.contains( elem.ownerDocument, elem ) ) {
+		ret = jQuery.style( elem, name );
+	}
 
 	// Support: IE9
 	// getPropertyValue is only needed for .css('filter') (#12537)
 	if ( computed ) {
-		ret = computed.getPropertyValue( name ) || computed[ name ];
-
-		if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
-			ret = jQuery.style( elem, name );
-		}
 
 		// A tribute to the "awesome hack by Dean Edwards"
 		// Android Browser returns percentage for some values,
@@ -7849,7 +7852,7 @@ jQuery.extend( jQuery.event, {
 				// But now, this "simulate" function is used only for events
 				// for which stopPropagation() is noop, so there is no need for that anymore.
 				//
-				// For the compat branch though, guard for "click" and "submit"
+				// For the 1.x branch though, guard for "click" and "submit"
 				// events is still used, but was moved to jQuery.event.stopPropagation function
 				// because `originalEvent` should point to the original event for the constancy
 				// with other events and for more focused logic
@@ -9619,11 +9622,8 @@ jQuery.fn.extend( {
 			}
 
 			// Add offsetParent borders
-			// Subtract offsetParent scroll positions
-			parentOffset.top += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true ) -
-				offsetParent.scrollTop();
-			parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true ) -
-				offsetParent.scrollLeft();
+			parentOffset.top += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
+			parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
 		}
 
 		// Subtract parent offsets and element margins
@@ -54059,14 +54059,13 @@ nyaBsSelect.directive('nyaBsOption', ['$parse', function($parse){
 
 })();
 /*  angular-summernote v0.7.1 | (c) 2016 JeongHoon Byun | MIT license */
-/* global angular */
-angular.module('summernote', [])
+/* global angular */angular.module('summernote', [])
 
   .controller('SummernoteController', ['$scope', '$attrs', '$timeout', function($scope, $attrs, $timeout) {
     'use strict';
 
     var currentElement,
-        summernoteConfig = $scope.summernoteConfig || {};
+        summernoteConfig = angular.copy($scope.summernoteConfig) || {};
 
     if (angular.isDefined($attrs.height)) { summernoteConfig.height = +$attrs.height; }
     if (angular.isDefined($attrs.minHeight)) { summernoteConfig.minHeight = +$attrs.minHeight; }
@@ -54081,20 +54080,45 @@ angular.module('summernote', [])
       summernoteConfig.lang = $attrs.lang;
     }
 
-    var callbacks = {};
-    callbacks.onInit = $scope.init;
-    callbacks.onEnter = function(evt) { $scope.enter({evt:evt}); };
-    callbacks.onFocus = function(evt) { $scope.focus({evt:evt}); };
-    callbacks.onPaste = function(evt) { $scope.paste({evt:evt}); };
-    callbacks.onKeyup = function(evt) { $scope.keyup({evt:evt}); };
-    callbacks.onKeydown = function(evt) { $scope.keydown({evt:evt}); };
+    summernoteConfig.callbacks = summernoteConfig.callbacks || {};
+    
+    if (angular.isDefined($attrs.onInit)) {
+      summernoteConfig.callbacks.onInit = function(evt) {
+        $scope.init({evt:evt});
+      };
+    }
+    if (angular.isDefined($attrs.onEnter)) {
+      summernoteConfig.callbacks.onEnter = function(evt) {
+        $scope.enter({evt:evt});
+      };
+    }
+    if (angular.isDefined($attrs.onFocus)) {
+      summernoteConfig.callbacks.onFocus = function(evt) {
+        $scope.focus({evt:evt});
+      };
+    }
+    if (angular.isDefined($attrs.onPaste)) {
+      summernoteConfig.callbacks.onPaste = function(evt) {
+        $scope.paste({evt:evt});
+      };
+    }
+    if (angular.isDefined($attrs.onKeyup)) {
+      summernoteConfig.callbacks.onKeyup = function(evt) {
+        $scope.keyup({evt:evt});
+      };
+    }
+    if (angular.isDefined($attrs.onKeydown)) {
+      summernoteConfig.callbacks.onKeydown = function(evt) {
+        $scope.keydown({evt:evt});
+      };
+    }
     if (angular.isDefined($attrs.onImageUpload)) {
-      callbacks.onImageUpload = function(files) {
+      summernoteConfig.callbacks.onImageUpload = function(files) {
         $scope.imageUpload({files:files, editable: $scope.editable});
       };
     }
     if (angular.isDefined($attrs.onMediaDelete)) {
-      callbacks.onMediaDelete = function(target) {
+      summernoteConfig.callbacks.onMediaDelete = function(target) {
         // make new object that has information of target to avoid error:isecdom
         var removedMedia = {attrs: {}};
         removedMedia.tagName = target[0].tagName;
@@ -54102,7 +54126,7 @@ angular.module('summernote', [])
           removedMedia.attrs[attr.name] = attr.value;
         });
         $scope.mediaDelete({target: removedMedia});
-      }
+      };
     }
 
     this.activate = function(scope, element, ngModel) {
@@ -54116,18 +54140,26 @@ angular.module('summernote', [])
         }
       };
 
-      callbacks.onChange = function(contents) {
-        $timeout(function() {
-          if (element.summernote('isEmpty')) { contents = ''; }
+      var originalOnChange = summernoteConfig.callbacks.onChange;
+      summernoteConfig.callbacks.onChange = function (contents) {
+        $timeout(function () {
+          if (element.summernote('isEmpty')) {
+            contents = '';
+          }
           updateNgModel();
         }, 0);
-        $scope.change({contents:contents, editable: $scope.editable});
+        if (angular.isDefined($attrs.onChange)) {
+          $scope.change({contents: contents, editable: $scope.editable});
+        } else if (angular.isFunction(originalOnChange)) {
+          originalOnChange.apply(this, arguments);
+        }
       };
-      callbacks.onBlur = function(evt) {
-        (!summernoteConfig.airMode) && element.blur();
-        $scope.blur({evt:evt});
-      };
-      summernoteConfig.callbacks = callbacks;
+      if (angular.isDefined($attrs.onBlur)) {
+        summernoteConfig.callbacks.onBlur = function (evt) {
+          (!summernoteConfig.airMode) && element.blur();
+          $scope.blur({evt: evt});
+        };
+      }
       element.summernote(summernoteConfig);
 
       var editor$ = element.next('.note-editor'),
@@ -54213,27 +54245,34 @@ angular.module('summernote', [])
       template: '<div class="summernote"></div>',
       link: function(scope, element, attrs, ctrls, transclude) {
         var summernoteController = ctrls[0],
-            ngModel = ctrls[1];
+          ngModel = ctrls[1];
 
-        transclude(scope, function(clone, scope) {
-          // to prevent binding to angular scope (It require `tranclude: 'element'`)
-          element.append(clone.html());
-        });
-
-        summernoteController.activate(scope, element, ngModel);
+          if (!ngModel) {
+            transclude(scope, function(clone, scope) {
+              // to prevent binding to angular scope (It require `tranclude: 'element'`)
+              element.append(clone.html());
+            });
+            summernoteController.activate(scope, element, ngModel);
+          } else {
+            scope.$watch(function() {
+              return ngModel.$viewValue;
+            }, function(value) {
+              element.append(value);
+              summernoteController.activate(scope, element, ngModel);
+            }, true);
+          }
       }
     };
   }]);
-
 /**
- * Super simple wysiwyg editor v0.8.1
+ * Super simple wysiwyg editor v0.7.3
  * http://summernote.org/
  *
  * summernote.js
  * Copyright 2013-2015 Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2016-02-15T18:35Z
+ * Date: 2016-01-14T13:17Z
  */
 (function (factory) {
   /* global define */
@@ -54320,7 +54359,7 @@ angular.module('summernote', [])
     /**
      * returns bnd (bounds) from rect
      *
-     * - IE Compatibility Issue: http://goo.gl/sRLOAo
+     * - IE Compatability Issue: http://goo.gl/sRLOAo
      * - Scroll Issue: http://goo.gl/sNjUc
      *
      * @param {Rect} rect
@@ -54618,24 +54657,6 @@ angular.module('summernote', [])
     }
   }
 
-  var isEdge = /Edge\/\d+/.test(userAgent);
-
-  var hasCodeMirror = !!window.CodeMirror;
-  if (!hasCodeMirror && isSupportAmd && require) {
-    if (require.hasOwnProperty('resolve')) {
-      try {
-        // If CodeMirror can't be resolved, `require.resolve` will throw an
-        // exception and `hasCodeMirror` won't be set to `true`.
-        require.resolve('codemirror');
-        hasCodeMirror = true;
-      } catch (e) {
-        hasCodeMirror = false;
-      }
-    } else if (require.hasOwnProperty('specified')) {
-      hasCodeMirror = require.specified('codemirror');
-    }
-  }
-
   /**
    * @class core.agent
    *
@@ -54647,16 +54668,13 @@ angular.module('summernote', [])
   var agent = {
     isMac: navigator.appVersion.indexOf('Mac') > -1,
     isMSIE: isMSIE,
-    isEdge: isEdge,
-    isFF: !isEdge && /firefox/i.test(userAgent),
-    isPhantom: /PhantomJS/i.test(userAgent),
-    isWebkit: !isEdge && /webkit/i.test(userAgent),
-    isChrome: !isEdge && /chrome/i.test(userAgent),
-    isSafari: !isEdge && /safari/i.test(userAgent),
+    isFF: /firefox/i.test(userAgent),
+    isWebkit: /webkit/i.test(userAgent),
+    isSafari: /safari/i.test(userAgent),
     browserVersion: browserVersion,
     jqueryVersion: parseFloat($.fn.jquery),
     isSupportAmd: isSupportAmd,
-    hasCodeMirror: hasCodeMirror,
+    hasCodeMirror: isSupportAmd ? require.specified('codemirror') : !!window.CodeMirror,
     isFontInstalled: isFontInstalled,
     isW3CRangeSupport: !!document.createRange
   };
@@ -55011,20 +55029,20 @@ angular.module('summernote', [])
      * @param {Function} [pred] - predicate function
      */
     var listDescendant = function (node, pred) {
-      var descendants = [];
+      var descendents = [];
       pred = pred || func.ok;
 
       // start DFS(depth first search) with node
       (function fnWalk(current) {
         if (node !== current && pred(current)) {
-          descendants.push(current);
+          descendents.push(current);
         }
         for (var idx = 0, len = current.childNodes.length; idx < len; idx++) {
           fnWalk(current.childNodes[idx]);
         }
       })(node);
 
-      return descendants;
+      return descendents;
     };
 
     /**
@@ -55104,7 +55122,7 @@ angular.module('summernote', [])
     };
 
     /**
-     * returns whether node is left edge of ancestor or not.
+     * returns wheter node is left edge of ancestor or not.
      *
      * @param {Node} node
      * @param {Node} ancestor
@@ -55731,6 +55749,7 @@ angular.module('summernote', [])
     };
   })();
 
+
   /**
    * @param {jQuery} $note
    * @param {Object} options
@@ -55768,14 +55787,9 @@ angular.module('summernote', [])
      * destory modules and other resources and initialize it again
      */
     this.reset = function () {
-      var disabled = self.isDisabled();
       this.code(dom.emptyPara);
       this._destroy();
       this._initialize();
-
-      if (disabled) {
-        self.disable();
-      }
     };
 
     this._initialize = function () {
@@ -55939,6 +55953,10 @@ angular.module('summernote', [])
     };
 
     return this.initialize();
+  };
+
+  $.summernote = $.summernote || {
+    lang: {}
   };
 
   $.fn.extend({
@@ -56237,10 +56255,6 @@ angular.module('summernote', [])
     }
   };
 
-  $.summernote = $.summernote || {
-    lang: {}
-  };
-
   $.extend($.summernote.lang, {
     'en-US': {
       font: {
@@ -56452,7 +56466,7 @@ angular.module('summernote', [])
           keyMap.BACKSPACE,
           keyMap.TAB,
           keyMap.ENTER,
-          keyMap.SPACE
+          keyMap.SPACe
         ], keyCode);
       },
       /**
@@ -56477,6 +56491,7 @@ angular.module('summernote', [])
       code: keyMap
     };
   })();
+
 
   var range = (function () {
 
@@ -56660,15 +56675,15 @@ angular.module('summernote', [])
         return this;
       };
 
+
       /**
        * Moves the scrollbar to start container(sc) of current range
        *
        * @return {WrappedRange}
        */
-      this.scrollIntoView = function (container) {
-        var height = $(container).height();
-        if (container.scrollTop + height < this.sc.offsetTop) {
-          container.scrollTop += Math.abs(container.scrollTop + height - this.sc.offsetTop);
+      this.scrollIntoView = function ($container) {
+        if ($container[0].scrollTop + $container.height() < this.sc.offsetTop) {
+          $container[0].scrollTop += Math.abs($container[0].scrollTop + $container.height() - this.sc.offsetTop);
         }
 
         return this;
@@ -57114,6 +57129,8 @@ angular.module('summernote', [])
    */
     return {
       /**
+       * @method
+       * 
        * create Range Object From arguments or Browser Selection
        *
        * @param {Node} sc - start container
@@ -57123,62 +57140,47 @@ angular.module('summernote', [])
        * @return {WrappedRange}
        */
       create: function (sc, so, ec, eo) {
-        if (arguments.length === 4) {
-          return new WrappedRange(sc, so, ec, eo);
+        if (!arguments.length) { // from Browser Selection
+          if (agent.isW3CRangeSupport) {
+            var selection = document.getSelection();
+            if (!selection || selection.rangeCount === 0) {
+              return null;
+            } else if (dom.isBody(selection.anchorNode)) {
+              // Firefox: returns entire body as range on initialization. We won't never need it.
+              return null;
+            }
+  
+            var nativeRng = selection.getRangeAt(0);
+            sc = nativeRng.startContainer;
+            so = nativeRng.startOffset;
+            ec = nativeRng.endContainer;
+            eo = nativeRng.endOffset;
+          } else { // IE8: TextRange
+            var textRange = document.selection.createRange();
+            var textRangeEnd = textRange.duplicate();
+            textRangeEnd.collapse(false);
+            var textRangeStart = textRange;
+            textRangeStart.collapse(true);
+  
+            var startPoint = textRangeToPoint(textRangeStart, true),
+            endPoint = textRangeToPoint(textRangeEnd, false);
+
+            // same visible point case: range was collapsed.
+            if (dom.isText(startPoint.node) && dom.isLeftEdgePoint(startPoint) &&
+                dom.isTextNode(endPoint.node) && dom.isRightEdgePoint(endPoint) &&
+                endPoint.node.nextSibling === startPoint.node) {
+              startPoint = endPoint;
+            }
+
+            sc = startPoint.cont;
+            so = startPoint.offset;
+            ec = endPoint.cont;
+            eo = endPoint.offset;
+          }
         } else if (arguments.length === 2) { //collapsed
           ec = sc;
           eo = so;
-          return new WrappedRange(sc, so, ec, eo);
-        } else {
-          var wrappedRange = this.createFromSelection();
-          if (!wrappedRange && arguments.length === 1) {
-            wrappedRange = this.createFromNode(arguments[0]);
-            return wrappedRange.collapse(dom.emptyPara === arguments[0].innerHTML);
-          }
-          return wrappedRange;
         }
-      },
-
-      createFromSelection: function () {
-        var sc, so, ec, eo;
-        if (agent.isW3CRangeSupport) {
-          var selection = document.getSelection();
-          if (!selection || selection.rangeCount === 0) {
-            return null;
-          } else if (dom.isBody(selection.anchorNode)) {
-            // Firefox: returns entire body as range on initialization.
-            // We won't never need it.
-            return null;
-          }
-
-          var nativeRng = selection.getRangeAt(0);
-          sc = nativeRng.startContainer;
-          so = nativeRng.startOffset;
-          ec = nativeRng.endContainer;
-          eo = nativeRng.endOffset;
-        } else { // IE8: TextRange
-          var textRange = document.selection.createRange();
-          var textRangeEnd = textRange.duplicate();
-          textRangeEnd.collapse(false);
-          var textRangeStart = textRange;
-          textRangeStart.collapse(true);
-
-          var startPoint = textRangeToPoint(textRangeStart, true),
-          endPoint = textRangeToPoint(textRangeEnd, false);
-
-          // same visible point case: range was collapsed.
-          if (dom.isText(startPoint.node) && dom.isLeftEdgePoint(startPoint) &&
-              dom.isTextNode(endPoint.node) && dom.isRightEdgePoint(endPoint) &&
-              endPoint.node.nextSibling === startPoint.node) {
-            startPoint = endPoint;
-          }
-
-          sc = startPoint.cont;
-          so = startPoint.offset;
-          ec = endPoint.cont;
-          eo = endPoint.offset;
-        }
-
         return new WrappedRange(sc, so, ec, eo);
       },
 
@@ -57341,7 +57343,7 @@ angular.module('summernote', [])
     var editable = $editable[0];
 
     var makeSnapshot = function () {
-      var rng = range.create(editable);
+      var rng = range.create();
       var emptyBookmark = {s: {path: [], offset: 0}, e: {path: [], offset: 0}};
 
       return {
@@ -57365,6 +57367,7 @@ angular.module('summernote', [])
     * Leaves the stack intact, so that "Redo" can still be used.
     */
     this.rewind = function () {
+
       // Create snap shot if not yet recorded
       if ($editable.html() !== stack[stackOffset].contents) {
         this.recordUndo();
@@ -57375,13 +57378,16 @@ angular.module('summernote', [])
 
       // Apply that snapshot.
       applySnapshot(stack[stackOffset]);
+
     };
+
 
     /**
     * @method reset
     * Resets the history stack completely; reverting to an empty editor.
     */
     this.reset = function () {
+
       // Clear the stack.
       stack = [];
 
@@ -57393,6 +57399,7 @@ angular.module('summernote', [])
 
       // Record our first snapshot (of nothing).
       this.recordUndo();
+
     };
 
     /**
@@ -57601,28 +57608,38 @@ angular.module('summernote', [])
    * @alternateClassName Bullet
    */
   var Bullet = function () {
-    var self = this;
-
     /**
+     * @method insertOrderedList
+     *
      * toggle ordered list
+     *
+     * @type command
      */
-    this.insertOrderedList = function (editable) {
-      this.toggleList('OL', editable);
+    this.insertOrderedList = function () {
+      this.toggleList('OL');
     };
 
     /**
+     * @method insertUnorderedList
+     *
      * toggle unordered list
+     *
+     * @type command
      */
-    this.insertUnorderedList = function (editable) {
-      this.toggleList('UL', editable);
+    this.insertUnorderedList = function () {
+      this.toggleList('UL');
     };
 
     /**
+     * @method indent
+     *
      * indent
+     *
+     * @type command
      */
-    this.indent = function (editable) {
+    this.indent = function () {
       var self = this;
-      var rng = range.create(editable).wrapBodyInlineWithPara();
+      var rng = range.create().wrapBodyInlineWithPara();
 
       var paras = rng.nodes(dom.isPara, { includeAncestor: true });
       var clustereds = list.clusterBy(paras, func.peq2('parentNode'));
@@ -57644,11 +57661,15 @@ angular.module('summernote', [])
     };
 
     /**
+     * @method outdent
+     *
      * outdent
+     *
+     * @type command
      */
-    this.outdent = function (editable) {
+    this.outdent = function () {
       var self = this;
-      var rng = range.create(editable).wrapBodyInlineWithPara();
+      var rng = range.create().wrapBodyInlineWithPara();
 
       var paras = rng.nodes(dom.isPara, { includeAncestor: true });
       var clustereds = list.clusterBy(paras, func.peq2('parentNode'));
@@ -57671,12 +57692,15 @@ angular.module('summernote', [])
     };
 
     /**
+     * @method toggleList
+     *
      * toggle list
      *
      * @param {String} listName - OL or UL
      */
-    this.toggleList = function (listName, editable) {
-      var rng = range.create(editable).wrapBodyInlineWithPara();
+    this.toggleList = function (listName) {
+      var self = this;
+      var rng = range.create().wrapBodyInlineWithPara();
 
       var paras = rng.nodes(dom.isPara, { includeAncestor: true });
       var bookmark = rng.paraBookmark(paras);
@@ -57710,6 +57734,8 @@ angular.module('summernote', [])
     };
 
     /**
+     * @method wrapList
+     *
      * @param {Node[]} paras
      * @param {String} listName
      * @return {Node[]}
@@ -57816,10 +57842,11 @@ angular.module('summernote', [])
     /**
      * insert tab
      *
+     * @param {jQuery} $editable
      * @param {WrappedRange} rng
      * @param {Number} tabsize
      */
-    this.insertTab = function (rng, tabsize) {
+    this.insertTab = function ($editable, rng, tabsize) {
       var tab = dom.createText(new Array(tabsize + 1).join(dom.NBSP_CHAR));
       rng = rng.deleteContents();
       rng.insertNode(tab, true);
@@ -57831,8 +57858,8 @@ angular.module('summernote', [])
     /**
      * insert paragraph
      */
-    this.insertParagraph = function (editable) {
-      var rng = range.create(editable);
+    this.insertParagraph = function ($editable) {
+      var rng = range.create();
 
       // deleteContents on range.
       rng = rng.deleteContents();
@@ -57883,7 +57910,7 @@ angular.module('summernote', [])
         }
       }
 
-      range.create(nextPara, 0).normalize().select().scrollIntoView(editable);
+      range.create(nextPara, 0).normalize().select().scrollIntoView($editable);
     };
   };
 
@@ -57954,9 +57981,6 @@ angular.module('summernote', [])
     var options = context.options;
     var lang = options.langInfo;
 
-    var editable = $editable[0];
-    var lastRange = null;
-
     var style = new Style();
     var table = new Table();
     var typing = new Typing();
@@ -57990,9 +58014,6 @@ angular.module('summernote', [])
         context.triggerEvent('paste', event);
       });
 
-      // init content before set event
-      $editable.html(dom.html($note) || dom.emptyPara);
-
       // [workaround] IE doesn't have input events for contentEditable
       // - see: https://goo.gl/4bfIvA
       var changeEventName = agent.isMSIE ? 'DOMCharacterDataModified DOMSubtreeModified DOMNodeInserted' : 'input';
@@ -58007,7 +58028,7 @@ angular.module('summernote', [])
       });
 
       if (!options.airMode && options.height) {
-        this.setHeight(options.height);
+        $editable.outerHeight(options.height);
       }
       if (!options.airMode && options.maxHeight) {
         $editable.css('max-height', options.maxHeight);
@@ -58016,6 +58037,7 @@ angular.module('summernote', [])
         $editable.css('min-height', options.minHeight);
       }
 
+      $editable.html(dom.html($note) || dom.emptyPara);
       history.recordUndo();
     };
 
@@ -58046,12 +58068,14 @@ angular.module('summernote', [])
     };
 
     /**
+     * createRange
+     *
      * create range
      * @return {WrappedRange}
      */
     this.createRange = function () {
       this.focus();
-      return range.create(editable);
+      return range.create();
     };
 
     /**
@@ -58062,9 +58086,10 @@ angular.module('summernote', [])
      * @param {Boolean} [thenCollapse=false]
      */
     this.saveRange = function (thenCollapse) {
-      lastRange = this.createRange();
+      this.focus();
+      $editable.data('range', range.create());
       if (thenCollapse) {
-        lastRange.collapse().select();
+        range.create().collapse().select();
       }
     };
 
@@ -58074,8 +58099,9 @@ angular.module('summernote', [])
      * restore lately range
      */
     this.restoreRange = function () {
-      if (lastRange) {
-        lastRange.select();
+      var rng = $editable.data('range');
+      if (rng) {
+        rng.select();
         this.focus();
       }
     };
@@ -58137,6 +58163,7 @@ angular.module('summernote', [])
     context.memo('help.redo', lang.help.redo);
 
     /**
+     * beforeCommand
      * before command
      */
     var beforeCommand = this.beforeCommand = function () {
@@ -58146,6 +58173,7 @@ angular.module('summernote', [])
     };
 
     /**
+     * afterCommand
      * after command
      * @param {Boolean} isPreventTrigger
      */
@@ -58176,6 +58204,8 @@ angular.module('summernote', [])
     /* jshint ignore:end */
 
     /**
+     * tab
+     *
      * handle tab key
      */
     this.tab = function () {
@@ -58184,14 +58214,17 @@ angular.module('summernote', [])
         table.tab(rng);
       } else {
         beforeCommand();
-        typing.insertTab(rng, options.tabSize);
+        typing.insertTab($editable, rng, options.tabSize);
         afterCommand();
       }
     };
     context.memo('help.tab', lang.help.tab);
 
     /**
+     * untab
+     *
      * handle shift+tab key
+     *
      */
     this.untab = function () {
       var rng = this.createRange();
@@ -58202,6 +58235,8 @@ angular.module('summernote', [])
     context.memo('help.untab', lang.help.untab);
 
     /**
+     * wrapCommand
+     *
      * run given function between beforeCommand and afterCommand
      */
     this.wrapCommand = function (fn) {
@@ -58213,30 +58248,35 @@ angular.module('summernote', [])
     };
 
     /**
+     * insertParagraph
+     *
      * insert paragraph
      */
     this.insertParagraph = this.wrapCommand(function () {
-      typing.insertParagraph(editable);
+      typing.insertParagraph($editable);
     });
     context.memo('help.insertParagraph', lang.help.insertParagraph);
 
+    /**
+     * insertOrderedList
+     */
     this.insertOrderedList = this.wrapCommand(function () {
-      bullet.insertOrderedList(editable);
+      bullet.insertOrderedList($editable);
     });
     context.memo('help.insertOrderedList', lang.help.insertOrderedList);
 
     this.insertUnorderedList = this.wrapCommand(function () {
-      bullet.insertUnorderedList(editable);
+      bullet.insertUnorderedList($editable);
     });
     context.memo('help.insertUnorderedList', lang.help.insertUnorderedList);
 
     this.indent = this.wrapCommand(function () {
-      bullet.indent(editable);
+      bullet.indent($editable);
     });
     context.memo('help.indent', lang.help.indent);
 
     this.outdent = this.wrapCommand(function () {
-      bullet.outdent(editable);
+      bullet.outdent($editable);
     });
     context.memo('help.outdent', lang.help.outdent);
 
@@ -58261,11 +58301,11 @@ angular.module('summernote', [])
         }
 
         $image.show();
-        range.create(editable).insertNode($image[0]);
+        range.create().insertNode($image[0]);
         range.createFromNodeAfter($image[0]).select();
         afterCommand();
-      }).fail(function (e) {
-        context.triggerEvent('image.upload.error', e);
+      }).fail(function () {
+        context.triggerEvent('image.upload.error');
       });
     };
 
@@ -58310,8 +58350,7 @@ angular.module('summernote', [])
      * @param {Node} node
      */
     this.insertNode = this.wrapCommand(function (node) {
-      var rng = this.createRange();
-      rng.insertNode(node);
+      range.create().insertNode(node);
       range.createFromNodeAfter(node).select();
     });
 
@@ -58320,8 +58359,7 @@ angular.module('summernote', [])
      * @param {String} text
      */
     this.insertText = this.wrapCommand(function (text) {
-      var rng = this.createRange();
-      var textNode = rng.insertNode(dom.createText(text));
+      var textNode = range.create().insertNode(dom.createText(text));
       range.create(textNode, dom.nodeLength(textNode)).select();
     });
 
@@ -58345,7 +58383,7 @@ angular.module('summernote', [])
      * @param {String} markup
      */
     this.pasteHTML = this.wrapCommand(function (markup) {
-      var contents = this.createRange().pasteHTML(markup);
+      var contents = range.create().pasteHTML(markup);
       range.createFromNodeAfter(list.last(contents)).select();
     });
 
@@ -58376,13 +58414,15 @@ angular.module('summernote', [])
     };
     /* jshint ignore:end */
 
+
     /**
      * fontSize
      *
      * @param {String} value - px
      */
     this.fontSize = function (value) {
-      var rng = this.createRange();
+      this.focus();
+      var rng = range.create();
 
       if (rng && rng.isCollapsed()) {
         var spans = style.styleNodes(rng);
@@ -58412,12 +58452,14 @@ angular.module('summernote', [])
      * insert horizontal rule
      */
     this.insertHorizontalRule = this.wrapCommand(function () {
-      var hrNode = this.createRange().insertNode(dom.create('HR'));
+      var rng = range.create();
+      var hrNode = rng.insertNode($('<HR/>')[0]);
       if (hrNode.nextSibling) {
         range.create(hrNode.nextSibling, 0).normalize().select();
       }
     });
     context.memo('help.insertHorizontalRule', lang.help.insertHorizontalRule);
+
 
     /**
      * remove bogus node and character
@@ -58447,7 +58489,7 @@ angular.module('summernote', [])
      * @param {String} value
      */
     this.lineHeight = this.wrapCommand(function (value) {
-      style.stylePara(this.createRange(), {
+      style.stylePara(range.create(), {
         lineHeight: value
       });
     });
@@ -58488,7 +58530,7 @@ angular.module('summernote', [])
 
       var anchors = [];
       if (isTextChanged) {
-        rng = rng.deleteContents();
+        // Create a new link when text changed.
         var anchor = rng.insertNode($('<A>' + linkText + '</A>')[0]);
         anchors.push(anchor);
       } else {
@@ -58531,7 +58573,9 @@ angular.module('summernote', [])
      * @return {String} [return.url=""]
      */
     this.getLinkInfo = function () {
-      var rng = this.createRange().expand(dom.isAnchor);
+      this.focus();
+
+      var rng = range.create().expand(dom.isAnchor);
 
       // Get the first anchor on range(for edit).
       var $anchor = $(list.head(rng.nodes(dom.isAnchor)));
@@ -58562,12 +58606,12 @@ angular.module('summernote', [])
     /**
      * insert Table
      *
-     * @param {String} dimension of table (ex : "5x5")
+     * @param {String} sDim dimension of table (ex : "5x5")
      */
-    this.insertTable = this.wrapCommand(function (dim) {
-      var dimension = dim.split('x');
+    this.insertTable = this.wrapCommand(function (sDim) {
+      var dimension = sDim.split('x');
 
-      var rng = this.createRange().deleteContents();
+      var rng = range.create().deleteContents();
       rng.insertNode(table.createTable(dimension[0], dimension[1], options));
     });
 
@@ -58640,6 +58684,14 @@ angular.module('summernote', [])
       //  - do focus when not focused
       if (!this.hasFocus()) {
         $editable.focus();
+
+        // [workaround] for firefox bug http://goo.gl/lVfAaI
+        if (!this.hasFocus() && agent.isFF) {
+          range.createFromNode($editable[0])
+               .normalize()
+               .collapse()
+               .select();
+        }
       }
     };
 
@@ -58656,13 +58708,6 @@ angular.module('summernote', [])
      */
     this.empty = function () {
       context.invoke('code', dom.emptyPara);
-    };
-
-    /**
-     * set height for editable
-     */
-    this.setHeight = function (height) {
-      $editable.outerHeight(height);
     };
   };
 
@@ -59024,7 +59069,8 @@ angular.module('summernote', [])
       };
 
       $editor.toggleClass('fullscreen');
-      if (this.isFullscreen()) {
+      var isFullscreen = $editor.hasClass('fullscreen');
+      if (isFullscreen) {
         $editable.data('orgHeight', $editable.css('height'));
 
         $window.on('resize', function () {
@@ -59042,11 +59088,7 @@ angular.module('summernote', [])
         $scrollbar.css('overflow', 'visible');
       }
 
-      context.invoke('toolbar.updateFullscreen', this.isFullscreen());
-    };
-
-    this.isFullscreen = function () {
-      return $editor.hasClass('fullscreen');
+      context.invoke('toolbar.updateFullscreen', isFullscreen);
     };
   };
 
@@ -59299,20 +59341,6 @@ angular.module('summernote', [])
       this.addToolbarButtons();
       this.addImagePopoverButtons();
       this.addLinkPopoverButtons();
-      this.fontInstalledMap = {};
-    };
-
-    this.destroy = function () {
-      delete this.fontInstalledMap;
-    };
-
-    this.isFontInstalled = function (name) {
-      if (!self.fontInstalledMap.hasOwnProperty(name)) {
-        self.fontInstalledMap[name] = agent.isFontInstalled(name) ||
-          list.contains(options.fontNamesIgnoreCheck, name);
-      }
-
-      return self.fontInstalledMap[name];
     };
 
     this.addToolbarButtons = function () {
@@ -59422,7 +59450,10 @@ angular.module('summernote', [])
           ui.dropdownCheck({
             className: 'dropdown-fontname',
             checkClassName: options.icons.menuCheck,
-            items: options.fontNames.filter(self.isFontInstalled),
+            items: options.fontNames.filter(function (name) {
+              return agent.isFontInstalled(name) ||
+                list.contains(options.fontNamesIgnoreCheck, name);
+            }),
             template: function (item) {
               return '<span style="font-family:' + item + '">' + item + '</span>';
             },
@@ -59458,17 +59489,16 @@ angular.module('summernote', [])
               className: 'note-current-color-button',
               contents: ui.icon(options.icons.font + ' note-recent-color'),
               tooltip: lang.color.recent,
-              click: function (e) {
-                var $button = $(e.currentTarget);
-                context.invoke('editor.color', {
-                  backColor: $button.attr('data-backColor'),
-                  foreColor: $button.attr('data-foreColor')
-                });
-              },
+              click: context.createInvokeHandler('editor.color'),
               callback: function ($button) {
                 var $recentColor = $button.find('.note-recent-color');
-                $recentColor.css('background-color', '#FFFF00');
-                $button.attr('data-backColor', '#FFFF00');
+                $recentColor.css({
+                  'background-color': 'yellow'
+                });
+
+                $button.data('value', {
+                  backColor: 'yellow'
+                });
               }
             }),
             ui.button({
@@ -59521,8 +59551,11 @@ angular.module('summernote', [])
                   var $color = $button.closest('.note-color').find('.note-recent-color');
                   var $currentButton = $button.closest('.note-color').find('.note-current-color-button');
 
+                  var colorInfo = $currentButton.data('value');
+                  colorInfo[eventName] = value;
                   $color.css(key, value);
-                  $currentButton.attr('data-' + eventName, value);
+                  $currentButton.data('value', colorInfo);
+
                   context.invoke('editor.' + eventName, value);
                 }
               }
@@ -59531,7 +59564,7 @@ angular.module('summernote', [])
         }).render();
       });
 
-      context.memo('button.ul',  function () {
+      context.memo('button.ol',  function () {
         return ui.button({
           contents: ui.icon(options.icons.unorderedlist),
           tooltip: lang.lists.unordered + representShortcut('insertUnorderedList'),
@@ -59539,7 +59572,7 @@ angular.module('summernote', [])
         }).render();
       });
 
-      context.memo('button.ol', function () {
+      context.memo('button.ul', function () {
         return ui.button({
           contents: ui.icon(options.icons.orderedlist),
           tooltip: lang.lists.ordered + representShortcut('insertOrderedList'),
@@ -59594,7 +59627,7 @@ angular.module('summernote', [])
         return ui.buttonGroup([
           ui.button({
             className: 'dropdown-toggle',
-            contents: ui.icon(options.icons.alignLeft) + ' ' + ui.icon(options.icons.caret, 'span'),
+            contents: ui.icon(options.icons.align) + ' ' + ui.icon(options.icons.caret, 'span'),
             tooltip: lang.paragraph.paragraph,
             data: {
               toggle: 'dropdown'
@@ -59837,7 +59870,7 @@ angular.module('summernote', [])
         for (var idx = 0, len = buttons.length; idx < len; idx++) {
           var button = context.memo('button.' + buttons[idx]);
           if (button) {
-            $group.append(typeof button === 'function' ? button(context) : button);
+            $group.append(typeof button === 'function' ? button() : button);
           }
         }
         $group.appendTo($container);
@@ -59873,7 +59906,10 @@ angular.module('summernote', [])
             .replace(/\s+$/, '')
             .replace(/^\s+/, '');
         });
-        var fontName = list.find(fontNames, self.isFontInstalled);
+        var fontName = list.find(fontNames, function (name) {
+          return agent.isFontInstalled(name) ||
+            list.contains(options.fontNamesIgnoreCheck, name);
+        });
 
         $toolbar.find('.dropdown-fontname li a').each(function () {
           // always compare string to avoid creating another func.
@@ -60496,6 +60532,7 @@ angular.module('summernote', [])
       return $video[0];
     };
 
+
     this.show = function () {
       var text = context.invoke('editor.getSelectedText');
       context.invoke('editor.saveRange');
@@ -60583,7 +60620,7 @@ angular.module('summernote', [])
 
       var body = [
         '<p class="text-center">',
-        '<a href="//summernote.org/" target="_blank">Summernote 0.8.1</a> · ',
+        '<a href="//summernote.org/" target="_blank">Summernote 0.7.3</a> · ',
         '<a href="//github.com/summernote/summernote" target="_blank">Project</a> · ',
         '<a href="//github.com/summernote/summernote/issues" target="_blank">Issues</a>',
         '</p>'
@@ -60928,7 +60965,7 @@ angular.module('summernote', [])
 
 
   $.summernote = $.extend($.summernote, {
-    version: '0.8.1',
+    version: '0.7.3',
     ui: ui,
 
     plugins: {},
@@ -61123,44 +61160,44 @@ angular.module('summernote', [])
         }
       },
       icons: {
-        'align': 'note-icon-align',
-        'alignCenter': 'note-icon-align-center',
-        'alignJustify': 'note-icon-align-justify',
-        'alignLeft': 'note-icon-align-left',
-        'alignRight': 'note-icon-align-right',
-        'indent': 'note-icon-align-indent',
-        'outdent': 'note-icon-align-outdent',
-        'arrowsAlt': 'note-icon-arrows-alt',
-        'bold': 'note-icon-bold',
-        'caret': 'note-icon-caret',
-        'circle': 'note-icon-circle',
-        'close': 'note-icon-close',
-        'code': 'note-icon-code',
-        'eraser': 'note-icon-eraser',
-        'font': 'note-icon-font',
-        'frame': 'note-icon-frame',
-        'italic': 'note-icon-italic',
-        'link': 'note-icon-link',
-        'unlink': 'note-icon-chain-broken',
-        'magic': 'note-icon-magic',
-        'menuCheck': 'note-icon-check',
-        'minus': 'note-icon-minus',
-        'orderedlist': 'note-icon-orderedlist',
-        'pencil': 'note-icon-pencil',
-        'picture': 'note-icon-picture',
-        'question': 'note-icon-question',
-        'redo': 'note-icon-redo',
-        'square': 'note-icon-square',
-        'strikethrough': 'note-icon-strikethrough',
-        'subscript': 'note-icon-subscript',
-        'superscript': 'note-icon-superscript',
-        'table': 'note-icon-table',
-        'textHeight': 'note-icon-text-height',
-        'trash': 'note-icon-trash',
-        'underline': 'note-icon-underline',
-        'undo': 'note-icon-undo',
-        'unorderedlist': 'note-icon-unorderedlist',
-        'video': 'note-icon-video'
+        'align': 'fa fa-align-left',
+        'alignCenter': 'fa fa-align-center',
+        'alignJustify': 'fa fa-align-justify',
+        'alignLeft': 'fa fa-align-left',
+        'alignRight': 'fa fa-align-right',
+        'indent': 'fa fa-indent',
+        'outdent': 'fa fa-outdent',
+        'arrowsAlt': 'fa fa-arrows-alt',
+        'bold': 'fa fa-bold',
+        'caret': 'caret',
+        'circle': 'fa fa-circle',
+        'close': 'fa fa-close',
+        'code': 'fa fa-code',
+        'eraser': 'fa fa-eraser',
+        'font': 'fa fa-font',
+        'frame': 'fa fa-frame',
+        'italic': 'fa fa-italic',
+        'link': 'fa fa-link',
+        'unlink': 'fa fa-chain-broken',
+        'magic': 'fa fa-magic',
+        'menuCheck': 'fa fa-check',
+        'minus': 'fa fa-minus',
+        'orderedlist': 'fa fa-list-ol',
+        'pencil': 'fa fa-pencil',
+        'picture': 'fa fa-picture-o',
+        'question': 'fa fa-question',
+        'redo': 'fa fa-repeat',
+        'square': 'fa fa-square',
+        'strikethrough': 'fa fa-strikethrough',
+        'subscript': 'fa fa-subscript',
+        'superscript': 'fa fa-superscript',
+        'table': 'fa fa-table',
+        'textHeight': 'fa fa-text-height',
+        'trash': 'fa fa-trash',
+        'underline': 'fa fa-underline',
+        'undo': 'fa fa-undo',
+        'unorderedlist': 'fa fa-list-ul',
+        'video': 'fa fa-youtube-play'
       }
     }
   });

@@ -112,7 +112,7 @@ BMApp.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$c
             app: '',
             page: '',
             child: null,
-            id: {value: null}
+            params: {value: null}
          },
          resolve: {
             deps: ['scriptLoader', function (scriptLoader) {

@@ -1,4 +1,5 @@
-BMApp.register.controller('GeneratedController', [function () {
+BMApp.register.controller('GeneratedController', ['$state', function ($state) {
+      console.log($state.params);
       var self = this;
       self.Pages = [];
       self.Titles = [0, 102, 30];

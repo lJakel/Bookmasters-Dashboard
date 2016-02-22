@@ -1,4 +1,4 @@
-<div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showEndorsementDialog" class="modal fade"  data-backdrop="static"> 
+<div style="z-index: 90; height:100%;" modal-show modal-visible="NTF.Marketing.showEndorsementDialog" class="modal fade"  data-backdrop="static"> 
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="EndorsementModalForm" ng-repeat="em in [NTF.Marketing.EndorsementModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showEndorsementDialog" data-draggable>

@@ -17,11 +17,11 @@ appDirectives.directive('body', function () {
       restrict: 'E',
       link: function (scope, $element) {
          // prevent unwanted navigation
-         $element.on('click', 'a[href=#]', function (e) {
+         $element.on('click', "a[href='#']", function (e) {
             e.preventDefault();
-         })
+         });
       }
-   }
+   };
 });
 /* ========================================================================
  * Sing App actions. Shortcuts available via data-sn-action attribute
@@ -35,7 +35,7 @@ appDirectives.directive('bmAction', ['$rootScope', function ($rootScope) {
          'toggle-left-sidebar': function (e, scope) {
             scope.app.state['sidebar-left'] = !scope.app.state['sidebar-left'];
          }
-      }
+      };
 
       return {
          restrict: 'A',
@@ -54,7 +54,7 @@ appDirectives.directive('bmAction', ['$rootScope', function ($rootScope) {
                $el.tooltip();
             }
          }
-      }
+      };
    }]);
 appDirectives.directive('bmSidebarScroll', ['scriptLoader', function (scriptLoader) {
       return function (scope, element, attrs) {
@@ -99,14 +99,14 @@ appDirectives.directive('bmNavigation', ['$timeout', '$rootScope', '$state', fun
             //         $("#innersidebar").getNiceScroll().show();
             $('#main-content').toggleClass('merge-left');
             if ($('#container').hasClass('open-right-panel')) {
-               $('#container').removeClass('open-right-panel')
+               $('#container').removeClass('open-right-panel');
             }
             if ($('.sidebar-right').hasClass('open-right-bar')) {
-               $('.sidebar-right').removeClass('open-right-bar')
+               $('.sidebar-right').removeClass('open-right-bar');
             }
 
             if ($('.header').hasClass('merge-header')) {
-               $('.header').removeClass('merge-header')
+               $('.header').removeClass('merge-header');
             }
 
          },
@@ -128,64 +128,64 @@ appDirectives.directive('bmNavigation', ['$timeout', '$rootScope', '$state', fun
             $newActiveLink.closest('li').addClass('active').parents('li').addClass('active').addClass('open');
             // uncollapse parent
             $newActiveLink.closest('.collapse').addClass('in').siblings('a[data-toggle=collapse]').removeClass('collapsed');
-      },
-      bindHandler: function () {
-         var self = this;
-         $timeout(function () {
-            self.$el.find('.collapse').on('show.bs.collapse', function (e) {
-               // execute only if we're actually the .collapse element initiated event
-               // return for bubbled events
-               if (e.target != e.currentTarget) {
-                  return;
-               }
-               var $triggerLink = $(this).prev('[data-toggle=collapse]');
-               $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
-            }).on('show.bs.collapse', function (e) {
-               // execute only if we're actually the .collapse element initiated event
-               // return for bubbled events
-               if (e.target != e.currentTarget) {
-                  return;
-               }
-               $(this).closest('li').addClass('open');
-            }).on('hide.bs.collapse', function (e) {
-               // execute only if we're actually the .collapse element initiated event
-               // return for bubbled events
-               if (e.target != e.currentTarget) {
-                  return;
-               }
-               $(this).closest('li').removeClass('open');
+         },
+         bindHandler: function () {
+            var self = this;
+            $timeout(function () {
+               self.$el.find('.collapse').on('show.bs.collapse', function (e) {
+                  // execute only if we're actually the .collapse element initiated event
+                  // return for bubbled events
+                  if (e.target != e.currentTarget) {
+                     return;
+                  }
+                  var $triggerLink = $(this).prev('[data-toggle=collapse]');
+                  $($triggerLink.data('parent')).find('.collapse.in').not($(this)).collapse('hide');
+               }).on('show.bs.collapse', function (e) {
+                  // execute only if we're actually the .collapse element initiated event
+                  // return for bubbled events
+                  if (e.target != e.currentTarget) {
+                     return;
+                  }
+                  $(this).closest('li').addClass('open');
+               }).on('hide.bs.collapse', function (e) {
+                  // execute only if we're actually the .collapse element initiated event
+                  // return for bubbled events
+                  if (e.target != e.currentTarget) {
+                     return;
+                  }
+                  $(this).closest('li').removeClass('open');
+               });
             });
-         });
-      }
-   };
-   return {
-      link: function (scope, $el) {
-         var BmNav = new BmNavigationDirective($el, scope);
+         }
+      };
+      return {
+         link: function (scope, $el) {
+            var BmNav = new BmNavigationDirective($el, scope);
 
-         $timeout(function () {
-            // set active navigation item
+            $timeout(function () {
+               // set active navigation item
 
-            BmNav.changeNavigationItem({}, $state.$current, $state.params);
-            $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
-            $rootScope.$on('$stateChangeSuccess', $.proxy(BmNav.bindHandler, BmNav));
-            BmNav.bindHandler();
-         });
-         scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
-            if (newVal == oldVal) {
-               return;
-            }
-            BmNav.toggleLeftSidebar();
+               BmNav.changeNavigationItem({}, $state.$current, $state.params);
+               $rootScope.$on('$stateChangeStart', $.proxy(BmNav.changeNavigationItem, BmNav));
+               $rootScope.$on('$stateChangeSuccess', $.proxy(BmNav.bindHandler, BmNav));
+               BmNav.bindHandler();
+            });
+            scope.$watch('app.state["sidebar-left"]', function (newVal, oldVal) {
+               if (newVal == oldVal) {
+                  return;
+               }
+               BmNav.toggleLeftSidebar();
             });
             $('.header,#main-content,.sidebar-left').click(function () {
                if ($('#container').hasClass('open-right-panel')) {
-                  $('#container').removeClass('open-right-panel')
+                  $('#container').removeClass('open-right-panel');
                }
                if ($('.sidebar-right').hasClass('open-right-bar')) {
-                  $('.sidebar-right').removeClass('open-right-bar')
+                  $('.sidebar-right').removeClass('open-right-bar');
                }
 
                if ($('.header').hasClass('merge-header')) {
-                  $('.header').removeClass('merge-header')
+                  $('.header').removeClass('merge-header');
                }
 
 
@@ -219,7 +219,7 @@ appDirectives.directive("bsRadio", [function () {
                  '{{label}}' +
                  '</label>' +
                  '</div>',
-         replace: true,
+         replace: true
       };
    }]);
 
@@ -229,7 +229,7 @@ appDirectives.directive("modalShow", [function () {
          restrict: "A",
          scope: {
             modalVisible: "=",
-            draggable: "=",
+            draggable: "="
          },
          link: function (scope, element, attrs) {
 
@@ -240,7 +240,7 @@ appDirectives.directive("modalShow", [function () {
                } else {
                   element.modal("hide");
                }
-            }
+            };
 
             //Check to see if the modal-visible attribute exists
             if (!attrs.modalVisible) {
@@ -270,7 +270,6 @@ appDirectives.directive('draggable', ['$document', function ($document) {
          link: function (scope, element, attr) {
 
             var startX = 0, startY = 0, x = 0, y = 0;
-
 
             scope.$watch("modalOpen", function (newValue, oldValue) {
                console.log(newValue, oldValue);

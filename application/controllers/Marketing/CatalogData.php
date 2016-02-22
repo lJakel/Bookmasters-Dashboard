@@ -25,7 +25,12 @@ class CatalogData extends Secure_Controller {
    }
 
    public function Index() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
+      $Catalogs = $this->cd_model->LoadCatalogs();
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__, ['Catalogs' => $Catalogs]);
+   }
+   public function View() {
+      $Catalogs = $this->cd_model->LoadCatalogs();
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Index", ['Catalogs' => $Catalogs]);
    }
 
    public function Test() {
@@ -41,7 +46,7 @@ class CatalogData extends Secure_Controller {
       $Title->Bisac[] = new CatalogDataBisac(['Prefix' => 'Mr']);
       $Title->Illustrations[] = new CatalogDataIllustration(['Prefix' => 'Mr']);
       $Title->AgeRange[] = new CatalogDataAgeRange(['Prefix' => 'Mr']);
-      
+
       echo json_encode($Title);
    }
 

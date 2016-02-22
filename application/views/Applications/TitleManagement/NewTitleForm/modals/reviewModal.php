@@ -1,4 +1,4 @@
-<div style="z-index: 999999; height:100%;" modal-show modal-visible="NTF.Marketing.showReviewDialog" class="modal fade">
+<div style="z-index: 90; height:100%;" modal-show modal-visible="NTF.Marketing.showReviewDialog" class="modal fade">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ReviewModalForm" ng-repeat="rm in [NTF.Marketing.ReviewModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showReviewDialog" data-draggable>

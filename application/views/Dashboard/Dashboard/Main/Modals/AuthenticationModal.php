@@ -1,4 +1,4 @@
-<!--<div style="z-index: 999999; height:100%;" id="feedbackModal" modal-show modal-visible="BMA.Feedback.FeedbackModalVisible" class="modal fade">
+<!--<div style="z-index: 90; height:100%;" id="feedbackModal" modal-show modal-visible="BMA.Feedback.FeedbackModalVisible" class="modal fade">
 
    <div class="modal-dialog modal-lg">
       <div class="modal-content">

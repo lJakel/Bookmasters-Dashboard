@@ -12,7 +12,7 @@ var BMApp = angular.module('BMApp', [
    'nya.bootstrap.select',
    'ui.bootstrap',
    'angular-toasty',
-   'summernote',
+//   'summernote',
    'ngTasty',
    'textAngular',
    // page-specific and demo. may be removed
@@ -1053,8 +1053,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
             return linkFn;
          }
       };
-   }
-]).provider('showErrorsConfig', function () {
+}]).provider('showErrorsConfig', function () {
    var _showSuccess, _trigger;
    _showSuccess = false;
    _trigger = 'blur';

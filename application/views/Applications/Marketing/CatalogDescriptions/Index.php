@@ -44,7 +44,7 @@
    <div class="row">
       <div class="col-md-9">
          <div class="row">
-            <div class="col-md-12" ng-repeat="t in cd.Titles| filter: SearchFilter | orderBy: cd.SortBy" ng-hide="cd.ShowComplete == false && t.Complete == true">
+            <div class="col-md-12" ng-repeat="t in cd.Titles | filter: SearchFilter | orderBy: cd.SortBy" ng-hide="cd.ShowComplete == false && t.Complete == true">
                <div class="panel panel-default">
 
                   <div class="panel-body">

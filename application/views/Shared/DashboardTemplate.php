@@ -20,11 +20,13 @@
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/CDN/resources/brand/favicon/apple-touch-icon-144x144-precomposed.png">
       <!--Core CSS -->
       <link href="/CDN/css/bootstrap-reset/bootstrap-reset.min.css" rel="stylesheet">
+      <link href="/CDN/css/dashboard-sass2/assets/stylesheets/dashboard.min.css" rel="stylesheet">
+
+      <!-- Custom styles for this Dashboard -->
       <link rel="stylesheet" href="/CDN/bower_components/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" href="/CDN/bower_components/angular-toasty/dist/angular-toasty.min.css">
-      <!-- Custom styles for this Dashboard -->
-      <link href="/CDN/css/dashboard-sass2/assets/stylesheets/dashboard.min.css" rel="stylesheet">
       <link rel="stylesheet" href="/CDN/bower_components/summernote/dist/summernote.css">
+      <link rel="stylesheet" href="/CDN/bower_components/textAngular/dist/textAngular.css">
    </head>
 
    <body data-ng-controller="BMAppController" ng-class="{'isAuth': $state.is('login') || $state.is('forgot') || $state.is('register') }">
@@ -53,6 +55,10 @@
          <script src="/CDN/bower_components/angular-toasty/dist/angular-toasty.js"></script>
          <script src="/CDN/bower_components/jquery.nicescroll/jquery.nicescroll.js"></script>
          <script src="/CDN/bower_components/ng-tasty/ng-tasty-tpls.js"></script>
+         <script src="/CDN/bower_components/textAngular/dist/textAngular-rangy.min.js"></script>
+         <script src="/CDN/bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+         <script src="/CDN/bower_components/textAngular/dist/textAngular.min.js"></script>
+
       <?php } else { ?>
          <script src="assets/vendor/vendor.min.js?cache=<?= rand(1000, 9000); ?>"></script>
       <?php } ?>

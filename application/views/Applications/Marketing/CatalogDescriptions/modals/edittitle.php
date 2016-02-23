@@ -1,4 +1,4 @@
-<div style="z-index: 1050; height:100%;" modal-show modal-visible="cd.showTitleDialog" class="modal fade">
+<div style="z-index: 1050; height:100%;" modal-show modal-visible="cd.showTitleDialog" class="modal fade" data-backdrop="static"> 
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="EditTitleModal" ng-repeat="m in [cd.TitleModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="cd.showTitleDialog" data-draggable>
@@ -68,13 +68,13 @@
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mMainDescription" class="control-label">MainDescription</label>
-                  <summernote ng-model="m.MainDescription" class="form-control" name="mMainDescription" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
+                  <div text-angular ng-model="m.MainDescription" name='mMainDescription'  ta-toolbar="[['bold','italics','underline','clear'],['ul','ol'],['html'],['wordcount','charcount']]" name="mMainDescription"></div>
                </div>
             </div>
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
-                  <label for="mAuthorBios" class="control-label">AuthorBios</label>
-                  <summernote ng-model="m.AuthorBios" class="form-control" name="mAuthorBios" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
+                  <label for="mAuthorBios"  class="control-label">AuthorBios</label>
+                  <div text-angular name='mAuthorBios' ng-model="m.AuthorBios" ta-toolbar="[['bold','italics','underline','clear'],['ul','ol'],['html'],['wordcount','charcount']]" name="mMainDescription"></div>
                </div>
             </div>
          </div>

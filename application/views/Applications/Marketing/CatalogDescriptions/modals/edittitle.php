@@ -1,4 +1,4 @@
-<div style="z-index: 90; height:100%;" modal-show modal-visible="cd.showTitleDialog" class="modal fade">
+<div style="z-index: 1050; height:100%;" modal-show modal-visible="cd.showTitleDialog" class="modal fade">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="EditTitleModal" ng-repeat="m in [cd.TitleModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="cd.showTitleDialog" data-draggable>

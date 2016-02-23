@@ -1,4 +1,4 @@
-<div style="z-index: 90; height:100%;" modal-show modal-visible="NTF.Marketing.showAppearanceAndEventDialog" class="modal fade"  data-backdrop="static"> 
+<div style="z-index: 1050; height:100%;" modal-show modal-visible="NTF.Marketing.showAppearanceAndEventDialog" class="modal fade"  data-backdrop="static"> 
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="AppearanceAndEventModalForm" ng-repeat="am in [NTF.Marketing.AppearanceAndEventModal]">
          <div class="modal-header" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" modal-open="NTF.Marketing.showAppearanceAndEventDialog" data-draggable>

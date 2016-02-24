@@ -6,6 +6,7 @@ class CatalogDescriptions_Model extends ESM {
       parent::__construct();
    }
 
+
    public function GetAll() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
       $query = $cdDB->query('SELECT * FROM title WHERE catalog = ? ORDER BY `Title` ASC', [$this->input->post('Set')]);
@@ -18,8 +19,6 @@ class CatalogDescriptions_Model extends ESM {
 
    public function Insert() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
-
-
 
       $data = [
           'ID' => NULL,

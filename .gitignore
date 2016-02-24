@@ -4,7 +4,8 @@
 */cache/*
 */cache/!index.html
 */cache/!.htaccess
-*/Storage/*
+Storage/
+application/cache/
 
 # =========================
 # Operating System Files

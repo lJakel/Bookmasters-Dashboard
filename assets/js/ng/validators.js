@@ -93,8 +93,7 @@ appValidators.directive('showErrors', ['$timeout', 'showErrorsConfig', '$interpo
             return linkFn;
          }
       };
-   }
-]).provider('showErrorsConfig', function () {
+}]).provider('showErrorsConfig', function () {
    var _showSuccess, _trigger;
    _showSuccess = false;
    _trigger = 'blur';

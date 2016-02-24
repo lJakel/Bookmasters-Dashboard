@@ -1,5 +1,5 @@
 <!-- Modal Start -->
-<div style="z-index: 90; height:100%;" modal-show modal-visible="NTF.Contributors.showDialog" class="modal fade" data-backdrop="static">
+<div style="z-index: 1050; height:100%;" modal-show modal-visible="NTF.Contributors.showDialog" class="modal fade" data-backdrop="static">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" ng-form="ContributorsModalForm" ng-repeat="cm in [NTF.Contributors.ContributorModal]">
          <div class="modal-header" modal-open="NTF.Contributors.showDialog" style="cursor: -moz-grab; cursor: -webkit-grab; cursor: grab;" data-draggable>
@@ -46,7 +46,7 @@
                   </div>
                   <div class="col-md-3 form-group required">
                      <label for="" class="control-label">Role</label>
-                     <select ng-required="true" class="form-control" ng-model="cm.Role" ng-options="role.Name for role in cm.FixedAuthorRoles track by role.Id" ></select>
+                     <select ng-required="true" class="form-control" ng-model="cm.Role" ng-options="role.Name for role in cm.FixedAuthorRoles track by role.Id"></select>
                   </div>
                   <div class="col-md-3 form-group required">
                      <label class="control-label" for="">Primary Role</label>

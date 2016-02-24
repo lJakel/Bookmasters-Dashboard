@@ -25,12 +25,41 @@ class CatalogData extends Secure_Controller {
    }
 
    public function Index() {
-      $Catalogs = $this->cd_model->LoadCatalogs();
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__, ['Catalogs' => $Catalogs]);
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
+
+   public function DeleteCatalog() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->DeleteCatalog()));
+   }
+
+   public function CreateCatalog() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->CreateCatalog()));
+   }
+
+   public function GetAllCatalog() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->GetAllCatalog()));
+   }
+
    public function View() {
       $Catalogs = $this->cd_model->LoadCatalogs();
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Index", ['Catalogs' => $Catalogs]);
+   }
+
+   public function Test2() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->ExportToCatalog()));
+   }
+   public function IngestData() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->IngestData()));
    }
 
    public function Test() {

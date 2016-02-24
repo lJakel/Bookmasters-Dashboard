@@ -1,4 +1,9 @@
 <div id="NTF" ng-controller="NewTitleForm as NTF" ng-form="NTFNGForm">
+   <div class="black" style="position: absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,0.3);margin-top:80px; z-index: 1060; height:calc(100% - 80px);" ng-if='NTF.Loading'>
+
+      <i class="fa fa-refresh fa-spin fa-3x fa-fw" style="position: absolute;top:45%;left:0;right:0;display:block;margin:auto;width: 54px;height: 42px;margin-bottom:10px;color:white;"></i>      
+      <h1 style="position: absolute;top:45%;left:0;right:0;display:block;margin:auto;width:170px;margin-top:50px;color:white;"><strong>Loading...</strong></h1>
+   </div>
    <div class="row">
       <div class="col-md-12">
          <div class="panel panel-default">

@@ -188,6 +188,29 @@ $db['JakeComputer'] = array(
     'save_queries' => TRUE
 );
 
+$db['JakeComputerCatalogData'] = array(
+    'dsn' => '',
+    'hostname' => '10.10.11.48',
+    'username' => 'JakeTables',
+    'password' => 'mvJsnQQHpNj2rDhv',
+    'database' => 'catalog',
+    'dbdriver' => 'mysqli',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => TRUE,
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'autoinit' => FALSE,
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
 
 if (phpversion() == "7.0.2") {
    $db['default'] = array(

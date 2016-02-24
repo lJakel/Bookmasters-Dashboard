@@ -25,7 +25,6 @@ class CatalogData extends Secure_Controller {
    }
 
    public function Index() {
-
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
 
@@ -34,11 +33,13 @@ class CatalogData extends Secure_Controller {
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->DeleteCatalog()));
    }
+
    public function CreateCatalog() {
       $this->output
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->CreateCatalog()));
    }
+
    public function GetAllCatalog() {
       $this->output
               ->set_content_type('application/json')
@@ -51,7 +52,14 @@ class CatalogData extends Secure_Controller {
    }
 
    public function Test2() {
-      echo json_encode($this->cd_model->DeleteCatalog());
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->ExportToCatalog()));
+   }
+   public function IngestData() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->IngestData()));
    }
 
    public function Test() {

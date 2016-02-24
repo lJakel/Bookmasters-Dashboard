@@ -83,7 +83,7 @@ class CatalogData_Model extends ESM {
          }
 
 
-         if ($sheet->getCellByColumnAndRow(1, $row)->getValue() == 'Bottom') {
+         if (trim($sheet->getCellByColumnAndRow(1, $row)->getValue()) == 'Bottom') {
             continue;
          }
          $rowData[] = $sheet->getCellByColumnAndRow(10, $row)->getValue();
@@ -133,19 +133,63 @@ class CatalogData_Model extends ESM {
    }
 
    public function ExportToCatalog() {
+
+      require APPPATH . '/third_party/Note.php';
+      require APPPATH . '/third_party/Note/HTMLToRTF.php';
+      require APPPATH . '/third_party/Note/RTFToHTML.php';
+      require APPPATH . '/third_party/Note/BraceLexer.php';
+      require APPPATH . '/third_party/Note/SectionLexer.php';
+      $Template = [
+          'One' => [
+              'Main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 HelveticaNeueLT Std Med Cn;}{\f1\fnil\fcharset0 Minion Pro;}{\f2\fnil\fcharset0 Calibri;}}' .
+              '{\colortbl ;\red38\green54\blue69;\red0\green0\blue0;\red80\green80\blue80;}' .
+              '\pard\pagebb\hyphpar0\sl480\slmult0\cf1\f0\fs48 [Title]\par' .
+              '\pard\hyphpar0\sb90\sl320\slmult0\cf3\fs32 [Subtitle]\par' .
+              '\pard\hyphpar0\sb180\sa180\sl288\slmult1\b\i\f1\fs24 [Author]\cf3\lang9\b0\i0\f2\fs22\par}',
+              'Desc' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 Minion Pro;}} {\colortbl;\red0\green0\blue0;}
+           {\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\hyphpar0\sa270\sl320\slmult0\qj\cf1\f0\fs20 [MainDes]\par[AuthorDes]\par}',
+              'Spec' => [
+                  'main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 HelveticaNeueLT Std Cn;}} {\colortbl;\red0\green0\blue0;}',
+                  'node' => '\pard\hyphpar0\sl340\slmult0\cf1\f0\fs24[SpecNode]\par}'
+              ]
+          ,
+          ],
+      ];
       $newQuery = $this->jcDB->get('titles');
       if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
 
 
          $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\" ?><Root></Root>");
+
          foreach ($newQuery_result as $key => $value) {
+            $isbn = trim($value->ISBN);
+
+
+
+            $note = new JoshRibakoff_Note();
+            $rtf = str_replace(['[Title]', '[Subtitle]', '[Author]'], [$value->Title, $value->Subtitle, trim("{$value->Author1Name}, {$value->Author2Name}, {$value->Author3Name}, {$value->Author4Name} ")], $Template['One']['Main']);
+            $note->setRTF($rtf);
+
+            copy("Storage/Catalogs/Christian/Data/Stock/stock.eps", "Storage/Catalogs/Christian/Data/Barcode/{$isbn}.eps");
+            copy("Storage/Catalogs/Christian/Data/Stock/stock.jpg", "Storage/Catalogs/Christian/Data/Cover/{$isbn}.jpg");
+
+
             $Product = $xml->addChild("Product");
-            $Product->addChild("MainBody")->addAttribute('href', "file:///../Data/MainBody/{$value->ISBN}.rtf");
-            $Product->addChild("Descriptions")->addAttribute('href', "file:///../Data/Descriptions/{$value->ISBN}.rtf");
-            $Product->addChild("Cover")->addAttribute('href', "file:///../Data/Cover/{$value->ISBN}.jpg");
-            $Product->addChild("Specs")->addAttribute('href', "file:///../Data/Specs/{$value->ISBN}.rtf");
-            $Product->addChild("Barcode")->addAttribute('href', "file:///../Data/Barcode/{$value->ISBN}.eps");
+            $file = $note->formatRTF();
+            if (!file_exists("Storage/Catalogs/Christian/Data/MainBody/{$isbn}.rtf")) {
+               file_put_contents("Storage/Catalogs/Christian/Data/MainBody/{$isbn}.rtf", "{" . $file . "}");
+               $Product->addChild("MainBody")->addAttribute('href', "file:///../Data/MainBody/{$isbn}.rtf");
+            } else {
+               file_put_contents("Storage/Catalogs/Christian/Data/MainBody/Dupe/{$isbn}.rtf", "{" . $file . "}");
+               $Product->addChild("MainBody")->addAttribute('href', "file:///../Data/MainBody/Dupe/{$isbn}.rtf");
+            }
+            $Product->addChild("Descriptions")->addAttribute('href', "file:///../Data/Descriptions/{$isbn}.rtf");
+            $Product->addChild("Cover")->addAttribute('href', "file:///../Data/Cover/{$isbn}.jpg");
+            $Product->addChild("Specs")->addAttribute('href', "file:///../Data/Specs/{$isbn}.rtf");
+            $Product->addChild("Barcode")->addAttribute('href', "file:///../Data/Barcode/{$isbn}.eps");
          }
+
+
          file_put_contents("Storage/Catalogs/Catalog.xml", $xml->asXML());
       }
    }

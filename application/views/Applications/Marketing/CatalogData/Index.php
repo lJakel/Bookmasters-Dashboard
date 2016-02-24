@@ -7,7 +7,9 @@
                   <h2>Catalogs</h2>
                   <div class="list-group">
                      <a href="#" class="list-group-item" ng-repeat="catalog in gc.Catalogs">
-                        {{catalog.Year}} {{catalog.Season}} {{catalog.Division}} <button class="btn pull-right btn-danger btn-xs" ng-click="gc.DeleteCatalog(catalog.id)"><i class="fa fa-minus fa-fw"></i></button>
+                        <button class="btn btn-danger btn-xs" ng-click="gc.DeleteCatalog(catalog.id)"><i class="fa fa-minus fa-fw"></i></button> 
+                        {{catalog.Year}} {{catalog.Season}} {{catalog.Division}}
+                        <span class="badge pull-right">0</span>
                      </a>
                   </div>
                   <div class="form-group">
@@ -59,7 +61,7 @@
                               <td>1</td>
                               <td>2</td>
                               <td>3</td>
-                              <td style="w">4</td>
+                              <td style="word-wrap">4</td>
                               <td>5</td>
                            </tr>
                         </tbody>

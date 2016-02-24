@@ -46,7 +46,7 @@
                   </div>
                   <div class="col-md-3 form-group required">
                      <label for="" class="control-label">Role</label>
-                     <select ng-required="true" class="form-control" ng-model="cm.Role" ng-options="role.Name for role in cm.FixedAuthorRoles track by role.Id" ></select>
+                     <select ng-required="true" class="form-control" ng-model="cm.Role" ng-options="role.Name for role in cm.FixedAuthorRoles track by role.Id"></select>
                   </div>
                   <div class="col-md-3 form-group required">
                      <label class="control-label" for="">Primary Role</label>

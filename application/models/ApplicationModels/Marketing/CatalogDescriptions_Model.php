@@ -19,8 +19,6 @@ class CatalogDescriptions_Model extends ESM {
    public function Insert() {
       $cdDB = $this->load->database('JakeComputer', TRUE);
 
-
-
       $data = [
           'ID' => NULL,
           'Title' => $this->input->post('Title'),

@@ -2,9 +2,50 @@ BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '
       console.log($state.params);
       var self = this;
 
-      
+      self.Title = function (data) {
+         var t = this;
+         data = data || '';
+         t.ID = data.ID || '';
+         t.Page = data.Page || '';
+         t.PageRank = data.PageRank || '';
+         t.PerPage = data.PerPage || '';
+         t.Title = data.Title || '';
+         t.Subtitle = data.Subtitle || '';
+         t.Publisher = data.Publisher || '';
+         t.Imprint = data.Imprint || '';
+         t.ISBN = data.ISBN || '';
+         t.Format = data.Format || '';
+         t.USPrice = data.USPrice || '';
+         t.CANPrice = data.CANPrice || '';
+         t.TrimW = data.TrimW || '';
+         t.TrimH = data.TrimH || '';
+         t.Pages = data.Pages || '';
+         t.BisacCode = data.BisacCode || '';
+         t.BisacDesc = data.BisacDesc || '';
+         t.PublicationDate = data.PublicationDate || '';
+         t.IllustrationsCount = data.IllustrationsCount || '';
+         t.IllustrationsType = data.IllustrationsType || '';
+         t.AgeFrom = data.AgeFrom || '';
+         t.AgeTo = data.AgeTo || '';
+         t.MainDesc = data.MainDesc || '';
+         t.Author1Name = data.Author1Name || '';
+         t.Author1Bio = data.Author1Bio || '';
+         t.Author2Name = data.Author2Name || '';
+         t.Author2Bio = data.Author2Bio || '';
+         t.Author3Name = data.Author3Name || '';
+         t.Author3Bio = data.Author3Bio || '';
+         t.Author4Name = data.Author4Name || '';
+         t.Author4Bio = data.Author4Bio || '';
+         t.Author5Name = data.Author5Name || '';
+         t.Author5Bio = data.Author5Bio || '';
+         t.Catalog = data.Catalog || '';
+         t.Updated = data.Updated || '';
+
+      }
+
+
       $timeout(function () {
-app.state["sidebar-left"] = !app.state["sidebar-left"];
+         app.state["sidebar-left"] = !app.state["sidebar-left"];
          self.Pages = [];
          self.Titles = [0, 102, 30];
          self.AddPage = function () {
@@ -17,13 +58,23 @@ app.state["sidebar-left"] = !app.state["sidebar-left"];
             app.state["sidebar-left"] = !app.state["sidebar-left"];
          }
 
+         self.UpdateTitle = function (title) {
+
+            $http.post('Marketing/CatalogData/UpdateTitle', self.Titles[title]).then(function (successResponse) {
+               self.Titles[title] = new self.Title(successResponse.data.data[0]);
+               toasty.success({title: 'Success!', msg: 'Title saved successfully.', theme: 'bootstrap', timeout: 5000});
+            }, function (errorResponse) {
+               $.each(errorResponse.data.errors, function (k, item) {
+                  toasty.error({title: 'Error!', msg: item.message, theme: 'bootstrap', timeout: 8000});
+               });
+            });
+         }
+
+
          $http.post('Marketing/CatalogData/GetAllTitles').then(function (successResponse) {
             self.Titles = $.map(successResponse.data.data, function (item, i) {
-               console.log(item, i);
                return new self.Title(item);
             });
-            console.log(self.Titles);
-//            self.Titles = successResponse.data.data;
          }, function (errorResponse) {
             $.each(errorResponse.data.errors, function (k, item) {
                toasty.error({title: 'Error!', msg: item.message, theme: 'bootstrap', timeout: 8000});
@@ -87,44 +138,6 @@ app.state["sidebar-left"] = !app.state["sidebar-left"];
 
 
 
-         self.Title = function (data) {
-            var t = this;
-            t.ID = data.ID || '';
-            t.Page = data.Page || '';
-            t.PageRank = data.PageRank || '';
-            t.PerPage = data.PerPage || '';
-            t.Title = data.Title || '';
-            t.Subtitle = data.Subtitle || '';
-            t.Publisher = data.Publisher || '';
-            t.Imprint = data.Imprint || '';
-            t.ISBN = data.ISBN || '';
-            t.Format = data.Format || '';
-            t.USPrice = data.USPrice || '';
-            t.CANPrice = data.CANPrice || '';
-            t.TrimW = data.TrimW || '';
-            t.TrimH = data.TrimH || '';
-            t.Pages = data.Pages || '';
-            t.BisacCode = data.BisacCode || '';
-            t.BisacDesc = data.BisacDesc || '';
-            t.PublicationDate = data.PublicationDate || '';
-            t.IllustrationsCount = data.IllustrationsCount || '';
-            t.IllustrationsType = data.IllustrationsType || '';
-            t.AgeFrom = data.AgeFrom || '';
-            t.AgeTo = data.AgeTo || '';
-            t.MainDesc = data.MainDesc || '';
-            t.Author1Name = data.Author1Name || '';
-            t.Author1Bio = data.Author1Bio || '';
-            t.Author2Name = data.Author2Name || '';
-            t.Author2Bio = data.Author2Bio || '';
-            t.Author3Name = data.Author3Name || '';
-            t.Author3Bio = data.Author3Bio || '';
-            t.Author4Name = data.Author4Name || '';
-            t.Author4Bio = data.Author4Bio || '';
-            t.Author5Name = data.Author5Name || '';
-            t.Author5Bio = data.Author5Bio || '';
-            t.Catalog = data.Catalog || '';
-            t.Updated = data.Updated || '';
 
-         };
       }, 1000);
    }]);

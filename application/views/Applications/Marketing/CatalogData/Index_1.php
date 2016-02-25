@@ -22,7 +22,7 @@
                <h1>Blank on purpose</h1>
                <h3>To see the catalog spread, collapse the sidebar</h3>
                <button class="btn btn-default" ng-click="gc.Collapse()">Collapse and See Spread</button>
-               
+
             </div>
             <div class="page" ng-repeat="t in gc.Titles" ng-class-even="'left-page'" ng-class-odd="'right-page'">
                <div class="row cat-page-header">
@@ -32,9 +32,13 @@
                      </div>
                   </div>
                   <div class="col-xs-8">
-                     <!--                     <div class="pageheader">
-                                             <h1><input type="text" ng-model="p.PageHeader" placeholder="Page Header" class="ghost"></h1>
-                                          </div>-->
+                     <div class="pageheader">
+                        <h1>
+                           Page: {{t.Page}}, 
+                           Per Page: {{t.PerPage}}, 
+                           Page Rank: {{t.PageRank}}, 
+                        </h1>
+                     </div>
                   </div>
                </div>
                <div class="row">
@@ -71,7 +75,7 @@
                      <div class="body">
                         <i class="fa fa-fw fa-plus ShowOnScreen" ng-click="p.AddTitle()" style="cursor: pointer;"></i>
                         <i class="fa fa-fw fa-close pull-right ShowOnScreen" ng-click="p.AddTitle()" style="cursor: pointer;"></i>
-                        <i class="fa fa-fw fa-save pull-right ShowOnScreen" ng-click="p.AddTitle()" style="cursor: pointer;"></i>
+                        <i class="fa fa-fw fa-save pull-right ShowOnScreen" ng-click="gc.UpdateTitle($index)" style="cursor: pointer;"></i>
                         <span class="title">
                            <textarea type="text" ng-model="t.Title" placeholder="Title" class="ghost ShowOnScreen"></textarea>
                            <span class="ShowOnPrint">{{t.Title}}</span>

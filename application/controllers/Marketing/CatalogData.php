@@ -27,6 +27,7 @@ class CatalogData extends Secure_Controller {
    public function Index() {
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
+
    public function Index2() {
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Index_1");
    }
@@ -76,6 +77,12 @@ class CatalogData extends Secure_Controller {
       $this->output
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->GetAllTitles()));
+   }
+
+   public function UpdateTitle() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->UpdateTitle()));
    }
 
 }

@@ -61,10 +61,48 @@ class CatalogData_Model extends ESM {
    }
 
    public function GetAllTitles() {
-      $newQuery = $this->jcDB->limit(3,0)->get('titles');
+
+
+      $newQuery = $this->jcDB->get('titles');
       if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
          return $this->generateResponse($newQuery_result);
       }
+   }
+
+   public function UpdateTitle() {
+      
+      $data = [
+          'Title' => $this->input->post('Title'),
+          'Subtitle' => $this->input->post('Subtitle'),
+          'Publisher' => $this->input->post('Publisher'),
+          'Imprint' => $this->input->post('Imprint'),
+          'ISBN' => $this->input->post('ISBN'),
+          'Format' => $this->input->post('Format'),
+          'USPrice' => $this->input->post('USPrice'),
+          'CANPrice' => $this->input->post('CANPrice'),
+          'TrimW' => $this->input->post('TrimW'),
+          'TrimH' => $this->input->post('TrimH'),
+          'Pages' => $this->input->post('Pages'),
+          'BisacCode' => $this->input->post('BisacCode'),
+          'BisacDesc' => $this->input->post('BisacDesc'),
+          'PublicationDate' => $this->input->post('PublicationDate'),
+          'MainDesc' => $this->input->post('MainDesc'),
+          'Author1Name' => $this->input->post('Author1Name'),
+          'Author1Bio' => $this->input->post('Author1Bio'),
+          'Author2Name' => $this->input->post('Author2Name'),
+          'Author3Name' => $this->input->post('Author3Name'),
+          'Author4Name' => $this->input->post('Author4Name'),
+          'Updated' => $this->input->post('Updated'),
+      ];
+      $this->jcDB->set($data);
+      $this->jcDB->where('ID', $this->input->post('ID'));
+      $this->jcDB->update('titles');
+
+      $newQuery = $this->jcDB->where('ID', $this->input->post('ID'))->get('titles');
+      if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
+         return $this->generateResponse($newQuery_result);
+      }
+
    }
 
    public function IngestData() {
@@ -83,46 +121,46 @@ class CatalogData_Model extends ESM {
 
 
 
-         if (strlen(trim($sheet->getCellByColumnAndRow(10, $row)->getValue())) < 11) {
+         if (strlen(trim($sheet->getCellByColumnAndRow(11, $row)->getValue())) < 11) {
             continue;
          }
-         if (trim($sheet->getCellByColumnAndRow(1, $row)->getValue()) == 'Bottom') {
+         if (trim($sheet->getCellByColumnAndRow(2, $row)->getValue()) == 'Bottom') {
             continue;
          }
          $rowData[] = $sheet->getCellByColumnAndRow(10, $row)->getValue();
 
 
-         $data = ['ID' => null,
+         $data = [
              'ID' => null,
              'Page' => $sheet->getCellByColumnAndRow(0, $row)->getValue(),
-             'PageRank' => $sheet->getCellByColumnAndRow(1, $row)->getValue(),
+             'PageRank' => $sheet->getCellByColumnAndRow(2, $row)->getValue(),
              'PerPage' => $sheet->getCellByColumnAndRow(1, $row)->getValue(),
-             'Title' => $sheet->getCellByColumnAndRow(11, $row)->getValue(),
-             'Subtitle' => $sheet->getCellByColumnAndRow(12, $row)->getValue(),
-             'Publisher' => $sheet->getCellByColumnAndRow(13, $row)->getValue(),
-             'Imprint' => $sheet->getCellByColumnAndRow(14, $row)->getValue(),
-             'ISBN' => $sheet->getCellByColumnAndRow(10, $row)->getValue(),
-             'Format' => $sheet->getCellByColumnAndRow(15, $row)->getValue(),
-             'USPrice' => $sheet->getCellByColumnAndRow(32, $row)->getValue(),
-             'CANPrice' => $sheet->getCellByColumnAndRow(34, $row)->getValue(),
-             'TrimW' => $sheet->getCellByColumnAndRow(26, $row)->getValue(),
-             'TrimH' => $sheet->getCellByColumnAndRow(27, $row)->getValue(),
-             'Pages' => $sheet->getCellByColumnAndRow(36, $row)->getValue(),
-             'BisacCode' => $sheet->getCellByColumnAndRow(28, $row)->getValue(),
-             'BisacDesc' => $sheet->getCellByColumnAndRow(29, $row)->getValue(),
-             'PublicationDate' => $sheet->getCellByColumnAndRow(16, $row)->getValue(),
+             'Title' => $sheet->getCellByColumnAndRow(12, $row)->getValue(),
+             'Subtitle' => $sheet->getCellByColumnAndRow(13, $row)->getValue(),
+             'Publisher' => $sheet->getCellByColumnAndRow(14, $row)->getValue(),
+             'Imprint' => $sheet->getCellByColumnAndRow(15, $row)->getValue(),
+             'ISBN' => $sheet->getCellByColumnAndRow(11, $row)->getValue(),
+             'Format' => $sheet->getCellByColumnAndRow(16, $row)->getValue(),
+             'USPrice' => $sheet->getCellByColumnAndRow(33, $row)->getValue(),
+             'CANPrice' => $sheet->getCellByColumnAndRow(35, $row)->getValue(),
+             'TrimW' => trim($sheet->getCellByColumnAndRow(27, $row)->getValue()),
+             'TrimH' => trim($sheet->getCellByColumnAndRow(28, $row)->getValue()),
+             'Pages' => $sheet->getCellByColumnAndRow(37, $row)->getValue(),
+             'BisacCode' => $sheet->getCellByColumnAndRow(29, $row)->getValue(),
+             'BisacDesc' => $sheet->getCellByColumnAndRow(30, $row)->getValue(),
+             'PublicationDate' => $sheet->getCellByColumnAndRow(17, $row)->getValue(),
              'IllustrationsCount' => null,
              'IllustrationsType' => null,
              'AgeFrom' => null,
              'AgeTo' => null,
-             'MainDesc' => $sheet->getCellByColumnAndRow(17, $row)->getValue(),
-             'Author1Name' => $sheet->getCellByColumnAndRow(17, $row)->getValue(),
-             'Author1Bio' => $sheet->getCellByColumnAndRow(30, $row)->getValue(),
-             'Author2Name' => $sheet->getCellByColumnAndRow(19, $row)->getValue(),
+             'MainDesc' => $sheet->getCellByColumnAndRow(32, $row)->getValue(),
+             'Author1Name' => $sheet->getCellByColumnAndRow(18, $row)->getValue(),
+             'Author1Bio' => $sheet->getCellByColumnAndRow(31, $row)->getValue(),
+             'Author2Name' => $sheet->getCellByColumnAndRow(20, $row)->getValue(),
              'Author2Bio' => 'Blank',
-             'Author3Name' => $sheet->getCellByColumnAndRow(21, $row)->getValue(),
+             'Author3Name' => $sheet->getCellByColumnAndRow(22, $row)->getValue(),
              'Author3Bio' => 'Blank',
-             'Author4Name' => $sheet->getCellByColumnAndRow(23, $row)->getValue(),
+             'Author4Name' => $sheet->getCellByColumnAndRow(24, $row)->getValue(),
              'Author4Bio' => 'Blank',
              'Author5Name' => null,
              'Author5Bio' => null,
@@ -234,8 +272,8 @@ class CatalogData_Model extends ESM {
             $SpecRTF .= str_replace(['[SpecNode]'], [$value->Publisher], $Template['One']['Spec']['Node']);
 
 
-            $isbn = new FaleISBN;
-            $isbn13 = $isbn->hyphens->addHyphens($value->ISBN);
+            $isbnHyp = new FaleISBN;
+            $isbn13 = $isbnHyp->hyphens->addHyphens($isbn);
             $SpecRTF .= str_replace(['[SpecNode]'], [$isbn13], $Template['One']['Spec']['Node']);
             $SpecRTF .= str_replace(['[SpecNode]'], [$value->Format], $Template['One']['Spec']['Node']);
             $SpecRTF .= str_replace(['[SpecNode]'], ["USD \${$value->USPrice} (CAN \${$value->CANPrice})"], $Template['One']['Spec']['Node']);

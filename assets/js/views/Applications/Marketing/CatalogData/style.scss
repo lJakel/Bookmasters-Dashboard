@@ -23,7 +23,7 @@
 
          text-transform: uppercase;
          font-family: 'Helvetica Neue LT Std', sans-serif;
-         font-size: 20.4px;
+         font-size: 17px;
          font-weight: 500;
          font-stretch: condensed;
          margin: 0px;
@@ -191,12 +191,12 @@ input.ghost,textarea.ghost{
    }
 }
 
-  .ShowOnScreen{
-      display: block !important;
-   }
-   .ShowOnPrint{
-      display: none !important;
-   }
+.ShowOnScreen{
+   display: block !important;
+}
+.ShowOnPrint{
+   display: none !important;
+}
 @media screen {
    #printSection {
       display: none;
@@ -213,7 +213,7 @@ input.ghost,textarea.ghost{
       display: none !important;
    }
    .ghost{
-    
+
    }
    .ShowOnPrint{
       display: block !important;
@@ -248,9 +248,9 @@ input.ghost,textarea.ghost{
          background-color: #354b5e  !important;
          h1{
             &.ShowOnPrint{
-             
+
             }
-              font-size:17px  !important;
+            font-size:17px  !important;
             color:white !important;
 
             input.ghost{

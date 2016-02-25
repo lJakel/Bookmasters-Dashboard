@@ -56,6 +56,11 @@ class CatalogData extends Secure_Controller {
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->ExportToCatalog()));
    }
+   public function Test3() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->UpdateDescriptions()));
+   }
    public function IngestData() {
       $this->output
               ->set_content_type('application/json')

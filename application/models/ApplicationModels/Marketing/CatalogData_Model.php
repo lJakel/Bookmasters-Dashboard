@@ -19,7 +19,7 @@ class CatalogData_Model extends ESM {
       ];
 
 
-      //Check for catalog first
+//Check for catalog first
       $newQuery = $this->jcDB->select('*')->where(
                       [
                           'Season' => $this->input->post('Season'),
@@ -27,13 +27,13 @@ class CatalogData_Model extends ESM {
                           'Division' => $this->input->post('Division'),
                       ]
               )->get('catalog');
-      //If catalog exists throw error to user
+//If catalog exists throw error to user
       if ($newQuery && $newQuery->num_rows()) {
          $this->newError("0000", "This catalog already exists.", $this, __FUNCTION__, "danger", null, false);
          return $this->GetAllCatalog();
       }
 
-      //Insert if no error
+//Insert if no error
       $newQuery = $this->jcDB->insert('catalog', $data);
       if ($this->jcDB->affected_rows() <= 0) {
          $this->newError("0000", "This catalog already exists or a database error has occured.", $this, __FUNCTION__, "danger", null, false);
@@ -44,7 +44,7 @@ class CatalogData_Model extends ESM {
    public function GetAllCatalog() {
       $query = $this->jcDB->query('SELECT * FROM catalog');
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
-         //success
+//success
       } else {
          $this->newError("0000", "There was an error retrieving the catalogs, or there are no saved catalogs.", $this, __FUNCTION__, "danger", null, false);
       }
@@ -81,8 +81,6 @@ class CatalogData_Model extends ESM {
          if (strlen(trim($sheet->getCellByColumnAndRow(10, $row)->getValue())) < 11) {
             continue;
          }
-
-
          if (trim($sheet->getCellByColumnAndRow(1, $row)->getValue()) == 'Bottom') {
             continue;
          }
@@ -93,6 +91,7 @@ class CatalogData_Model extends ESM {
              'ID' => null,
              'Page' => $sheet->getCellByColumnAndRow(0, $row)->getValue(),
              'PageRank' => $sheet->getCellByColumnAndRow(1, $row)->getValue(),
+             'PerPage' => $sheet->getCellByColumnAndRow(1, $row)->getValue(),
              'Title' => $sheet->getCellByColumnAndRow(11, $row)->getValue(),
              'Subtitle' => $sheet->getCellByColumnAndRow(12, $row)->getValue(),
              'Publisher' => $sheet->getCellByColumnAndRow(13, $row)->getValue(),
@@ -111,6 +110,7 @@ class CatalogData_Model extends ESM {
              'IllustrationsType' => null,
              'AgeFrom' => null,
              'AgeTo' => null,
+             'MainDesc' => $sheet->getCellByColumnAndRow(17, $row)->getValue(),
              'Author1Name' => $sheet->getCellByColumnAndRow(17, $row)->getValue(),
              'Author1Bio' => $sheet->getCellByColumnAndRow(30, $row)->getValue(),
              'Author2Name' => $sheet->getCellByColumnAndRow(19, $row)->getValue(),
@@ -133,6 +133,7 @@ class CatalogData_Model extends ESM {
    }
 
    public function ExportToCatalog() {
+      set_time_limit(300);
 
       require APPPATH . '/third_party/Note.php';
       require APPPATH . '/third_party/Note/HTMLToRTF.php';
@@ -146,13 +147,13 @@ class CatalogData_Model extends ESM {
               '\pard\pagebb\hyphpar0\sl480\slmult0\cf1\f0\fs48 [Title]\par' .
               '\pard\hyphpar0\sb90\sl320\slmult0\cf3\fs32 [Subtitle]\par' .
               '\pard\hyphpar0\sb180\sa180\sl288\slmult1\b\i\f1\fs24 [Author]\cf3\lang9\b0\i0\f2\fs22\par}',
-              'Desc' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 Minion Pro;}} {\colortbl;\red0\green0\blue0;}
-           {\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\hyphpar0\sa270\sl320\slmult0\qj\cf1\f0\fs20 [MainDes]\par[AuthorDes]\par}',
+              'Desc' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 Minion Pro;}} {\colortbl;\red0\green0\blue0;}' .
+              '{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\hyphpar0\sa270\sl320\slmult0\qj\cf1\f0\fs20 [MainDes]\par [AuthorDes]\par}',
               'Spec' => [
-                  'main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 HelveticaNeueLT Std Cn;}} {\colortbl;\red0\green0\blue0;}',
-                  'node' => '\pard\hyphpar0\sl340\slmult0\cf1\f0\fs24[SpecNode]\par}'
-              ]
-          ,
+                  'Main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 HelveticaNeueLT Std Cn;}} {\colortbl;\red0\green0\blue0;}',
+                  'Node' => '\pard\hyphpar0\sl340\slmult0\cf1\f0\fs24 [SpecNode]\par',
+                  'End' => '}'
+              ],
           ],
       ];
       $newQuery = $this->jcDB->get('titles');
@@ -163,34 +164,120 @@ class CatalogData_Model extends ESM {
 
          foreach ($newQuery_result as $key => $value) {
             $isbn = trim($value->ISBN);
+            $Product = $xml->addChild("Product");
+
+
+/////////////////////////////////////////////////////////
+///////////////MAIN BODY RTF CONVERSION
+/////////////////////////////////////////////////////////
+            $MainBody = new JoshRibakoff_Note();
+            $MainBodyFileRTF = str_replace(['[Title]', '[Subtitle]', '[Author]'], [$value->Title, $value->Subtitle, trim("{$value->Author1Name}, {$value->Author2Name}, {$value->Author3Name}, {$value->Author4Name} ")], $Template['One']['Main']);
+
+            $MainBody->setRTF($MainBodyFileRTF);
+            $MainBodyFile = $MainBody->formatRTF();
+
+            $Module = 'MainBody';
+            if (!file_exists("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf")) {
+               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf", "{" . $MainBodyFile . "}");
+               $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/{$isbn}.rtf");
+            } else {
+               file_put_contents("Storage/Catalogs/Christian/Data/MainBody/Dupe/{$isbn}.rtf", "{" . $MainBodyFile . "}");
+               $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/Dupe/{$isbn}.rtf");
+            }
+
+
+/////////////////////////////////////////////////////////
+///////////////DESCRIPTION RTF CONVERSION
+/////////////////////////////////////////////////////////
+            $RTFConverter = new JoshRibakoff_Note_HTMLToRTF();
+            $DescNote = new JoshRibakoff_Note();
+
+            $MainDes = $RTFConverter->convert($value->MainDesc);
+            $AuthorDes = $RTFConverter->convert($value->Author1Bio);
+
+            $DescRTF = str_replace(['[MainDes]', '[AuthorDes]'], [$MainDes, $AuthorDes], $Template['One']['Desc']);
+
+            $DescNote->setRTF($DescRTF);
+            $DescFile = $DescNote->formatRTF();
+
+            $Module = 'Descriptions';
+            if (!file_exists("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf")) {
+               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf", "{" . $DescFile . "}");
+               $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/{$isbn}.rtf");
+            } else {
+               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/Dupe/{$isbn}.rtf", "{" . $DescFile . "}");
+               $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/Dupe/{$isbn}.rtf");
+            }
 
 
 
-            $note = new JoshRibakoff_Note();
-            $rtf = str_replace(['[Title]', '[Subtitle]', '[Author]'], [$value->Title, $value->Subtitle, trim("{$value->Author1Name}, {$value->Author2Name}, {$value->Author3Name}, {$value->Author4Name} ")], $Template['One']['Main']);
-            $note->setRTF($rtf);
-
-            copy("Storage/Catalogs/Christian/Data/Stock/stock.eps", "Storage/Catalogs/Christian/Data/Barcode/{$isbn}.eps");
+/////////////////////////////////////////////////////////
+///////////////COVER SETUP
+/////////////////////////////////////////////////////////
+            $Product->addChild("Cover")->addAttribute('href', "file:///../Data/Cover/{$isbn}.jpg");
             copy("Storage/Catalogs/Christian/Data/Stock/stock.jpg", "Storage/Catalogs/Christian/Data/Cover/{$isbn}.jpg");
 
+/////////////////////////////////////////////////////////
+///////////////SPEC RTF CONVERSION
+/////////////////////////////////////////////////////////
+            $SpecNote = new JoshRibakoff_Note();
 
-            $Product = $xml->addChild("Product");
-            $file = $note->formatRTF();
-            if (!file_exists("Storage/Catalogs/Christian/Data/MainBody/{$isbn}.rtf")) {
-               file_put_contents("Storage/Catalogs/Christian/Data/MainBody/{$isbn}.rtf", "{" . $file . "}");
-               $Product->addChild("MainBody")->addAttribute('href', "file:///../Data/MainBody/{$isbn}.rtf");
+            $TrimW = trim($value->TrimW);
+            $TrimH = trim($value->TrimH);
+
+            $SpecRTF = $Template['One']['Spec']['Main'];
+            $SpecRTF .= str_replace(['[SpecNode]'], [$value->Publisher], $Template['One']['Spec']['Node']);
+            $SpecRTF .= str_replace(['[SpecNode]'], [$value->ISBN], $Template['One']['Spec']['Node']);
+            $SpecRTF .= str_replace(['[SpecNode]'], [$value->Format], $Template['One']['Spec']['Node']);
+            $SpecRTF .= str_replace(['[SpecNode]'], ["USD \${$value->USPrice} (CAN \${$value->CANPrice})"], $Template['One']['Spec']['Node']);
+            $SpecRTF .= str_replace(['[SpecNode]'], ["{$TrimW} x {$TrimH}, {$value->Pages} pages"], $Template['One']['Spec']['Node']);
+            $SpecRTF .= str_replace(['[SpecNode]'], [$value->BisacDesc], $Template['One']['Spec']['Node']);
+            $SpecRTF .= str_replace(['[SpecNode]'], [$value->PublicationDate], $Template['One']['Spec']['Node']);
+            $SpecRTF .= $Template['One']['Spec']['End'];
+
+            $SpecNote->setRTF($SpecRTF);
+            $SpecFile = $SpecNote->formatRTF();
+
+            $Module = 'Specs';
+            if (!file_exists("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf")) {
+               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf", "{" . $SpecFile . "}");
+               $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/{$isbn}.rtf");
             } else {
-               file_put_contents("Storage/Catalogs/Christian/Data/MainBody/Dupe/{$isbn}.rtf", "{" . $file . "}");
-               $Product->addChild("MainBody")->addAttribute('href', "file:///../Data/MainBody/Dupe/{$isbn}.rtf");
+               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/Dupe/{$isbn}.rtf", "{" . $SpecFile . "}");
+               $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/Dupe/{$isbn}.rtf");
             }
-            $Product->addChild("Descriptions")->addAttribute('href', "file:///../Data/Descriptions/{$isbn}.rtf");
-            $Product->addChild("Cover")->addAttribute('href', "file:///../Data/Cover/{$isbn}.jpg");
-            $Product->addChild("Specs")->addAttribute('href', "file:///../Data/Specs/{$isbn}.rtf");
+
+
+            /////////////////////////////////////////////////////////
+            /////////////////BARCODE SETUP
+            /////////////////////////////////////////////////////////
             $Product->addChild("Barcode")->addAttribute('href', "file:///../Data/Barcode/{$isbn}.eps");
+            copy("Storage/Catalogs/Christian/Data/Stock/stock.eps", "Storage/Catalogs/Christian/Data/Barcode/{$isbn}.eps");
          }
 
 
-         file_put_contents("Storage/Catalogs/Catalog.xml", $xml->asXML());
+         file_put_contents("Storage/Catalogs/Christian/XML/Catalog.xml", $xml->asXML());
+      }
+   }
+
+   public function UpdateDescriptions() {
+      $this->JCCData = $this->load->database('JakeComputerCatalogData', TRUE);
+      $this->JCCDesc = $this->load->database('JakeComputerCatalogDesc', TRUE);
+
+      $GetDescQuery = $this->JCCDesc->get('title');
+
+      if ($GetDescQuery && $GetDescQuery->num_rows() && $GetDescQueryResult = $GetDescQuery->result_object()) {
+
+
+         foreach ($GetDescQueryResult as $value) {
+            $this->JCCData->set([
+                'MainDesc' => $value->MainDescription,
+                'Author1Bio' => $value->AuthorBios,
+            ]);
+            $this->JCCData->where('ISBN', $value->ISBN);
+            $this->JCCData->update('titles');
+         }
+         return $GetDescQueryResult;
       }
    }
 

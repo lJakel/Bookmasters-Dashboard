@@ -165,7 +165,7 @@ $db['marketingUpdate'] = array(
     'save_queries' => TRUE
 );
 
-$db['JakeComputer'] = array(
+$db['JakeComputerCatalogDesc'] = array(
     'dsn' => '',
     'hostname' => '10.10.11.48',
     'username' => 'JakeTables',

@@ -33,11 +33,11 @@
                   </div>
                   <div class="col-xs-8">
                      <div class="pageheader">
-                        <h1>
+                        <h2>
                            Page: {{t.Page}}, 
                            Per Page: {{t.PerPage}}, 
-                           Page Rank: {{t.PageRank}}, 
-                        </h1>
+                           Page Rank: {{t.PageRank}}
+                        </h2>
                      </div>
                   </div>
                </div>
@@ -73,8 +73,7 @@
                   </div>
                   <div class="col-xs-8">
                      <div class="body">
-                        <i class="fa fa-fw fa-plus ShowOnScreen" ng-click="p.AddTitle()" style="cursor: pointer;"></i>
-                        <i class="fa fa-fw fa-close pull-right ShowOnScreen" ng-click="p.AddTitle()" style="cursor: pointer;"></i>
+
                         <i class="fa fa-fw fa-save pull-right ShowOnScreen" ng-click="gc.UpdateTitle($index)" style="cursor: pointer;"></i>
                         <span class="title">
                            <textarea type="text" ng-model="t.Title" placeholder="Title" class="ghost ShowOnScreen"></textarea>

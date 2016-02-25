@@ -60,11 +60,16 @@ class CatalogData_Model extends ESM {
       return $this->GetAllCatalog();
    }
 
+   public function GetAllTitles() {
+      $newQuery = $this->jcDB->limit(3,0)->get('titles');
+      if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
+         return $this->generateResponse($newQuery_result);
+      }
+   }
+
    public function IngestData() {
 
-
       $this->load->library('excel');
-
 
       $objReader = PHPExcel_IOFactory::createReader('Excel2007');
       $objPHPExcel = $objReader->load('FINAL XCat16_for Jake.xlsx');
@@ -133,7 +138,10 @@ class CatalogData_Model extends ESM {
    }
 
    public function ExportToCatalog() {
-      set_time_limit(300);
+      set_time_limit(60 * 20);
+
+
+      $this->load->library('FaleISBN');
 
       require APPPATH . '/third_party/Note.php';
       require APPPATH . '/third_party/Note/HTMLToRTF.php';
@@ -159,13 +167,11 @@ class CatalogData_Model extends ESM {
       $newQuery = $this->jcDB->get('titles');
       if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
 
-
          $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\" ?><Root></Root>");
 
          foreach ($newQuery_result as $key => $value) {
             $isbn = trim($value->ISBN);
             $Product = $xml->addChild("Product");
-
 
 /////////////////////////////////////////////////////////
 ///////////////MAIN BODY RTF CONVERSION
@@ -184,7 +190,6 @@ class CatalogData_Model extends ESM {
                file_put_contents("Storage/Catalogs/Christian/Data/MainBody/Dupe/{$isbn}.rtf", "{" . $MainBodyFile . "}");
                $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/Dupe/{$isbn}.rtf");
             }
-
 
 /////////////////////////////////////////////////////////
 ///////////////DESCRIPTION RTF CONVERSION
@@ -209,8 +214,6 @@ class CatalogData_Model extends ESM {
                $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/Dupe/{$isbn}.rtf");
             }
 
-
-
 /////////////////////////////////////////////////////////
 ///////////////COVER SETUP
 /////////////////////////////////////////////////////////
@@ -225,9 +228,15 @@ class CatalogData_Model extends ESM {
             $TrimW = trim($value->TrimW);
             $TrimH = trim($value->TrimH);
 
+
+
             $SpecRTF = $Template['One']['Spec']['Main'];
             $SpecRTF .= str_replace(['[SpecNode]'], [$value->Publisher], $Template['One']['Spec']['Node']);
-            $SpecRTF .= str_replace(['[SpecNode]'], [$value->ISBN], $Template['One']['Spec']['Node']);
+
+
+            $isbn = new FaleISBN;
+            $isbn13 = $isbn->hyphens->addHyphens($value->ISBN);
+            $SpecRTF .= str_replace(['[SpecNode]'], [$isbn13], $Template['One']['Spec']['Node']);
             $SpecRTF .= str_replace(['[SpecNode]'], [$value->Format], $Template['One']['Spec']['Node']);
             $SpecRTF .= str_replace(['[SpecNode]'], ["USD \${$value->USPrice} (CAN \${$value->CANPrice})"], $Template['One']['Spec']['Node']);
             $SpecRTF .= str_replace(['[SpecNode]'], ["{$TrimW} x {$TrimH}, {$value->Pages} pages"], $Template['One']['Spec']['Node']);
@@ -247,10 +256,9 @@ class CatalogData_Model extends ESM {
                $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/Dupe/{$isbn}.rtf");
             }
 
-
-            /////////////////////////////////////////////////////////
-            /////////////////BARCODE SETUP
-            /////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////BARCODE SETUP
+/////////////////////////////////////////////////////////
             $Product->addChild("Barcode")->addAttribute('href', "file:///../Data/Barcode/{$isbn}.eps");
             copy("Storage/Catalogs/Christian/Data/Stock/stock.eps", "Storage/Catalogs/Christian/Data/Barcode/{$isbn}.eps");
          }

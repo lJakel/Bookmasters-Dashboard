@@ -52,6 +52,7 @@
                            <tr>
                               <th>Page</th>
                               <th>Page Rank</th>
+                              <th>Per Page</th>
                               <th>ISBN</th>
                               <th>Title</th>
                               <th>Publisher</th>
@@ -60,6 +61,7 @@
                         <tbody>
                            <tr>
                               <td>1</td>
+                              <td>2</td>
                               <td>2</td>
                               <td>3</td>
                               <td style="word-wrap">4</td>

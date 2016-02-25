@@ -28,6 +28,10 @@ class CatalogData extends Secure_Controller {
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/" . __FUNCTION__);
    }
 
+   public function Index2() {
+      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Index_1");
+   }
+
    public function DeleteCatalog() {
       $this->output
               ->set_content_type('application/json')
@@ -56,51 +60,29 @@ class CatalogData extends Secure_Controller {
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->ExportToCatalog()));
    }
+
+   public function Test3() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->UpdateDescriptions()));
+   }
+
    public function IngestData() {
       $this->output
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->IngestData()));
    }
 
-   public function Test() {
-      $TitleArr = [
-          'Title' => 'Lol',
-          'Subtitle' => 'Lol',
-      ];
-      $Title = new CatalogDataTitle($TitleArr);
-
-      $Title->Authors[] = new CatalogDataAuthor(['Prefix' => 'Mr']);
-      $Title->Prices[] = new CatalogDataPrice(['Prefix' => 'Mr']);
-      $Title->Trim[] = new CatalogDataTrim(['Prefix' => 'Mr']);
-      $Title->Bisac[] = new CatalogDataBisac(['Prefix' => 'Mr']);
-      $Title->Illustrations[] = new CatalogDataIllustration(['Prefix' => 'Mr']);
-      $Title->AgeRange[] = new CatalogDataAgeRange(['Prefix' => 'Mr']);
-
-      echo json_encode($Title);
+   public function GetAllTitles() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->GetAllTitles()));
    }
 
-   public function OnePer() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
-   }
-
-   public function TwoPer() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
-   }
-
-   public function ThreePer() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
-   }
-
-   public function FourPer() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
-   }
-
-   public function SixPer() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
-   }
-
-   public function EightPer() {
-      $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Pages/" . __FUNCTION__);
+   public function UpdateTitle() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->UpdateTitle()));
    }
 
 }

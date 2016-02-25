@@ -1,4 +1,6 @@
 .page{
+
+   -webkit-print-color-adjust: exact;
    margin: 5px 5px;
    padding-left: 50px;
    padding-right: 50px;
@@ -21,15 +23,15 @@
 
          text-transform: uppercase;
          font-family: 'Helvetica Neue LT Std', sans-serif;
-         font-size: 20.4px;
+         font-size: 17px;
          font-weight: 500;
          font-stretch: condensed;
          margin: 0px;
 
       }
    }
-   .header{
-      width: 480px;
+   .pageheader{
+      width: 100%;
       color: rgba(0,0,0,0.7);
       padding: 25px 0px 5px 0px;
       h1{
@@ -170,7 +172,7 @@
    }
 }
 
-input.ghost{
+input.ghost,textarea.ghost{
    color:inherit;
    font-family: inherit;
    font-size: inherit;
@@ -183,8 +185,79 @@ input.ghost{
    font-weight: inherit;
    width:100%;
    text-align: inherit;
-   border:solid 1px rgba(0,255,162,0.1);
+   border: solid 1px rgba(0, 0, 0, 0.1);
    &:focus,&:active,&:visited{
       border:solid 1px rgba(0,255,162,0.2);   
    }
+}
+
+.ShowOnScreen{
+   display: block !important;
+}
+.ShowOnPrint{
+   display: none !important;
+}
+@media screen {
+   #printSection {
+      display: none;
+   }
+   .ShowOnScreen{
+      display: block !important;
+   }
+   .ShowOnPrint{
+      display: none !important;
+   }
+}
+@media print {
+   .ShowOnScreen{
+      display: none !important;
+   }
+   .ghost{
+
+   }
+   .ShowOnPrint{
+      display: block !important;
+   }
+   body * {
+      visibility:hidden;
+   }
+   #printSection, #printSection * {
+      visibility:visible;
+   }
+   .page{
+      margin:0px  !important;
+      padding-left: 0px  !important;
+      padding-right: 0px  !important;
+      width:100%  !important;
+      height: auto  !important;
+      background-color:white;
+      box-shadow: 0px 0px 6px rgba(0,0,0,0.2);
+      float:none  !important;
+      page-break-inside: avoid  !important;
+      page-break-after: always  !important;
+      .pageheader{
+         padding:0px;
+         margin:0px;
+      }
+
+      .tab{
+         color:white !important;
+         width: 100% !important;
+         padding-top: 25px !important;
+         padding-bottom: 5px !important;
+         background-color: #354b5e  !important;
+         h1{
+            &.ShowOnPrint{
+
+            }
+            font-size:17px  !important;
+            color:white !important;
+
+            input.ghost{
+               color:white !important;
+            }
+         }
+      }
+   }
+
 }

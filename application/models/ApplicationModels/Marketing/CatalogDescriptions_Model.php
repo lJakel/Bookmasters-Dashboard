@@ -8,7 +8,7 @@ class CatalogDescriptions_Model extends ESM {
 
 
    public function GetAll() {
-      $cdDB = $this->load->database('JakeComputer', TRUE);
+      $cdDB = $this->load->database('JakeComputerCatalogDesc', TRUE);
       $query = $cdDB->query('SELECT * FROM title WHERE catalog = ? ORDER BY `Title` ASC', [$this->input->post('Set')]);
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
          return $this->generateResponse($queryResult);
@@ -18,7 +18,7 @@ class CatalogDescriptions_Model extends ESM {
    }
 
    public function Insert() {
-      $cdDB = $this->load->database('JakeComputer', TRUE);
+      $cdDB = $this->load->database('JakeComputerCatalogDesc', TRUE);
 
       $data = [
           'ID' => NULL,
@@ -48,7 +48,7 @@ class CatalogDescriptions_Model extends ESM {
    }
 
    public function Update() {
-      $cdDB = $this->load->database('JakeComputer', TRUE);
+      $cdDB = $this->load->database('JakeComputerCatalogDesc', TRUE);
       $data = [
           'Title' => $this->input->post('Title'),
           'SubTitle' => $this->input->post('SubTitle'),
@@ -70,7 +70,7 @@ class CatalogDescriptions_Model extends ESM {
    }
 
    public function Delete() {
-      $cdDB = $this->load->database('JakeComputer', TRUE);
+      $cdDB = $this->load->database('JakeComputerCatalogDesc', TRUE);
 
       $cdDB->where('ID', $this->input->post('ID'));
       $cdDB->delete('title');
@@ -81,7 +81,7 @@ class CatalogDescriptions_Model extends ESM {
    }
 
    public function GetAllSets() {
-      $cdDB = $this->load->database('JakeComputer', TRUE);
+      $cdDB = $this->load->database('JakeComputerCatalogDesc', TRUE);
       $query = $cdDB->query('SELECT * FROM catalog');
       if ($query && $query->num_rows() && $queryResult = $query->result_object()) {
          return $this->generateResponse($queryResult);

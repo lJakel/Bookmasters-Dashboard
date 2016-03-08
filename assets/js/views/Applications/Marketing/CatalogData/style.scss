@@ -149,7 +149,12 @@
       }
    }
 }
-
+.col-xs-8{
+   >div.body{
+      max-height: 880px;
+      height: auto;      
+   }
+}
 
 
 .cat-page-oneper{
@@ -203,7 +208,7 @@ input.ghost,textarea.ghost{
    }
    .ShowOnScreen{
       display: block !important;
-   }
+   } 
    .ShowOnPrint{
       display: none !important;
    }

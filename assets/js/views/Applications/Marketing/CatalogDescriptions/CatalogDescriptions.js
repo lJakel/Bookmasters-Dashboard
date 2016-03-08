@@ -13,6 +13,10 @@ BMApp.register.controller('CatalogDescriptionsController', ['toasty', '$http', '
          self.TitleModal = new modal('', TitleCase);
          self.ShowComplete = false;
 
+         self.stripStuff = function (text) {
+
+            return  String(text).replace(/<(?!\s*\/?(br|p|b|i|em|en|strike|ul|ol|li)\b)[^>]+>/ig, '');
+         };
 
          self.showItemModal = function (entryDataViewModel, Component, Method) {
             self[Component + 'Modal'].Method = Method || 'edit';

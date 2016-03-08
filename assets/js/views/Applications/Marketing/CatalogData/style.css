@@ -105,6 +105,10 @@
   .page.right-page .row.cat-page-oneper .col-xs-8, .page.right-page .row.cat-page-oneper .col-xs-9, .page.right-page .row.cat-page-twoper .col-xs-8, .page.right-page .row.cat-page-twoper .col-xs-9 {
     float: left; }
 
+.col-xs-8 > div.body {
+  max-height: 880px;
+  height: auto; }
+
 .cat-page-oneper .spec {
   font-size: 16px;
   line-height: 21px; }

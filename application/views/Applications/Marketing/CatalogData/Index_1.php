@@ -65,7 +65,7 @@
 
                         <img ngf-drop="gc.UploadCover($files,t.ISBN)" ngf-select="gc.UploadCover($files,t.ISBN)"
                              ngf-drag-over-class="'dragover'" accept="image/*" ngf-pattern="'image/*'" 
-                             ng-src="./Storage/Catalogs/2016/Fall/AtlasBooks/Data/Cover/{{t.ISBN}}.jpg?cache=<?= strtotime("now"); ?>"
+                             ng-src="./Storage/Catalogs/2016/Fall/AtlasBooks/Data/Cover/{{t.ISBN}}.jpg?cache={{t.Random}}"
                              onerror="this.onerror=null;this.src='http://bookmasters.com/marktplc/images/nocover.jpg';" width="100%" alt="">
 
                         <span class="spec"> <input type="text" ng-model="t.Publisher" placeholder="Publisher" class="ghost"></span>
@@ -76,8 +76,8 @@
                            (CAN $<input type="text" ng-model="t.CANPrice" placeholder="$" ng-style="{'width': t.CANPrice.length * 8.3 + 'px' }" style="width:auto;min-width:10px;" class="ghost">)
                         </span>
                         <span class="spec">
-                           <input type="text" ng-model="t.TrimW" placeholder="6" ng-style="{'width': t.TrimWidth.length * 8.3 + 'px' }" style="width:10px;min-width:10px;" class="ghost"> x
-                           <input type="text" ng-model="t.TrimH" placeholder="9" ng-style="{'width': t.TrimHeight.length * 8.3 + 'px' }" style="width:10px;min-width:10px;" class="ghost">, <input type="text" ng-model="t.Pages" placeholder="Pages" ng-style="{'width': t.Pages.length * 8.3 + 'px' }" style="width:10px;min-width:10px;" class="ghost"> pages
+                           <input type="text" ng-model="t.TrimW" placeholder="6" ng-style="{'width': t.TrimW.length * 8.3 + 'px' }" style="width:10px;min-width:10px;" class="ghost"> x
+                           <input type="text" ng-model="t.TrimH" placeholder="9" ng-style="{'width': t.TrimH.length * 8.3 + 'px' }" style="width:10px;min-width:10px;" class="ghost">, <input type="text" ng-model="t.Pages" placeholder="Pages" ng-style="{'width': t.Pages.length * 8.3 + 'px' }" style="width:10px;min-width:10px;" class="ghost"> pages
                         </span>
                         <span class="spec"> <textarea name="" id="" cols="30" rows="2" type="text" ng-model="t.BisacDesc" placeholder="Bisac" class="ghost"></textarea></span>
                         <span class="spec"> <input type="text" ng-model="t.PublicationDate" placeholder="PublicationDate" class="ghost"></span>
@@ -127,13 +127,14 @@
                            <span class="ShowOnPrint">{{t.Subtitle}}</span>
                         </span>
                         <span class="author">
-                           <input type="text" ng-model="t.Author1Name" placeholder="John Doe" class="ghost">
+                           <textarea type="text" ng-model="t.Author1Name" placeholder="Author" class="ghost ShowOnScreen"></textarea>
+                           <span class="ShowOnPrint">{{t.Author1Name}}</span>
                         </span>
 
-                        <i class="fa fa-edit" ng-click="gc.EditTitle(t)" style="cursor: pointer;"></i>
-                        <p class="body" ng-bind-html='t.MainDesc'></p>
-                        <i class="fa fa-edit" ng-click="gc.EditTitle(t)" style="cursor: pointer;"></i>
-                        <p class="body" ng-bind-html='t.Author1Bio'></p>
+                        <i class="fa fa-edit" ng-click="gc.showEditTitleModal(t)" style="cursor: pointer;"></i>
+                        <p class="body" ng-bind-html='t.MainDescSafe()'></p>
+                        <i class="fa fa-edit" ng-click="gc.showEditTitleModal(t)" style="cursor: pointer;"></i>
+                        <p class="body" ng-bind-html='t.Author1BioSafe()'></p>
                      </div>
                   </div>
                </div>

@@ -55,9 +55,6 @@
          <script src="/CDN/bower_components/angular-toasty/dist/angular-toasty.js"></script>
          <script src="/CDN/bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
          <script src="/CDN/bower_components/ng-tasty/ng-tasty-tpls.js"></script>
-         <script src="/CDN/bower_components/textAngular/dist/textAngular-rangy.min.js"></script>
-         <script src="/CDN/bower_components/textAngular/dist/textAngular-sanitize.js"></script>
-         <script src="/CDN/bower_components/textAngular/dist/textAngular.min.js"></script>
 
       <?php } else { ?>
          <script src="assets/vendor/vendor.min.js?cache=<?= rand(1000, 9000); ?>"></script>

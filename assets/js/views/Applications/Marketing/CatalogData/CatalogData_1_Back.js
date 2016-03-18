@@ -1,27 +1,41 @@
-BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$http', 'toasty', '$timeout', '$rootScope', 'Upload', function ($state, $stateParams, $http, toasty, $timeout, $rootScope, Upload) {
+BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$http', 'toasty', '$timeout', '$rootScope', 'Upload', '$sce', function ($state, $stateParams, $http, toasty, $timeout, $rootScope, Upload, $sce) {
       var self = this;
       self.showTitleDialog = false;
       self.PaginationModel = {
-         Catalog: $state.params.params.Catalog || 18,
+         Catalog: $state.params.params && $state.params.params.Catalog ? $state.params.params.Catalog : 18,
          TitleCount: 0,
          CurrentPage: 1,
          Limit: 40,
          PagesNum: []
       };
 
+
       self.EditTitleModal = function (data) {
          var m = this;
-         
+      };
+      self.showEditTitleModal = function (data) {
+
+         self.EditTitleModal.entryData = data;
+         $.each(data, function (k, v) {
+            self.EditTitleModal[k] = data[k] || null;
+         });
+         //self.Titles[title]
+         self.showTitleDialog = true;
+      };
+
+      self.onEditTitleModalAction = function () {
+         $.each(self.EditTitleModal.entryData, function (k, v) {
+            self.EditTitleModal.entryData[k] = self.EditTitleModal[k] || null;
+         });
+
+         self.showTitleDialog = false;
       };
 
       self.ReloadCatalog = function () {
          console.log($state.current, $stateParams);
          $state.transitionTo('bm.app.page', {folder: 'Marketing', app: 'CatalogData', page: 'Index2', child: null, params: {Catalog: self.PaginationModel.Catalog}}, {reload: 'bm.app.page'});
       };
-      self.EditTitle = function (Title) {
-         self.showTitleDialog = true;
-         //self.Titles[title]
-      };
+
       self.Title = function (data) {
          var t = this;
          data = data || '';
@@ -48,8 +62,18 @@ BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$ht
          t.AgeFrom = data.AgeFrom || '';
          t.AgeTo = data.AgeTo || '';
          t.MainDesc = data.MainDesc || '';
+         t.MainDescSafe = function () {
+            return $sce.trustAsHtml(data.MainDesc)
+         } || function () {
+            return $sce.trustAsHtml('')
+         };
          t.Author1Name = data.Author1Name || '';
          t.Author1Bio = data.Author1Bio || '';
+         t.Author1BioSafe = function () {
+            return $sce.trustAsHtml(data.Author1Bio)
+         } || function () {
+            return $sce.trustAsHtml('')
+         };
          t.Author2Name = data.Author2Name || '';
          t.Author2Bio = data.Author2Bio || '';
          t.Author3Name = data.Author3Name || '';
@@ -61,6 +85,8 @@ BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$ht
          t.Discount = data.Discount || '';
          t.Catalog = data.Catalog || '';
          t.Updated = data.Updated || '';
+         t.Random = Date.now();
+
       }
 
       $timeout(function () {
@@ -109,7 +135,7 @@ BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$ht
                   toasty.error({title: 'Error!', msg: item.message, theme: 'bootstrap', timeout: 8000});
                });
             });
-         }
+         };
 
          self.ChangePage = function (Page) {
             $timeout(function () {

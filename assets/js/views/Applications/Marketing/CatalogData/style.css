@@ -62,7 +62,9 @@
     line-height: 20px;
     font-family: "Minion Pro";
     color: black;
-    text-align: justify; }
+    text-align: justify;
+    max-height: 280px;
+    overflow: scroll; }
   .page .body .title {
     display: block;
     font-family: 'Helvetica Neue LT Std', sans-serif;

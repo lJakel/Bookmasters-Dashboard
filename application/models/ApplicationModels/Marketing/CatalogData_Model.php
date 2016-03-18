@@ -91,7 +91,13 @@ class CatalogData_Model extends ESM {
 
    public function GetAllTitles() {
 
-      $CatalogTitleCountQuery = $this->jcDB->query('SELECT count(*) as CountTitle FROM titles WHERE Catalog = ?', [$this->input->post('Catalog')]);
+
+      $CatalogTitleCountQuery = $this->jcDB
+              ->select('count(*) as CountTitle')
+              ->from('titles')
+              ->where('Catalog', $this->input->post('Catalog'))
+              ->get();
+
       $CatalogTitleCountQueryResult = $CatalogTitleCountQuery->result_object();
 
 
@@ -115,11 +121,14 @@ class CatalogData_Model extends ESM {
       }
 
       $newQuery = $this->jcDB
+              ->select('*')
+              ->from('titles')
               ->where('Catalog', $Catalog)
-              ->order_by('ID', 'ASC')
+              ->order_by('Page', 'ASC')
+              ->order_by('PageRank', 'ASC')
               ->offset($SqlPage)
               ->limit($Limit)
-              ->get('titles');
+              ->get();
 
       if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
          return $this->generateResponse(['Pagination' => $Pagination, 'Query' => $this->jcDB->last_query(), 'Result' => $newQuery_result]);
@@ -537,32 +546,8 @@ class CatalogData_Model extends ESM {
 
    public function ExportToCatalog() {
       set_time_limit(60 * 20);
-
-
       $this->load->library('FaleISBN');
-
-      require_once APPPATH . '/third_party/Note.php';
-      require_once APPPATH . '/third_party/Note/HTMLToRTF.php';
-      require_once APPPATH . '/third_party/Note/RTFToHTML.php';
-      require_once APPPATH . '/third_party/Note/BraceLexer.php';
-      require_once APPPATH . '/third_party/Note/SectionLexer.php';
-      $CatalogTemplateArr = [
-          'One' => [
-              'Main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 HelveticaNeueLT Std Med Cn;}{\f1\fnil\fcharset0 Minion Pro;}{\f2\fnil\fcharset0 Calibri;}}' .
-              '{\colortbl ;\red38\green54\blue69;\red0\green0\blue0;\red80\green80\blue80;}' .
-              '\pard\pagebb\hyphpar0\sl480\slmult0\cf1\f0\fs48 [Title]\par' .
-              '\pard\hyphpar0\sb90\sl320\slmult0\cf3\fs32 [Subtitle]\par' .
-              '\pard\hyphpar0\sb180\sa180\sl288\slmult0\b\i\f1\fs24 [Author]\cf3\lang9\b0\i0\f2\fs22\par}',
-              'Desc' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 Minion Pro;}} {\colortbl;\red0\green0\blue0;}' .
-              '{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\hyphpar0\sa270\sl320\slmult0\qj\cf1\f0\fs20 [MainDes]\par [AuthorDes]\par}',
-              'Spec' => [
-                  'Main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 HelveticaNeueLT Std Cn;}} {\colortbl;\red0\green0\blue0;}',
-                  'Node' => '\pard\hyphpar0\sl340\slmult0\cf1\f0\fs24 [SpecNode]\par',
-                  'End' => '}'
-              ],
-          ],
-      ];
-      $newQuery = $this->jcDB->get('titles');
+      $newQuery = $this->jcDB->where('Catalog', '18')->get('titles');
       if ($newQuery && $newQuery->num_rows() && $newQuery_result = $newQuery->result_object()) {
 
          $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\" ?><Root></Root>");
@@ -570,85 +555,29 @@ class CatalogData_Model extends ESM {
          foreach ($newQuery_result as $key => $value) {
             $isbn = trim($value->ISBN);
             $Product = $xml->addChild("Product");
-            /////////////////////////////////////////////////////////
-            ///////////////MAIN BODY RTF CONVERSION
-            /////////////////////////////////////////////////////////
-            $MainBody = new JoshRibakoff_Note();
-            $MainBodyFileRTF = str_replace(['[Title]', '[Subtitle]', '[Author]'], [$value->Title, $value->Subtitle, trim("{$value->Author1Name}, {$value->Author2Name}, {$value->Author3Name}, {$value->Author4Name} ")], $CatalogTemplateArr['One']['Main']);
-
-            $MainBody->setRTF($MainBodyFileRTF);
-            $MainBodyFile = $MainBody->formatRTF();
 
             $Module = 'MainBody';
-            if (!file_exists("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf")) {
-               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf", "{" . $MainBodyFile . "}");
-            }
             $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/{$isbn}.rtf");
             /////////////////////////////////////////////////////////
             ///////////////DESCRIPTION RTF CONVERSION
             /////////////////////////////////////////////////////////
-            $RTFConverter = new JoshRibakoff_Note_HTMLToRTF();
-            $DescNote = new JoshRibakoff_Note();
-
-            $MainDes = $RTFConverter->convert($value->MainDesc);
-            $AuthorDes = $RTFConverter->convert($value->Author1Bio);
-
-            $DescRTF = str_replace(['[MainDes]', '[AuthorDes]'], [$MainDes, $AuthorDes], $CatalogTemplateArr['One']['Desc']);
-
-            $DescNote->setRTF($DescRTF);
-            $DescFile = $DescNote->formatRTF();
-
             $Module = 'Descriptions';
-            if (!file_exists("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf")) {
-               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf", "{" . $DescFile . "}");
-            }
             $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/{$isbn}.rtf");
             /////////////////////////////////////////////////////////
             ///////////////COVER SETUP
             /////////////////////////////////////////////////////////
             $Product->addChild("Cover")->addAttribute('href', "file:///../Data/Cover/{$isbn}.jpg");
-            copy("Storage/Catalogs/Christian/Data/Stock/stock.jpg", "Storage/Catalogs/Christian/Data/Cover/{$isbn}.jpg");
             /////////////////////////////////////////////////////////
             ///////////////SPEC RTF CONVERSION
             /////////////////////////////////////////////////////////
-            $SpecNote = new JoshRibakoff_Note();
-
-            $TrimW = trim($value->TrimW);
-            $TrimH = trim($value->TrimH);
-
-
-
-            $SpecRTF = $CatalogTemplateArr['One']['Spec']['Main'];
-            $SpecRTF .= str_replace(['[SpecNode]'], [$value->Publisher], $CatalogTemplateArr['One']['Spec']['Node']);
-
-
-            $isbnHyp = new FaleISBN;
-            $isbn13 = $isbnHyp->hyphens->addHyphens($isbn);
-            $SpecRTF .= str_replace(['[SpecNode]'], [$isbn13], $CatalogTemplateArr['One']['Spec']['Node']);
-            $SpecRTF .= str_replace(['[SpecNode]'], [$value->Format], $CatalogTemplateArr['One']['Spec']['Node']);
-            $SpecRTF .= str_replace(['[SpecNode]'], ["USD \${$value->USPrice} (CAN \${$value->CANPrice})"], $CatalogTemplateArr['One']['Spec']['Node']);
-            $SpecRTF .= str_replace(['[SpecNode]'], ["{$TrimW} x {$TrimH}, {$value->Pages} pages"], $CatalogTemplateArr['One']['Spec']['Node']);
-            $SpecRTF .= str_replace(['[SpecNode]'], [$value->BisacDesc], $CatalogTemplateArr['One']['Spec']['Node']);
-            $SpecRTF .= str_replace(['[SpecNode]'], [$value->PublicationDate], $CatalogTemplateArr['One']['Spec']['Node']);
-            $SpecRTF .= $CatalogTemplateArr['One']['Spec']['End'];
-
-            $SpecNote->setRTF($SpecRTF);
-            $SpecFile = $SpecNote->formatRTF();
-
             $Module = 'Specs';
-            if (!file_exists("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf")) {
-               file_put_contents("Storage/Catalogs/Christian/Data/{$Module}/{$isbn}.rtf", "{" . $SpecFile . "}");
-            }
             $Product->addChild("{$Module}")->addAttribute('href', "file:///../Data/{$Module}/{$isbn}.rtf");
             /////////////////////////////////////////////////////////
             /////////////////BARCODE SETUP
             /////////////////////////////////////////////////////////
             $Product->addChild("Barcode")->addAttribute('href', "file:///../Data/Barcode/{$isbn}.eps");
-            copy("Storage/Catalogs/Christian/Data/Stock/stock.eps", "Storage/Catalogs/Christian/Data/Barcode/{$isbn}.eps");
          }
-
-
-         file_put_contents("Storage/Catalogs/Christian/XML/Catalog.xml", $xml->asXML());
+         file_put_contents("Storage/Catalogs/2016/Fall/AtlasBooks/XML/Catalog.xml", $xml->asXML());
       }
    }
 

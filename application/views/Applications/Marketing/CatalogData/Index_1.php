@@ -90,6 +90,7 @@
                                  <option value="TRT">TRT</option>
                                  <option value="SHL">SHL</option>
                                  <option value="SHT">SHT</option>
+                                 <option value="BIB">BIB</option>
                               </select>
                            </span>
                         </div>

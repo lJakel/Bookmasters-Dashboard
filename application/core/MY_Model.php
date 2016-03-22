@@ -3,7 +3,12 @@
 class MY_Model extends CI_Model {
 
    function __construct() {
-      $_POST = json_decode(file_get_contents('php://input'), true);
+      $contents = json_decode(file_get_contents('php://input'), true);
+      if ($contents == "" || $contents == null) {
+         
+      } else {
+         $_POST = $contents;
+      }
    }
 
 }

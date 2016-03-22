@@ -1,6 +1,40 @@
-BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '$timeout', '$rootScope', function ($state, $http, toasty, $timeout, $rootScope) {
-      console.log($state.params);
+BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$http', 'toasty', '$timeout', '$rootScope', 'Upload', '$sce', function ($state, $stateParams, $http, toasty, $timeout, $rootScope, Upload, $sce) {
       var self = this;
+      self.showTitleDialog = false;
+      self.PaginationModel = {
+         Catalog: $state.params.params && $state.params.params.Catalog ? $state.params.params.Catalog : 18,
+         TitleCount: 0,
+         CurrentPage: 1,
+         Limit: 40,
+         PagesNum: []
+      };
+
+
+      self.EditTitleModal = function (data) {
+         var m = this;
+      };
+      self.showEditTitleModal = function (data) {
+
+         self.EditTitleModal.entryData = data;
+         $.each(data, function (k, v) {
+            self.EditTitleModal[k] = data[k] || null;
+         });
+         //self.Titles[title]
+         self.showTitleDialog = true;
+      };
+
+      self.onEditTitleModalAction = function () {
+         $.each(self.EditTitleModal.entryData, function (k, v) {
+            self.EditTitleModal.entryData[k] = self.EditTitleModal[k] || null;
+         });
+
+         self.showTitleDialog = false;
+      };
+
+      self.ReloadCatalog = function () {
+         console.log($state.current, $stateParams);
+         $state.transitionTo('bm.app.page', {folder: 'Marketing', app: 'CatalogData', page: 'Index2', child: null, params: {Catalog: self.PaginationModel.Catalog}}, {reload: 'bm.app.page'});
+      };
 
       self.Title = function (data) {
          var t = this;
@@ -28,8 +62,18 @@ BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '
          t.AgeFrom = data.AgeFrom || '';
          t.AgeTo = data.AgeTo || '';
          t.MainDesc = data.MainDesc || '';
+         t.MainDescSafe = function () {
+            return $sce.trustAsHtml(data.MainDesc)
+         } || function () {
+            return $sce.trustAsHtml('')
+         };
          t.Author1Name = data.Author1Name || '';
          t.Author1Bio = data.Author1Bio || '';
+         t.Author1BioSafe = function () {
+            return $sce.trustAsHtml(data.Author1Bio)
+         } || function () {
+            return $sce.trustAsHtml('')
+         };
          t.Author2Name = data.Author2Name || '';
          t.Author2Bio = data.Author2Bio || '';
          t.Author3Name = data.Author3Name || '';
@@ -38,14 +82,37 @@ BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '
          t.Author4Bio = data.Author4Bio || '';
          t.Author5Name = data.Author5Name || '';
          t.Author5Bio = data.Author5Bio || '';
+         t.Discount = data.Discount || '';
          t.Catalog = data.Catalog || '';
          t.Updated = data.Updated || '';
+         t.Random = Date.now();
 
       }
 
-
       $timeout(function () {
-         app.state["sidebar-left"] = !app.state["sidebar-left"];
+
+         self.UploadCover = function (files, isbn) {
+            if (files && files.length) {
+               for (var i = 0; i < files.length; i++) {
+                  var file = files[i];
+                  if (!file.$error) {
+                     Upload.upload({
+                        url: './Marketing/CatalogData/UploadCover',
+                        method: 'POST',
+                        data: {
+                           file: file,
+                           isbn: isbn,
+                           catalog: self.PaginationModel.Catalog
+                        },
+                     }).then(function (resp) {
+                        toasty.success({title: 'Success!', msg: 'Cover uploaded successfully.', theme: 'bootstrap', timeout: 3000});
+                     }, null, function (evt) {
+                     });
+                  }
+               }
+            }
+
+         };
          self.Pages = [];
          self.Titles = [0, 102, 30];
          self.AddPage = function () {
@@ -61,8 +128,34 @@ BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '
          self.UpdateTitle = function (title) {
 
             $http.post('Marketing/CatalogData/UpdateTitle', self.Titles[title]).then(function (successResponse) {
-               self.Titles[title] = new self.Title(successResponse.data.data[0]);
+               self.Titles[title] = new self.Title(successResponse.data.data.Result[0]);
                toasty.success({title: 'Success!', msg: 'Title saved successfully.', theme: 'bootstrap', timeout: 5000});
+            }, function (errorResponse) {
+               $.each(errorResponse.data.errors, function (k, item) {
+                  toasty.error({title: 'Error!', msg: item.message, theme: 'bootstrap', timeout: 8000});
+               });
+            });
+         };
+
+         self.ChangePage = function (Page) {
+            $timeout(function () {
+               toasty.info({title: 'Please Wait!', msg: 'Please wait while I load the information', theme: 'bootstrap', timeout: 2000});
+            }, 500).then(function () {
+               self.PaginationModel.CurrentPage = Page || 1;
+               self.LoadTitles();
+            });
+         };
+         self.LoadTitles = function () {
+            $http.post('Marketing/CatalogData/GetAllTitles', self.PaginationModel).then(function (successResponse) {
+
+               self.PaginationModel.Catalog = successResponse.data.data.Pagination.Catalog || 0;
+               self.PaginationModel.TitleCount = successResponse.data.data.Pagination.TitleCount || 0;
+               self.PaginationModel.CurrentPage = successResponse.data.data.Pagination.CurrentPage || 1;
+               self.PaginationModel.Limit = successResponse.data.data.Pagination.Limit || 50;
+               self.PaginationModel.PagesNum = successResponse.data.data.Pagination.PagesNum || [];
+               self.Titles = $.map(successResponse.data.data.Result, function (item, i) {
+                  return new self.Title(item);
+               });
             }, function (errorResponse) {
                $.each(errorResponse.data.errors, function (k, item) {
                   toasty.error({title: 'Error!', msg: item.message, theme: 'bootstrap', timeout: 8000});
@@ -70,9 +163,14 @@ BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '
             });
          }
 
+         $http.post('Marketing/CatalogData/GetAllTitles', self.PaginationModel).then(function (successResponse) {
 
-         $http.post('Marketing/CatalogData/GetAllTitles').then(function (successResponse) {
-            self.Titles = $.map(successResponse.data.data, function (item, i) {
+            self.PaginationModel.Catalog = successResponse.data.data.Pagination.Catalog || 0;
+            self.PaginationModel.TitleCount = successResponse.data.data.Pagination.TitleCount || 0;
+            self.PaginationModel.CurrentPage = successResponse.data.data.Pagination.CurrentPage || 1;
+            self.PaginationModel.Limit = successResponse.data.data.Pagination.Limit || 50;
+            self.PaginationModel.PagesNum = successResponse.data.data.Pagination.PagesNum || [];
+            self.Titles = $.map(successResponse.data.data.Result, function (item, i) {
                return new self.Title(item);
             });
          }, function (errorResponse) {
@@ -80,64 +178,5 @@ BMApp.register.controller('GeneratedController', ['$state', '$http', 'toasty', '
                toasty.error({title: 'Error!', msg: item.message, theme: 'bootstrap', timeout: 8000});
             });
          });
-         self.Page = function (data) {
-
-            var p = this;
-            p.PageClass = 'cat-page-twoper';
-            p.PageHeader = data.PageHeader || '';
-            p.PageNumber = data.PageNumber || 0;
-            p.PageFooter = data.PageFooter || '';
-            p.Titles = data.Titles || [new self.Title('')];
-            p.PerPage = data.PerPage || 1;
-            p.CalcPerPage = 0;
-            p.Tab = data.Tab || '';
-
-            p.AddTitle = function () {
-               p.Titles.push(new self.Title(''));
-               p.calc();
-
-            };
-            p.calc = function () {
-               switch (p.Titles.length) {
-                  case 1:
-
-                     p.PerPage = 1;
-                     break;
-                  case 2:
-
-                     p.PerPage = 2;
-                     break;
-                  case 3:
-
-                     p.PerPage = 3;
-                     break;
-                  case 4:
-
-                     break;
-                  case 6:
-
-                     break;
-                  case 8:
-
-                     break;
-                  case 10:
-
-                     break;
-                  case 12:
-
-                     break;
-                  default:
-
-                     break;
-               }
-            }
-            p.calc();
-
-         };
-
-
-
-
-
       }, 1000);
    }]);

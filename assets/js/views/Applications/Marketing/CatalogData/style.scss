@@ -65,7 +65,6 @@
       .spec{
          display: block;
          font-family: 'Helvetica Neue LT Std', sans-serif;
-
          font-style: normal;
          font-variant: normal;
          font-weight:400;
@@ -81,6 +80,8 @@
          font-family: "Minion Pro";
          color:black;
          text-align: justify;
+         max-height: 280px;
+         overflow: scroll;
       }
       .title{
          display: block;
@@ -149,7 +150,12 @@
       }
    }
 }
-
+.col-xs-8{
+   >div.body{
+      max-height: 880px;
+      height: auto;      
+   }
+}
 
 
 .cat-page-oneper{
@@ -203,7 +209,7 @@ input.ghost,textarea.ghost{
    }
    .ShowOnScreen{
       display: block !important;
-   }
+   } 
    .ShowOnPrint{
       display: none !important;
    }

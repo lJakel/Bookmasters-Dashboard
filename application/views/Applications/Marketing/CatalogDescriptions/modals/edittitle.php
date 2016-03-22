@@ -68,13 +68,13 @@
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mMainDescription" class="control-label">MainDescription</label>
-                  <div text-angular ng-model="m.MainDescription" name='mMainDescription'  ta-toolbar="[['bold','italics','underline','clear'],['ul','ol'],['html'],['wordcount','charcount']]" name="mMainDescription"></div>
+                  <summernote ng-model="m.MainDescription" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" class="form-control" name="mMainDescription" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
                </div>
             </div>
             <div class="row">
                <div class="col-md-12 form-group required" data-show-errors>
                   <label for="mAuthorBios"  class="control-label">AuthorBios</label>
-                  <div text-angular name='mAuthorBios' ng-model="m.AuthorBios" ta-toolbar="[['bold','italics','underline','clear'],['ul','ol'],['html'],['wordcount','charcount']]" name="mMainDescription"></div>
+                  <summernote ng-model="m.AuthorBios" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" class="form-control" name="mAuthorBios" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180"></summernote>
                </div>
             </div>
          </div>

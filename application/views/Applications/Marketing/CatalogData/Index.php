@@ -6,10 +6,9 @@
                <div class="panel-body">
                   <h2>Catalogs</h2>
                   <div class="list-group">
-                     <a href="#" class="list-group-item" ng-repeat="catalog in gc.Catalogs">
-                        <button class="btn btn-danger btn-xs" ng-click="gc.DeleteCatalog(catalog.id)"><i class="fa fa-minus fa-fw"></i></button> 
+                     <a href="#" ng-click="gc.ChangeCatalog(catalog)" class="list-group-item" ng-repeat="catalog in gc.Catalogs">
                         {{catalog.Year}} {{catalog.Season}} {{catalog.Division}}
-                        <span class="badge pull-right">0</span>
+                        <span class="badge pull-right">{{catalog.Count[0]['count(*)']}}</span>
                      </a>
                   </div>
                   <div class="form-group">
@@ -41,11 +40,17 @@
                </div>
             </div>
          </div>
-         
+
          <div class="col-md-9">
             <div class="panel panel-default">
                <div class="panel-body">
-                  <h2>Titles</h2>
+                  <div class="form-group">
+                     <h2>Titles</h2>
+                  </div>
+                  <div class="form-group">
+                     <button class="btn btn-danger " ng-click="gc.DeleteCatalog()">Delete Catalog</button> 
+                     <button class="btn btn-primary " ng-click="gc.LoadCatalogEditor()">Load In Editor</button> 
+                  </div>
                   <div class="table-responsive">
                      <table class="table table-bordered">
                         <thead>
@@ -59,17 +64,26 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>1</td>
-                              <td>2</td>
-                              <td>2</td>
-                              <td>3</td>
-                              <td style="word-wrap">4</td>
-                              <td>5</td>
+                           <tr ng-repeat="title in gc.Titles">
+                              <td>{{title.Page}}</td>
+                              <td>{{title.PageRank}}</td>
+                              <td>{{title.PerPage}}</td>
+                              <td>{{title.ISBN}}</td>
+                              <td style="word-wrap: break-word;">{{title.Title}}</td>
+                              <td>{{title.Publisher}}</td>
                            </tr>
                         </tbody>
                      </table>
                   </div>
+
+                  <nav>
+                     <ul class="pagination">
+
+                        <li ng-repeat="Page in gc.PaginationModel.PagesNum" ng-click='gc.ChangePage(Page)' ng-class="{'active':gc.PaginationModel.CurrentPage == Page}"><a href="#">{{Page}}</a></li>
+
+                     </ul>
+                  </nav>
+
                </div>
             </div>
          </div>

@@ -29,6 +29,12 @@ class CatalogData extends Secure_Controller {
    }
 
    public function Index2() {
+
+      
+      $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
+      $this->output->set_header("Cache-Control: post-check=0, pre-check=0");
+      $this->output->set_header("Pragma: no-cache");
+
       $this->load->view("{$this->app['viewFolder']}/{$this->app['folder']}/{$this->app['appName']}/Index_1");
    }
 
@@ -67,6 +73,12 @@ class CatalogData extends Secure_Controller {
               ->set_output(json_encode($this->cd_model->UpdateDescriptions()));
    }
 
+   public function Test4() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->GetAllCatalogWithTitles()));
+   }
+
    public function IngestData() {
       $this->output
               ->set_content_type('application/json')
@@ -83,6 +95,19 @@ class CatalogData extends Secure_Controller {
       $this->output
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->UpdateTitle()));
+   }
+
+   public function ApplyTemplates() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->ApplyTemplates()));
+   }
+
+   public function UploadCover() {
+
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->UploadCover()));
    }
 
 }

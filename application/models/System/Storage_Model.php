@@ -80,14 +80,14 @@ class Storage_Model extends ESM {
       $return['pass'] = TRUE;
 
       // we retrieve the number of files that were uploaded
-      $number_of_files = sizeof($_FILES['uploadedfiles']['tmp_name']);
+      $number_of_files = sizeof($_FILES['file']['tmp_name']);
 
       // considering that do_upload() accepts single files, we will have to do a small hack so that we can upload multiple files. For this we will have to keep the data of uploaded files in a variable, and redo the $_FILE.
-      $files = $_FILES['uploadedfiles'];
+      $files = $_FILES['file'];
 
       // first make sure that there is no error in uploading the files
       for ($i = 0; $i < $number_of_files; $i++) {
-         if ($_FILES['uploadedfiles']['error'][$i] != '0') {
+         if ($_FILES['file']['error'][$i] != '0') {
             // save the error message and return false, the validation of uploaded files failed
             $this->newError("0000", "There was an error in your file upload.", $this, __FUNCTION__, "danger", null, false);
          }

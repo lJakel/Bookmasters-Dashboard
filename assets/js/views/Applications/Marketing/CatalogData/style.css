@@ -62,7 +62,9 @@
     line-height: 20px;
     font-family: "Minion Pro";
     color: black;
-    text-align: justify; }
+    text-align: justify;
+    max-height: 280px;
+    overflow: scroll; }
   .page .body .title {
     display: block;
     font-family: 'Helvetica Neue LT Std', sans-serif;
@@ -104,6 +106,10 @@
     float: right; }
   .page.right-page .row.cat-page-oneper .col-xs-8, .page.right-page .row.cat-page-oneper .col-xs-9, .page.right-page .row.cat-page-twoper .col-xs-8, .page.right-page .row.cat-page-twoper .col-xs-9 {
     float: left; }
+
+.col-xs-8 > div.body {
+  max-height: 880px;
+  height: auto; }
 
 .cat-page-oneper .spec {
   font-size: 16px;

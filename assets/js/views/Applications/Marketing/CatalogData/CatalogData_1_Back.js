@@ -27,7 +27,7 @@ BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$ht
          $.each(self.EditTitleModal.entryData, function (k, v) {
             self.EditTitleModal.entryData[k] = self.EditTitleModal[k] || null;
          });
-
+      
          self.showTitleDialog = false;
       };
 

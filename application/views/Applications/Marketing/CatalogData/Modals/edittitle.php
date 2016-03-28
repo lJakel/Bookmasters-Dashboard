@@ -39,7 +39,7 @@
                <div class="col-md-12 form-group">
                   <label for="mID" class="control-label">Author Bios</label>
                   <summernote name="lolcats" config='{"toolbar":[["style",["bold","italic","underline","clear"]],["para",["ul","ol"]],["view",["fullscreen","codeview"]]]}' height="180" ng-model="m.Author1Bio"></summernote>
-                  <pre>{{m.Author1Bio|json}}</pre>
+
                </div>
             </div>
          </div>

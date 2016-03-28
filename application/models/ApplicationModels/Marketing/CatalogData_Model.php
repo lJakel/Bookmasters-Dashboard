@@ -237,7 +237,7 @@ class CatalogData_Model extends ESM {
 [AuthorDes]\par}',
               'Spec' => [
                   'Main' => '{\rtf1\ansi\ansicpg1252\deff0\deflang1033 {\fonttbl {\f0\fnil\fcharset0 HelveticaNeueLT Std Cn;}} {\colortbl;\red0\green0\blue0;}',
-                  'Node' => '\uc1\pard\hyphpar0\sl300\slmult0\cf1\lang1033\f0\fs20 [SpecNode]\cf0\lang9\f1\fs22\par',
+                  'Node' => '\uc1\pard\hyphpar0\sl280\slmult0\cf1\lang1033\f0\fs20 [SpecNode]\cf0\lang9\f1\fs22\par',
                   'End' => '}'
               ],
           ],
@@ -412,14 +412,10 @@ class CatalogData_Model extends ESM {
                $Authors = trim($Authors, ',');
                $Authors = trim($Authors);
 
+               $Authors = $RTFConverter->convert($Authors);
 
                $MainBodyFileRTF .= str_replace(['[Author]'], [ $Authors], $CatalogTemplateArr[$PerPage]['Main']['Author']);
 
-
-//            if ($isbn == '9781557537607'){
-//               print_r([$isbn,$MainBodyFileRTF,$Catalog,$value]);
-//               die();
-//            }
 
                $MainBody->setRTF($MainBodyFileRTF);
 
@@ -430,7 +426,7 @@ class CatalogData_Model extends ESM {
                /////////////////////////////////////////////////////////
                ///////////////DESCRIPTION RTF CONVERSION
                /////////////////////////////////////////////////////////
-               $RTFConverter = new JoshRibakoff_Note_HTMLToRTF();
+
                $DescNote = new JoshRibakoff_Note();
 
 
@@ -444,7 +440,10 @@ class CatalogData_Model extends ESM {
                $DescFile = $DescNote->formatRTF();
 
                $Module = 'Descriptions';
-               file_put_contents($BasePath . "Data/{$Module}/{$isbn}.rtf", "{" . $DescFile . "}");
+
+               $DataToSave = mb_convert_encoding($DescFile, 'UTF-8');
+
+               file_put_contents($BasePath . "Data/{$Module}/{$isbn}.rtf", "{" . $DataToSave . "}");
                /////////////////////////////////////////////////////////
                ///////////////COVER SETUP
                /////////////////////////////////////////////////////////
@@ -459,17 +458,82 @@ class CatalogData_Model extends ESM {
 
 
                $SpecRTF = $CatalogTemplateArr[$PerPage]['Spec']['Main'];
-               $SpecRTF .= str_replace(['[SpecNode]'], [$value->Publisher], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
-
+               $Node = $CatalogTemplateArr[$PerPage]['Spec']['Node'];
 
                $isbnHyp = new FaleISBN;
                $isbn13 = $isbnHyp->hyphens->addHyphens($isbn);
-               $SpecRTF .= str_replace(['[SpecNode]'], [$isbn13], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
-               $SpecRTF .= str_replace(['[SpecNode]'], [$value->Format], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
-               $SpecRTF .= str_replace(['[SpecNode]'], ["USD \${$value->USPrice} (CAN \${$value->CANPrice})"], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
-               $SpecRTF .= str_replace(['[SpecNode]'], ["{$TrimW} x {$TrimH}, {$value->Pages} pages"], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
-               $SpecRTF .= str_replace(['[SpecNode]'], [$value->BisacDesc], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
-               $SpecRTF .= str_replace(['[SpecNode]'], [$value->PublicationDate], $CatalogTemplateArr[$PerPage]['Spec']['Node']);
+
+               if (trim($value->Publisher) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], [$value->Publisher], $Node);
+               }
+               if (trim($isbn13) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], [$isbn13], $Node);
+               }
+               if (trim($value->Format) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], [$value->Format], $Node);
+               }
+
+               $price = '';
+               if (trim($value->USPrice) != '') {
+                  $price = "USD \${$value->USPrice}";
+               }
+               if (trim($value->CANPrice) != '') {
+                  $price .=" (CAN \${$value->CANPrice})";
+               }
+               $SpecRTF .= str_replace(['[SpecNode]'], [trim($price)], $Node);
+
+               $TrimAndPages = "";
+
+
+               if (trim($TrimW) != '') {
+                  $TrimAndPages = $TrimW;
+               }
+               if (trim($TrimH) != '') {
+                  $TrimAndPages .= " x {$TrimH}";
+               }
+               if (trim($value->Pages) != '') {
+                  $TrimAndPages .= ", {$value->Pages} pages";
+               }
+               $SpecRTF .= str_replace(['[SpecNode]'], [$TrimAndPages], $Node);
+
+
+
+               if (trim($value->BisacDesc) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], [$value->BisacDesc], $Node);
+               }
+
+               if (trim($value->PublicationDate) != '') {
+                  date_default_timezone_set('America/New_York');
+                  $TitleDate = DateTime::createFromFormat("F Y", $value->PublicationDate);
+                  $CutOffDate = DateTime::createFromFormat("Ymd", "20160901");
+
+                  $TitleDateNew = ($TitleDate->format("U"));
+                  $CutOffDateNew = ($CutOffDate->format("U"));
+
+                  if ($TitleDateNew <= $CutOffDateNew) {
+                     
+                  } else {
+                     $SpecRTF .= str_replace(['[SpecNode]'], [$value->PublicationDate], $Node);
+                  }
+               }
+               if (trim($value->AgeFrom) != '' && $value->AgeTo == '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], ["Ages: {$value->AgeFrom}"], $Node);
+               }
+               if (trim($value->AgeFrom) != '' && trim($value->AgeTo) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], ["Ages: {$value->AgeFrom} to {$value->AgeTo}"], $Node);
+               }
+
+               if (trim($value->IllustrationsCount) != '' && trim($value->IllustrationsType) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], ["{$value->IllustrationsCount} {$value->IllustrationsType} Illustrations"], $Node);
+               }
+
+               if (trim($value->IllustrationsCount) == '' && trim($value->IllustrationsType) != '') {
+                  $SpecRTF .= str_replace(['[SpecNode]'], ["{$value->IllustrationsType}"], $Node);
+               }
+
+
+
+
                $SpecRTF .= $CatalogTemplateArr[$PerPage]['Spec']['End'];
 
                $SpecNote->setRTF($SpecRTF);
@@ -664,6 +728,23 @@ class CatalogData_Model extends ESM {
 
 //      $GetDescQuery = $this->JCCData->limit(40, 0)->get('titles');
       $GetDescQuery = $this->JCCData->where('Catalog', 18)->get('titles');
+      if ($GetDescQuery && $GetDescQuery->num_rows() && $GetDescQueryResult = $GetDescQuery->result_object()) {
+         $count = 0;
+         foreach ($GetDescQueryResult as $value) {
+            $count++;
+            $this->ExportTitle($value->ID);
+         }
+         return $this->generateResponse($count);
+      }
+   }
+
+   public function ApplyTemplatesRange() {
+      set_time_limit(60 * 20);
+
+      $this->input->post('1st');
+      $this->JCCData = $this->load->database('JakeComputerCatalogData', TRUE);
+      $GetDescQuery = $this->JCCData->where('Catalog', 18)->offset($this->input->post('2nd'))->limit($this->input->post('1st'))->get('titles');
+
       if ($GetDescQuery && $GetDescQuery->num_rows() && $GetDescQueryResult = $GetDescQuery->result_object()) {
          $count = 0;
          foreach ($GetDescQueryResult as $value) {

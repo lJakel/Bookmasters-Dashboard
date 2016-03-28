@@ -102,6 +102,11 @@ class CatalogData extends Secure_Controller {
               ->set_content_type('application/json')
               ->set_output(json_encode($this->cd_model->ApplyTemplates()));
    }
+   public function ApplyTemplatesRange() {
+      $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode($this->cd_model->ApplyTemplatesRange()));
+   }
 
    public function UploadCover() {
 

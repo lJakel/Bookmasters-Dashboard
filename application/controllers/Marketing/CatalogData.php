@@ -29,8 +29,7 @@ class CatalogData extends Secure_Controller {
    }
 
    public function Index2() {
-
-      
+     
       $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
       $this->output->set_header("Cache-Control: post-check=0, pre-check=0");
       $this->output->set_header("Pragma: no-cache");

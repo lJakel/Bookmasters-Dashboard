@@ -10,8 +10,23 @@ BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$ht
       };
 
 
-      self.EditTitleModal = function (data) {
+      self.EditTitleModal = new function (data) {
          var m = this;
+         m.options = {
+            height: 300,
+            
+            airPopover: [
+               ['color', ['color']],
+               ['font', ['bold', 'underline', 'clear']],
+               ['para', ['ul', 'paragraph']],
+               ['table', ['table']],
+               ['insert', ['link', 'picture']]
+            ],
+            airMode: true,
+            
+
+
+         };
       };
       self.showEditTitleModal = function (data) {
 
@@ -27,12 +42,11 @@ BMApp.register.controller('GeneratedController', ['$state', '$stateParams', '$ht
          $.each(self.EditTitleModal.entryData, function (k, v) {
             self.EditTitleModal.entryData[k] = self.EditTitleModal[k] || null;
          });
-      
+
          self.showTitleDialog = false;
       };
 
       self.ReloadCatalog = function () {
-         console.log($state.current, $stateParams);
          $state.transitionTo('bm.app.page', {folder: 'Marketing', app: 'CatalogData', page: 'Index2', child: null, params: {Catalog: self.PaginationModel.Catalog}}, {reload: 'bm.app.page'});
       };
 

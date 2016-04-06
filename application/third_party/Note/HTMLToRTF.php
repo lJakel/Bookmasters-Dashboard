@@ -13,34 +13,28 @@ class JoshRibakoff_Note_HTMLToRTF {
    }
 
    function convert($text) {
-      
-
       $text = html_entity_decode($text, ENT_COMPAT, 'UTF-8');
-
-      file_put_contents('lol.txt', $text, FILE_APPEND);
-      
       $text = $this->escapeRTFTokens($text);
-
       $text = $this->convertSpanWithColorStyleToRTF($text);
       $text = $this->convertFontColorToRTF($text);
 
-      
       $text = str_ireplace('</p><p>', "\\par\n", $text);
+
+      $text = str_ireplace('<br>', "\\par ", $text);
+
+      $text = preg_replace('/(\s*)<strong[^>]*>(\s*)/i', '$1\\b $2', $text);
+      $text = preg_replace('#(\s*)<\/strong>(\s*)#i', '$1\\b0 $2', $text);
+
+      $text = preg_replace('/(\s*)<b[^>]*>(\s*)/i', '$1\\b $2', $text);
+      $text = preg_replace('#(\s*)<\/b>(\s*)#i', '$1\\b0 $2', $text);
       
-      
-      $text = str_ireplace('<br>', "\\par", $text);
+      $text = preg_replace('/(\s*)<i[^>]*>(\s*)/i', '$1\\i $2', $text);
+      $text = preg_replace('#(\s*)<\/i>(\s*)#i', '$1\\i0 $2', $text);
 
-      $text = preg_replace('/<b[^>]*>/i', '\\b ', $text);
-      $text = str_ireplace('</b>', ' \\b0', $text);
+      $text = preg_replace('/(\s*)<em[^>]*>(\s*)/i', '$1\\i $2', $text);
+      $text = preg_replace('#(\s*)<\/em>(\s*)#i', '$1\\i0 $2', $text);
+   
 
-      $text = preg_replace('/<strong[^>]*>/i', '\\b ', $text);
-      $text = str_ireplace('</strong>', ' \\b0', $text);
-
-      $text = preg_replace('/<i[^>]*>/i', '\\i ', $text);
-      $text = str_ireplace('</i>', ' \\i0', $text);
-
-      $text = preg_replace('/<em[^>]*>/i', '\\i ', $text);
-      $text = str_ireplace('</em>', ' \\i0', $text);
 
       $text = preg_replace('/<ol[^>]*>/i', "\\par", $text);
       $text = str_ireplace('</ol>', '\\par\n', $text);
@@ -50,9 +44,10 @@ class JoshRibakoff_Note_HTMLToRTF {
 
       $text = preg_replace('/<li[^>]*>/i', '\\par\\bullet    ', $text);
       $text = str_ireplace('</li>', '', $text);
-
-      $text = preg_replace('/<u[^>]*>/i', '\\ul ', $text);
-      $text = str_ireplace('</u>', ' \\ulnone', $text);
+      
+        
+      $text = preg_replace('/(\s*)<u[^>]*>(\s*)/i', '$1\\ul $2', $text);
+      $text = preg_replace('#(\s*)<\/u>(\s*)#i', '$1\\ulnone $2', $text);
 
 
       $text = str_ireplace('…', '...', $text);
@@ -64,9 +59,8 @@ class JoshRibakoff_Note_HTMLToRTF {
           '’',
           '“',
           '”',
+          '&nbsp;',
           html_entity_decode('&nbsp;', ENT_COMPAT, 'UTF-8'),
-          html_entity_decode('&ndash;', ENT_COMPAT, 'UTF-8'),
-          html_entity_decode('&mdash;', ENT_COMPAT, 'UTF-8'),
           'À',
           'Á',
           'Â',
@@ -167,8 +161,7 @@ class JoshRibakoff_Note_HTMLToRTF {
           '"',
           '"',
           " ",
-          "\\endash  ",
-          "\\emdash  ",
+          " ",
           "\'c0",
           "\'c1",
           "\'c2",
@@ -265,14 +258,32 @@ class JoshRibakoff_Note_HTMLToRTF {
       ];
 
       $text = str_ireplace($toReplace, $toReplaceWith, $text);
+
+
+
+      $regex = [
+          '/\\s*' . html_entity_decode('&ndash;', ENT_COMPAT, 'UTF-8') . '\\s*/i',
+          '/\\s*' . html_entity_decode('&mdash;', ENT_COMPAT, 'UTF-8') . '\\s*/i',
+      ];
+      $replace = [
+          '\\endash ',
+          '\\emdash ',
+      ];
+      $text = preg_replace($regex, $replace, $text);
+      
       $text = strip_tags($text);
+
+
 
       return $text;
    }
 
    function escapeRTFTokens($text) {
       return str_replace(
-              array('\\', '}', '{'), array('\\\\', '\\}', '\\{'), $text
+              array('\\', '}', ' {
+         '), array('\\\\', '\\
+      }', '\\ {
+         '), $text
       );
    }
 

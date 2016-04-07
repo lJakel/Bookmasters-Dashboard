@@ -830,7 +830,7 @@ class CatalogData_Model extends ESM {
       $this->JCCData = $this->load->database('JakeComputerCatalogData', TRUE);
 
 //      $GetDescQuery = $this->JCCData->limit(40, 0)->get('titles');
-      $GetDescQuery = $this->JCCData->where('Catalog', 19)->get('titles');
+      $GetDescQuery = $this->JCCData->where('Catalog', 18)->get('titles');
       if ($GetDescQuery && $GetDescQuery->num_rows() && $GetDescQueryResult = $GetDescQuery->result_object()) {
          $count = 0;
          foreach ($GetDescQueryResult as $value) {
